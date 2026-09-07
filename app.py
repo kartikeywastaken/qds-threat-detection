@@ -9,6 +9,10 @@ from fastapi.responses import HTMLResponse
 import uvicorn
 from pydantic import BaseModel
 import razorpay
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
 
 # Initialize Razorpay Client (Using Environment Variables or Placeholders)
 RAZORPAY_KEY_ID = os.environ.get('RAZORPAY_KEY_ID', 'rzp_test_replace_me')
