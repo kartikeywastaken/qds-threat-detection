@@ -31,3 +31,13 @@ this selected finite sample illustrates missed detection, not a general claim.
 Grouped Aer simulation uses up to 27 cells with partial interception (9 absent
 Eve cells plus 18 intercepted cells); full interception uses 18.
 Keys and private round outcomes are excluded from result summaries and repr.
+
+## Phase 2
+
+Three channel API tests pass: separate equal keys for honest sessions, both
+key endpoints 404 on abort, status redaction, next-session attack selection,
+capped animation, 200-session eviction and clock-driven TTL expiry.
+Store capacity is 64, TTL 15 minutes; HTTP requests allow at most 8192 rounds.
+The animation publishes only sacrificed sample bits, never the surviving bits
+from which either digest could be reconstructed. Payment telemetry is bounded
+to 64 public envelopes/verdicts and is not a source of authorization.

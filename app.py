@@ -17,6 +17,7 @@ from quantum_core.bell_state_generator import sample_chsh
 from detection_engine.integrity_monitor import inspect
 from attribution_engine.rule_engine import attribute
 from presentation.live_log import BoundedEventLog
+from presentation.channel_api import router as channel_router
 
 ROOT = Path(__file__).resolve().parent
 state_lock = threading.Lock()
@@ -86,6 +87,7 @@ async def lifespan(application: FastAPI):
 
 
 app = FastAPI(title='QDS Dashboard API — simulated', lifespan=lifespan)
+app.include_router(channel_router)
 app.add_middleware(CORSMiddleware, allow_origins=['http://localhost:3000', 'http://127.0.0.1:3000'],
                    allow_methods=['GET', 'POST'], allow_headers=['Content-Type'])
 
