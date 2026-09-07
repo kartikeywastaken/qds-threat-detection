@@ -1,4 +1,4 @@
-# Teleportation-assisted QDS threat detection research framework
+# Project Bellwatch: Teleportation-assisted QDS threat detection research framework
 
 Executable Qiskit Aer + Strawberry Fields simulations, Bernoulli SPRT, CHSH,
 KL divergence, scoped min-entropy bounds, deterministic attribution, a local
