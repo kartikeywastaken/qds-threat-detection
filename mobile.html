@@ -3,63 +3,124 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bob's Terminal - QDS</title>
+    <title>Bob's Receiver Terminal</title>
     <style>
-        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f6f3ec; margin: 0; padding: 20px; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; text-align: center; }
-        .card { background: white; padding: 30px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); width: 100%; max-width: 320px; border: 1px solid #e3ddd0; }
-        h1 { font-size: 18px; color: #26261f; margin-bottom: 30px; text-transform: uppercase; letter-spacing: 0.05em; }
-        button { background: #3c5e8b; color: white; border: none; padding: 20px; font-size: 14px; font-weight: 700; border-radius: 12px; width: 100%; cursor: pointer; text-transform: uppercase; letter-spacing: 0.05em; transition: transform 0.1s; }
-        button:active { transform: scale(0.96); }
-        #result { margin-top: 30px; padding: 20px; border-radius: 12px; font-weight: bold; font-size: 14px; display: none; line-height: 1.5; }
-        .success { background: #eaf1eb; color: #2f5c3d; border: 2px solid #4f7f5c; }
-        .error { background: #fde8e4; color: #a15b4e; border: 2px solid #a15b4e; }
-        .loader { margin: 10px auto; width: 24px; height: 24px; border: 3px solid #f3f3f3; border-top: 3px solid #3c5e8b; border-radius: 50%; animation: spin 1s linear infinite; display: none; }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #0f1011; margin: 0; padding: 20px; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; text-align: center; color: white; transition: background 0.3s ease; }
+        .card { background: #1a1c1e; padding: 40px 30px; border-radius: 24px; box-shadow: 0 10px 40px rgba(0,0,0,0.5); width: 100%; max-width: 320px; border: 1px solid #2d3034; display: flex; flex-direction: column; align-items: center; }
+        h1 { font-size: 14px; color: #8e949c; margin-bottom: 40px; text-transform: uppercase; letter-spacing: 0.1em; }
+        
+        .status-circle { width: 120px; height: 120px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 30px; transition: all 0.3s ease; }
+        
+        .honest .status-circle { background: rgba(47, 192, 91, 0.1); border: 2px solid #2fc05b; box-shadow: 0 0 40px rgba(47, 192, 91, 0.2); }
+        .attack .status-circle { background: rgba(239, 68, 68, 0.1); border: 2px solid #ef4444; box-shadow: 0 0 60px rgba(239, 68, 68, 0.4); animation: pulseRed 1s infinite alternate; }
+
+        .icon { width: 48px; height: 48px; }
+        .honest .icon-check { display: block; color: #2fc05b; }
+        .honest .icon-cross { display: none; }
+        .attack .icon-check { display: none; }
+        .attack .icon-cross { display: block; color: #ef4444; }
+
+        @keyframes pulseRed { 0% { box-shadow: 0 0 40px rgba(239, 68, 68, 0.3); } 100% { box-shadow: 0 0 80px rgba(239, 68, 68, 0.6); } }
+
+        .title { font-size: 22px; font-weight: 700; margin-bottom: 12px; letter-spacing: -0.02em; }
+        .honest .title { color: #2fc05b; }
+        .attack .title { color: #ef4444; }
+
+        .desc { font-size: 14px; color: #8e949c; line-height: 1.5; margin-bottom: 24px; }
+        .attack .desc { color: #ffb3b3; }
+
+        .meta-box { background: #0f1011; border-radius: 12px; padding: 16px; width: 100%; border: 1px solid #2d3034; text-align: left; }
+        .meta-row { display: flex; justify-content: space-between; margin-bottom: 8px; font-family: monospace; font-size: 12px; }
+        .meta-row:last-child { margin-bottom: 0; }
+        .meta-lbl { color: #5a6068; }
+        .meta-val { color: #e0e4e8; font-weight: 600; }
+
+        /* The specific attack explanation */
+        .attack-explanation { display: none; background: #2a1111; border-left: 3px solid #ef4444; padding: 12px 16px; text-align: left; border-radius: 4px; margin-top: 20px; width: 100%; font-size: 13px; line-height: 1.5; color: #ffc2c2; }
+        .attack .attack-explanation { display: block; }
     </style>
 </head>
-<body>
+<body id="appBody" class="honest">
     <div class="card">
         <h1>Bob's Terminal</h1>
-        <p style="font-size:12px; color:#6b6b5e; margin-bottom:24px;">Quantum Post-Transfer Verification</p>
-        <button id="verifyBtn" onclick="verifyTransfer()">Verify Incoming Transfer</button>
-        <div id="loader" class="loader"></div>
-        <div id="result"></div>
+        
+        <div class="status-circle">
+            <svg class="icon icon-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+            <svg class="icon icon-cross" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+        </div>
+
+        <div class="title" id="statusTitle">CHANNEL SECURE</div>
+        <div class="desc" id="statusDesc">Receiving entangled signatures. Waiting for transaction.</div>
+
+        <div class="meta-box">
+            <div class="meta-row">
+                <span class="meta-lbl">Session ID</span>
+                <span class="meta-val" id="valSession">----</span>
+            </div>
+            <div class="meta-row">
+                <span class="meta-lbl">QBER</span>
+                <span class="meta-val" id="valQber">--%</span>
+            </div>
+            <div class="meta-row">
+                <span class="meta-lbl">Decision</span>
+                <span class="meta-val" id="valDecision">ACCEPT</span>
+            </div>
+        </div>
+
+        <div class="attack-explanation" id="attackExp">
+            <b>Attack Detected:</b> <span id="valAttackMode">NONE</span><br><br>
+            The physical properties of the teleported state have been altered in transit. 
+        </div>
     </div>
 
     <script>
-        async function verifyTransfer() {
-            const btn = document.getElementById('verifyBtn');
-            const resDiv = document.getElementById('result');
-            const loader = document.getElementById('loader');
-            
-            btn.style.display = "none";
-            loader.style.display = "block";
-            resDiv.style.display = "none";
+        const attackDescriptions = {
+            'INDIVIDUAL': "Intercept-Resend Attack detected. Eve attempted to measure individual qubits and resend forged states, causing a massive QBER spike.",
+            'COLLECTIVE': "Collective Entanglement Attack detected. Eve used an ancillary probe, altering the CHSH violation significantly.",
+            'COHERENT': "Coherent Joint Probe detected. Eve attacked the entire quantum block globally.",
+            'IMPERSONATION': "Impersonation forgery detected. The sender is not mathematically correlated with Alice.",
+            'CHANNEL_MANIPULATION': "Classical Channel Manipulation detected. The Pauli correction bits were altered in transit.",
+            'REPLAY': "Replay Attack detected. Eve attempted to resend a previously valid signature block."
+        };
 
+        async function pollState() {
             try {
                 const res = await fetch('/api/state');
                 const state = await res.json();
                 
-                setTimeout(() => {
-                    btn.style.display = "block";
-                    loader.style.display = "none";
-                    btn.innerHTML = "Verify Another Transfer";
-                    resDiv.style.display = "block";
+                const isAttack = state.latest_decision === 'REJECT';
+                const body = document.getElementById('appBody');
+                
+                if (isAttack) {
+                    body.className = 'attack';
+                    document.getElementById('statusTitle').innerText = 'FORGERY BLOCKED';
+                    document.getElementById('statusDesc').innerText = 'Transaction intercepted. The quantum signature was mathematically corrupted.';
                     
-                    if (state.latest_decision === 'REJECT') {
-                        resDiv.className = 'error';
-                        resDiv.innerHTML = "⚠ FORGERY DETECTED!<br><br>The payload was mathematically tampered with by Eve in transit.";
+                    const mode = state.attack_mode || 'UNKNOWN';
+                    document.getElementById('valAttackMode').innerText = mode.replace('_', ' ');
+                    
+                    const expDiv = document.getElementById('attackExp');
+                    if (attackDescriptions[mode]) {
+                        expDiv.innerHTML = `<b>Attribution:</b> ${mode.replace('_', ' ')}<br><br>${attackDescriptions[mode]}`;
                     } else {
-                        resDiv.className = 'success';
-                        resDiv.innerHTML = "✓ SIGNATURE INTACT<br><br>Transfer Verified. Funds secured.";
+                        expDiv.innerHTML = `<b>Attribution:</b> ${mode.replace('_', ' ')}<br><br>The physical properties of the teleported state have been altered in transit.`;
                     }
-                }, 1200); // 1.2s Artificial delay for suspense
+                } else {
+                    body.className = 'honest';
+                    document.getElementById('statusTitle').innerText = 'CHANNEL SECURE';
+                    document.getElementById('statusDesc').innerText = 'Receiving entangled signatures. Waiting for transaction.';
+                }
+
+                if (state.session_id) document.getElementById('valSession').innerText = state.session_id;
+                if (state.qber !== undefined) document.getElementById('valQber').innerText = (state.qber * 100).toFixed(2) + '%';
+                if (state.latest_decision) document.getElementById('valDecision').innerText = state.latest_decision;
+
             } catch (e) {
-                alert("Error connecting to QDS backend.");
-                btn.style.display = "block";
-                loader.style.display = "none";
+                console.error("Polling error", e);
             }
         }
+
+        setInterval(pollState, 500);
     </script>
 </body>
 </html>
