@@ -803,10 +803,15 @@
 
   /* ========== VISUAL STATE ENGINE ========== */
   let _lastVisualKey = '';
+  let _dropdownChangeTime = 0;  // Grace period so API doesn't override instant visual updates
 
   function updateVisuals(state) {
-      currentAttackMode = state.attack_mode || 'HONEST';
-      currentDecision = state.latest_decision || 'ACCEPT';
+      /* Only let API override decision if >5s since last dropdown change */
+      const sinceDropdown = Date.now() - _dropdownChangeTime;
+      if (sinceDropdown > 5000) {
+          currentAttackMode = state.attack_mode || 'HONEST';
+          currentDecision = state.latest_decision || 'ACCEPT';
+      }
       const isUnderAttack = currentAttackMode !== 'HONEST';
       const isForged = currentDecision === 'REJECT';
 
@@ -974,26 +979,40 @@
               eventsList.innerHTML = '<div class="event"><span class="event-dot"></span><div class="event-body"><div class="event-name">No events yet</div></div></div>';
               return;
           }
-          rawEvents.forEach(raw => {
-              /* Events are wrapped: {sequence, report: {...}, hash} */
+          rawEvents.forEach((raw, idx) => {
               const ev = raw.report || raw;
-              let dotClass = '';
-              if (ev.decision === 'ACCEPT') dotClass = 'green';
-              else if (ev.decision === 'REJECT') dotClass = 'amber';
-              
+              const isReject = ev.decision === 'REJECT';
+              const dotClass = isReject ? 'amber' : 'green';
               const att = ev.attribution || {};
               const attackClass = (typeof att === 'object' ? (att.attack_class || 'NONE') : String(att)).toUpperCase();
+              const qberPct = ((ev.qber || 0)*100).toFixed(1);
+              const stats = ev.statistics || {};
+              const sVal = stats.chsh ? stats.chsh.s.toFixed(3) : '—';
+              const sprtRounds = stats.sprt ? stats.sprt.trace.length : '—';
+
+              /* Descriptive event title based on context */
+              let title, detail;
+              if (isReject) {
+                  title = '⚠ Forgery Detected';
+                  detail = `QBER spiked to ${qberPct}% · CHSH S=${sVal} · SPRT rejected at round ${sprtRounds} · Attack: <span style="font-weight:700;color:var(--red)">${attackClass}</span>`;
+              } else if (parseFloat(qberPct) > 3) {
+                  title = 'Verification passed (elevated noise)';
+                  detail = `QBER ${qberPct}% (above typical) · S=${sVal} · SPRT accepted at round ${sprtRounds} · No attack detected`;
+              } else {
+                  title = 'Signature verified ✓';
+                  detail = `QBER ${qberPct}% · Bell S=${sVal} · SPRT accepted round ${sprtRounds} · Fidelity ${(1-(ev.qber||0)).toFixed(3)}`;
+              }
+
               const div = document.createElement('div');
               div.className = 'event';
               div.innerHTML = `
                 <span class="event-dot ${dotClass}"></span>
                 <div class="event-body">
-                  <div class="event-time">Session ${(ev.session_id || '----').substring(0,4).toUpperCase()}</div>
-                  <div class="event-name">Verification ${(ev.decision || 'unknown').toLowerCase()}</div>
-                  <div class="event-detail">QBER: ${((ev.qber || 0)*100).toFixed(1)}%. Result: ${ev.decision}. Attack: <span style="font-weight:600;color:${attackClass !== 'NONE' ? 'var(--red)' : 'var(--green)'};">${attackClass !== 'NONE' ? attackClass : 'None detected'}</span></div>
+                  <div class="event-time">${(ev.session_id || '----').substring(0,4).toUpperCase()} · Cycle ${raw.sequence !== undefined ? raw.sequence + 1 : '—'}</div>
+                  <div class="event-name">${title}</div>
+                  <div class="event-detail">${detail}</div>
                 </div>
               `;
-              div.addEventListener('click', ()=> div.classList.toggle('open'));
               eventsList.appendChild(div);
           });
       } catch (e) { console.error('fetchEvents error:', e); }
@@ -1005,7 +1024,9 @@
       
       /* INSTANT visual update — don't wait for API round-trip */
       _lastVisualKey = '';  /* Reset cache so updateVisuals runs on next poll */
+      _dropdownChangeTime = Date.now();  /* Grace period — don't let API override for 5s */
       currentAttackMode = newMode;
+      currentDecision = (newMode !== 'HONEST') ? 'REJECT' : 'ACCEPT';  /* Optimistic update */
       const isUnderAttack = newMode !== 'HONEST';
 
       /* Reset decision when going back to honest */
