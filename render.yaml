@@ -5,10 +5,9 @@ services:
     region: ohio
     plan: free
     branch: ojasv
-    numInstances: 1
     envVars:
       - key: PORT
-        value: 8000
+        value: "8000"
     secretFiles:
       - name: firebase-credentials.json
         content: '{ "paste_your_service_account_json": "here" }'
