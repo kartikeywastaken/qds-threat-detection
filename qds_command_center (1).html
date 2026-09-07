@@ -979,7 +979,7 @@
               </div>
               <div style="display:flex; gap:16px; align-items:center; background:var(--surface-raised); padding:16px; border-radius:8px;">
                   <!-- QR Code Container -->
-                  <div id="qrBox" style="background:white; padding:8px; border-radius:8px; width:100px; height:100px; display:flex; justify-content:center; align-items:center;">
+                  <div id="qrBox" style="background:white; padding:12px; border-radius:12px; width:180px; height:180px; display:flex; justify-content:center; align-items:center;">
                       <div id="qrHonest"></div>
                   </div>
                   <!-- Status Text -->
@@ -1108,7 +1108,7 @@
     const cycleNum = document.getElementById('cycleNum');
     const fidNum = document.getElementById('fidNum');
     const heroStage = document.getElementById('heroStage');
-    const outcomes = ['00', '01', '10', '11');
+    const outcomes = ['00', '01', '10', '11'];
 
     const eveGroup = document.createElementNS('http://www.w3.org/2000/svg', 'g');
     eveGroup.id = 'eveOverlay';
@@ -1578,8 +1578,8 @@
         const honestUri = "upi://pay?pa=8770711250@ptaxis&pn=QDS%20Secure&am=1.00&cu=INR";
         new QRCode(document.getElementById("qrHonest"), {
             text: honestUri,
-            width: 100,
-            height: 100,
+            width: 180,
+            height: 180,
             colorDark : "#26261f",
             colorLight : "#ffffff",
             correctLevel : QRCode.CorrectLevel.L
