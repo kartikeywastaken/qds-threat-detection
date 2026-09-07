@@ -67,7 +67,7 @@
         
         <div class="balance-card">
             <div class="balance-lbl">Available Balance</div>
-            <div class="balance-amt">₹24,500.00</div>
+            <div class="balance-amt" id="availBalance">₹24,500.00</div>
         </div>
 
         <div class="history-title">Recent Transactions</div>
@@ -90,8 +90,6 @@
         };
 
         function toggleExpand(el) {
-            const resDiv = el.querySelector('.qds-result');
-            if (resDiv && resDiv.style.display === 'block') return;
             el.classList.toggle('expanded');
         }
 
@@ -126,6 +124,12 @@
                 
                 // Dynamically Render Transactions
                 if (state.transactions && state.transactions.length > 0) {
+                    
+                    // Update Balance dynamically
+                    const baseBalance = 24500;
+                    const newBalance = baseBalance + (state.transactions.length * 500);
+                    document.getElementById('availBalance').innerText = '₹' + newBalance.toLocaleString('en-IN') + '.00';
+
                     const txList = document.getElementById('txList');
                     let html = '';
                     state.transactions.forEach((tx, idx) => {
