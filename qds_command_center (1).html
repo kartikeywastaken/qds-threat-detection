@@ -1610,7 +1610,8 @@
       e.preventDefault();
 
       if (currentDecision === 'REJECT') {
-          showPaymentModal('error', 'TRANSACTION BLOCKED INITIALLY', 'Quantum Forgery Actively Detected!<br><br>The classical channel is compromised. Transaction aborted before initiating.');
+          const interferenceStr = currentAttackMode !== 'HONEST' ? attackLabels[currentAttackMode] : 'Unknown Interference';
+          showPaymentModal('error', 'TRANSACTION BLOCKED', `Quantum Forgery Actively Detected!<br><br>An interference (${interferenceStr}) occurred during transfer. The transaction was aborted to prevent funds loss.`);
           return;
       }
 
