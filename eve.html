@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eve's Secret Controller</title>
+    <style>
+        body { font-family: -apple-system, sans-serif; background: #26261f; margin: 0; padding: 20px; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; text-align: center; color: white; }
+        .card { background: #33332c; padding: 30px; border-radius: 20px; width: 100%; max-width: 320px; border: 1px solid #4d4d42; }
+        h1 { font-size: 18px; margin-bottom: 30px; text-transform: uppercase; letter-spacing: 0.1em; color: #fdf0e6; }
+        button { border: none; padding: 24px; font-size: 16px; font-weight: 700; border-radius: 12px; width: 100%; cursor: pointer; text-transform: uppercase; letter-spacing: 0.05em; transition: transform 0.1s; margin-bottom: 16px; }
+        button:active { transform: scale(0.96); }
+        .btn-honest { background: #3c5e8b; color: white; }
+        .btn-attack { background: #a15b4e; color: white; }
+        #status { margin-top: 20px; font-family: monospace; color: #9c9c8d; }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h1>Secret Control Panel</h1>
+        
+        <button class="btn-honest" onclick="setMode('none')">🟢 Honest Mode</button>
+        <button class="btn-attack" onclick="setMode('intercept_resend')">🔴 Attack Mode</button>
+        
+        <div id="status">Current Mode: Unknown</div>
+    </div>
+
+    <script>
+        async function setMode(mode) {
+            try {
+                await fetch('/api/start_attack?attack_type=' + mode, { method: 'POST' });
+                document.getElementById('status').innerText = 'Mode set to: ' + (mode === 'none' ? 'HONEST' : 'ATTACK');
+            } catch (e) {
+                alert("Error setting mode.");
+            }
+        }
+        
+        // Fetch initial status
+        async function fetchStatus() {
+            try {
+                const res = await fetch('/api/state');
+                const data = await res.json();
+                document.getElementById('status').innerText = 'Current Mode: ' + (data.active_attack === 'none' ? 'HONEST' : 'ATTACK');
+            } catch (e) {}
+        }
+        fetchStatus();
+        setInterval(fetchStatus, 1000);
+    </script>
+</body>
+</html>

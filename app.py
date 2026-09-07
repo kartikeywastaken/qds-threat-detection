@@ -171,6 +171,11 @@ def mobile():
     with open('mobile.html', 'r', encoding='utf-8') as f:
         return HTMLResponse(f.read())
 
+@app.get('/eve')
+def eve():
+    with open('eve.html', 'r', encoding='utf-8') as f:
+        return HTMLResponse(f.read())
+
 if __name__ == '__main__':
     import os
     port = int(os.environ.get('PORT', 8000))
