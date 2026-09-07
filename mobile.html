@@ -124,34 +124,6 @@
                 const res = await fetch('/api/state');
                 const state = await res.json();
                 
-                // Update global visual based on latest decision
-                const isAttack = state.latest_decision === 'REJECT';
-                const body = document.getElementById('appBody');
-                
-                if (isAttack) {
-                    body.className = 'attack';
-                    document.getElementById('statusTitle').innerText = 'FORGERY BLOCKED';
-                    document.getElementById('statusDesc').innerText = 'Transaction intercepted. The quantum signature was mathematically corrupted.';
-                    
-                    const mode = state.attack_mode || 'UNKNOWN';
-                    document.getElementById('valAttackMode').innerText = mode.replace('_', ' ');
-                    
-                    const expDiv = document.getElementById('attackExp');
-                    if (attackDescriptions[mode]) {
-                        expDiv.innerHTML = `<b>Attribution:</b> ${mode.replace('_', ' ')}<br><br>${attackDescriptions[mode]}`;
-                    } else {
-                        expDiv.innerHTML = `<b>Attribution:</b> ${mode.replace('_', ' ')}<br><br>The physical properties of the teleported state have been altered in transit.`;
-                    }
-                } else {
-                    body.className = 'honest';
-                    document.getElementById('statusTitle').innerText = 'CHANNEL SECURE';
-                    document.getElementById('statusDesc').innerText = 'Receiving entangled signatures. Waiting for transaction.';
-                }
-
-                if (state.session_id) document.getElementById('valSession').innerText = state.session_id;
-                if (state.qber !== undefined) document.getElementById('valQber').innerText = (state.qber * 100).toFixed(2) + '%';
-                if (state.latest_decision) document.getElementById('valDecision').innerText = state.latest_decision;
-
                 // Dynamically Render Transactions
                 if (state.transactions && state.transactions.length > 0) {
                     const txList = document.getElementById('txList');
