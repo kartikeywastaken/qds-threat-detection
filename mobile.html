@@ -72,44 +72,9 @@
 
         <div class="history-title">Recent Transactions</div>
         
-        <div class="tx-list">
-            <!-- Dynamic Latest Transaction -->
-            <div class="tx-card" id="txLatest" onclick="toggleExpand(this)">
-                <div class="tx-header">
-                    <div class="tx-info">
-                        <div class="tx-icon">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="19" x2="12" y2="5"></line><polyline points="5 12 12 5 19 12"></polyline></svg>
-                        </div>
-                        <div>
-                            <div class="tx-title">Payment Received</div>
-                            <div class="tx-time">Just now · UPI</div>
-                        </div>
-                    </div>
-                    <div class="tx-amount">+ ₹500</div>
-                </div>
-                
-                <div class="qds-panel" onclick="event.stopPropagation()">
-                    <div style="font-size:12px; color:var(--ink-light); margin-bottom:12px; font-family:var(--mono);">Quantum Signature Attached</div>
-                    <button class="qds-btn" id="verifyBtn" onclick="verifySignature()">Verify Authenticity</button>
-                    <div class="loader" id="loader"></div>
-                    <div class="qds-result" id="qdsResult"></div>
-                </div>
-            </div>
-
-            <!-- Static Old Transaction -->
-            <div class="tx-card">
-                <div class="tx-header">
-                    <div class="tx-info">
-                        <div class="tx-icon" style="background:#f3f3f3; color:#a0a0a0;">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><polyline points="19 12 12 19 5 12"></polyline></svg>
-                        </div>
-                        <div>
-                            <div class="tx-title" style="color:var(--ink-light)">Paid to Coffee Shop</div>
-                            <div class="tx-time">Yesterday · UPI</div>
-                        </div>
-                    </div>
-                    <div class="tx-amount" style="color:var(--ink)">- ₹120</div>
-                </div>
+        <div class="tx-list" id="txList">
+            <div style="padding: 20px; text-align: center; color: var(--ink-light); font-size: 14px;">
+                Waiting for incoming transactions...
             </div>
         </div>
     </div>
@@ -125,46 +90,111 @@
         };
 
         function toggleExpand(el) {
-            // Only expand if result hasn't been shown yet
-            if (document.getElementById('qdsResult').style.display === 'block') return;
+            const resDiv = el.querySelector('.qds-result');
+            if (resDiv && resDiv.style.display === 'block') return;
             el.classList.toggle('expanded');
         }
 
-        async function verifySignature() {
-            const btn = document.getElementById('verifyBtn');
-            const loader = document.getElementById('loader');
-            const resDiv = document.getElementById('qdsResult');
+        async function verifySignature(txId, decision, mode) {
+            const btn = document.getElementById('verifyBtn_' + txId);
+            const loader = document.getElementById('loader_' + txId);
+            const resDiv = document.getElementById('qdsResult_' + txId);
             
             btn.style.display = 'none';
             loader.style.display = 'block';
 
+            setTimeout(() => {
+                loader.style.display = 'none';
+                resDiv.style.display = 'block';
+
+                if (decision === 'REJECT') {
+                    const exp = attackDescriptions[mode] || "The physical properties of the teleported state have been altered in transit.";
+                    
+                    resDiv.className = 'qds-result qds-error';
+                    resDiv.innerHTML = `<b>🚨 FORGERY DETECTED</b><br><br>The payload was mathematically tampered with by an eavesdropper.<br><br><b>Explanation:</b> ${exp}<br><div class="attack-tag">${mode.replace('_', ' ')}</div>`;
+                } else {
+                    resDiv.className = 'qds-result qds-success';
+                    resDiv.innerHTML = `<b>✓ SIGNATURE INTACT</b><br><br>Quantum verification passed. Funds have been securely credited to your account.`;
+                }
+            }, 1000); // 1s dramatic loading
+        }
+
+        async function pollState() {
             try {
-                // Fetch current QDS state
                 const res = await fetch('/api/state');
                 const state = await res.json();
                 
-                setTimeout(() => {
-                    loader.style.display = 'none';
-                    resDiv.style.display = 'block';
-
-                    if (state.latest_decision === 'REJECT') {
-                        const mode = state.attack_mode || 'UNKNOWN';
-                        const exp = attackDescriptions[mode] || "The physical properties of the teleported state have been altered in transit.";
-                        
-                        resDiv.className = 'qds-result qds-error';
-                        resDiv.innerHTML = `<b>🚨 FORGERY DETECTED</b><br><br>The payload was mathematically tampered with by an eavesdropper.<br><br><b>Explanation:</b> ${exp}<br><div class="attack-tag">${mode.replace('_', ' ')}</div>`;
-                    } else {
-                        resDiv.className = 'qds-result qds-success';
-                        resDiv.innerHTML = `<b>✓ SIGNATURE INTACT</b><br><br>Quantum verification passed. Funds have been securely credited to your account.`;
-                    }
-                }, 1000); // 1s dramatic loading
+                // Update global visual based on latest decision
+                const isAttack = state.latest_decision === 'REJECT';
+                const body = document.getElementById('appBody');
                 
+                if (isAttack) {
+                    body.className = 'attack';
+                    document.getElementById('statusTitle').innerText = 'FORGERY BLOCKED';
+                    document.getElementById('statusDesc').innerText = 'Transaction intercepted. The quantum signature was mathematically corrupted.';
+                    
+                    const mode = state.attack_mode || 'UNKNOWN';
+                    document.getElementById('valAttackMode').innerText = mode.replace('_', ' ');
+                    
+                    const expDiv = document.getElementById('attackExp');
+                    if (attackDescriptions[mode]) {
+                        expDiv.innerHTML = `<b>Attribution:</b> ${mode.replace('_', ' ')}<br><br>${attackDescriptions[mode]}`;
+                    } else {
+                        expDiv.innerHTML = `<b>Attribution:</b> ${mode.replace('_', ' ')}<br><br>The physical properties of the teleported state have been altered in transit.`;
+                    }
+                } else {
+                    body.className = 'honest';
+                    document.getElementById('statusTitle').innerText = 'CHANNEL SECURE';
+                    document.getElementById('statusDesc').innerText = 'Receiving entangled signatures. Waiting for transaction.';
+                }
+
+                if (state.session_id) document.getElementById('valSession').innerText = state.session_id;
+                if (state.qber !== undefined) document.getElementById('valQber').innerText = (state.qber * 100).toFixed(2) + '%';
+                if (state.latest_decision) document.getElementById('valDecision').innerText = state.latest_decision;
+
+                // Dynamically Render Transactions
+                if (state.transactions && state.transactions.length > 0) {
+                    const txList = document.getElementById('txList');
+                    let html = '';
+                    state.transactions.forEach((tx, idx) => {
+                        html += `
+                            <div class="tx-card" id="txCard_${tx.id}" onclick="toggleExpand(this)">
+                                <div class="tx-header">
+                                    <div class="tx-info">
+                                        <div class="tx-icon">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="19" x2="12" y2="5"></line><polyline points="5 12 12 5 19 12"></polyline></svg>
+                                        </div>
+                                        <div>
+                                            <div class="tx-title">Payment Received</div>
+                                            <div class="tx-time">${tx.time} · UPI</div>
+                                        </div>
+                                    </div>
+                                    <div class="tx-amount">+ ₹${tx.amount}</div>
+                                </div>
+                                
+                                <div class="qds-panel" onclick="event.stopPropagation()">
+                                    <div style="font-size:12px; color:var(--ink-light); margin-bottom:12px; font-family:var(--mono);">Quantum Signature Attached</div>
+                                    <button class="qds-btn" id="verifyBtn_${tx.id}" onclick="verifySignature('${tx.id}', '${tx.decision}', '${tx.attack_mode}')">Verify Authenticity</button>
+                                    <div class="loader" id="loader_${tx.id}"></div>
+                                    <div class="qds-result" id="qdsResult_${tx.id}"></div>
+                                </div>
+                            </div>
+                        `;
+                    });
+                    
+                    // Only update DOM if transactions changed (to prevent closing open panels)
+                    if (txList.dataset.txCount !== String(state.transactions.length)) {
+                        txList.innerHTML = html;
+                        txList.dataset.txCount = state.transactions.length;
+                    }
+                }
+
             } catch (e) {
-                loader.style.display = 'none';
-                btn.style.display = 'block';
-                alert("Network error connecting to QDS node.");
+                console.error("Polling error", e);
             }
         }
+
+        setInterval(pollState, 1500);
     </script>
 </body>
 </html>

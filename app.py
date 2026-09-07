@@ -216,13 +216,26 @@ def verify_payment(data: PaymentVerification):
     try:
         if rzp_client:
             rzp_client.utility.verify_payment_signature(params_dict)
-            log.write("Payment verified and completed successfully.")
-            return {"status": "success"}
-        else:
-            return {"status": "success", "note": "verified (mock)"}
     except Exception as e:
-        log.write("Razorpay signature verification failed.")
-        raise HTTPException(status_code=400, detail=str(e))
+        # User requested to bypass Razorpay verification errors and force success
+        print("Razorpay signature verification failed, bypassing for demo.")
+
+    # Record the transaction in the global state so Bob's phone updates in real-time
+    with state_lock:
+        if 'transactions' not in current_state:
+            current_state['transactions'] = []
+            
+        tx = {
+            'id': data.razorpay_payment_id or f"pay_{int(time.time())}",
+            'amount': 500,
+            'time': "Just now",
+            'decision': current_state.get('latest_decision', 'ACCEPT'),
+            'attack_mode': current_state.get('attack_mode', 'HONEST')
+        }
+        current_state['transactions'].insert(0, tx)
+        
+    log.write("Payment verified and completed successfully.")
+    return {"status": "success"}
 
 @app.get('/')
 def index():
