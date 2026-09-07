@@ -1568,12 +1568,10 @@
                           })
                       });
                       
-                      const verifyData = await verifyRes.json();
                       if (verifyRes.ok) {
-                          alert("SUCCESS! QDS Signature Verified.");
+                          alert("Payment Successful!");
                       } else {
-                          // This simulates the actual interception/failure!
-                          alert("🚨 TRANSACTION BLOCKED! " + verifyData.detail);
+                          alert("Payment Verification Error");
                       }
                   } catch (err) {
                       alert("Network Error during verification.");

@@ -26,8 +26,8 @@ from fastapi.middleware.cors import CORSMiddleware
 load_dotenv()
 
 # Initialize Razorpay Client with Test Keys
-RAZORPAY_KEY_ID = os.getenv('RAZORPAY_KEY_ID', 'rzp_test_yN1Hw84O1z1mYf')
-RAZORPAY_KEY_SECRET = os.getenv('RAZORPAY_KEY_SECRET', 'SBYlP8T2FwZ9K329RWh8oXz1')
+RAZORPAY_KEY_ID = os.getenv('RAZORPAY_KEY_ID', 'rzp_test_TZELL9iPOQFxZd')
+RAZORPAY_KEY_SECRET = os.getenv('RAZORPAY_KEY_SECRET', 'vTLqRTr9jrR4D6XC8H1hISY1')
 
 try:
     rzp_client = razorpay.Client(auth=(RAZORPAY_KEY_ID, RAZORPAY_KEY_SECRET))
@@ -202,14 +202,10 @@ def create_order():
 
 @app.post('/api/verify_payment')
 def verify_payment(data: PaymentVerification):
-    # QDS Security Check: intercept if we are under attack
-    with state_lock:
-        decision = current_state.get('latest_decision', 'ACCEPT')
-        
-    if decision == 'REJECT':
-        log.write("System intercepted and BLOCKED payment forgery attempt.")
-        raise HTTPException(status_code=400, detail="QDS VERIFICATION FAILED: Signature anomaly detected.")
-        
+    # We no longer block the transaction here. 
+    # The payment is always allowed to succeed on the frontend,
+    # but Bob's receiver terminal will catch the forgery in the background!
+
     # If Honest, verify the signature with Razorpay
     params_dict = {
         'razorpay_order_id': data.razorpay_order_id,
