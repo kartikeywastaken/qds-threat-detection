@@ -2208,6 +2208,27 @@
         b.setAttribute('stroke', 'var(--blue)');
       });
 
+      // Restore masthead and SPRT to nominal
+      const mhLiveDot = document.getElementById('mhLiveDot');
+      const mhStatusText = document.getElementById('mhStatusText');
+      if (mhLiveDot) {
+        mhLiveDot.style.background = 'var(--green)';
+        mhLiveDot.style.boxShadow = '0 0 4px var(--green)';
+      }
+      if (mhStatusText) {
+        mhStatusText.style.color = 'var(--green)';
+        mhStatusText.textContent = 'NOMINAL';
+      }
+      const atkLabel = document.getElementById('attackLabel');
+      if (atkLabel) {
+        atkLabel.textContent = 'None';
+        atkLabel.style.color = 'var(--green)';
+      }
+
+      // Hide modal if open
+      const modal = document.getElementById('heistForensicModal');
+      if (modal) modal.style.display = 'none';
+
       fetchState();
     }
 
@@ -2405,11 +2426,24 @@
 
     function closeForensicModal() {
       const modal = document.getElementById('heistForensicModal');
-      document.getElementById('heistForensicBox').style.transform = 'scale(0.95)';
+      const box = document.getElementById('heistForensicBox');
+      if (box) box.style.transform = 'scale(0.95)';
       setTimeout(() => {
-        modal.style.display = 'none';
+        if (modal) modal.style.display = 'none';
       }, 150);
+      if (isHeistRunning) {
+        stopBankHeistSimulation();
+      }
     }
+
+    // Global keyboard Escape handler for closing all modals & dismissing simulations
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        closeForensicModal();
+        closePaymentModal();
+        stopBankHeistSimulation();
+      }
+    });
 
     function downloadForensicDossier() {
       const dossier = {
@@ -2447,7 +2481,7 @@
   </script>
 
   <!-- Custom Modal for Payment Status -->
-  <div id="paymentModalOverlay"
+  <div id="paymentModalOverlay" onclick="if(event.target === this) closePaymentModal()"
     style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:9999; align-items:center; justify-content:center;">
     <div id="paymentModalBox" class="card"
       style="padding:40px; max-width:420px; text-align:center; box-shadow:0 8px 32px rgba(0,0,0,0.3); transform:scale(0.9); transition:transform 0.2s ease-out;">
@@ -2462,7 +2496,7 @@
   </div>
 
   <!-- Forensic Incident Dossier Modal for Bank Heist Simulation -->
-  <div id="heistForensicModal"
+  <div id="heistForensicModal" onclick="if(event.target === this) closeForensicModal()"
     style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(20,20,16,0.65); backdrop-filter:blur(4px); z-index:10000; align-items:center; justify-content:center;">
     <div class="card"
       style="padding:32px 36px; max-width:680px; width:92%; max-height:90vh; overflow-y:auto; box-shadow:0 16px 48px rgba(0,0,0,0.35); border:1.5px solid var(--red); transform:scale(0.95); transition:transform 0.2s ease-out;"
