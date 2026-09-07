@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <title>QDS · Command Center</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <script src="https://cdnjs.cloudflare.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
@@ -977,13 +977,13 @@
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="16" rx="2"></rect><line x1="3" y1="10" x2="21" y2="10"></line></svg>
                 Real-Time P2P Transfer
               </div>
-              <div style="display:flex; gap:16px; align-items:center; background:var(--surface-raised); padding:16px; border-radius:8px;">
+              <div style="display:flex; flex-direction:column; gap:16px; align-items:center; background:var(--surface-raised); padding:20px; border-radius:8px;">
                   <!-- QR Code Container -->
-                  <div id="qrBox" style="background:white; padding:12px; border-radius:12px; width:180px; height:180px; display:flex; justify-content:center; align-items:center;">
+                  <div id="qrBox" style="background:white; padding:12px; border-radius:12px; width:180px; height:180px; display:flex; justify-content:center; align-items:center; box-shadow:0 4px 12px rgba(0,0,0,0.05);">
                       <div id="qrHonest"></div>
                   </div>
                   <!-- Status Text -->
-                  <div style="font-family:var(--mono); font-size:12px; font-weight:600; flex:1; color:var(--ink-1);">
+                  <div style="font-family:var(--mono); font-size:11.5px; font-weight:600; color:var(--ink-1); text-align:center; line-height:1.5;">
                      1. Scan QR to pay ₹1<br>
                      2. QDS transmits payload<br>
                      3. Verify on Bob's Terminal
