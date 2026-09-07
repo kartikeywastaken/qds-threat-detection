@@ -132,6 +132,8 @@ threading.Thread(target=simulation_loop, daemon=True).start()
 @app.get('/api/state')
 def get_state():
     with state_lock:
+        # Always return the LIVE attack mode, not just what was last set by simulation
+        current_state['attack_mode'] = current_attack_mode
         return current_state
 
 @app.get('/api/events')
@@ -148,6 +150,9 @@ def get_events_all():
 def set_attack(config: AttackConfig):
     global current_attack_mode
     current_attack_mode = config.mode
+    # Immediately update the state so frontend sees it on next poll
+    with state_lock:
+        current_state['attack_mode'] = config.mode
     return {"status": "success", "mode": current_attack_mode}
 
 @app.get('/')

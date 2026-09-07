@@ -989,11 +989,54 @@
 
   const attackSelect = document.getElementById('attackSelect');
   attackSelect.addEventListener('change', async (e) => {
+      const newMode = e.target.value;
+      
+      /* INSTANT visual update — don't wait for API round-trip */
+      currentAttackMode = newMode;
+      const isUnderAttack = newMode !== 'HONEST';
+
+      /* Eve overlay */
+      eveGroup.style.opacity = isUnderAttack ? '1' : '0';
+      const eveLabel = document.getElementById('eveLabel');
+      if (eveLabel && eveActions[newMode]) {
+          eveLabel.textContent = eveActions[newMode];
+      }
+
+      /* Masthead status immediately shows attack in progress */
+      const mhStatusBox = document.getElementById('mhStatusBox');
+      const mhLiveDot = document.getElementById('mhLiveDot');
+      const mhStatusText = document.getElementById('mhStatusText');
+      if (isUnderAttack) {
+          mhStatusBox.style.background = 'var(--amber-tint)';
+          mhStatusBox.style.borderColor = '#e3d2b8';
+          mhLiveDot.style.background = 'var(--amber)';
+          mhStatusText.style.color = '#7d5520';
+          mhStatusText.textContent = 'Attack in Progress';
+      } else {
+          mhStatusBox.style.background = 'var(--green-tint)';
+          mhStatusBox.style.borderColor = '#d7e6da';
+          mhLiveDot.style.background = 'var(--green)';
+          mhStatusText.style.color = '#2f5c3d';
+          mhStatusText.textContent = 'System Nominal';
+      }
+
+      /* Alice ring */
+      const aliceOuter = heroStage.querySelector('circle[cx="150"][cy="250"][r="54"]');
+      if (aliceOuter) aliceOuter.setAttribute('stroke', isUnderAttack ? 'var(--amber)' : 'var(--border)');
+
+      /* Attack label in sidebar */
+      const attackLabel = document.getElementById('attackLabel');
+      if (attackLabel) {
+          attackLabel.textContent = isUnderAttack ? (attackLabels[newMode] || newMode) : 'None';
+          attackLabel.style.color = isUnderAttack ? 'var(--amber)' : 'var(--green)';
+      }
+
+      /* Send to backend */
       try {
           await fetch('/api/set_attack', {
               method: 'POST',
               headers: {'Content-Type': 'application/json'},
-              body: JSON.stringify({mode: e.target.value})
+              body: JSON.stringify({mode: newMode})
           });
       } catch (err) {
           console.error('Failed to set attack mode');
