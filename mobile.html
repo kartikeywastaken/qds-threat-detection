@@ -122,8 +122,8 @@
                 const res = await fetch('/api/state');
                 const state = await res.json();
                 
-                // Filter out natively failed classical transactions (Bob shouldn't see these)
-                const visibleTx = state.transactions ? state.transactions.filter(tx => tx.decision !== 'FAILED') : [];
+                // Filter out natively failed classical transactions and blocked transactions (Bob shouldn't see these)
+                const visibleTx = state.transactions ? state.transactions.filter(tx => tx.decision !== 'FAILED' && tx.decision !== 'REJECT') : [];
                 
                 if (visibleTx.length > 0) {
                     // Update Balance dynamically

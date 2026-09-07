@@ -945,32 +945,15 @@
           </div>
         </div>
 
-        <div class="card">
-          <div class="card-head">
-            <div class="card-title">CHSH correlation</div>
-            <div class="card-desc">rolling window · bound 2√2 ≈ 2.828</div>
+        <div class="card events-zone" style="margin-bottom:24px;">
+          <div class="card-head" style="padding-bottom:14px;">
+            <div class="card-title">Gateway Payment Logs</div>
           </div>
-          <svg class="chsh-svg" viewBox="0 0 1000 170" id="chshChart">
-            <defs>
-              <linearGradient id="chshFill" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stop-color="var(--blue)" stop-opacity="0.12" />
-                <stop offset="100%" stop-color="var(--blue)" stop-opacity="0" />
-              </linearGradient>
-            </defs>
-            <rect x="0" y="118" width="1000" height="30" fill="var(--red)" opacity="0.05" />
-            <line x1="0" y1="118" x2="1000" y2="118" stroke="var(--ink-3)" stroke-width="1" stroke-dasharray="5 5"
-              opacity="0.8" />
-            <text x="0" y="112" font-family="var(--mono)" font-size="10.5" fill="var(--ink-2)">classical limit — S =
-              2.000</text>
-
-            <path d="M0,148 L1000,148 Z" fill="url(#chshFill)" stroke="none" />
-            <path d="M0,148 L1000,148" fill="none" stroke="var(--blue)" stroke-width="1.8" />
-            <circle cx="1000" cy="148" r="4" fill="var(--surface)" stroke="var(--blue)" stroke-width="1.8" />
-            <circle cx="1000" cy="148" r="9" fill="none" stroke="var(--blue)" stroke-width="1" opacity="0.35">
-              <animate attributeName="r" values="9;15;9" dur="2.8s" repeatCount="indefinite" />
-              <animate attributeName="opacity" values="0.35;0;0.35" dur="2.8s" repeatCount="indefinite" />
-            </circle>
-          </svg>
+          <div class="events-list" id="paymentLogsList" style="max-height: 280px; overflow-y: auto;">
+            <div class="event" style="padding: 16px; text-align:center; color:var(--ink-3); font-size:13px; display:block;">
+              No transactions processed yet.
+            </div>
+          </div>
         </div>
 
         <div class="upper-grid" style="display:grid; grid-template-columns: 1fr 320px; gap:22px; margin-bottom:22px; align-items:start;">
@@ -993,9 +976,6 @@
                   <div style="display:flex; gap:8px;">
                     <button id="rzp-button1" style="background:var(--blue); color:white; border:none; padding:16px 32px; font-size:16px; font-weight:700; border-radius:8px; cursor:pointer; text-transform:uppercase; letter-spacing:0.05em; box-shadow:0 4px 12px rgba(59,89,152,0.3); transition:transform 0.1s;">
                         Pay ₹500
-                    </button>
-                    <button id="bypass-button" style="background:var(--surface); color:var(--ink-2); border:1px solid var(--border); padding:16px 16px; font-size:12px; font-weight:700; border-radius:8px; cursor:pointer; text-transform:uppercase; letter-spacing:0.05em; transition:all 0.1s;" title="Simulate payment if Razorpay is blocked">
-                        Bypass
                     </button>
                   </div>
                   <div style="font-family:var(--mono); font-size:11.5px; font-weight:600; color:var(--ink-1); text-align:center; line-height:1.5;">
@@ -1075,16 +1055,7 @@
               </div>
             </div>
 
-            <div class="card events-zone" style="margin-top: 24px;">
-              <div class="card-head" style="padding-bottom:14px;">
-                <div class="card-title">Gateway Payment Logs</div>
-              </div>
-              <div class="events-list" id="paymentLogsList" style="max-height: 280px; overflow-y: auto;">
-                <div class="event" style="padding: 16px; text-align:center; color:var(--ink-3); font-size:13px; display:block;">
-                  No transactions processed yet.
-                </div>
-              </div>
-            </div>
+
             
           </div>
         </div>
@@ -1292,48 +1263,6 @@
       sprtCircle2.setAttribute("stroke", color);
     }
 
-    function updateCHSH(state) {
-      if (!state.chsh_history || state.chsh_history.length === 0) return;
-      const chshChart = document.getElementById('chshChart');
-      const chshLine = chshChart.querySelectorAll('path')[1];
-      const chshFill = chshChart.querySelectorAll('path')[0];
-
-      const points = state.chsh_history;
-      const xStep = 1000 / Math.max(points.length - 1, 1);
-
-      let dLine = "";
-      let dFill = "";
-      let lastX = 0, lastY = 148;
-
-      for (let i = 0; i < points.length; i++) {
-        const x = i * xStep;
-        const y = 148 - ((points[i] - 2.0) * ((148 - 20) / 1.0));
-        if (i === 0) {
-          dLine += `M${x},${y} `;
-          dFill += `M${x},148 L${x},${y} `;
-        } else {
-          dLine += `L${x},${y} `;
-          dFill += `L${x},${y} `;
-        }
-        lastX = x; lastY = y;
-      }
-      dFill += `L${lastX},148 Z`;
-
-      chshLine.setAttribute("d", dLine);
-      chshFill.setAttribute("d", dFill);
-
-      const c1 = chshChart.querySelectorAll('circle')[0];
-      const c2 = chshChart.querySelectorAll('circle')[1];
-      c1.setAttribute("cx", lastX); c1.setAttribute("cy", lastY);
-      c2.setAttribute("cx", lastX); c2.setAttribute("cy", lastY);
-
-      if (currentDecision === 'REJECT') {
-        chshLine.setAttribute("stroke", "var(--red)");
-      } else {
-        chshLine.setAttribute("stroke", "var(--blue)");
-      }
-    }
-
     let _lastVisualKey = '';
     let _dropdownChangeTime = 0;
 
@@ -1513,7 +1442,7 @@
           }
 
           updateSPRT(state);
-          updateCHSH(state);
+
         }
       } catch (e) {
         console.error('fetchState error:', e);
@@ -1654,41 +1583,32 @@
 
           var options = {
               "key": orderData.key,
-              "amount": orderData.amount,
-              "currency": orderData.currency,
+              // amount and currency are inferred from order_id
               "name": "QDS Secure",
               "description": "Quantum Secured Transaction",
               "order_id": orderData.order_id,
-              "handler": async function (response) {
-                  try {
-                      const verifyRes = await fetch('/api/verify_payment', {
-                          method: 'POST',
-                          headers: { 'Content-Type': 'application/json' },
-                          body: JSON.stringify({
-                              razorpay_order_id: response.razorpay_order_id,
-                              razorpay_payment_id: response.razorpay_payment_id,
-                              razorpay_signature: response.razorpay_signature
-                          })
-                      });
-                      
-                      const verifyData = await verifyRes.json();
-                      
+              "handler": function (response) {
+                  fetch('/api/verify_payment', {
+                      method: 'POST',
+                      headers: { 'Content-Type': 'application/json' },
+                      body: JSON.stringify({
+                          razorpay_order_id: response.razorpay_order_id,
+                          razorpay_payment_id: response.razorpay_payment_id,
+                          razorpay_signature: response.razorpay_signature
+                      })
+                  }).then(res => res.json().then(verifyData => {
                       if (verifyData.status === 'blocked') {
                           alert("🛑 TRANSACTION BLOCKED BY GATEWAY 🛑\n\nQuantum Forgery Detected! The signature was tampered with.\nThe funds have NOT been transferred.");
-                      } else if (verifyRes.ok) {
+                      } else if (res.ok) {
                           alert("Payment Successful! Quantum Signature Verified.");
                       } else {
                           alert("Payment Verification Error");
                       }
-                  } catch (err) {
+                  })).catch(err => {
                       alert("Network Error during verification.");
-                  }
+                  });
               },
-              "prefill": {
-                  "name": "Jury Member",
-                  "email": "jury@example.com",
-                  "contact": "9999999999"
-              },
+              // removed prefill to prevent test mode validation errors
               "theme": {
                   "color": "#3b5998"
               }
@@ -1715,34 +1635,6 @@
       }
     };
 
-    /* --- Bypass Payment Logic --- */
-    document.getElementById('bypass-button').onclick = async function(e) {
-      e.preventDefault();
-      const btn = this;
-      btn.innerHTML = '...';
-      try {
-          const verifyRes = await fetch('/api/verify_payment', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({
-                  razorpay_order_id: "order_bypass",
-                  razorpay_payment_id: "pay_bypass_" + Date.now(),
-                  razorpay_signature: "bypass_sig"
-              })
-          });
-          const verifyData = await verifyRes.json();
-          if (verifyData.status === 'blocked') {
-              alert("🛑 TRANSACTION BLOCKED BY GATEWAY 🛑\n\nQuantum Forgery Detected! The signature was tampered with.\nThe funds have NOT been transferred.");
-          } else if (verifyRes.ok) {
-              alert("Payment Successful! Quantum Signature Verified.");
-          } else {
-              alert("Payment Verification Error");
-          }
-      } catch (err) {
-          alert("Network Error during verification.");
-      }
-      btn.innerHTML = 'Bypass';
-    };
 
     /* ========== TELEPORTATION ANIMATION LOOP ========== */
     setInterval(() => {
