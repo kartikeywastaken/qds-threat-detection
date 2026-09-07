@@ -1,0 +1,7 @@
+[
+  {"requires": ["repeated_nonce"], "attack_class": "replay", "reason": "Authenticated session nonce was already consumed."},
+  {"requires": ["unknown_sender"], "attack_class": "impersonation", "reason": "Envelope claims an unregistered sender."},
+  {"requires": ["invalid_authentication"], "attack_class": "channel_manipulation", "reason": "Message authentication fails for a recognized sender."},
+  {"requires": ["bell_deficit"], "attack_class": "impersonation", "reason": "Upper CHSH confidence limit is below the configured witness threshold; resource replacement is a candidate."},
+  {"requires": ["quantum_mismatch"], "attack_class": "forgery", "reason": "Sequential mismatch likelihood crossed the rejection boundary; state disturbance is consistent with forgery."}
+]

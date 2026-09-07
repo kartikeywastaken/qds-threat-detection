@@ -1,0 +1,34 @@
+..Independent fixed-sample design: {'n': 96, 'cutoff': 11, 'fpr_under_h0': 0.008554410989767504, 'fnr_under_h1': 0.009327624270688607}
+.Bell statevector: [0.70710678+0.j 0.        +0.j 0.        +0.j 0.70710678+0.j] calibrated coherence: (0.4930797069736468+1.094856887315136e-16j)
+..IBM calibration: {'backend': 'fake_manila', 'last_update': '2024-05-27 15:27:23-03:00', 'qubits': [{'t1': 0.0001315286444531517, 't2': 0.00010220390054827382, 'readout_error': 0.0353}, {'t1': 0.0001245355048790508, 't2': 7.901470497124719e-05, 'readout_error': 0.02190000000000003}, {'t1': 0.00015861523746775648, 't2': 2.5150897893938303e-05, 'readout_error': 0.09640000000000004}, {'t1': 0.00017910281957277216, 't2': 5.436101156476186e-05, 'readout_error': 0.014399999999999968}, {'t1': 0.00014467316223194067, 't2': 4.033233257275118e-05, 'readout_error': 0.01859999999999995}]}
+..CHSH S at dephasing 0,.5,1: [2.802685476570609, 2.1165948616761896, 1.2998581319594409]
+.Coherent QBER: 0.3515625
+.Collective QBER: 0.25390625 joint probe samples: 256
+.CV photons, before/after loss: [0.27154031740762197, 0.27154031740762197] [0.27154031740762197, 0.13577015870381093]
+..HTTP demo: {'http_status': 200, 'decision': 'REJECT', 'qber': 0.2421875, 'attribution': 'forgery', 'log_events': 2, 'replay_attribution': 'replay', 'log': 'events.jsonl', 'payload': 'signature_payload.json'}
+....100% intercept-resend QBER: 0.2506103515625
+.Honest/attack: ACCEPT 0.001953125 REJECT 0.27734375
+....Forgery bounds n=8,16,32,64: [0.055039949867562984, 0.0030302860025241112, 1.017657368508851e-05, 1.0000842095045978e-06]
+......forgery => forgery ['quantum_mismatch']
+impersonation => impersonation ['unknown_sender']
+replay => replay ['repeated_nonce']
+channel_manipulation => channel_manipulation ['invalid_authentication']
+.Measured honest calibration: {'p0': 0.024308976201419544, 'p1': 0.17430897620141955, 'observed_qber': 0.0101318359375, 'errors': 83, 'shots': 8192, 'confidence_upper': 0.014308976201419542, 'guard_margin': 0.01, 'seed': 313}
+..Noiseless signature mismatches: 0 / 128
+.SPRT computed rejection: 5.964974093607941 after 6 rounds
+.Teleportation fidelity at exposure 0,.5,1: [0.999999999999999, 0.9748881610425785, 0.9427744996625028]
+.Real HTTP status/report: 200 ACCEPT 0.005859375
+.Restricted probe success / bound: 0.2353515625 0.4953515488080669
+..
+=============================== warnings summary ===============================
+.venv/lib/python3.12/site-packages/strawberryfields/apps/data/sample.py:20
+  /Users/kartik/Documents/ChatGPT/DPM/qds-threat-detection/.venv/lib/python3.12/site-packages/strawberryfields/apps/data/sample.py:20: UserWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html. The pkg_resources package is slated for removal as early as 2025-11-30. Refrain from using this package or pin to Setuptools<81.
+
+.venv/lib/python3.12/site-packages/lark/utils.py:163
+  /Users/kartik/Documents/ChatGPT/DPM/qds-threat-detection/.venv/lib/python3.12/site-packages/lark/utils.py:163: DeprecationWarning: module 'sre_parse' is deprecated
+
+.venv/lib/python3.12/site-packages/lark/utils.py:164
+  /Users/kartik/Documents/ChatGPT/DPM/qds-threat-detection/.venv/lib/python3.12/site-packages/lark/utils.py:164: DeprecationWarning: module 'sre_constants' is deprecated
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+36 passed, 3 warnings in 6.89s

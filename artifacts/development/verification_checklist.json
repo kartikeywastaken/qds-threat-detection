@@ -1,0 +1,385 @@
+{
+  "A1": {
+    "pass": true,
+    "accepts": 50,
+    "runs": 50,
+    "qber_min": 0.0,
+    "qber_max": 0.015625,
+    "qber_std": 0.0031832941768561466
+  },
+  "A2": {
+    "pass": true,
+    "mean_s": 2.775161569671502,
+    "std_s": 0.030704707012915354,
+    "values": [
+      2.8085255680270897,
+      2.8000073609622813,
+      2.7678443828702495,
+      2.7299931908025186,
+      2.7877761295628307,
+      2.7662833425118243,
+      2.7905198012910026,
+      2.7594875921136657,
+      2.7563074807865986,
+      2.749957700034505,
+      2.7893472761739293,
+      2.786830139902955,
+      2.83698322738187,
+      2.7665441921815273,
+      2.7178249284124414,
+      2.7400521207862703,
+      2.8002789059362554,
+      2.7961902617593584,
+      2.818024292486059,
+      2.734453499446812
+    ]
+  },
+  "A3": {
+    "pass": true,
+    "hits": []
+  },
+  "A4": {
+    "pass": true,
+    "hits": []
+  },
+  "A5": {
+    "pass": true,
+    "main_fpr": 0.0,
+    "stress_fixed_qber_threshold": 0.0081787109375,
+    "stress_fpr": 0.3,
+    "note": "Zero observed false positives is valid; an intentionally sensitive fixed threshold demonstrates stochastic false alarms."
+  },
+  "B1": {
+    "pass": true,
+    "n": [
+      8,
+      16,
+      32,
+      64
+    ],
+    "bounds": [
+      0.055039949867562984,
+      0.0030302860025241112,
+      1.017657368508851e-05,
+      1.0000842095045978e-06
+    ],
+    "plot": "min_entropy.png"
+  },
+  "B2": {
+    "pass": true,
+    "statevector_real": [
+      0.7071067811865475,
+      0.0,
+      0.0,
+      0.7071067811865475
+    ],
+    "max_imaginary": 0.0,
+    "coherences": [
+      0.5,
+      0.49653926661579834,
+      0.4930797069736468
+    ]
+  },
+  "B3": {
+    "pass": true,
+    "exposure": [
+      0,
+      0.5,
+      1
+    ],
+    "fidelities": [
+      0.999999999999999,
+      0.9748881610425785,
+      0.9427744996625028
+    ]
+  },
+  "B4": {
+    "pass": true,
+    "qber": 0.2506103515625,
+    "n": 8192
+  },
+  "B5": {
+    "pass": true,
+    "strong_mean_rounds": 11.75,
+    "weak_mean_rounds": 66.95,
+    "strong_rejects": 20,
+    "runs": 20,
+    "fixed": {
+      "n": 73,
+      "cutoff": 6,
+      "fpr_under_h0": 0.005483753685403119,
+      "fnr_under_h1": 0.008850836796742843
+    },
+    "strong_rounds": [
+      11,
+      18,
+      17,
+      7,
+      11,
+      10,
+      8,
+      6,
+      9,
+      6,
+      17,
+      17,
+      10,
+      8,
+      10,
+      8,
+      20,
+      5,
+      22,
+      15
+    ],
+    "weak_rounds": [
+      28,
+      52,
+      34,
+      9,
+      55,
+      42,
+      47,
+      52,
+      72,
+      95,
+      55,
+      203,
+      44,
+      28,
+      60,
+      10,
+      202,
+      28,
+      176,
+      47
+    ],
+    "note": "Comparison covers iid token mismatch hypotheses, excluding CHSH overhead and correlated attacks."
+  },
+  "B6": {
+    "pass": true,
+    "observations": [
+      {
+        "severity": 0,
+        "s": 2.797545548354762
+      },
+      {
+        "severity": 0.25,
+        "s": 2.385646927392504
+      },
+      {
+        "severity": 0.5,
+        "s": 2.053022369472955
+      },
+      {
+        "severity": 0.75,
+        "s": 1.7182853302391323
+      },
+      {
+        "severity": 1,
+        "s": 1.3634327182796402
+      }
+    ],
+    "note": "Honest optimal settings give S=\u221a2 after full Z dephasing, below the classical bound 2."
+  },
+  "B7": {
+    "pass": true,
+    "confusion_matrix": {
+      "forgery": {
+        "forgery": 20
+      },
+      "impersonation": {
+        "impersonation": 20
+      },
+      "replay": {
+        "replay": 20
+      },
+      "channel_manipulation": {
+        "channel_manipulation": 20
+      }
+    },
+    "runs_per_class": 20
+  },
+  "C3": {
+    "pass": false,
+    "restricted_experiment_pass": true,
+    "reason": "The requested universal guarantee across coherent/classical attacks is not established. Nontrivial bound assumes independent pure probes; finite proportions are not guaranteed never to exceed probability bounds.",
+    "experiments": [
+      {
+        "q_model": 0.01,
+        "exposure": 0.1,
+        "seed": 7000,
+        "n": 8,
+        "tolerance": 1,
+        "trials": 4096,
+        "successes": 413,
+        "empirical_success": 0.100830078125,
+        "upper_99_ci": 0.11353966680979104,
+        "bound": 0.1501590874859863,
+        "below_bound": true,
+        "scope": "Independent pure-probe discrimination only; no general QDS claim"
+      },
+      {
+        "q_model": 0.01,
+        "exposure": 0.5,
+        "seed": 7001,
+        "n": 8,
+        "tolerance": 1,
+        "trials": 4096,
+        "successes": 447,
+        "empirical_success": 0.109130859375,
+        "upper_99_ci": 0.12226053520216221,
+        "bound": 0.1501590874859863,
+        "below_bound": true,
+        "scope": "Independent pure-probe discrimination only; no general QDS claim"
+      },
+      {
+        "q_model": 0.01,
+        "exposure": 1.0,
+        "seed": 7002,
+        "n": 8,
+        "tolerance": 1,
+        "trials": 4096,
+        "successes": 382,
+        "empirical_success": 0.09326171875,
+        "upper_99_ci": 0.10556626887879854,
+        "bound": 0.1501590874859863,
+        "below_bound": true,
+        "scope": "Independent pure-probe discrimination only; no general QDS claim"
+      },
+      {
+        "q_model": 0.04,
+        "exposure": 0.1,
+        "seed": 7010,
+        "n": 8,
+        "tolerance": 1,
+        "trials": 4096,
+        "successes": 1007,
+        "empirical_success": 0.245849609375,
+        "upper_99_ci": 0.26359281842160887,
+        "bound": 0.4953515488080669,
+        "below_bound": true,
+        "scope": "Independent pure-probe discrimination only; no general QDS claim"
+      },
+      {
+        "q_model": 0.04,
+        "exposure": 0.5,
+        "seed": 7011,
+        "n": 8,
+        "tolerance": 1,
+        "trials": 4096,
+        "successes": 1018,
+        "empirical_success": 0.24853515625,
+        "upper_99_ci": 0.26633848722697445,
+        "bound": 0.4953515488080669,
+        "below_bound": true,
+        "scope": "Independent pure-probe discrimination only; no general QDS claim"
+      },
+      {
+        "q_model": 0.04,
+        "exposure": 1.0,
+        "seed": 7012,
+        "n": 8,
+        "tolerance": 1,
+        "trials": 4096,
+        "successes": 862,
+        "empirical_success": 0.21044921875,
+        "upper_99_ci": 0.22731088804001714,
+        "bound": 0.4953515488080669,
+        "below_bound": true,
+        "scope": "Independent pure-probe discrimination only; no general QDS claim"
+      },
+      {
+        "q_model": 0.1,
+        "exposure": 0.1,
+        "seed": 7020,
+        "n": 8,
+        "tolerance": 1,
+        "trials": 4096,
+        "successes": 2057,
+        "empirical_success": 0.502197265625,
+        "upper_99_ci": 0.5224307208514184,
+        "bound": 1.0,
+        "below_bound": true,
+        "scope": "Independent pure-probe discrimination only; no general QDS claim"
+      },
+      {
+        "q_model": 0.1,
+        "exposure": 0.5,
+        "seed": 7021,
+        "n": 8,
+        "tolerance": 1,
+        "trials": 4096,
+        "successes": 1962,
+        "empirical_success": 0.47900390625,
+        "upper_99_ci": 0.4992469673579555,
+        "bound": 1.0,
+        "below_bound": true,
+        "scope": "Independent pure-probe discrimination only; no general QDS claim"
+      },
+      {
+        "q_model": 0.1,
+        "exposure": 1.0,
+        "seed": 7022,
+        "n": 8,
+        "tolerance": 1,
+        "trials": 4096,
+        "successes": 1763,
+        "empirical_success": 0.430419921875,
+        "upper_99_ci": 0.450541963136807,
+        "bound": 1.0,
+        "below_bound": true,
+        "scope": "Independent pure-probe discrimination only; no general QDS claim"
+      }
+    ]
+  },
+  "B8": {
+    "pass": true,
+    "http_status": 200,
+    "decision": "REJECT",
+    "qber": 0.2421875,
+    "attribution": "forgery",
+    "log_events": 2,
+    "replay_attribution": "replay",
+    "log": "events.jsonl",
+    "payload": "signature_payload.json"
+  },
+  "C1": {
+    "pass": true,
+    "auc": 0.9535802469135803,
+    "plot": "roc.png",
+    "runs": 285
+  },
+  "C2": {
+    "pass": true,
+    "sprt_mean_rounds": 48.810526315789474,
+    "baseline_mean_rounds": 104.0,
+    "baseline_auc": 0.8211111111111111,
+    "full_tpr": 0.8296296296296296,
+    "baseline_tpr": 0.5740740740740741,
+    "full_fpr": 0.0,
+    "baseline_fpr": 0.0,
+    "note": "Different operating sensitivities are reported, not described as matched; SPRT uses a separately matched simple-hypothesis design in B5."
+  },
+  "C4": {
+    "pass": true,
+    "command": ".venv/bin/python run.py",
+    "tests": {
+      "exit_code": 0,
+      "output": "tests.txt"
+    },
+    "pipeline_completed": true
+  },
+  "C5": {
+    "pass": true,
+    "path": "LIMITATIONS.md"
+  },
+  "D1": {
+    "pass": false,
+    "reason": "Evidence is attached; full sign-off requires every A/B/C requirement to pass."
+  },
+  "D2": {
+    "pass": false,
+    "reason": "A reviewer can reproduce the experiments, but the universal C3 claim remains unsupported."
+  }
+}

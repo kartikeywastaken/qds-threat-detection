@@ -1,0 +1,5122 @@
+[
+  {
+    "index": 0,
+    "expected": 0,
+    "observed": 1,
+    "basis": "Z",
+    "bell_bits": [
+      0,
+      0
+    ]
+  },
+  {
+    "index": 1,
+    "expected": 1,
+    "observed": 1,
+    "basis": "X",
+    "bell_bits": [
+      1,
+      1
+    ]
+  },
+  {
+    "index": 2,
+    "expected": 1,
+    "observed": 1,
+    "basis": "X",
+    "bell_bits": [
+      1,
+      1
+    ]
+  },
+  {
+    "index": 3,
+    "expected": 0,
+    "observed": 1,
+    "basis": "Z",
+    "bell_bits": [
+      1,
+      0
+    ]
+  },
+  {
+    "index": 4,
+    "expected": 0,
+    "observed": 0,
+    "basis": "X",
+    "bell_bits": [
+      1,
+      1
+    ]
+  },
+  {
+    "index": 5,
+    "expected": 1,
+    "observed": 1,
+    "basis": "X",
+    "bell_bits": [
+      0,
+      1
+    ]
+  },
+  {
+    "index": 6,
+    "expected": 1,
+    "observed": 0,
+    "basis": "Z",
+    "bell_bits": [
+      0,
+      1
+    ]
+  },
+  {
+    "index": 7,
+    "expected": 1,
+    "observed": 1,
+    "basis": "X",
+    "bell_bits": [
+      1,
+      0
+    ]
+  },
+  {
+    "index": 8,
+    "expected": 0,
+    "observed": 1,
+    "basis": "X",
+    "bell_bits": [
+      1,
+      1
+    ]
+  },
+  {
+    "index": 9,
+    "expected": 1,
+    "observed": 1,
+    "basis": "Z",
+    "bell_bits": [
+      1,
+      0
+    ]
+  },
+  {
+    "index": 10,
+    "expected": 0,
+    "observed": 0,
+    "basis": "X",
+    "bell_bits": [
+      1,
+      0
+    ]
+  },
+  {
+    "index": 11,
+    "expected": 1,
+    "observed": 0,
+    "basis": "Z",
+    "bell_bits": [
+      0,
+      1
+    ]
+  },
+  {
+    "index": 12,
+    "expected": 1,
+    "observed": 1,
+    "basis": "X",
+    "bell_bits": [
+      1,
+      0
+    ]
+  },
+  {
+    "index": 13,
+    "expected": 1,
+    "observed": 1,
+    "basis": "X",
+    "bell_bits": [
+      0,
+      1
+    ]
+  },
+  {
+    "index": 14,
+    "expected": 1,
+    "observed": 0,
+    "basis": "Z",
+    "bell_bits": [
+      1,
+      1
+    ]
+  },
+  {
+    "index": 15,
+    "expected": 1,
+    "observed": 1,
+    "basis": "Z",
+    "bell_bits": [
+      0,
+      1
+    ]
+  },
+  {
+    "index": 16,
+    "expected": 0,
+    "observed": 0,
+    "basis": "Z",
+    "bell_bits": [
+      1,
+      1
+    ]
+  },
+  {
+    "index": 17,
+    "expected": 0,
+    "observed": 0,
+    "basis": "Z",
+    "bell_bits": [
+      0,
+      0
+    ]
+  },
+  {
+    "index": 18,
+    "expected": 0,
+    "observed": 0,
+    "basis": "Z",
+    "bell_bits": [
+      1,
+      1
+    ]
+  },
+  {
+    "index": 19,
+    "expected": 0,
+    "observed": 0,
+    "basis": "Z",
+    "bell_bits": [
+      0,
+      1
+    ]
+  },
+  {
+    "index": 20,
+    "expected": 1,
+    "observed": 1,
+    "basis": "X",
+    "bell_bits": [
+      0,
+      1
+    ]
+  },
+  {
+    "index": 21,
+    "expected": 0,
+    "observed": 0,
+    "basis": "Z",
+    "bell_bits": [
+      0,
+      0
+    ]
+  },
+  {
+    "index": 22,
+    "expected": 1,
+    "observed": 1,
+    "basis": "X",
+    "bell_bits": [
+      0,
+      0
+    ]
+  },
+  {
+    "index": 23,
+    "expected": 0,
+    "observed": 1,
+    "basis": "Z",
+    "bell_bits": [
+      1,
+      0
+    ]
+  },
+  {
+    "index": 24,
+    "expected": 0,
+    "observed": 0,
+    "basis": "X",
+    "bell_bits": [
+      1,
+      0
+    ]
+  },
+  {
+    "index": 25,
+    "expected": 0,
+    "observed": 1,
+    "basis": "X",
+    "bell_bits": [
+      0,
+      1
+    ]
+  },
+  {
+    "index": 26,
+    "expected": 0,
+    "observed": 0,
+    "basis": "X",
+    "bell_bits": [
+      0,
+      1
+    ]
+  },
+  {
+    "index": 27,
+    "expected": 1,
+    "observed": 1,
+    "basis": "X",
+    "bell_bits": [
+      1,
+      1
+    ]
+  },
+  {
+    "index": 28,
+    "expected": 0,
+    "observed": 0,
+    "basis": "Z",
+    "bell_bits": [
+      1,
+      0
+    ]
+  },
+  {
+    "index": 29,
+    "expected": 1,
+    "observed": 0,
+    "basis": "X",
+    "bell_bits": [
+      0,
+      0
+    ]
+  },
+  {
+    "index": 30,
+    "expected": 0,
+    "observed": 0,
+    "basis": "X",
+    "bell_bits": [
+      1,
+      1
+    ]
+  },
+  {
+    "index": 31,
+    "expected": 1,
+    "observed": 0,
+    "basis": "Z",
+    "bell_bits": [
+      1,
+      1
+    ]
+  },
+  {
+    "index": 32,
+    "expected": 1,
+    "observed": 1,
+    "basis": "Z",
+    "bell_bits": [
+      0,
+      0
+    ]
+  },
+  {
+    "index": 33,
+    "expected": 1,
+    "observed": 1,
+    "basis": "Z",
+    "bell_bits": [
+      1,
+      0
+    ]
+  },
+  {
+    "index": 34,
+    "expected": 1,
+    "observed": 1,
+    "basis": "X",
+    "bell_bits": [
+      1,
+      0
+    ]
+  },
+  {
+    "index": 35,
+    "expected": 1,
+    "observed": 0,
+    "basis": "Z",
+    "bell_bits": [
+      1,
+      1
+    ]
+  },
+  {
+    "index": 36,
+    "expected": 1,
+    "observed": 0,
+    "basis": "Z",
+    "bell_bits": [
+      1,
+      1
+    ]
+  },
+  {
+    "index": 37,
+    "expected": 0,
+    "observed": 1,
+    "basis": "Z",
+    "bell_bits": [
+      1,
+      0
+    ]
+  },
+  {
+    "index": 38,
+    "expected": 1,
+    "observed": 1,
+    "basis": "X",
+    "bell_bits": [
+      0,
+      0
+    ]
+  },
+  {
+    "index": 39,
+    "expected": 1,
+    "observed": 0,
+    "basis": "Z",
+    "bell_bits": [
+      1,
+      0
+    ]
+  },
+  {
+    "index": 40,
+    "expected": 0,
+    "observed": 0,
+    "basis": "Z",
+    "bell_bits": [
+      0,
+      0
+    ]
+  },
+  {
+    "index": 41,
+    "expected": 0,
+    "observed": 0,
+    "basis": "Z",
+    "bell_bits": [
+      0,
+      0
+    ]
+  },
+  {
+    "index": 42,
+    "expected": 1,
+    "observed": 1,
+    "basis": "X",
+    "bell_bits": [
+      1,
+      1
+    ]
+  },
+  {
+    "index": 43,
+    "expected": 1,
+    "observed": 1,
+    "basis": "Z",
+    "bell_bits": [
+      0,
+      0
+    ]
+  },
+  {
+    "index": 44,
+    "expected": 1,
+    "observed": 1,
+    "basis": "X",
+    "bell_bits": [
+      0,
+      1
+    ]
+  },
+  {
+    "index": 45,
+    "expected": 1,
+    "observed": 1,
+    "basis": "X",
+    "bell_bits": [
+      1,
+      0
+    ]
+  },
+  {
+    "index": 46,
+    "expected": 0,
+    "observed": 1,
+    "basis": "X",
+    "bell_bits": [
+      0,
+      1
+    ]
+  },
+  {
+    "index": 47,
+    "expected": 1,
+    "observed": 1,
+    "basis": "X",
+    "bell_bits": [
+      1,
+      1
+    ]
+  },
+  {
+    "index": 48,
+    "expected": 1,
+    "observed": 1,
+    "basis": "X",
+    "bell_bits": [
+      1,
+      0
+    ]
+  },
+  {
+    "index": 49,
+    "expected": 0,
+    "observed": 0,
+    "basis": "X",
+    "bell_bits": [
+      1,
+      0
+    ]
+  },
+  {
+    "index": 50,
+    "expected": 0,
+    "observed": 0,
+    "basis": "X",
+    "bell_bits": [
+      1,
+      0
+    ]
+  },
+  {
+    "index": 51,
+    "expected": 1,
+    "observed": 1,
+    "basis": "X",
+    "bell_bits": [
+      0,
+      0
+    ]
+  },
+  {
+    "index": 52,
+    "expected": 0,
+    "observed": 1,
+    "basis": "X",
+    "bell_bits": [
+      0,
+      0
+    ]
+  },
+  {
+    "index": 53,
+    "expected": 1,
+    "observed": 1,
+    "basis": "Z",
+    "bell_bits": [
+      1,
+      1
+    ]
+  },
+  {
+    "index": 54,
+    "expected": 1,
+    "observed": 1,
+    "basis": "Z",
+    "bell_bits": [
+      1,
+      1
+    ]
+  },
+  {
+    "index": 55,
+    "expected": 0,
+    "observed": 1,
+    "basis": "X",
+    "bell_bits": [
+      1,
+      0
+    ]
+  },
+  {
+    "index": 56,
+    "expected": 1,
+    "observed": 0,
+    "basis": "Z",
+    "bell_bits": [
+      1,
+      0
+    ]
+  },
+  {
+    "index": 57,
+    "expected": 0,
+    "observed": 1,
+    "basis": "X",
+    "bell_bits": [
+      1,
+      0
+    ]
+  },
+  {
+    "index": 58,
+    "expected": 1,
+    "observed": 1,
+    "basis": "X",
+    "bell_bits": [
+      0,
+      0
+    ]
+  },
+  {
+    "index": 59,
+    "expected": 1,
+    "observed": 1,
+    "basis": "X",
+    "bell_bits": [
+      1,
+      1
+    ]
+  },
+  {
+    "index": 60,
+    "expected": 1,
+    "observed": 0,
+    "basis": "X",
+    "bell_bits": [
+      0,
+      1
+    ]
+  },
+  {
+    "index": 61,
+    "expected": 0,
+    "observed": 1,
+    "basis": "X",
+    "bell_bits": [
+      1,
+      0
+    ]
+  },
+  {
+    "index": 62,
+    "expected": 1,
+    "observed": 1,
+    "basis": "X",
+    "bell_bits": [
+      0,
+      0
+    ]
+  },
+  {
+    "index": 63,
+    "expected": 0,
+    "observed": 0,
+    "basis": "Z",
+    "bell_bits": [
+      0,
+      1
+    ]
+  },
+  {
+    "index": 64,
+    "expected": 0,
+    "observed": 0,
+    "basis": "Z",
+    "bell_bits": [
+      1,
+      1
+    ]
+  },
+  {
+    "index": 65,
+    "expected": 0,
+    "observed": 0,
+    "basis": "X",
+    "bell_bits": [
+      1,
+      1
+    ]
+  },
+  {
+    "index": 66,
+    "expected": 0,
+    "observed": 0,
+    "basis": "Z",
+    "bell_bits": [
+      1,
+      1
+    ]
+  },
+  {
+    "index": 67,
+    "expected": 1,
+    "observed": 1,
+    "basis": "Z",
+    "bell_bits": [
+      1,
+      0
+    ]
+  },
+  {
+    "index": 68,
+    "expected": 1,
+    "observed": 0,
+    "basis": "X",
+    "bell_bits": [
+      1,
+      1
+    ]
+  },
+  {
+    "index": 69,
+    "expected": 1,
+    "observed": 0,
+    "basis": "Z",
+    "bell_bits": [
+      0,
+      0
+    ]
+  },
+  {
+    "index": 70,
+    "expected": 0,
+    "observed": 1,
+    "basis": "X",
+    "bell_bits": [
+      0,
+      1
+    ]
+  },
+  {
+    "index": 71,
+    "expected": 1,
+    "observed": 1,
+    "basis": "Z",
+    "bell_bits": [
+      1,
+      1
+    ]
+  },
+  {
+    "index": 72,
+    "expected": 0,
+    "observed": 0,
+    "basis": "X",
+    "bell_bits": [
+      1,
+      0
+    ]
+  },
+  {
+    "index": 73,
+    "expected": 1,
+    "observed": 1,
+    "basis": "Z",
+    "bell_bits": [
+      0,
+      0
+    ]
+  },
+  {
+    "index": 74,
+    "expected": 0,
+    "observed": 0,
+    "basis": "X",
+    "bell_bits": [
+      0,
+      1
+    ]
+  },
+  {
+    "index": 75,
+    "expected": 0,
+    "observed": 0,
+    "basis": "Z",
+    "bell_bits": [
+      0,
+      1
+    ]
+  },
+  {
+    "index": 76,
+    "expected": 1,
+    "observed": 0,
+    "basis": "Z",
+    "bell_bits": [
+      0,
+      0
+    ]
+  },
+  {
+    "index": 77,
+    "expected": 1,
+    "observed": 1,
+    "basis": "X",
+    "bell_bits": [
+      0,
+      1
+    ]
+  },
+  {
+    "index": 78,
+    "expected": 1,
+    "observed": 1,
+    "basis": "X",
+    "bell_bits": [
+      0,
+      1
+    ]
+  },
+  {
+    "index": 79,
+    "expected": 0,
+    "observed": 1,
+    "basis": "X",
+    "bell_bits": [
+      1,
+      1
+    ]
+  },
+  {
+    "index": 80,
+    "expected": 0,
+    "observed": 1,
+    "basis": "Z",
+    "bell_bits": [
+      1,
+      1
+    ]
+  },
+  {
+    "index": 81,
+    "expected": 1,
+    "observed": 1,
+    "basis": "X",
+    "bell_bits": [
+      1,
+      1
+    ]
+  },
+  {
+    "index": 82,
+    "expected": 0,
+    "observed": 0,
+    "basis": "Z",
+    "bell_bits": [
+      1,
+      0
+    ]
+  },
+  {
+    "index": 83,
+    "expected": 0,
+    "observed": 0,
+    "basis": "X",
+    "bell_bits": [
+      1,
+      1
+    ]
+  },
+  {
+    "index": 84,
+    "expected": 0,
+    "observed": 0,
+    "basis": "X",
+    "bell_bits": [
+      1,
+      1
+    ]
+  },
+  {
+    "index": 85,
+    "expected": 1,
+    "observed": 1,
+    "basis": "Z",
+    "bell_bits": [
+      0,
+      1
+    ]
+  },
+  {
+    "index": 86,
+    "expected": 1,
+    "observed": 1,
+    "basis": "Z",
+    "bell_bits": [
+      1,
+      1
+    ]
+  },
+  {
+    "index": 87,
+    "expected": 0,
+    "observed": 0,
+    "basis": "X",
+    "bell_bits": [
+      1,
+      0
+    ]
+  },
+  {
+    "index": 88,
+    "expected": 0,
+    "observed": 0,
+    "basis": "Z",
+    "bell_bits": [
+      1,
+      0
+    ]
+  },
+  {
+    "index": 89,
+    "expected": 1,
+    "observed": 1,
+    "basis": "X",
+    "bell_bits": [
+      0,
+      0
+    ]
+  },
+  {
+    "index": 90,
+    "expected": 0,
+    "observed": 0,
+    "basis": "X",
+    "bell_bits": [
+      0,
+      1
+    ]
+  },
+  {
+    "index": 91,
+    "expected": 1,
+    "observed": 1,
+    "basis": "Z",
+    "bell_bits": [
+      1,
+      0
+    ]
+  },
+  {
+    "index": 92,
+    "expected": 0,
+    "observed": 0,
+    "basis": "Z",
+    "bell_bits": [
+      1,
+      1
+    ]
+  },
+  {
+    "index": 93,
+    "expected": 1,
+    "observed": 0,
+    "basis": "X",
+    "bell_bits": [
+      0,
+      1
+    ]
+  },
+  {
+    "index": 94,
+    "expected": 1,
+    "observed": 0,
+    "basis": "X",
+    "bell_bits": [
+      1,
+      1
+    ]
+  },
+  {
+    "index": 95,
+    "expected": 0,
+    "observed": 0,
+    "basis": "Z",
+    "bell_bits": [
+      1,
+      1
+    ]
+  },
+  {
+    "index": 96,
+    "expected": 1,
+    "observed": 0,
+    "basis": "X",
+    "bell_bits": [
+      0,
+      1
+    ]
+  },
+  {
+    "index": 97,
+    "expected": 1,
+    "observed": 1,
+    "basis": "Z",
+    "bell_bits": [
+      1,
+      0
+    ]
+  },
+  {
+    "index": 98,
+    "expected": 0,
+    "observed": 0,
+    "basis": "Z",
+    "bell_bits": [
+      0,
+      1
+    ]
+  },
+  {
+    "index": 99,
+    "expected": 1,
+    "observed": 1,
+    "basis": "Z",
+    "bell_bits": [
+      0,
+      1
+    ]
+  },
+  {
+    "index": 100,
+    "expected": 1,
+    "observed": 1,
+    "basis": "Z",
+    "bell_bits": [
+      1,
+      0
+    ]
+  },
+  {
+    "index": 101,
+    "expected": 0,
+    "observed": 0,
+    "basis": "Z",
+    "bell_bits": [
+      0,
+      0
+    ]
+  },
+  {
+    "index": 102,
+    "expected": 1,
+    "observed": 1,
+    "basis": "Z",
+    "bell_bits": [
+      1,
+      1
+    ]
+  },
+  {
+    "index": 103,
+    "expected": 0,
+    "observed": 0,
+    "basis": "Z",
+    "bell_bits": [
+      1,
+      0
+    ]
+  },
+  {
+    "index": 104,
+    "expected": 0,
+    "observed": 0,
+    "basis": "Z",
+    "bell_bits": [
+      1,
+      1
+    ]
+  },
+  {
+    "index": 105,
+    "expected": 0,
+    "observed": 0,
+    "basis": "Z",
+    "bell_bits": [
+      0,
+      1
+    ]
+  },
+  {
+    "index": 106,
+    "expected": 0,
+    "observed": 1,
+    "basis": "X",
+    "bell_bits": [
+      0,
+      1
+    ]
+  },
+  {
+    "index": 107,
+    "expected": 0,
+    "observed": 0,
+    "basis": "X",
+    "bell_bits": [
+      0,
+      0
+    ]
+  },
+  {
+    "index": 108,
+    "expected": 1,
+    "observed": 0,
+    "basis": "Z",
+    "bell_bits": [
+      0,
+      0
+    ]
+  },
+  {
+    "index": 109,
+    "expected": 0,
+    "observed": 1,
+    "basis": "Z",
+    "bell_bits": [
+      0,
+      0
+    ]
+  },
+  {
+    "index": 110,
+    "expected": 1,
+    "observed": 1,
+    "basis": "Z",
+    "bell_bits": [
+      1,
+      1
+    ]
+  },
+  {
+    "index": 111,
+    "expected": 1,
+    "observed": 0,
+    "basis": "Z",
+    "bell_bits": [
+      1,
+      1
+    ]
+  },
+  {
+    "index": 112,
+    "expected": 0,
+    "observed": 0,
+    "basis": "Z",
+    "bell_bits": [
+      0,
+      0
+    ]
+  },
+  {
+    "index": 113,
+    "expected": 0,
+    "observed": 0,
+    "basis": "X",
+    "bell_bits": [
+      0,
+      1
+    ]
+  },
+  {
+    "index": 114,
+    "expected": 1,
+    "observed": 1,
+    "basis": "X",
+    "bell_bits": [
+      0,
+      1
+    ]
+  },
+  {
+    "index": 115,
+    "expected": 0,
+    "observed": 0,
+    "basis": "Z",
+    "bell_bits": [
+      1,
+      0
+    ]
+  },
+  {
+    "index": 116,
+    "expected": 1,
+    "observed": 1,
+    "basis": "Z",
+    "bell_bits": [
+      1,
+      0
+    ]
+  },
+  {
+    "index": 117,
+    "expected": 0,
+    "observed": 0,
+    "basis": "Z",
+    "bell_bits": [
+      0,
+      0
+    ]
+  },
+  {
+    "index": 118,
+    "expected": 1,
+    "observed": 0,
+    "basis": "X",
+    "bell_bits": [
+      1,
+      1
+    ]
+  },
+  {
+    "index": 119,
+    "expected": 0,
+    "observed": 0,
+    "basis": "X",
+    "bell_bits": [
+      0,
+      1
+    ]
+  },
+  {
+    "index": 120,
+    "expected": 1,
+    "observed": 1,
+    "basis": "Z",
+    "bell_bits": [
+      0,
+      0
+    ]
+  },
+  {
+    "index": 121,
+    "expected": 1,
+    "observed": 1,
+    "basis": "Z",
+    "bell_bits": [
+      1,
+      0
+    ]
+  },
+  {
+    "index": 122,
+    "expected": 0,
+    "observed": 0,
+    "basis": "Z",
+    "bell_bits": [
+      1,
+      1
+    ]
+  },
+  {
+    "index": 123,
+    "expected": 0,
+    "observed": 1,
+    "basis": "Z",
+    "bell_bits": [
+      1,
+      1
+    ]
+  },
+  {
+    "index": 124,
+    "expected": 1,
+    "observed": 1,
+    "basis": "X",
+    "bell_bits": [
+      0,
+      1
+    ]
+  },
+  {
+    "index": 125,
+    "expected": 0,
+    "observed": 0,
+    "basis": "Z",
+    "bell_bits": [
+      1,
+      0
+    ]
+  },
+  {
+    "index": 126,
+    "expected": 1,
+    "observed": 1,
+    "basis": "Z",
+    "bell_bits": [
+      1,
+      0
+    ]
+  },
+  {
+    "index": 127,
+    "expected": 1,
+    "observed": 0,
+    "basis": "Z",
+    "bell_bits": [
+      1,
+      1
+    ]
+  },
+  {
+    "index": 128,
+    "expected": 1,
+    "observed": 1,
+    "basis": "Z",
+    "bell_bits": [
+      1,
+      1
+    ]
+  },
+  {
+    "index": 129,
+    "expected": 0,
+    "observed": 0,
+    "basis": "X",
+    "bell_bits": [
+      1,
+      0
+    ]
+  },
+  {
+    "index": 130,
+    "expected": 1,
+    "observed": 1,
+    "basis": "Z",
+    "bell_bits": [
+      0,
+      1
+    ]
+  },
+  {
+    "index": 131,
+    "expected": 0,
+    "observed": 0,
+    "basis": "X",
+    "bell_bits": [
+      1,
+      1
+    ]
+  },
+  {
+    "index": 132,
+    "expected": 0,
+    "observed": 0,
+    "basis": "X",
+    "bell_bits": [
+      1,
+      1
+    ]
+  },
+  {
+    "index": 133,
+    "expected": 1,
+    "observed": 1,
+    "basis": "X",
+    "bell_bits": [
+      1,
+      0
+    ]
+  },
+  {
+    "index": 134,
+    "expected": 0,
+    "observed": 0,
+    "basis": "Z",
+    "bell_bits": [
+      0,
+      0
+    ]
+  },
+  {
+    "index": 135,
+    "expected": 1,
+    "observed": 1,
+    "basis": "Z",
+    "bell_bits": [
+      1,
+      0
+    ]
+  },
+  {
+    "index": 136,
+    "expected": 1,
+    "observed": 1,
+    "basis": "Z",
+    "bell_bits": [
+      1,
+      1
+    ]
+  },
+  {
+    "index": 137,
+    "expected": 1,
+    "observed": 0,
+    "basis": "X",
+    "bell_bits": [
+      1,
+      1
+    ]
+  },
+  {
+    "index": 138,
+    "expected": 1,
+    "observed": 1,
+    "basis": "Z",
+    "bell_bits": [
+      0,
+      1
+    ]
+  },
+  {
+    "index": 139,
+    "expected": 1,
+    "observed": 1,
+    "basis": "X",
+    "bell_bits": [
+      1,
+      1
+    ]
+  },
+  {
+    "index": 140,
+    "expected": 0,
+    "observed": 0,
+    "basis": "Z",
+    "bell_bits": [
+      1,
+      1
+    ]
+  },
+  {
+    "index": 141,
+    "expected": 0,
+    "observed": 1,
+    "basis": "X",
+    "bell_bits": [
+      1,
+      0
+    ]
+  },
+  {
+    "index": 142,
+    "expected": 0,
+    "observed": 1,
+    "basis": "X",
+    "bell_bits": [
+      0,
+      1
+    ]
+  },
+  {
+    "index": 143,
+    "expected": 0,
+    "observed": 0,
+    "basis": "X",
+    "bell_bits": [
+      0,
+      1
+    ]
+  },
+  {
+    "index": 144,
+    "expected": 1,
+    "observed": 1,
+    "basis": "X",
+    "bell_bits": [
+      1,
+      0
+    ]
+  },
+  {
+    "index": 145,
+    "expected": 1,
+    "observed": 1,
+    "basis": "Z",
+    "bell_bits": [
+      1,
+      1
+    ]
+  },
+  {
+    "index": 146,
+    "expected": 0,
+    "observed": 0,
+    "basis": "Z",
+    "bell_bits": [
+      0,
+      0
+    ]
+  },
+  {
+    "index": 147,
+    "expected": 0,
+    "observed": 1,
+    "basis": "Z",
+    "bell_bits": [
+      0,
+      1
+    ]
+  },
+  {
+    "index": 148,
+    "expected": 0,
+    "observed": 0,
+    "basis": "Z",
+    "bell_bits": [
+      0,
+      1
+    ]
+  },
+  {
+    "index": 149,
+    "expected": 0,
+    "observed": 0,
+    "basis": "X",
+    "bell_bits": [
+      1,
+      1
+    ]
+  },
+  {
+    "index": 150,
+    "expected": 0,
+    "observed": 1,
+    "basis": "X",
+    "bell_bits": [
+      0,
+      0
+    ]
+  },
+  {
+    "index": 151,
+    "expected": 1,
+    "observed": 1,
+    "basis": "Z",
+    "bell_bits": [
+      1,
+      1
+    ]
+  },
+  {
+    "index": 152,
+    "expected": 1,
+    "observed": 1,
+    "basis": "X",
+    "bell_bits": [
+      1,
+      0
+    ]
+  },
+  {
+    "index": 153,
+    "expected": 1,
+    "observed": 1,
+    "basis": "X",
+    "bell_bits": [
+      0,
+      1
+    ]
+  },
+  {
+    "index": 154,
+    "expected": 0,
+    "observed": 0,
+    "basis": "X",
+    "bell_bits": [
+      0,
+      1
+    ]
+  },
+  {
+    "index": 155,
+    "expected": 1,
+    "observed": 1,
+    "basis": "X",
+    "bell_bits": [
+      0,
+      1
+    ]
+  },
+  {
+    "index": 156,
+    "expected": 1,
+    "observed": 1,
+    "basis": "X",
+    "bell_bits": [
+      1,
+      1
+    ]
+  },
+  {
+    "index": 157,
+    "expected": 0,
+    "observed": 0,
+    "basis": "Z",
+    "bell_bits": [
+      0,
+      0
+    ]
+  },
+  {
+    "index": 158,
+    "expected": 0,
+    "observed": 0,
+    "basis": "Z",
+    "bell_bits": [
+      1,
+      1
+    ]
+  },
+  {
+    "index": 159,
+    "expected": 1,
+    "observed": 0,
+    "basis": "X",
+    "bell_bits": [
+      1,
+      0
+    ]
+  },
+  {
+    "index": 160,
+    "expected": 0,
+    "observed": 0,
+    "basis": "Z",
+    "bell_bits": [
+      0,
+      0
+    ]
+  },
+  {
+    "index": 161,
+    "expected": 1,
+    "observed": 1,
+    "basis": "X",
+    "bell_bits": [
+      0,
+      0
+    ]
+  },
+  {
+    "index": 162,
+    "expected": 0,
+    "observed": 1,
+    "basis": "Z",
+    "bell_bits": [
+      0,
+      1
+    ]
+  },
+  {
+    "index": 163,
+    "expected": 1,
+    "observed": 1,
+    "basis": "Z",
+    "bell_bits": [
+      1,
+      0
+    ]
+  },
+  {
+    "index": 164,
+    "expected": 1,
+    "observed": 1,
+    "basis": "Z",
+    "bell_bits": [
+      1,
+      1
+    ]
+  },
+  {
+    "index": 165,
+    "expected": 0,
+    "observed": 1,
+    "basis": "Z",
+    "bell_bits": [
+      1,
+      0
+    ]
+  },
+  {
+    "index": 166,
+    "expected": 0,
+    "observed": 1,
+    "basis": "X",
+    "bell_bits": [
+      0,
+      1
+    ]
+  },
+  {
+    "index": 167,
+    "expected": 1,
+    "observed": 1,
+    "basis": "Z",
+    "bell_bits": [
+      0,
+      0
+    ]
+  },
+  {
+    "index": 168,
+    "expected": 0,
+    "observed": 0,
+    "basis": "Z",
+    "bell_bits": [
+      0,
+      1
+    ]
+  },
+  {
+    "index": 169,
+    "expected": 0,
+    "observed": 0,
+    "basis": "Z",
+    "bell_bits": [
+      0,
+      0
+    ]
+  },
+  {
+    "index": 170,
+    "expected": 0,
+    "observed": 0,
+    "basis": "X",
+    "bell_bits": [
+      1,
+      0
+    ]
+  },
+  {
+    "index": 171,
+    "expected": 0,
+    "observed": 0,
+    "basis": "X",
+    "bell_bits": [
+      1,
+      1
+    ]
+  },
+  {
+    "index": 172,
+    "expected": 1,
+    "observed": 1,
+    "basis": "X",
+    "bell_bits": [
+      1,
+      1
+    ]
+  },
+  {
+    "index": 173,
+    "expected": 0,
+    "observed": 1,
+    "basis": "Z",
+    "bell_bits": [
+      1,
+      0
+    ]
+  },
+  {
+    "index": 174,
+    "expected": 1,
+    "observed": 1,
+    "basis": "X",
+    "bell_bits": [
+      1,
+      1
+    ]
+  },
+  {
+    "index": 175,
+    "expected": 0,
+    "observed": 0,
+    "basis": "Z",
+    "bell_bits": [
+      1,
+      1
+    ]
+  },
+  {
+    "index": 176,
+    "expected": 0,
+    "observed": 0,
+    "basis": "Z",
+    "bell_bits": [
+      0,
+      0
+    ]
+  },
+  {
+    "index": 177,
+    "expected": 1,
+    "observed": 1,
+    "basis": "Z",
+    "bell_bits": [
+      0,
+      0
+    ]
+  },
+  {
+    "index": 178,
+    "expected": 1,
+    "observed": 0,
+    "basis": "X",
+    "bell_bits": [
+      1,
+      0
+    ]
+  },
+  {
+    "index": 179,
+    "expected": 1,
+    "observed": 1,
+    "basis": "Z",
+    "bell_bits": [
+      0,
+      1
+    ]
+  },
+  {
+    "index": 180,
+    "expected": 1,
+    "observed": 1,
+    "basis": "Z",
+    "bell_bits": [
+      0,
+      1
+    ]
+  },
+  {
+    "index": 181,
+    "expected": 0,
+    "observed": 0,
+    "basis": "X",
+    "bell_bits": [
+      1,
+      1
+    ]
+  },
+  {
+    "index": 182,
+    "expected": 0,
+    "observed": 0,
+    "basis": "Z",
+    "bell_bits": [
+      1,
+      1
+    ]
+  },
+  {
+    "index": 183,
+    "expected": 0,
+    "observed": 0,
+    "basis": "Z",
+    "bell_bits": [
+      0,
+      0
+    ]
+  },
+  {
+    "index": 184,
+    "expected": 0,
+    "observed": 1,
+    "basis": "X",
+    "bell_bits": [
+      1,
+      0
+    ]
+  },
+  {
+    "index": 185,
+    "expected": 1,
+    "observed": 1,
+    "basis": "X",
+    "bell_bits": [
+      1,
+      1
+    ]
+  },
+  {
+    "index": 186,
+    "expected": 0,
+    "observed": 0,
+    "basis": "X",
+    "bell_bits": [
+      0,
+      1
+    ]
+  },
+  {
+    "index": 187,
+    "expected": 1,
+    "observed": 1,
+    "basis": "X",
+    "bell_bits": [
+      1,
+      1
+    ]
+  },
+  {
+    "index": 188,
+    "expected": 0,
+    "observed": 0,
+    "basis": "Z",
+    "bell_bits": [
+      1,
+      1
+    ]
+  },
+  {
+    "index": 189,
+    "expected": 1,
+    "observed": 1,
+    "basis": "X",
+    "bell_bits": [
+      1,
+      1
+    ]
+  },
+  {
+    "index": 190,
+    "expected": 0,
+    "observed": 0,
+    "basis": "Z",
+    "bell_bits": [
+      0,
+      0
+    ]
+  },
+  {
+    "index": 191,
+    "expected": 0,
+    "observed": 0,
+    "basis": "Z",
+    "bell_bits": [
+      0,
+      0
+    ]
+  },
+  {
+    "index": 192,
+    "expected": 0,
+    "observed": 0,
+    "basis": "X",
+    "bell_bits": [
+      1,
+      1
+    ]
+  },
+  {
+    "index": 193,
+    "expected": 1,
+    "observed": 1,
+    "basis": "Z",
+    "bell_bits": [
+      0,
+      0
+    ]
+  },
+  {
+    "index": 194,
+    "expected": 1,
+    "observed": 1,
+    "basis": "Z",
+    "bell_bits": [
+      1,
+      1
+    ]
+  },
+  {
+    "index": 195,
+    "expected": 1,
+    "observed": 1,
+    "basis": "Z",
+    "bell_bits": [
+      0,
+      1
+    ]
+  },
+  {
+    "index": 196,
+    "expected": 0,
+    "observed": 1,
+    "basis": "Z",
+    "bell_bits": [
+      1,
+      0
+    ]
+  },
+  {
+    "index": 197,
+    "expected": 1,
+    "observed": 1,
+    "basis": "Z",
+    "bell_bits": [
+      1,
+      1
+    ]
+  },
+  {
+    "index": 198,
+    "expected": 1,
+    "observed": 0,
+    "basis": "X",
+    "bell_bits": [
+      1,
+      1
+    ]
+  },
+  {
+    "index": 199,
+    "expected": 0,
+    "observed": 0,
+    "basis": "X",
+    "bell_bits": [
+      0,
+      0
+    ]
+  },
+  {
+    "index": 200,
+    "expected": 0,
+    "observed": 1,
+    "basis": "X",
+    "bell_bits": [
+      0,
+      0
+    ]
+  },
+  {
+    "index": 201,
+    "expected": 0,
+    "observed": 1,
+    "basis": "X",
+    "bell_bits": [
+      1,
+      1
+    ]
+  },
+  {
+    "index": 202,
+    "expected": 1,
+    "observed": 1,
+    "basis": "X",
+    "bell_bits": [
+      0,
+      0
+    ]
+  },
+  {
+    "index": 203,
+    "expected": 1,
+    "observed": 1,
+    "basis": "X",
+    "bell_bits": [
+      1,
+      1
+    ]
+  },
+  {
+    "index": 204,
+    "expected": 1,
+    "observed": 1,
+    "basis": "Z",
+    "bell_bits": [
+      0,
+      1
+    ]
+  },
+  {
+    "index": 205,
+    "expected": 1,
+    "observed": 1,
+    "basis": "Z",
+    "bell_bits": [
+      0,
+      1
+    ]
+  },
+  {
+    "index": 206,
+    "expected": 1,
+    "observed": 1,
+    "basis": "X",
+    "bell_bits": [
+      0,
+      1
+    ]
+  },
+  {
+    "index": 207,
+    "expected": 1,
+    "observed": 1,
+    "basis": "Z",
+    "bell_bits": [
+      1,
+      1
+    ]
+  },
+  {
+    "index": 208,
+    "expected": 0,
+    "observed": 1,
+    "basis": "Z",
+    "bell_bits": [
+      1,
+      0
+    ]
+  },
+  {
+    "index": 209,
+    "expected": 1,
+    "observed": 1,
+    "basis": "X",
+    "bell_bits": [
+      1,
+      1
+    ]
+  },
+  {
+    "index": 210,
+    "expected": 0,
+    "observed": 0,
+    "basis": "Z",
+    "bell_bits": [
+      1,
+      0
+    ]
+  },
+  {
+    "index": 211,
+    "expected": 0,
+    "observed": 1,
+    "basis": "X",
+    "bell_bits": [
+      1,
+      0
+    ]
+  },
+  {
+    "index": 212,
+    "expected": 1,
+    "observed": 1,
+    "basis": "Z",
+    "bell_bits": [
+      1,
+      0
+    ]
+  },
+  {
+    "index": 213,
+    "expected": 0,
+    "observed": 0,
+    "basis": "X",
+    "bell_bits": [
+      0,
+      1
+    ]
+  },
+  {
+    "index": 214,
+    "expected": 1,
+    "observed": 1,
+    "basis": "X",
+    "bell_bits": [
+      1,
+      1
+    ]
+  },
+  {
+    "index": 215,
+    "expected": 1,
+    "observed": 1,
+    "basis": "X",
+    "bell_bits": [
+      1,
+      0
+    ]
+  },
+  {
+    "index": 216,
+    "expected": 1,
+    "observed": 1,
+    "basis": "Z",
+    "bell_bits": [
+      0,
+      0
+    ]
+  },
+  {
+    "index": 217,
+    "expected": 1,
+    "observed": 1,
+    "basis": "Z",
+    "bell_bits": [
+      1,
+      1
+    ]
+  },
+  {
+    "index": 218,
+    "expected": 1,
+    "observed": 1,
+    "basis": "Z",
+    "bell_bits": [
+      1,
+      1
+    ]
+  },
+  {
+    "index": 219,
+    "expected": 1,
+    "observed": 1,
+    "basis": "X",
+    "bell_bits": [
+      0,
+      1
+    ]
+  },
+  {
+    "index": 220,
+    "expected": 1,
+    "observed": 1,
+    "basis": "Z",
+    "bell_bits": [
+      1,
+      1
+    ]
+  },
+  {
+    "index": 221,
+    "expected": 0,
+    "observed": 1,
+    "basis": "Z",
+    "bell_bits": [
+      0,
+      1
+    ]
+  },
+  {
+    "index": 222,
+    "expected": 1,
+    "observed": 0,
+    "basis": "X",
+    "bell_bits": [
+      0,
+      1
+    ]
+  },
+  {
+    "index": 223,
+    "expected": 0,
+    "observed": 0,
+    "basis": "Z",
+    "bell_bits": [
+      0,
+      0
+    ]
+  },
+  {
+    "index": 224,
+    "expected": 1,
+    "observed": 1,
+    "basis": "X",
+    "bell_bits": [
+      0,
+      1
+    ]
+  },
+  {
+    "index": 225,
+    "expected": 0,
+    "observed": 1,
+    "basis": "Z",
+    "bell_bits": [
+      0,
+      1
+    ]
+  },
+  {
+    "index": 226,
+    "expected": 0,
+    "observed": 0,
+    "basis": "X",
+    "bell_bits": [
+      1,
+      1
+    ]
+  },
+  {
+    "index": 227,
+    "expected": 0,
+    "observed": 0,
+    "basis": "X",
+    "bell_bits": [
+      1,
+      0
+    ]
+  },
+  {
+    "index": 228,
+    "expected": 0,
+    "observed": 0,
+    "basis": "Z",
+    "bell_bits": [
+      0,
+      0
+    ]
+  },
+  {
+    "index": 229,
+    "expected": 0,
+    "observed": 0,
+    "basis": "X",
+    "bell_bits": [
+      1,
+      1
+    ]
+  },
+  {
+    "index": 230,
+    "expected": 0,
+    "observed": 0,
+    "basis": "Z",
+    "bell_bits": [
+      0,
+      1
+    ]
+  },
+  {
+    "index": 231,
+    "expected": 0,
+    "observed": 0,
+    "basis": "X",
+    "bell_bits": [
+      0,
+      0
+    ]
+  },
+  {
+    "index": 232,
+    "expected": 0,
+    "observed": 0,
+    "basis": "Z",
+    "bell_bits": [
+      1,
+      1
+    ]
+  },
+  {
+    "index": 233,
+    "expected": 1,
+    "observed": 0,
+    "basis": "X",
+    "bell_bits": [
+      0,
+      1
+    ]
+  },
+  {
+    "index": 234,
+    "expected": 0,
+    "observed": 0,
+    "basis": "X",
+    "bell_bits": [
+      0,
+      0
+    ]
+  },
+  {
+    "index": 235,
+    "expected": 0,
+    "observed": 0,
+    "basis": "X",
+    "bell_bits": [
+      1,
+      1
+    ]
+  },
+  {
+    "index": 236,
+    "expected": 0,
+    "observed": 0,
+    "basis": "X",
+    "bell_bits": [
+      1,
+      0
+    ]
+  },
+  {
+    "index": 237,
+    "expected": 1,
+    "observed": 1,
+    "basis": "Z",
+    "bell_bits": [
+      1,
+      1
+    ]
+  },
+  {
+    "index": 238,
+    "expected": 1,
+    "observed": 1,
+    "basis": "Z",
+    "bell_bits": [
+      1,
+      0
+    ]
+  },
+  {
+    "index": 239,
+    "expected": 0,
+    "observed": 0,
+    "basis": "Z",
+    "bell_bits": [
+      0,
+      1
+    ]
+  },
+  {
+    "index": 240,
+    "expected": 1,
+    "observed": 1,
+    "basis": "X",
+    "bell_bits": [
+      1,
+      0
+    ]
+  },
+  {
+    "index": 241,
+    "expected": 0,
+    "observed": 1,
+    "basis": "Z",
+    "bell_bits": [
+      0,
+      0
+    ]
+  },
+  {
+    "index": 242,
+    "expected": 0,
+    "observed": 1,
+    "basis": "X",
+    "bell_bits": [
+      1,
+      0
+    ]
+  },
+  {
+    "index": 243,
+    "expected": 1,
+    "observed": 1,
+    "basis": "X",
+    "bell_bits": [
+      0,
+      0
+    ]
+  },
+  {
+    "index": 244,
+    "expected": 0,
+    "observed": 0,
+    "basis": "Z",
+    "bell_bits": [
+      1,
+      1
+    ]
+  },
+  {
+    "index": 245,
+    "expected": 1,
+    "observed": 1,
+    "basis": "Z",
+    "bell_bits": [
+      1,
+      0
+    ]
+  },
+  {
+    "index": 246,
+    "expected": 1,
+    "observed": 0,
+    "basis": "X",
+    "bell_bits": [
+      0,
+      1
+    ]
+  },
+  {
+    "index": 247,
+    "expected": 0,
+    "observed": 0,
+    "basis": "Z",
+    "bell_bits": [
+      1,
+      0
+    ]
+  },
+  {
+    "index": 248,
+    "expected": 0,
+    "observed": 0,
+    "basis": "X",
+    "bell_bits": [
+      0,
+      1
+    ]
+  },
+  {
+    "index": 249,
+    "expected": 0,
+    "observed": 0,
+    "basis": "X",
+    "bell_bits": [
+      1,
+      0
+    ]
+  },
+  {
+    "index": 250,
+    "expected": 0,
+    "observed": 0,
+    "basis": "Z",
+    "bell_bits": [
+      0,
+      1
+    ]
+  },
+  {
+    "index": 251,
+    "expected": 1,
+    "observed": 0,
+    "basis": "X",
+    "bell_bits": [
+      0,
+      0
+    ]
+  },
+  {
+    "index": 252,
+    "expected": 1,
+    "observed": 1,
+    "basis": "Z",
+    "bell_bits": [
+      0,
+      1
+    ]
+  },
+  {
+    "index": 253,
+    "expected": 1,
+    "observed": 1,
+    "basis": "X",
+    "bell_bits": [
+      0,
+      1
+    ]
+  },
+  {
+    "index": 254,
+    "expected": 0,
+    "observed": 0,
+    "basis": "Z",
+    "bell_bits": [
+      0,
+      0
+    ]
+  },
+  {
+    "index": 255,
+    "expected": 1,
+    "observed": 1,
+    "basis": "X",
+    "bell_bits": [
+      1,
+      0
+    ]
+  },
+  {
+    "index": 256,
+    "expected": 0,
+    "observed": 0,
+    "basis": "X",
+    "bell_bits": [
+      1,
+      1
+    ]
+  },
+  {
+    "index": 257,
+    "expected": 1,
+    "observed": 0,
+    "basis": "Z",
+    "bell_bits": [
+      1,
+      0
+    ]
+  },
+  {
+    "index": 258,
+    "expected": 1,
+    "observed": 1,
+    "basis": "Z",
+    "bell_bits": [
+      0,
+      0
+    ]
+  },
+  {
+    "index": 259,
+    "expected": 0,
+    "observed": 0,
+    "basis": "X",
+    "bell_bits": [
+      1,
+      1
+    ]
+  },
+  {
+    "index": 260,
+    "expected": 1,
+    "observed": 1,
+    "basis": "X",
+    "bell_bits": [
+      1,
+      0
+    ]
+  },
+  {
+    "index": 261,
+    "expected": 1,
+    "observed": 1,
+    "basis": "Z",
+    "bell_bits": [
+      0,
+      1
+    ]
+  },
+  {
+    "index": 262,
+    "expected": 1,
+    "observed": 1,
+    "basis": "X",
+    "bell_bits": [
+      1,
+      1
+    ]
+  },
+  {
+    "index": 263,
+    "expected": 1,
+    "observed": 1,
+    "basis": "Z",
+    "bell_bits": [
+      0,
+      0
+    ]
+  },
+  {
+    "index": 264,
+    "expected": 1,
+    "observed": 0,
+    "basis": "X",
+    "bell_bits": [
+      1,
+      1
+    ]
+  },
+  {
+    "index": 265,
+    "expected": 1,
+    "observed": 1,
+    "basis": "Z",
+    "bell_bits": [
+      1,
+      1
+    ]
+  },
+  {
+    "index": 266,
+    "expected": 1,
+    "observed": 1,
+    "basis": "X",
+    "bell_bits": [
+      0,
+      1
+    ]
+  },
+  {
+    "index": 267,
+    "expected": 0,
+    "observed": 0,
+    "basis": "Z",
+    "bell_bits": [
+      1,
+      1
+    ]
+  },
+  {
+    "index": 268,
+    "expected": 1,
+    "observed": 1,
+    "basis": "Z",
+    "bell_bits": [
+      0,
+      1
+    ]
+  },
+  {
+    "index": 269,
+    "expected": 0,
+    "observed": 0,
+    "basis": "Z",
+    "bell_bits": [
+      1,
+      1
+    ]
+  },
+  {
+    "index": 270,
+    "expected": 1,
+    "observed": 1,
+    "basis": "X",
+    "bell_bits": [
+      0,
+      1
+    ]
+  },
+  {
+    "index": 271,
+    "expected": 0,
+    "observed": 0,
+    "basis": "X",
+    "bell_bits": [
+      0,
+      1
+    ]
+  },
+  {
+    "index": 272,
+    "expected": 0,
+    "observed": 0,
+    "basis": "Z",
+    "bell_bits": [
+      1,
+      0
+    ]
+  },
+  {
+    "index": 273,
+    "expected": 1,
+    "observed": 1,
+    "basis": "Z",
+    "bell_bits": [
+      1,
+      0
+    ]
+  },
+  {
+    "index": 274,
+    "expected": 0,
+    "observed": 0,
+    "basis": "Z",
+    "bell_bits": [
+      0,
+      0
+    ]
+  },
+  {
+    "index": 275,
+    "expected": 0,
+    "observed": 0,
+    "basis": "Z",
+    "bell_bits": [
+      1,
+      1
+    ]
+  },
+  {
+    "index": 276,
+    "expected": 0,
+    "observed": 1,
+    "basis": "Z",
+    "bell_bits": [
+      0,
+      0
+    ]
+  },
+  {
+    "index": 277,
+    "expected": 1,
+    "observed": 0,
+    "basis": "Z",
+    "bell_bits": [
+      0,
+      0
+    ]
+  },
+  {
+    "index": 278,
+    "expected": 0,
+    "observed": 0,
+    "basis": "Z",
+    "bell_bits": [
+      0,
+      1
+    ]
+  },
+  {
+    "index": 279,
+    "expected": 0,
+    "observed": 0,
+    "basis": "X",
+    "bell_bits": [
+      0,
+      0
+    ]
+  },
+  {
+    "index": 280,
+    "expected": 0,
+    "observed": 1,
+    "basis": "X",
+    "bell_bits": [
+      0,
+      1
+    ]
+  },
+  {
+    "index": 281,
+    "expected": 0,
+    "observed": 1,
+    "basis": "X",
+    "bell_bits": [
+      1,
+      0
+    ]
+  },
+  {
+    "index": 282,
+    "expected": 1,
+    "observed": 1,
+    "basis": "X",
+    "bell_bits": [
+      1,
+      0
+    ]
+  },
+  {
+    "index": 283,
+    "expected": 1,
+    "observed": 0,
+    "basis": "Z",
+    "bell_bits": [
+      1,
+      0
+    ]
+  },
+  {
+    "index": 284,
+    "expected": 1,
+    "observed": 1,
+    "basis": "X",
+    "bell_bits": [
+      0,
+      0
+    ]
+  },
+  {
+    "index": 285,
+    "expected": 0,
+    "observed": 0,
+    "basis": "Z",
+    "bell_bits": [
+      1,
+      1
+    ]
+  },
+  {
+    "index": 286,
+    "expected": 0,
+    "observed": 1,
+    "basis": "X",
+    "bell_bits": [
+      0,
+      0
+    ]
+  },
+  {
+    "index": 287,
+    "expected": 1,
+    "observed": 1,
+    "basis": "X",
+    "bell_bits": [
+      0,
+      1
+    ]
+  },
+  {
+    "index": 288,
+    "expected": 0,
+    "observed": 0,
+    "basis": "X",
+    "bell_bits": [
+      0,
+      1
+    ]
+  },
+  {
+    "index": 289,
+    "expected": 0,
+    "observed": 1,
+    "basis": "X",
+    "bell_bits": [
+      1,
+      1
+    ]
+  },
+  {
+    "index": 290,
+    "expected": 1,
+    "observed": 1,
+    "basis": "X",
+    "bell_bits": [
+      0,
+      1
+    ]
+  },
+  {
+    "index": 291,
+    "expected": 1,
+    "observed": 0,
+    "basis": "Z",
+    "bell_bits": [
+      1,
+      1
+    ]
+  },
+  {
+    "index": 292,
+    "expected": 1,
+    "observed": 1,
+    "basis": "Z",
+    "bell_bits": [
+      1,
+      1
+    ]
+  },
+  {
+    "index": 293,
+    "expected": 1,
+    "observed": 1,
+    "basis": "X",
+    "bell_bits": [
+      0,
+      1
+    ]
+  },
+  {
+    "index": 294,
+    "expected": 1,
+    "observed": 0,
+    "basis": "X",
+    "bell_bits": [
+      1,
+      1
+    ]
+  },
+  {
+    "index": 295,
+    "expected": 0,
+    "observed": 0,
+    "basis": "Z",
+    "bell_bits": [
+      1,
+      1
+    ]
+  },
+  {
+    "index": 296,
+    "expected": 0,
+    "observed": 0,
+    "basis": "X",
+    "bell_bits": [
+      1,
+      1
+    ]
+  },
+  {
+    "index": 297,
+    "expected": 1,
+    "observed": 1,
+    "basis": "X",
+    "bell_bits": [
+      0,
+      0
+    ]
+  },
+  {
+    "index": 298,
+    "expected": 0,
+    "observed": 0,
+    "basis": "X",
+    "bell_bits": [
+      0,
+      1
+    ]
+  },
+  {
+    "index": 299,
+    "expected": 0,
+    "observed": 0,
+    "basis": "Z",
+    "bell_bits": [
+      0,
+      0
+    ]
+  },
+  {
+    "index": 300,
+    "expected": 1,
+    "observed": 0,
+    "basis": "X",
+    "bell_bits": [
+      0,
+      0
+    ]
+  },
+  {
+    "index": 301,
+    "expected": 1,
+    "observed": 1,
+    "basis": "X",
+    "bell_bits": [
+      1,
+      0
+    ]
+  },
+  {
+    "index": 302,
+    "expected": 1,
+    "observed": 1,
+    "basis": "X",
+    "bell_bits": [
+      0,
+      0
+    ]
+  },
+  {
+    "index": 303,
+    "expected": 1,
+    "observed": 1,
+    "basis": "X",
+    "bell_bits": [
+      0,
+      1
+    ]
+  },
+  {
+    "index": 304,
+    "expected": 0,
+    "observed": 0,
+    "basis": "X",
+    "bell_bits": [
+      1,
+      1
+    ]
+  },
+  {
+    "index": 305,
+    "expected": 1,
+    "observed": 1,
+    "basis": "X",
+    "bell_bits": [
+      0,
+      0
+    ]
+  },
+  {
+    "index": 306,
+    "expected": 1,
+    "observed": 1,
+    "basis": "Z",
+    "bell_bits": [
+      1,
+      1
+    ]
+  },
+  {
+    "index": 307,
+    "expected": 0,
+    "observed": 1,
+    "basis": "X",
+    "bell_bits": [
+      1,
+      0
+    ]
+  },
+  {
+    "index": 308,
+    "expected": 1,
+    "observed": 1,
+    "basis": "Z",
+    "bell_bits": [
+      0,
+      0
+    ]
+  },
+  {
+    "index": 309,
+    "expected": 1,
+    "observed": 1,
+    "basis": "Z",
+    "bell_bits": [
+      1,
+      0
+    ]
+  },
+  {
+    "index": 310,
+    "expected": 0,
+    "observed": 1,
+    "basis": "X",
+    "bell_bits": [
+      0,
+      1
+    ]
+  },
+  {
+    "index": 311,
+    "expected": 0,
+    "observed": 0,
+    "basis": "X",
+    "bell_bits": [
+      1,
+      1
+    ]
+  },
+  {
+    "index": 312,
+    "expected": 0,
+    "observed": 0,
+    "basis": "X",
+    "bell_bits": [
+      0,
+      0
+    ]
+  },
+  {
+    "index": 313,
+    "expected": 1,
+    "observed": 0,
+    "basis": "X",
+    "bell_bits": [
+      0,
+      1
+    ]
+  },
+  {
+    "index": 314,
+    "expected": 0,
+    "observed": 1,
+    "basis": "X",
+    "bell_bits": [
+      0,
+      0
+    ]
+  },
+  {
+    "index": 315,
+    "expected": 1,
+    "observed": 1,
+    "basis": "X",
+    "bell_bits": [
+      0,
+      0
+    ]
+  },
+  {
+    "index": 316,
+    "expected": 0,
+    "observed": 0,
+    "basis": "X",
+    "bell_bits": [
+      0,
+      1
+    ]
+  },
+  {
+    "index": 317,
+    "expected": 0,
+    "observed": 0,
+    "basis": "X",
+    "bell_bits": [
+      1,
+      0
+    ]
+  },
+  {
+    "index": 318,
+    "expected": 1,
+    "observed": 1,
+    "basis": "Z",
+    "bell_bits": [
+      1,
+      1
+    ]
+  },
+  {
+    "index": 319,
+    "expected": 1,
+    "observed": 1,
+    "basis": "Z",
+    "bell_bits": [
+      0,
+      1
+    ]
+  },
+  {
+    "index": 320,
+    "expected": 1,
+    "observed": 0,
+    "basis": "X",
+    "bell_bits": [
+      1,
+      0
+    ]
+  },
+  {
+    "index": 321,
+    "expected": 1,
+    "observed": 1,
+    "basis": "X",
+    "bell_bits": [
+      0,
+      1
+    ]
+  },
+  {
+    "index": 322,
+    "expected": 0,
+    "observed": 0,
+    "basis": "X",
+    "bell_bits": [
+      1,
+      0
+    ]
+  },
+  {
+    "index": 323,
+    "expected": 0,
+    "observed": 0,
+    "basis": "X",
+    "bell_bits": [
+      0,
+      1
+    ]
+  },
+  {
+    "index": 324,
+    "expected": 1,
+    "observed": 1,
+    "basis": "X",
+    "bell_bits": [
+      1,
+      0
+    ]
+  },
+  {
+    "index": 325,
+    "expected": 1,
+    "observed": 0,
+    "basis": "X",
+    "bell_bits": [
+      0,
+      0
+    ]
+  },
+  {
+    "index": 326,
+    "expected": 1,
+    "observed": 1,
+    "basis": "Z",
+    "bell_bits": [
+      1,
+      1
+    ]
+  },
+  {
+    "index": 327,
+    "expected": 1,
+    "observed": 1,
+    "basis": "Z",
+    "bell_bits": [
+      0,
+      1
+    ]
+  },
+  {
+    "index": 328,
+    "expected": 0,
+    "observed": 1,
+    "basis": "X",
+    "bell_bits": [
+      0,
+      1
+    ]
+  },
+  {
+    "index": 329,
+    "expected": 1,
+    "observed": 1,
+    "basis": "X",
+    "bell_bits": [
+      0,
+      0
+    ]
+  },
+  {
+    "index": 330,
+    "expected": 1,
+    "observed": 1,
+    "basis": "Z",
+    "bell_bits": [
+      1,
+      1
+    ]
+  },
+  {
+    "index": 331,
+    "expected": 1,
+    "observed": 1,
+    "basis": "X",
+    "bell_bits": [
+      0,
+      0
+    ]
+  },
+  {
+    "index": 332,
+    "expected": 1,
+    "observed": 1,
+    "basis": "Z",
+    "bell_bits": [
+      1,
+      0
+    ]
+  },
+  {
+    "index": 333,
+    "expected": 1,
+    "observed": 0,
+    "basis": "X",
+    "bell_bits": [
+      0,
+      0
+    ]
+  },
+  {
+    "index": 334,
+    "expected": 1,
+    "observed": 1,
+    "basis": "X",
+    "bell_bits": [
+      0,
+      1
+    ]
+  },
+  {
+    "index": 335,
+    "expected": 0,
+    "observed": 1,
+    "basis": "X",
+    "bell_bits": [
+      0,
+      0
+    ]
+  },
+  {
+    "index": 336,
+    "expected": 1,
+    "observed": 1,
+    "basis": "X",
+    "bell_bits": [
+      1,
+      0
+    ]
+  },
+  {
+    "index": 337,
+    "expected": 0,
+    "observed": 0,
+    "basis": "X",
+    "bell_bits": [
+      1,
+      0
+    ]
+  },
+  {
+    "index": 338,
+    "expected": 1,
+    "observed": 0,
+    "basis": "X",
+    "bell_bits": [
+      1,
+      0
+    ]
+  },
+  {
+    "index": 339,
+    "expected": 0,
+    "observed": 1,
+    "basis": "Z",
+    "bell_bits": [
+      0,
+      1
+    ]
+  },
+  {
+    "index": 340,
+    "expected": 1,
+    "observed": 0,
+    "basis": "Z",
+    "bell_bits": [
+      1,
+      0
+    ]
+  },
+  {
+    "index": 341,
+    "expected": 0,
+    "observed": 0,
+    "basis": "X",
+    "bell_bits": [
+      1,
+      0
+    ]
+  },
+  {
+    "index": 342,
+    "expected": 0,
+    "observed": 1,
+    "basis": "X",
+    "bell_bits": [
+      0,
+      1
+    ]
+  },
+  {
+    "index": 343,
+    "expected": 0,
+    "observed": 1,
+    "basis": "Z",
+    "bell_bits": [
+      1,
+      0
+    ]
+  },
+  {
+    "index": 344,
+    "expected": 0,
+    "observed": 1,
+    "basis": "Z",
+    "bell_bits": [
+      1,
+      1
+    ]
+  },
+  {
+    "index": 345,
+    "expected": 1,
+    "observed": 1,
+    "basis": "X",
+    "bell_bits": [
+      0,
+      1
+    ]
+  },
+  {
+    "index": 346,
+    "expected": 0,
+    "observed": 1,
+    "basis": "Z",
+    "bell_bits": [
+      1,
+      1
+    ]
+  },
+  {
+    "index": 347,
+    "expected": 1,
+    "observed": 0,
+    "basis": "X",
+    "bell_bits": [
+      0,
+      0
+    ]
+  },
+  {
+    "index": 348,
+    "expected": 1,
+    "observed": 1,
+    "basis": "Z",
+    "bell_bits": [
+      0,
+      0
+    ]
+  },
+  {
+    "index": 349,
+    "expected": 0,
+    "observed": 0,
+    "basis": "X",
+    "bell_bits": [
+      0,
+      1
+    ]
+  },
+  {
+    "index": 350,
+    "expected": 0,
+    "observed": 0,
+    "basis": "Z",
+    "bell_bits": [
+      0,
+      1
+    ]
+  },
+  {
+    "index": 351,
+    "expected": 0,
+    "observed": 0,
+    "basis": "Z",
+    "bell_bits": [
+      1,
+      1
+    ]
+  },
+  {
+    "index": 352,
+    "expected": 0,
+    "observed": 0,
+    "basis": "Z",
+    "bell_bits": [
+      0,
+      0
+    ]
+  },
+  {
+    "index": 353,
+    "expected": 0,
+    "observed": 0,
+    "basis": "X",
+    "bell_bits": [
+      0,
+      1
+    ]
+  },
+  {
+    "index": 354,
+    "expected": 1,
+    "observed": 1,
+    "basis": "X",
+    "bell_bits": [
+      1,
+      1
+    ]
+  },
+  {
+    "index": 355,
+    "expected": 1,
+    "observed": 1,
+    "basis": "X",
+    "bell_bits": [
+      1,
+      0
+    ]
+  },
+  {
+    "index": 356,
+    "expected": 1,
+    "observed": 1,
+    "basis": "X",
+    "bell_bits": [
+      0,
+      1
+    ]
+  },
+  {
+    "index": 357,
+    "expected": 1,
+    "observed": 1,
+    "basis": "Z",
+    "bell_bits": [
+      1,
+      1
+    ]
+  },
+  {
+    "index": 358,
+    "expected": 0,
+    "observed": 1,
+    "basis": "X",
+    "bell_bits": [
+      0,
+      0
+    ]
+  },
+  {
+    "index": 359,
+    "expected": 1,
+    "observed": 1,
+    "basis": "X",
+    "bell_bits": [
+      0,
+      0
+    ]
+  },
+  {
+    "index": 360,
+    "expected": 0,
+    "observed": 0,
+    "basis": "X",
+    "bell_bits": [
+      0,
+      0
+    ]
+  },
+  {
+    "index": 361,
+    "expected": 1,
+    "observed": 1,
+    "basis": "Z",
+    "bell_bits": [
+      0,
+      0
+    ]
+  },
+  {
+    "index": 362,
+    "expected": 0,
+    "observed": 0,
+    "basis": "X",
+    "bell_bits": [
+      0,
+      1
+    ]
+  },
+  {
+    "index": 363,
+    "expected": 1,
+    "observed": 1,
+    "basis": "X",
+    "bell_bits": [
+      1,
+      0
+    ]
+  },
+  {
+    "index": 364,
+    "expected": 0,
+    "observed": 0,
+    "basis": "Z",
+    "bell_bits": [
+      1,
+      0
+    ]
+  },
+  {
+    "index": 365,
+    "expected": 0,
+    "observed": 0,
+    "basis": "X",
+    "bell_bits": [
+      0,
+      0
+    ]
+  },
+  {
+    "index": 366,
+    "expected": 0,
+    "observed": 0,
+    "basis": "Z",
+    "bell_bits": [
+      0,
+      1
+    ]
+  },
+  {
+    "index": 367,
+    "expected": 0,
+    "observed": 1,
+    "basis": "X",
+    "bell_bits": [
+      1,
+      0
+    ]
+  },
+  {
+    "index": 368,
+    "expected": 1,
+    "observed": 1,
+    "basis": "Z",
+    "bell_bits": [
+      0,
+      0
+    ]
+  },
+  {
+    "index": 369,
+    "expected": 0,
+    "observed": 0,
+    "basis": "X",
+    "bell_bits": [
+      0,
+      0
+    ]
+  },
+  {
+    "index": 370,
+    "expected": 1,
+    "observed": 1,
+    "basis": "X",
+    "bell_bits": [
+      1,
+      1
+    ]
+  },
+  {
+    "index": 371,
+    "expected": 1,
+    "observed": 1,
+    "basis": "Z",
+    "bell_bits": [
+      1,
+      1
+    ]
+  },
+  {
+    "index": 372,
+    "expected": 0,
+    "observed": 0,
+    "basis": "X",
+    "bell_bits": [
+      0,
+      0
+    ]
+  },
+  {
+    "index": 373,
+    "expected": 1,
+    "observed": 1,
+    "basis": "X",
+    "bell_bits": [
+      1,
+      1
+    ]
+  },
+  {
+    "index": 374,
+    "expected": 0,
+    "observed": 0,
+    "basis": "X",
+    "bell_bits": [
+      0,
+      1
+    ]
+  },
+  {
+    "index": 375,
+    "expected": 1,
+    "observed": 1,
+    "basis": "Z",
+    "bell_bits": [
+      0,
+      0
+    ]
+  },
+  {
+    "index": 376,
+    "expected": 0,
+    "observed": 0,
+    "basis": "X",
+    "bell_bits": [
+      1,
+      0
+    ]
+  },
+  {
+    "index": 377,
+    "expected": 0,
+    "observed": 1,
+    "basis": "Z",
+    "bell_bits": [
+      0,
+      0
+    ]
+  },
+  {
+    "index": 378,
+    "expected": 0,
+    "observed": 0,
+    "basis": "X",
+    "bell_bits": [
+      1,
+      0
+    ]
+  },
+  {
+    "index": 379,
+    "expected": 0,
+    "observed": 0,
+    "basis": "Z",
+    "bell_bits": [
+      1,
+      1
+    ]
+  },
+  {
+    "index": 380,
+    "expected": 1,
+    "observed": 0,
+    "basis": "X",
+    "bell_bits": [
+      0,
+      0
+    ]
+  },
+  {
+    "index": 381,
+    "expected": 1,
+    "observed": 1,
+    "basis": "X",
+    "bell_bits": [
+      0,
+      1
+    ]
+  },
+  {
+    "index": 382,
+    "expected": 0,
+    "observed": 0,
+    "basis": "Z",
+    "bell_bits": [
+      1,
+      1
+    ]
+  },
+  {
+    "index": 383,
+    "expected": 0,
+    "observed": 0,
+    "basis": "X",
+    "bell_bits": [
+      1,
+      1
+    ]
+  },
+  {
+    "index": 384,
+    "expected": 1,
+    "observed": 1,
+    "basis": "X",
+    "bell_bits": [
+      0,
+      0
+    ]
+  },
+  {
+    "index": 385,
+    "expected": 0,
+    "observed": 0,
+    "basis": "X",
+    "bell_bits": [
+      0,
+      1
+    ]
+  },
+  {
+    "index": 386,
+    "expected": 0,
+    "observed": 1,
+    "basis": "Z",
+    "bell_bits": [
+      0,
+      0
+    ]
+  },
+  {
+    "index": 387,
+    "expected": 0,
+    "observed": 0,
+    "basis": "X",
+    "bell_bits": [
+      1,
+      1
+    ]
+  },
+  {
+    "index": 388,
+    "expected": 1,
+    "observed": 1,
+    "basis": "X",
+    "bell_bits": [
+      1,
+      0
+    ]
+  },
+  {
+    "index": 389,
+    "expected": 1,
+    "observed": 1,
+    "basis": "Z",
+    "bell_bits": [
+      0,
+      1
+    ]
+  },
+  {
+    "index": 390,
+    "expected": 0,
+    "observed": 0,
+    "basis": "X",
+    "bell_bits": [
+      1,
+      1
+    ]
+  },
+  {
+    "index": 391,
+    "expected": 0,
+    "observed": 0,
+    "basis": "X",
+    "bell_bits": [
+      1,
+      1
+    ]
+  },
+  {
+    "index": 392,
+    "expected": 0,
+    "observed": 0,
+    "basis": "Z",
+    "bell_bits": [
+      1,
+      1
+    ]
+  },
+  {
+    "index": 393,
+    "expected": 0,
+    "observed": 0,
+    "basis": "Z",
+    "bell_bits": [
+      0,
+      0
+    ]
+  },
+  {
+    "index": 394,
+    "expected": 1,
+    "observed": 1,
+    "basis": "Z",
+    "bell_bits": [
+      1,
+      0
+    ]
+  },
+  {
+    "index": 395,
+    "expected": 1,
+    "observed": 0,
+    "basis": "Z",
+    "bell_bits": [
+      0,
+      0
+    ]
+  },
+  {
+    "index": 396,
+    "expected": 1,
+    "observed": 0,
+    "basis": "X",
+    "bell_bits": [
+      0,
+      0
+    ]
+  },
+  {
+    "index": 397,
+    "expected": 1,
+    "observed": 1,
+    "basis": "X",
+    "bell_bits": [
+      1,
+      0
+    ]
+  },
+  {
+    "index": 398,
+    "expected": 1,
+    "observed": 0,
+    "basis": "X",
+    "bell_bits": [
+      1,
+      0
+    ]
+  },
+  {
+    "index": 399,
+    "expected": 1,
+    "observed": 1,
+    "basis": "Z",
+    "bell_bits": [
+      0,
+      1
+    ]
+  },
+  {
+    "index": 400,
+    "expected": 0,
+    "observed": 0,
+    "basis": "X",
+    "bell_bits": [
+      1,
+      0
+    ]
+  },
+  {
+    "index": 401,
+    "expected": 0,
+    "observed": 0,
+    "basis": "Z",
+    "bell_bits": [
+      1,
+      1
+    ]
+  },
+  {
+    "index": 402,
+    "expected": 0,
+    "observed": 0,
+    "basis": "Z",
+    "bell_bits": [
+      1,
+      1
+    ]
+  },
+  {
+    "index": 403,
+    "expected": 0,
+    "observed": 0,
+    "basis": "Z",
+    "bell_bits": [
+      1,
+      0
+    ]
+  },
+  {
+    "index": 404,
+    "expected": 1,
+    "observed": 1,
+    "basis": "Z",
+    "bell_bits": [
+      0,
+      0
+    ]
+  },
+  {
+    "index": 405,
+    "expected": 0,
+    "observed": 0,
+    "basis": "X",
+    "bell_bits": [
+      1,
+      0
+    ]
+  },
+  {
+    "index": 406,
+    "expected": 1,
+    "observed": 1,
+    "basis": "Z",
+    "bell_bits": [
+      1,
+      0
+    ]
+  },
+  {
+    "index": 407,
+    "expected": 1,
+    "observed": 1,
+    "basis": "Z",
+    "bell_bits": [
+      0,
+      1
+    ]
+  },
+  {
+    "index": 408,
+    "expected": 1,
+    "observed": 1,
+    "basis": "X",
+    "bell_bits": [
+      0,
+      0
+    ]
+  },
+  {
+    "index": 409,
+    "expected": 0,
+    "observed": 1,
+    "basis": "X",
+    "bell_bits": [
+      1,
+      0
+    ]
+  },
+  {
+    "index": 410,
+    "expected": 1,
+    "observed": 1,
+    "basis": "Z",
+    "bell_bits": [
+      0,
+      0
+    ]
+  },
+  {
+    "index": 411,
+    "expected": 0,
+    "observed": 0,
+    "basis": "X",
+    "bell_bits": [
+      1,
+      1
+    ]
+  },
+  {
+    "index": 412,
+    "expected": 0,
+    "observed": 0,
+    "basis": "X",
+    "bell_bits": [
+      0,
+      1
+    ]
+  },
+  {
+    "index": 413,
+    "expected": 1,
+    "observed": 0,
+    "basis": "Z",
+    "bell_bits": [
+      0,
+      0
+    ]
+  },
+  {
+    "index": 414,
+    "expected": 0,
+    "observed": 0,
+    "basis": "Z",
+    "bell_bits": [
+      0,
+      0
+    ]
+  },
+  {
+    "index": 415,
+    "expected": 0,
+    "observed": 1,
+    "basis": "X",
+    "bell_bits": [
+      0,
+      1
+    ]
+  },
+  {
+    "index": 416,
+    "expected": 1,
+    "observed": 0,
+    "basis": "X",
+    "bell_bits": [
+      0,
+      1
+    ]
+  },
+  {
+    "index": 417,
+    "expected": 0,
+    "observed": 0,
+    "basis": "Z",
+    "bell_bits": [
+      1,
+      0
+    ]
+  },
+  {
+    "index": 418,
+    "expected": 1,
+    "observed": 1,
+    "basis": "Z",
+    "bell_bits": [
+      1,
+      1
+    ]
+  },
+  {
+    "index": 419,
+    "expected": 1,
+    "observed": 0,
+    "basis": "Z",
+    "bell_bits": [
+      1,
+      0
+    ]
+  },
+  {
+    "index": 420,
+    "expected": 1,
+    "observed": 1,
+    "basis": "X",
+    "bell_bits": [
+      1,
+      1
+    ]
+  },
+  {
+    "index": 421,
+    "expected": 0,
+    "observed": 1,
+    "basis": "X",
+    "bell_bits": [
+      0,
+      0
+    ]
+  },
+  {
+    "index": 422,
+    "expected": 1,
+    "observed": 1,
+    "basis": "Z",
+    "bell_bits": [
+      1,
+      1
+    ]
+  },
+  {
+    "index": 423,
+    "expected": 0,
+    "observed": 1,
+    "basis": "Z",
+    "bell_bits": [
+      1,
+      1
+    ]
+  },
+  {
+    "index": 424,
+    "expected": 0,
+    "observed": 0,
+    "basis": "Z",
+    "bell_bits": [
+      1,
+      1
+    ]
+  },
+  {
+    "index": 425,
+    "expected": 1,
+    "observed": 1,
+    "basis": "Z",
+    "bell_bits": [
+      0,
+      1
+    ]
+  },
+  {
+    "index": 426,
+    "expected": 0,
+    "observed": 0,
+    "basis": "Z",
+    "bell_bits": [
+      1,
+      1
+    ]
+  },
+  {
+    "index": 427,
+    "expected": 1,
+    "observed": 1,
+    "basis": "X",
+    "bell_bits": [
+      0,
+      0
+    ]
+  },
+  {
+    "index": 428,
+    "expected": 0,
+    "observed": 0,
+    "basis": "X",
+    "bell_bits": [
+      0,
+      1
+    ]
+  },
+  {
+    "index": 429,
+    "expected": 0,
+    "observed": 0,
+    "basis": "X",
+    "bell_bits": [
+      1,
+      1
+    ]
+  },
+  {
+    "index": 430,
+    "expected": 0,
+    "observed": 0,
+    "basis": "Z",
+    "bell_bits": [
+      0,
+      1
+    ]
+  },
+  {
+    "index": 431,
+    "expected": 1,
+    "observed": 0,
+    "basis": "X",
+    "bell_bits": [
+      0,
+      0
+    ]
+  },
+  {
+    "index": 432,
+    "expected": 0,
+    "observed": 0,
+    "basis": "Z",
+    "bell_bits": [
+      1,
+      0
+    ]
+  },
+  {
+    "index": 433,
+    "expected": 0,
+    "observed": 1,
+    "basis": "X",
+    "bell_bits": [
+      1,
+      0
+    ]
+  },
+  {
+    "index": 434,
+    "expected": 1,
+    "observed": 0,
+    "basis": "X",
+    "bell_bits": [
+      1,
+      0
+    ]
+  },
+  {
+    "index": 435,
+    "expected": 0,
+    "observed": 0,
+    "basis": "Z",
+    "bell_bits": [
+      0,
+      1
+    ]
+  },
+  {
+    "index": 436,
+    "expected": 1,
+    "observed": 1,
+    "basis": "Z",
+    "bell_bits": [
+      0,
+      0
+    ]
+  },
+  {
+    "index": 437,
+    "expected": 0,
+    "observed": 0,
+    "basis": "Z",
+    "bell_bits": [
+      0,
+      1
+    ]
+  },
+  {
+    "index": 438,
+    "expected": 1,
+    "observed": 1,
+    "basis": "Z",
+    "bell_bits": [
+      0,
+      1
+    ]
+  },
+  {
+    "index": 439,
+    "expected": 0,
+    "observed": 0,
+    "basis": "X",
+    "bell_bits": [
+      1,
+      0
+    ]
+  },
+  {
+    "index": 440,
+    "expected": 1,
+    "observed": 1,
+    "basis": "X",
+    "bell_bits": [
+      1,
+      1
+    ]
+  },
+  {
+    "index": 441,
+    "expected": 1,
+    "observed": 1,
+    "basis": "Z",
+    "bell_bits": [
+      1,
+      0
+    ]
+  },
+  {
+    "index": 442,
+    "expected": 1,
+    "observed": 1,
+    "basis": "X",
+    "bell_bits": [
+      1,
+      0
+    ]
+  },
+  {
+    "index": 443,
+    "expected": 1,
+    "observed": 0,
+    "basis": "Z",
+    "bell_bits": [
+      1,
+      1
+    ]
+  },
+  {
+    "index": 444,
+    "expected": 0,
+    "observed": 0,
+    "basis": "Z",
+    "bell_bits": [
+      1,
+      0
+    ]
+  },
+  {
+    "index": 445,
+    "expected": 1,
+    "observed": 1,
+    "basis": "X",
+    "bell_bits": [
+      1,
+      0
+    ]
+  },
+  {
+    "index": 446,
+    "expected": 0,
+    "observed": 0,
+    "basis": "X",
+    "bell_bits": [
+      0,
+      1
+    ]
+  },
+  {
+    "index": 447,
+    "expected": 1,
+    "observed": 0,
+    "basis": "Z",
+    "bell_bits": [
+      0,
+      0
+    ]
+  },
+  {
+    "index": 448,
+    "expected": 1,
+    "observed": 1,
+    "basis": "X",
+    "bell_bits": [
+      1,
+      0
+    ]
+  },
+  {
+    "index": 449,
+    "expected": 0,
+    "observed": 0,
+    "basis": "X",
+    "bell_bits": [
+      0,
+      1
+    ]
+  },
+  {
+    "index": 450,
+    "expected": 0,
+    "observed": 1,
+    "basis": "Z",
+    "bell_bits": [
+      1,
+      0
+    ]
+  },
+  {
+    "index": 451,
+    "expected": 1,
+    "observed": 1,
+    "basis": "X",
+    "bell_bits": [
+      0,
+      1
+    ]
+  },
+  {
+    "index": 452,
+    "expected": 0,
+    "observed": 0,
+    "basis": "Z",
+    "bell_bits": [
+      0,
+      1
+    ]
+  },
+  {
+    "index": 453,
+    "expected": 0,
+    "observed": 0,
+    "basis": "Z",
+    "bell_bits": [
+      1,
+      0
+    ]
+  },
+  {
+    "index": 454,
+    "expected": 1,
+    "observed": 1,
+    "basis": "Z",
+    "bell_bits": [
+      0,
+      1
+    ]
+  },
+  {
+    "index": 455,
+    "expected": 0,
+    "observed": 0,
+    "basis": "X",
+    "bell_bits": [
+      1,
+      0
+    ]
+  },
+  {
+    "index": 456,
+    "expected": 0,
+    "observed": 1,
+    "basis": "X",
+    "bell_bits": [
+      0,
+      0
+    ]
+  },
+  {
+    "index": 457,
+    "expected": 1,
+    "observed": 1,
+    "basis": "X",
+    "bell_bits": [
+      1,
+      0
+    ]
+  },
+  {
+    "index": 458,
+    "expected": 1,
+    "observed": 1,
+    "basis": "Z",
+    "bell_bits": [
+      0,
+      1
+    ]
+  },
+  {
+    "index": 459,
+    "expected": 0,
+    "observed": 0,
+    "basis": "Z",
+    "bell_bits": [
+      1,
+      0
+    ]
+  },
+  {
+    "index": 460,
+    "expected": 0,
+    "observed": 0,
+    "basis": "X",
+    "bell_bits": [
+      1,
+      1
+    ]
+  },
+  {
+    "index": 461,
+    "expected": 1,
+    "observed": 1,
+    "basis": "X",
+    "bell_bits": [
+      1,
+      0
+    ]
+  },
+  {
+    "index": 462,
+    "expected": 1,
+    "observed": 0,
+    "basis": "Z",
+    "bell_bits": [
+      1,
+      0
+    ]
+  },
+  {
+    "index": 463,
+    "expected": 0,
+    "observed": 0,
+    "basis": "Z",
+    "bell_bits": [
+      1,
+      0
+    ]
+  },
+  {
+    "index": 464,
+    "expected": 0,
+    "observed": 0,
+    "basis": "Z",
+    "bell_bits": [
+      0,
+      0
+    ]
+  },
+  {
+    "index": 465,
+    "expected": 0,
+    "observed": 0,
+    "basis": "Z",
+    "bell_bits": [
+      1,
+      1
+    ]
+  },
+  {
+    "index": 466,
+    "expected": 1,
+    "observed": 0,
+    "basis": "Z",
+    "bell_bits": [
+      0,
+      1
+    ]
+  },
+  {
+    "index": 467,
+    "expected": 1,
+    "observed": 1,
+    "basis": "X",
+    "bell_bits": [
+      0,
+      0
+    ]
+  },
+  {
+    "index": 468,
+    "expected": 0,
+    "observed": 0,
+    "basis": "X",
+    "bell_bits": [
+      1,
+      0
+    ]
+  },
+  {
+    "index": 469,
+    "expected": 0,
+    "observed": 0,
+    "basis": "Z",
+    "bell_bits": [
+      0,
+      0
+    ]
+  },
+  {
+    "index": 470,
+    "expected": 1,
+    "observed": 1,
+    "basis": "Z",
+    "bell_bits": [
+      1,
+      0
+    ]
+  },
+  {
+    "index": 471,
+    "expected": 0,
+    "observed": 1,
+    "basis": "Z",
+    "bell_bits": [
+      0,
+      0
+    ]
+  },
+  {
+    "index": 472,
+    "expected": 0,
+    "observed": 1,
+    "basis": "X",
+    "bell_bits": [
+      0,
+      0
+    ]
+  },
+  {
+    "index": 473,
+    "expected": 0,
+    "observed": 0,
+    "basis": "X",
+    "bell_bits": [
+      0,
+      1
+    ]
+  },
+  {
+    "index": 474,
+    "expected": 1,
+    "observed": 0,
+    "basis": "X",
+    "bell_bits": [
+      1,
+      0
+    ]
+  },
+  {
+    "index": 475,
+    "expected": 1,
+    "observed": 1,
+    "basis": "X",
+    "bell_bits": [
+      0,
+      0
+    ]
+  },
+  {
+    "index": 476,
+    "expected": 1,
+    "observed": 1,
+    "basis": "Z",
+    "bell_bits": [
+      0,
+      1
+    ]
+  },
+  {
+    "index": 477,
+    "expected": 1,
+    "observed": 0,
+    "basis": "X",
+    "bell_bits": [
+      0,
+      0
+    ]
+  },
+  {
+    "index": 478,
+    "expected": 0,
+    "observed": 1,
+    "basis": "X",
+    "bell_bits": [
+      1,
+      1
+    ]
+  },
+  {
+    "index": 479,
+    "expected": 0,
+    "observed": 1,
+    "basis": "Z",
+    "bell_bits": [
+      0,
+      0
+    ]
+  },
+  {
+    "index": 480,
+    "expected": 1,
+    "observed": 1,
+    "basis": "Z",
+    "bell_bits": [
+      0,
+      0
+    ]
+  },
+  {
+    "index": 481,
+    "expected": 0,
+    "observed": 1,
+    "basis": "Z",
+    "bell_bits": [
+      0,
+      1
+    ]
+  },
+  {
+    "index": 482,
+    "expected": 0,
+    "observed": 0,
+    "basis": "X",
+    "bell_bits": [
+      1,
+      1
+    ]
+  },
+  {
+    "index": 483,
+    "expected": 1,
+    "observed": 0,
+    "basis": "Z",
+    "bell_bits": [
+      1,
+      0
+    ]
+  },
+  {
+    "index": 484,
+    "expected": 0,
+    "observed": 0,
+    "basis": "X",
+    "bell_bits": [
+      1,
+      1
+    ]
+  },
+  {
+    "index": 485,
+    "expected": 1,
+    "observed": 0,
+    "basis": "Z",
+    "bell_bits": [
+      1,
+      1
+    ]
+  },
+  {
+    "index": 486,
+    "expected": 0,
+    "observed": 1,
+    "basis": "Z",
+    "bell_bits": [
+      1,
+      0
+    ]
+  },
+  {
+    "index": 487,
+    "expected": 1,
+    "observed": 1,
+    "basis": "Z",
+    "bell_bits": [
+      1,
+      0
+    ]
+  },
+  {
+    "index": 488,
+    "expected": 0,
+    "observed": 0,
+    "basis": "X",
+    "bell_bits": [
+      0,
+      1
+    ]
+  },
+  {
+    "index": 489,
+    "expected": 0,
+    "observed": 0,
+    "basis": "X",
+    "bell_bits": [
+      1,
+      0
+    ]
+  },
+  {
+    "index": 490,
+    "expected": 0,
+    "observed": 0,
+    "basis": "Z",
+    "bell_bits": [
+      0,
+      1
+    ]
+  },
+  {
+    "index": 491,
+    "expected": 0,
+    "observed": 0,
+    "basis": "Z",
+    "bell_bits": [
+      0,
+      0
+    ]
+  },
+  {
+    "index": 492,
+    "expected": 1,
+    "observed": 1,
+    "basis": "X",
+    "bell_bits": [
+      0,
+      1
+    ]
+  },
+  {
+    "index": 493,
+    "expected": 1,
+    "observed": 1,
+    "basis": "Z",
+    "bell_bits": [
+      1,
+      0
+    ]
+  },
+  {
+    "index": 494,
+    "expected": 0,
+    "observed": 0,
+    "basis": "X",
+    "bell_bits": [
+      0,
+      0
+    ]
+  },
+  {
+    "index": 495,
+    "expected": 1,
+    "observed": 1,
+    "basis": "Z",
+    "bell_bits": [
+      1,
+      0
+    ]
+  },
+  {
+    "index": 496,
+    "expected": 1,
+    "observed": 1,
+    "basis": "X",
+    "bell_bits": [
+      1,
+      0
+    ]
+  },
+  {
+    "index": 497,
+    "expected": 0,
+    "observed": 0,
+    "basis": "X",
+    "bell_bits": [
+      1,
+      1
+    ]
+  },
+  {
+    "index": 498,
+    "expected": 0,
+    "observed": 1,
+    "basis": "Z",
+    "bell_bits": [
+      1,
+      1
+    ]
+  },
+  {
+    "index": 499,
+    "expected": 0,
+    "observed": 0,
+    "basis": "Z",
+    "bell_bits": [
+      0,
+      1
+    ]
+  },
+  {
+    "index": 500,
+    "expected": 1,
+    "observed": 1,
+    "basis": "Z",
+    "bell_bits": [
+      0,
+      1
+    ]
+  },
+  {
+    "index": 501,
+    "expected": 0,
+    "observed": 0,
+    "basis": "X",
+    "bell_bits": [
+      1,
+      0
+    ]
+  },
+  {
+    "index": 502,
+    "expected": 0,
+    "observed": 0,
+    "basis": "X",
+    "bell_bits": [
+      0,
+      1
+    ]
+  },
+  {
+    "index": 503,
+    "expected": 1,
+    "observed": 1,
+    "basis": "Z",
+    "bell_bits": [
+      1,
+      0
+    ]
+  },
+  {
+    "index": 504,
+    "expected": 1,
+    "observed": 1,
+    "basis": "Z",
+    "bell_bits": [
+      1,
+      0
+    ]
+  },
+  {
+    "index": 505,
+    "expected": 1,
+    "observed": 0,
+    "basis": "X",
+    "bell_bits": [
+      0,
+      0
+    ]
+  },
+  {
+    "index": 506,
+    "expected": 0,
+    "observed": 0,
+    "basis": "Z",
+    "bell_bits": [
+      0,
+      0
+    ]
+  },
+  {
+    "index": 507,
+    "expected": 0,
+    "observed": 0,
+    "basis": "X",
+    "bell_bits": [
+      1,
+      1
+    ]
+  },
+  {
+    "index": 508,
+    "expected": 1,
+    "observed": 1,
+    "basis": "Z",
+    "bell_bits": [
+      1,
+      0
+    ]
+  },
+  {
+    "index": 509,
+    "expected": 0,
+    "observed": 0,
+    "basis": "X",
+    "bell_bits": [
+      1,
+      1
+    ]
+  },
+  {
+    "index": 510,
+    "expected": 0,
+    "observed": 0,
+    "basis": "Z",
+    "bell_bits": [
+      1,
+      1
+    ]
+  },
+  {
+    "index": 511,
+    "expected": 0,
+    "observed": 0,
+    "basis": "Z",
+    "bell_bits": [
+      0,
+      0
+    ]
+  }
+]

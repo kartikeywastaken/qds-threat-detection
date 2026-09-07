@@ -1,0 +1,119 @@
+..Independent fixed-sample design: {'n': 96, 'cutoff': 11, 'fpr_under_h0': 0.008554410989767504, 'fnr_under_h1': 0.009327624270688607}
+.Bell statevector: [0.70710678+0.j 0.        +0.j 0.        +0.j 0.70710678+0.j] calibrated coherence: (0.4930797069736468+1.094856887315136e-16j)
+..IBM calibration: {'backend': 'fake_manila', 'last_update': '2024-05-27 15:27:23-03:00', 'qubits': [{'t1': 0.0001315286444531517, 't2': 0.00010220390054827382, 'readout_error': 0.0353}, {'t1': 0.0001245355048790508, 't2': 7.901470497124719e-05, 'readout_error': 0.02190000000000003}, {'t1': 0.00015861523746775648, 't2': 2.5150897893938303e-05, 'readout_error': 0.09640000000000004}, {'t1': 0.00017910281957277216, 't2': 5.436101156476186e-05, 'readout_error': 0.014399999999999968}, {'t1': 0.00014467316223194067, 't2': 4.033233257275118e-05, 'readout_error': 0.01859999999999995}]}
+..CHSH S at dephasing 0,.5,1: [2.802685476570609, 2.1165948616761896, 1.2998581319594409]
+.Coherent QBER: 0.3515625
+.Collective QBER: 0.25390625 joint probe samples: 256
+.CV photons, before/after loss: [0.27154031740762197, 0.27154031740762197] [0.27154031740762197, 0.13577015870381093]
+..HTTP demo: {'http_status': 200, 'decision': 'REJECT', 'qber': 0.2421875, 'attribution': 'forgery', 'log_events': 2, 'replay_attribution': 'replay', 'log': 'events.jsonl', 'payload': 'signature_payload.json'}
+....100% intercept-resend QBER: 0.2506103515625
+.Honest/attack: ACCEPT 0.001953125 REJECT 0.27734375
+....Forgery bounds n=8,16,32,64: [0.055039949867562984, 0.0030302860025241112, 1.017657368508851e-05, 1.0000842095045978e-06]
+......forgery => forgery ['quantum_mismatch']
+impersonation => impersonation ['unknown_sender']
+replay => replay ['repeated_nonce']
+channel_manipulation => channel_manipulation ['invalid_authentication']
+.Measured honest calibration: {'p0': 0.024308976201419544, 'p1': 0.17430897620141955, 'observed_qber': 0.0101318359375, 'errors': 83, 'shots': 8192, 'confidence_upper': 0.014308976201419542, 'guard_margin': 0.01, 'seed': 313}
+..Noiseless signature mismatches: 0 / 128
+.SPRT computed rejection: 5.964974093607941 after 6 rounds
+.Teleportation fidelity at exposure 0,.5,1: [0.999999999999999, 0.9748881610425785, 0.9427744996625028]
+.Real HTTP status/report: 200 ACCEPT 0.005859375
+.Restricted probe success / bound: 0.2353515625 0.4953515488080669
+..
+=============================== warnings summary ===============================
+.venv/lib/python3.12/site-packages/strawberryfields/apps/data/sample.py:20
+  /Users/kartik/Documents/ChatGPT/DPM/qds-threat-detection/.venv/lib/python3.12/site-packages/strawberryfields/apps/data/sample.py:20: UserWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html. The pkg_resources package is slated for removal as early as 2025-11-30. Refrain from using this package or pin to Setuptools<81.
+
+.venv/lib/python3.12/site-packages/lark/utils.py:163
+  /Users/kartik/Documents/ChatGPT/DPM/qds-threat-detection/.venv/lib/python3.12/site-packages/lark/utils.py:163: DeprecationWarning: module 'sre_parse' is deprecated
+
+.venv/lib/python3.12/site-packages/lark/utils.py:164
+  /Users/kartik/Documents/ChatGPT/DPM/qds-threat-detection/.venv/lib/python3.12/site-packages/lark/utils.py:164: DeprecationWarning: module 'sre_constants' is deprecated
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+36 passed, 3 warnings in 6.89s
+
+/Users/kartik/Documents/ChatGPT/DPM/qds-threat-detection/.venv/lib/python3.12/site-packages/strawberryfields/apps/data/sample.py:20: UserWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html. The pkg_resources package is slated for removal as early as 2025-11-30. Refrain from using this package or pin to Setuptools<81.
+  import pkg_resources
+Running anti-faking gate FIRST
+A1 {'pass': True, 'accepts': 50, 'runs': 50, 'qber_min': 0.0, 'qber_max': 0.015625, 'qber_std': 0.0031832941768561466}
+A2 {'pass': True, 'mean_s': 2.775161569671502, 'std_s': 0.030704707012915354, 'values': [2.8085255680270897, 2.8000073609622813, 2.7678443828702495, 2.7299931908025186, 2.7877761295628307, 2.7662833425118243, 2.7905198012910026, 2.7594875921136657, 2.7563074807865986, 2.749957700034505, 2.7893472761739293, 2.786830139902955, 2.83698322738187, 2.7665441921815273, 2.7178249284124414, 2.7400521207862703, 2.8002789059362554, 2.7961902617593584, 2.818024292486059, 2.734453499446812]}
+A3 {'pass': True, 'hits': []}
+A4 {'pass': True, 'hits': []}
+A5 {'pass': True, 'main_fpr': 0.0, 'stress_fixed_qber_threshold': 0.0081787109375, 'stress_fpr': 0.3, 'note': 'Zero observed false positives is valid; an intentionally sensitive fixed threshold demonstrates stochastic false alarms.'}
+B1 {'pass': True, 'n': [8, 16, 32, 64], 'bounds': [0.055039949867562984, 0.0030302860025241112, 1.017657368508851e-05, 1.0000842095045978e-06], 'plot': 'min_entropy.png'}
+B2 {'pass': True, 'statevector_real': [0.7071067811865475, 0.0, 0.0, 0.7071067811865475], 'max_imaginary': 0.0, 'coherences': [0.5, 0.49653926661579834, 0.4930797069736468]}
+B3 {'pass': True, 'exposure': [0, 0.5, 1], 'fidelities': [0.999999999999999, 0.9748881610425785, 0.9427744996625028]}
+B4 {'pass': True, 'qber': 0.2506103515625, 'n': 8192}
+B5 {'pass': True, 'strong_mean_rounds': 11.75, 'weak_mean_rounds': 66.95, 'strong_rejects': 20, 'runs': 20, 'fixed': {'n': 73, 'cutoff': 6, 'fpr_under_h0': 0.005483753685403119, 'fnr_under_h1': 0.008850836796742843}, 'note': 'Comparison covers iid token mismatch hypotheses, excluding CHSH overhead and correlated attacks.'}
+B6 {'pass': True, 'observations': [{'severity': 0, 's': 2.797545548354762}, {'severity': 0.25, 's': 2.385646927392504}, {'severity': 0.5, 's': 2.053022369472955}, {'severity': 0.75, 's': 1.7182853302391323}, {'severity': 1, 's': 1.3634327182796402}], 'note': 'Honest optimal settings give S=√2 after full Z dephasing, below the classical bound 2.'}
+B7 {'pass': True, 'confusion_matrix': {'forgery': {'forgery': 20}, 'impersonation': {'impersonation': 20}, 'replay': {'replay': 20}, 'channel_manipulation': {'channel_manipulation': 20}}, 'runs_per_class': 20}
+C3 {'pass': False, 'restricted_experiment_pass': True, 'reason': 'The requested universal guarantee across coherent/classical attacks is not established. Nontrivial bound assumes independent pure probes; finite proportions are not guaranteed never to exceed probability bounds.'}
+HTTP demo: {'http_status': 200, 'decision': 'REJECT', 'qber': 0.2421875, 'attribution': 'forgery', 'log_events': 2, 'replay_attribution': 'replay', 'log': 'events.jsonl', 'payload': 'signature_payload.json'}
+Grid: exposure=0.1, honest strength=0.0, 5 measured runs
+Grid: exposure=0.1, individual strength=0.2, 5 measured runs
+Grid: exposure=0.1, individual strength=0.6, 5 measured runs
+Grid: exposure=0.1, individual strength=1.0, 5 measured runs
+Grid: exposure=0.1, collective strength=0.2, 5 measured runs
+Grid: exposure=0.1, collective strength=0.6, 5 measured runs
+Grid: exposure=0.1, collective strength=1.0, 5 measured runs
+Grid: exposure=0.1, coherent strength=0.2, 5 measured runs
+Grid: exposure=0.1, coherent strength=0.6, 5 measured runs
+Grid: exposure=0.1, coherent strength=1.0, 5 measured runs
+Grid: exposure=0.1, impersonation strength=0.2, 5 measured runs
+Grid: exposure=0.1, impersonation strength=0.6, 5 measured runs
+Grid: exposure=0.1, impersonation strength=1.0, 5 measured runs
+Grid: exposure=0.1, replay strength=0.2, 5 measured runs
+Grid: exposure=0.1, replay strength=0.6, 5 measured runs
+Grid: exposure=0.1, replay strength=1.0, 5 measured runs
+Grid: exposure=0.1, channel_manipulation strength=0.2, 5 measured runs
+Grid: exposure=0.1, channel_manipulation strength=0.6, 5 measured runs
+Grid: exposure=0.1, channel_manipulation strength=1.0, 5 measured runs
+Grid: exposure=0.5, honest strength=0.0, 5 measured runs
+Grid: exposure=0.5, individual strength=0.2, 5 measured runs
+Grid: exposure=0.5, individual strength=0.6, 5 measured runs
+Grid: exposure=0.5, individual strength=1.0, 5 measured runs
+Grid: exposure=0.5, collective strength=0.2, 5 measured runs
+Grid: exposure=0.5, collective strength=0.6, 5 measured runs
+Grid: exposure=0.5, collective strength=1.0, 5 measured runs
+Grid: exposure=0.5, coherent strength=0.2, 5 measured runs
+Grid: exposure=0.5, coherent strength=0.6, 5 measured runs
+Grid: exposure=0.5, coherent strength=1.0, 5 measured runs
+Grid: exposure=0.5, impersonation strength=0.2, 5 measured runs
+Grid: exposure=0.5, impersonation strength=0.6, 5 measured runs
+Grid: exposure=0.5, impersonation strength=1.0, 5 measured runs
+Grid: exposure=0.5, replay strength=0.2, 5 measured runs
+Grid: exposure=0.5, replay strength=0.6, 5 measured runs
+Grid: exposure=0.5, replay strength=1.0, 5 measured runs
+Grid: exposure=0.5, channel_manipulation strength=0.2, 5 measured runs
+Grid: exposure=0.5, channel_manipulation strength=0.6, 5 measured runs
+Grid: exposure=0.5, channel_manipulation strength=1.0, 5 measured runs
+Grid: exposure=1.0, honest strength=0.0, 5 measured runs
+Grid: exposure=1.0, individual strength=0.2, 5 measured runs
+Grid: exposure=1.0, individual strength=0.6, 5 measured runs
+Grid: exposure=1.0, individual strength=1.0, 5 measured runs
+Grid: exposure=1.0, collective strength=0.2, 5 measured runs
+Grid: exposure=1.0, collective strength=0.6, 5 measured runs
+Grid: exposure=1.0, collective strength=1.0, 5 measured runs
+Grid: exposure=1.0, coherent strength=0.2, 5 measured runs
+Grid: exposure=1.0, coherent strength=0.6, 5 measured runs
+Grid: exposure=1.0, coherent strength=1.0, 5 measured runs
+Grid: exposure=1.0, impersonation strength=0.2, 5 measured runs
+Grid: exposure=1.0, impersonation strength=0.6, 5 measured runs
+Grid: exposure=1.0, impersonation strength=1.0, 5 measured runs
+Grid: exposure=1.0, replay strength=0.2, 5 measured runs
+Grid: exposure=1.0, replay strength=0.6, 5 measured runs
+Grid: exposure=1.0, replay strength=1.0, 5 measured runs
+Grid: exposure=1.0, channel_manipulation strength=0.2, 5 measured runs
+Grid: exposure=1.0, channel_manipulation strength=0.6, 5 measured runs
+Grid: exposure=1.0, channel_manipulation strength=1.0, 5 measured runs
+{
+  "artifacts": "/Users/kartik/Documents/ChatGPT/DPM/qds-threat-detection/artifacts",
+  "passed": 17,
+  "total": 20,
+  "unsupported": [
+    "C3",
+    "D1",
+    "D2"
+  ]
+}

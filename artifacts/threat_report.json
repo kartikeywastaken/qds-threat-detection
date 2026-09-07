@@ -1,0 +1,69 @@
+{
+  "session_id": "311b4c3b9b08c5e67d8ac42d89045a6e",
+  "decision": "REJECT",
+  "qber": 0.25,
+  "statistics": {
+    "decision": "REJECT",
+    "sprt_decision": "REJECT",
+    "qber": 0.25,
+    "kl_nats": 0.3383079874611836,
+    "sprt": {
+      "llr": 4.703311482727647,
+      "trace": [
+        1.791759469228055,
+        1.6237677379889255,
+        1.455776006749796,
+        3.247535475977851,
+        3.0795437447387215,
+        2.911552013499592,
+        4.703311482727647
+      ],
+      "rounds": 7,
+      "upper": 4.605170185988092,
+      "lower": -4.605170185988091,
+      "p0": 0.03,
+      "p1": 0.18
+    },
+    "chsh": {
+      "s": 2.8208044648144623,
+      "lower": 2.497608424690645,
+      "upper": 3.1440005049382798,
+      "correlations": {
+        "00": 0.6842105263157895,
+        "01": 0.7052529182879378,
+        "10": 0.7208147044212618,
+        "11": -0.7105263157894737
+      },
+      "counts": {
+        "00": 2071,
+        "01": 2056,
+        "10": 2013,
+        "11": 2052
+      },
+      "delta": 0.01
+    },
+    "entropy": {
+      "chsh_bits_per_round_lower": 0.26561099592009096,
+      "restricted_iid_forgery_bound": 1e-06,
+      "q_model": 0.04,
+      "epsilon": 1e-06,
+      "scope": "Pure independent probes with overlap 1-2Q only; not a general QDS certificate"
+    },
+    "flags": {
+      "repeated_nonce": false,
+      "unknown_sender": false,
+      "invalid_authentication": false,
+      "quantum_mismatch": true,
+      "bell_deficit": false
+    },
+    "score": 1.4666666666666668,
+    "n": 512
+  },
+  "attribution": {
+    "attack_class": "forgery",
+    "reason": "Sequential mismatch likelihood crossed the rejection boundary; state disturbance is consistent with forgery.",
+    "matched_flags": [
+      "quantum_mismatch"
+    ]
+  }
+}

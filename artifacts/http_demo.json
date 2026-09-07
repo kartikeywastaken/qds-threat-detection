@@ -1,0 +1,10 @@
+{
+  "http_status": 200,
+  "decision": "REJECT",
+  "qber": 0.25,
+  "attribution": "forgery",
+  "log_events": 2,
+  "replay_attribution": "replay",
+  "log": "events.jsonl",
+  "payload": "signature_payload.json"
+}

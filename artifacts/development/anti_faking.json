@@ -1,0 +1,364 @@
+{
+  "A1": {
+    "pass": true,
+    "accepts": 50,
+    "runs": 50,
+    "qber_min": 0.0,
+    "qber_max": 0.015625,
+    "qber_std": 0.0031832941768561466
+  },
+  "A2": {
+    "pass": true,
+    "mean_s": 2.775161569671502,
+    "std_s": 0.030704707012915354,
+    "values": [
+      2.8085255680270897,
+      2.8000073609622813,
+      2.7678443828702495,
+      2.7299931908025186,
+      2.7877761295628307,
+      2.7662833425118243,
+      2.7905198012910026,
+      2.7594875921136657,
+      2.7563074807865986,
+      2.749957700034505,
+      2.7893472761739293,
+      2.786830139902955,
+      2.83698322738187,
+      2.7665441921815273,
+      2.7178249284124414,
+      2.7400521207862703,
+      2.8002789059362554,
+      2.7961902617593584,
+      2.818024292486059,
+      2.734453499446812
+    ]
+  },
+  "A3": {
+    "pass": true,
+    "hits": []
+  },
+  "A4": {
+    "pass": true,
+    "hits": []
+  },
+  "A5": {
+    "pass": true,
+    "main_fpr": 0.0,
+    "stress_fixed_qber_threshold": 0.0081787109375,
+    "stress_fpr": 0.3,
+    "note": "Zero observed false positives is valid; an intentionally sensitive fixed threshold demonstrates stochastic false alarms."
+  },
+  "honest_runs": [
+    {
+      "seed": 2000,
+      "qber": 0.0078125,
+      "decision": "ACCEPT",
+      "rounds": 28
+    },
+    {
+      "seed": 2001,
+      "qber": 0.00390625,
+      "decision": "ACCEPT",
+      "rounds": 28
+    },
+    {
+      "seed": 2002,
+      "qber": 0.00390625,
+      "decision": "ACCEPT",
+      "rounds": 28
+    },
+    {
+      "seed": 2003,
+      "qber": 0.0078125,
+      "decision": "ACCEPT",
+      "rounds": 55
+    },
+    {
+      "seed": 2004,
+      "qber": 0.0078125,
+      "decision": "ACCEPT",
+      "rounds": 28
+    },
+    {
+      "seed": 2005,
+      "qber": 0.0078125,
+      "decision": "ACCEPT",
+      "rounds": 42
+    },
+    {
+      "seed": 2006,
+      "qber": 0.005859375,
+      "decision": "ACCEPT",
+      "rounds": 28
+    },
+    {
+      "seed": 2007,
+      "qber": 0.009765625,
+      "decision": "ACCEPT",
+      "rounds": 28
+    },
+    {
+      "seed": 2008,
+      "qber": 0.005859375,
+      "decision": "ACCEPT",
+      "rounds": 28
+    },
+    {
+      "seed": 2009,
+      "qber": 0.01171875,
+      "decision": "ACCEPT",
+      "rounds": 42
+    },
+    {
+      "seed": 2010,
+      "qber": 0.0078125,
+      "decision": "ACCEPT",
+      "rounds": 28
+    },
+    {
+      "seed": 2011,
+      "qber": 0.005859375,
+      "decision": "ACCEPT",
+      "rounds": 42
+    },
+    {
+      "seed": 2012,
+      "qber": 0.00390625,
+      "decision": "ACCEPT",
+      "rounds": 28
+    },
+    {
+      "seed": 2013,
+      "qber": 0.0078125,
+      "decision": "ACCEPT",
+      "rounds": 28
+    },
+    {
+      "seed": 2014,
+      "qber": 0.0078125,
+      "decision": "ACCEPT",
+      "rounds": 28
+    },
+    {
+      "seed": 2015,
+      "qber": 0.00390625,
+      "decision": "ACCEPT",
+      "rounds": 28
+    },
+    {
+      "seed": 2016,
+      "qber": 0.005859375,
+      "decision": "ACCEPT",
+      "rounds": 28
+    },
+    {
+      "seed": 2017,
+      "qber": 0.00390625,
+      "decision": "ACCEPT",
+      "rounds": 28
+    },
+    {
+      "seed": 2018,
+      "qber": 0.005859375,
+      "decision": "ACCEPT",
+      "rounds": 28
+    },
+    {
+      "seed": 2019,
+      "qber": 0.01171875,
+      "decision": "ACCEPT",
+      "rounds": 28
+    },
+    {
+      "seed": 2020,
+      "qber": 0.01171875,
+      "decision": "ACCEPT",
+      "rounds": 28
+    },
+    {
+      "seed": 2021,
+      "qber": 0.013671875,
+      "decision": "ACCEPT",
+      "rounds": 55
+    },
+    {
+      "seed": 2022,
+      "qber": 0.0078125,
+      "decision": "ACCEPT",
+      "rounds": 28
+    },
+    {
+      "seed": 2023,
+      "qber": 0.013671875,
+      "decision": "ACCEPT",
+      "rounds": 42
+    },
+    {
+      "seed": 2024,
+      "qber": 0.009765625,
+      "decision": "ACCEPT",
+      "rounds": 28
+    },
+    {
+      "seed": 2025,
+      "qber": 0.00390625,
+      "decision": "ACCEPT",
+      "rounds": 28
+    },
+    {
+      "seed": 2026,
+      "qber": 0.0078125,
+      "decision": "ACCEPT",
+      "rounds": 28
+    },
+    {
+      "seed": 2027,
+      "qber": 0.0078125,
+      "decision": "ACCEPT",
+      "rounds": 28
+    },
+    {
+      "seed": 2028,
+      "qber": 0.015625,
+      "decision": "ACCEPT",
+      "rounds": 55
+    },
+    {
+      "seed": 2029,
+      "qber": 0.0078125,
+      "decision": "ACCEPT",
+      "rounds": 28
+    },
+    {
+      "seed": 2030,
+      "qber": 0.01171875,
+      "decision": "ACCEPT",
+      "rounds": 55
+    },
+    {
+      "seed": 2031,
+      "qber": 0.005859375,
+      "decision": "ACCEPT",
+      "rounds": 28
+    },
+    {
+      "seed": 2032,
+      "qber": 0.0078125,
+      "decision": "ACCEPT",
+      "rounds": 42
+    },
+    {
+      "seed": 2033,
+      "qber": 0.005859375,
+      "decision": "ACCEPT",
+      "rounds": 28
+    },
+    {
+      "seed": 2034,
+      "qber": 0.01171875,
+      "decision": "ACCEPT",
+      "rounds": 55
+    },
+    {
+      "seed": 2035,
+      "qber": 0.009765625,
+      "decision": "ACCEPT",
+      "rounds": 42
+    },
+    {
+      "seed": 2036,
+      "qber": 0.005859375,
+      "decision": "ACCEPT",
+      "rounds": 28
+    },
+    {
+      "seed": 2037,
+      "qber": 0.00390625,
+      "decision": "ACCEPT",
+      "rounds": 28
+    },
+    {
+      "seed": 2038,
+      "qber": 0.0078125,
+      "decision": "ACCEPT",
+      "rounds": 42
+    },
+    {
+      "seed": 2039,
+      "qber": 0.005859375,
+      "decision": "ACCEPT",
+      "rounds": 42
+    },
+    {
+      "seed": 2040,
+      "qber": 0.013671875,
+      "decision": "ACCEPT",
+      "rounds": 28
+    },
+    {
+      "seed": 2041,
+      "qber": 0.009765625,
+      "decision": "ACCEPT",
+      "rounds": 28
+    },
+    {
+      "seed": 2042,
+      "qber": 0.005859375,
+      "decision": "ACCEPT",
+      "rounds": 28
+    },
+    {
+      "seed": 2043,
+      "qber": 0.0,
+      "decision": "ACCEPT",
+      "rounds": 28
+    },
+    {
+      "seed": 2044,
+      "qber": 0.005859375,
+      "decision": "ACCEPT",
+      "rounds": 28
+    },
+    {
+      "seed": 2045,
+      "qber": 0.01171875,
+      "decision": "ACCEPT",
+      "rounds": 28
+    },
+    {
+      "seed": 2046,
+      "qber": 0.005859375,
+      "decision": "ACCEPT",
+      "rounds": 28
+    },
+    {
+      "seed": 2047,
+      "qber": 0.00390625,
+      "decision": "ACCEPT",
+      "rounds": 28
+    },
+    {
+      "seed": 2048,
+      "qber": 0.005859375,
+      "decision": "ACCEPT",
+      "rounds": 28
+    },
+    {
+      "seed": 2049,
+      "qber": 0.009765625,
+      "decision": "ACCEPT",
+      "rounds": 28
+    }
+  ],
+  "calibration": {
+    "p0": 0.021994213153329275,
+    "p1": 0.17199421315332927,
+    "observed_qber": 0.0081787109375,
+    "errors": 67,
+    "shots": 8192,
+    "confidence_upper": 0.011994213153329275,
+    "guard_margin": 0.01,
+    "seed": 9182
+  }
+}
