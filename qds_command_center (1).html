@@ -330,7 +330,7 @@
             <span class="mh-status-text" id="mhStatusText">System Nominal</span>
           </div>
         </div>
-        <div class="mh-sub"><b>184,206</b> rounds verified &nbsp;·&nbsp; last anomaly <b>11d 04h</b> ago &nbsp;·&nbsp; <span id="clock">09:41:22</span> UTC</div>
+        <div class="mh-sub"><b id="roundsCount">—</b> rounds verified &nbsp;·&nbsp; last anomaly <b id="lastAnomaly">—</b> ago &nbsp;·&nbsp; <span id="clock">—</span> UTC &nbsp;·&nbsp; <span id="connStatus" style="color:var(--amber);">connecting…</span></div>
       </div>
     </div>
 
@@ -438,22 +438,22 @@
         <div class="diagram-stats">
           <div class="dstat accent">
             <div class="lbl">Bell parameter S</div>
-            <div class="val">2.81</div>
+            <div class="val" id="bellSVal">—</div>
             <div class="foot">classical bound 2.000</div>
           </div>
           <div class="dstat">
             <div class="lbl">Margin over bound</div>
-            <div class="val">+0.81</div>
+            <div class="val" id="marginVal">—</div>
             <div class="foot">singlet ideal 2√2 ≈ 2.828</div>
           </div>
           <div class="dstat good">
             <div class="lbl">Fidelity</div>
-            <div class="val" id="fidNum">0.984</div>
+            <div class="val" id="fidNum">—</div>
             <div class="foot">last correction verified</div>
           </div>
           <div class="dstat">
             <div class="lbl">Cycle</div>
-            <div class="val" id="cycleNum">0412</div>
+            <div class="val" id="cycleNum">—</div>
             <div class="foot">rounds this session</div>
           </div>
         </div>
@@ -493,7 +493,7 @@
         <div class="card">
           <div class="card-head">
             <div class="card-title">SPRT sequential detection</div>
-            <div class="card-desc" id="sprtTag" style="color:var(--green);">accept H₀ — round 187</div>
+            <div class="card-desc" id="sprtTag" style="color:var(--ink-3);">waiting for data…</div>
           </div>
           <svg class="sprt-svg" viewBox="0 0 1000 360" id="sprtChart">
             <g stroke="var(--border-soft)" stroke-width="1">
@@ -533,9 +533,10 @@
 
         <div class="side-zone">
           <div class="card stat-rows">
-            <div class="stat-row"><span class="lbl">QBER</span><span class="num">1.8<span>%</span></span></div>
-            <div class="stat-row"><span class="lbl">Min-entropy</span><span class="num">7.42<span>bits</span></span></div>
-            <div class="stat-row"><span class="lbl">Run ID</span><span class="num" style="font-size:16px;">A83F</span></div>
+            <div class="stat-row"><span class="lbl">QBER</span><span class="num">—<span>%</span></span></div>
+            <div class="stat-row"><span class="lbl">Min-entropy</span><span class="num">—<span>bits</span></span></div>
+            <div class="stat-row"><span class="lbl">Run ID</span><span class="num" style="font-size:16px;">—</span></div>
+            <div class="stat-row"><span class="lbl">Attack</span><span class="num" id="attackLabel" style="font-size:14px; color:var(--green);">None</span></div>
           </div>
 
           <div class="card events-zone">
@@ -544,43 +545,11 @@
             </div>
             <div class="events-list" id="eventsList">
               <div class="event">
-                <span class="event-dot green"></span>
-                <div class="event-body">
-                  <div class="event-time">09:41:15</div>
-                  <div class="event-name">Verification accepted</div>
-                  <div class="event-detail">SPRT boundary crossed at round 187. Signature accepted under H₀.</div>
-                </div>
-              </div>
-              <div class="event">
                 <span class="event-dot"></span>
                 <div class="event-body">
-                  <div class="event-time">09:41:12</div>
-                  <div class="event-name">CHSH measurement</div>
-                  <div class="event-detail">S = 2.81 recorded across four measurement bases.</div>
-                </div>
-              </div>
-              <div class="event">
-                <span class="event-dot"></span>
-                <div class="event-body">
-                  <div class="event-time">09:41:08</div>
-                  <div class="event-name">Signature received</div>
-                  <div class="event-detail">Incoming quantum signature queued for verification.</div>
-                </div>
-              </div>
-              <div class="event">
-                <span class="event-dot green"></span>
-                <div class="event-body">
-                  <div class="event-time">09:40:51</div>
-                  <div class="event-name">Teleportation complete</div>
-                  <div class="event-detail">Pauli correction applied. Fidelity 0.984.</div>
-                </div>
-              </div>
-              <div class="event">
-                <span class="event-dot amber"></span>
-                <div class="event-body">
-                  <div class="event-time">09:38:03</div>
-                  <div class="event-name">QBER drift flagged</div>
-                  <div class="event-detail">Transient rise to 2.4%, resolved within six rounds.</div>
+                  <div class="event-time">—</div>
+                  <div class="event-name">Waiting for backend…</div>
+                  <div class="event-detail">The simulation loop runs every 5 seconds. Events will appear here once the first cycle completes.</div>
                 </div>
               </div>
             </div>
@@ -922,27 +891,72 @@
       }
   }
 
+  let totalRounds = 0;
+  let lastRejectTime = null;
+
   async function fetchState() {
       try {
           const res = await fetch('/api/state');
           const state = await res.json();
           
+          /* Connection indicator */
+          const conn = document.getElementById('connStatus');
+          conn.textContent = '● connected';
+          conn.style.color = 'var(--green)';
+
+          /* Always update visuals even if still on first cycle */
+          updateVisuals(state);
+
           if (state.session_id !== 'N/A') {
-              document.querySelector('.dstat.accent .val').innerHTML = state.s.toFixed(2);
-              document.querySelectorAll('.dstat .val')[1].innerHTML = '+' + (state.s - 2.0).toFixed(2);
+              /* Bell S-value */
+              document.getElementById('bellSVal').innerHTML = state.s.toFixed(2);
+              document.getElementById('marginVal').innerHTML = (state.s >= 2.0 ? '+' : '') + (state.s - 2.0).toFixed(2);
               fidNum.innerHTML = state.fidelity.toFixed(3);
               cycleNum.innerHTML = pad(state.cycle, 4);
               
+              /* Side stats */
               const statRows = document.querySelectorAll('.stat-row .num');
               statRows[0].innerHTML = (state.qber * 100).toFixed(1) + '<span>%</span>';
               statRows[1].innerHTML = state.entropy.toFixed(2) + '<span>bits</span>';
               statRows[2].innerHTML = state.session_id;
               
+              /* Attack label row */
+              const attackLabel = document.getElementById('attackLabel');
+              const atk = state.attribution || 'NONE';
+              if (atk !== 'NONE') {
+                  attackLabel.textContent = atk;
+                  attackLabel.style.color = 'var(--red)';
+              } else {
+                  attackLabel.textContent = 'None';
+                  attackLabel.style.color = 'var(--green)';
+              }
+
+              /* Rounds counter */
+              totalRounds++;
+              document.getElementById('roundsCount').textContent = totalRounds.toLocaleString();
+              
+              /* Last anomaly tracker */
+              if (state.latest_decision === 'REJECT') {
+                  lastRejectTime = Date.now();
+              }
+              if (lastRejectTime) {
+                  const diff = Date.now() - lastRejectTime;
+                  const secs = Math.floor(diff / 1000);
+                  if (secs < 60) document.getElementById('lastAnomaly').textContent = secs + 's';
+                  else if (secs < 3600) document.getElementById('lastAnomaly').textContent = Math.floor(secs/60) + 'm';
+                  else document.getElementById('lastAnomaly').textContent = Math.floor(secs/3600) + 'h ' + Math.floor((secs%3600)/60) + 'm';
+              } else {
+                  document.getElementById('lastAnomaly').textContent = 'never';
+              }
+
               updateSPRT(state);
               updateCHSH(state);
-              updateVisuals(state);
           }
-      } catch (e) {}
+      } catch (e) {
+          const conn = document.getElementById('connStatus');
+          conn.textContent = '✗ disconnected';
+          conn.style.color = 'var(--red)';
+      }
   }
   
   async function fetchEvents() {
