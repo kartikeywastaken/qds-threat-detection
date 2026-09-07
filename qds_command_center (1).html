@@ -968,29 +968,36 @@
   async function fetchEvents() {
       try {
           const res = await fetch('/api/events');
-          const events = await res.json();
+          const rawEvents = await res.json();
           const eventsList = document.getElementById('eventsList');
           eventsList.innerHTML = '';
-          events.forEach(ev => {
+          if (rawEvents.length === 0) {
+              eventsList.innerHTML = '<div class="event"><span class="event-dot"></span><div class="event-body"><div class="event-name">No events yet</div></div></div>';
+              return;
+          }
+          rawEvents.forEach(raw => {
+              /* Events are wrapped: {sequence, report: {...}, hash} */
+              const ev = raw.report || raw;
               let dotClass = '';
               if (ev.decision === 'ACCEPT') dotClass = 'green';
               else if (ev.decision === 'REJECT') dotClass = 'amber';
               
-              const attackClass = ev.attribution ? (ev.attribution.attack_class || 'NONE') : 'NONE';
+              const att = ev.attribution || {};
+              const attackClass = (typeof att === 'object' ? (att.attack_class || 'NONE') : String(att)).toUpperCase();
               const div = document.createElement('div');
               div.className = 'event';
               div.innerHTML = `
                 <span class="event-dot ${dotClass}"></span>
                 <div class="event-body">
-                  <div class="event-time">Session ${ev.session_id.substring(0,4).toUpperCase()}</div>
-                  <div class="event-name">Verification ${ev.decision.toLowerCase()}</div>
-                  <div class="event-detail">QBER: ${(ev.qber*100).toFixed(1)}%. Result: ${ev.decision}. Attack: <span style="font-weight:600;color:${attackClass !== 'NONE' ? 'var(--red)' : 'var(--green)'};">${attackClass !== 'NONE' ? attackClass : 'None detected'}</span></div>
+                  <div class="event-time">Session ${(ev.session_id || '----').substring(0,4).toUpperCase()}</div>
+                  <div class="event-name">Verification ${(ev.decision || 'unknown').toLowerCase()}</div>
+                  <div class="event-detail">QBER: ${((ev.qber || 0)*100).toFixed(1)}%. Result: ${ev.decision}. Attack: <span style="font-weight:600;color:${attackClass !== 'NONE' ? 'var(--red)' : 'var(--green)'};">${attackClass !== 'NONE' ? attackClass : 'None detected'}</span></div>
                 </div>
               `;
               div.addEventListener('click', ()=> div.classList.toggle('open'));
               eventsList.appendChild(div);
           });
-      } catch (e) {}
+      } catch (e) { console.error('fetchEvents error:', e); }
   }
 
   const attackSelect = document.getElementById('attackSelect');
@@ -1001,6 +1008,10 @@
       currentAttackMode = newMode;
       const isUnderAttack = newMode !== 'HONEST';
 
+      /* Reset decision when going back to honest */
+      if (!isUnderAttack) {
+          currentDecision = 'ACCEPT';
+      }
       /* Eve overlay */
       eveGroup.style.opacity = isUnderAttack ? '1' : '0';
       const eveLabel = document.getElementById('eveLabel');
@@ -1037,6 +1048,23 @@
           attackLabel.style.color = isUnderAttack ? 'var(--amber)' : 'var(--green)';
       }
 
+      /* Verdict banner instant reset */
+      const verdictRect = document.getElementById('verdictRect');
+      const verdictText = document.getElementById('verdictText');
+      if (!isUnderAttack && verdictRect && verdictText) {
+          verdictRect.setAttribute('fill', 'var(--green-tint)');
+          verdictRect.setAttribute('stroke', 'var(--green)');
+          verdictText.setAttribute('fill', 'var(--green)');
+          verdictText.textContent = '✓ SIGNATURE VERIFIED';
+      }
+
+      /* Bob ring + beams */
+      const bobOuter = heroStage.querySelector('circle[cx="1050"][cy="250"][r="54"]');
+      if (bobOuter) bobOuter.setAttribute('stroke', isUnderAttack ? 'var(--red)' : 'var(--border)');
+      document.querySelectorAll('.beam').forEach(b => {
+          b.style.stroke = isUnderAttack ? 'var(--red)' : 'var(--blue)';
+      });
+
       /* Send to backend */
       try {
           await fetch('/api/set_attack', {
@@ -1052,33 +1080,42 @@
   async function fetchAllEvents() {
       try {
           const res = await fetch('/api/events_all');
-          const events = await res.json();
+          const rawEvents = await res.json();
           const table = document.getElementById('fullEventLogTable');
           if (!table) return;
           table.innerHTML = '';
-          events.forEach(ev => {
+          if (rawEvents.length === 0) {
+              table.innerHTML = '<div style="padding:24px; text-align:center; color:var(--ink-3); font-size:14px;">No events recorded yet. Wait for the first simulation cycle.</div>';
+              return;
+          }
+          rawEvents.forEach(raw => {
+              const ev = raw.report || raw;
               const row = document.createElement('div');
               row.style.cssText = 'display:flex; padding:16px 24px; border-bottom:1px solid var(--border); font-size:13px; font-family:var(--mono); color:var(--ink-1); align-items:center;';
               
               let decisionColor = ev.decision === 'ACCEPT' ? 'var(--green)' : 'var(--red)';
-              let attackClass = ev.attribution ? (ev.attribution.attack_class || 'NONE') : 'NONE';
+              const att = ev.attribution || {};
+              let attackClass = (typeof att === 'object' ? (att.attack_class || 'NONE') : String(att)).toUpperCase();
               let attackHtml = attackClass === 'NONE' 
                 ? `<span style="color:var(--ink-3)">None</span>` 
                 : `<span style="color:var(--red); font-weight:600;">${attackClass}</span>`;
 
+              const stats = ev.statistics || {};
+              const chshVal = stats.chsh ? stats.chsh.s.toFixed(3) : 'N/A';
+
               row.innerHTML = `
                 <div style="flex:1; display:flex; align-items:center; gap:8px;">
                   <span style="width:6px; height:6px; border-radius:50%; background:${decisionColor}"></span>
-                  Sess: ${ev.session_id.substring(0,6).toUpperCase()}
+                  Sess: ${(ev.session_id || '------').substring(0,6).toUpperCase()}
                 </div>
-                <div style="flex:1;">${(ev.qber*100).toFixed(2)}%</div>
-                <div style="flex:1;">${ev.statistics && ev.statistics.chsh ? ev.statistics.chsh.s.toFixed(3) : 'N/A'}</div>
-                <div style="flex:1; color:${decisionColor}; font-weight:600;">${ev.decision}</div>
+                <div style="flex:1;">${((ev.qber || 0)*100).toFixed(2)}%</div>
+                <div style="flex:1;">${chshVal}</div>
+                <div style="flex:1; color:${decisionColor}; font-weight:600;">${ev.decision || 'N/A'}</div>
                 <div style="flex:1;">${attackHtml}</div>
               `;
               table.appendChild(row);
           });
-      } catch (e) {}
+      } catch (e) { console.error('fetchAllEvents error:', e); }
   }
   
   setInterval(() => {
