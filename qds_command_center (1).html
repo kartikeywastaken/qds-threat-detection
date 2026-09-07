@@ -841,18 +841,53 @@
                <line x1="190" y1="150" x2="550" y2="150" stroke="var(--ink-3)" stroke-width="2" stroke-dasharray="2 4" />
                <line x1="650" y1="150" x2="1010" y2="150" stroke="var(--ink-3)" stroke-width="2" stroke-dasharray="2 4" />
 
-               <!-- Moving Qubit -->
-               <circle id="qubitParticle" cx="190" cy="150" r="8" fill="var(--blue)" opacity="0" style="transition: transform 1s linear, opacity 0.2s;" />
+               <!-- Moving Qubit Group -->
+               <g id="qubitParticle" opacity="0" style="transition: transform 1s linear, opacity 0.2s; transform: translate(190px, 150px);">
+                  <circle cx="0" cy="0" r="10" fill="var(--blue)" id="qubitCore" />
+                  <text id="qubitLabel" x="0" y="3" font-family="var(--mono)" font-size="10" fill="white" text-anchor="middle" font-weight="700">|ψ⟩</text>
+               </g>
                
                <!-- Secondary Qubit (for Entanglement / specific attacks) -->
-               <circle id="qubitAncilla" cx="600" cy="90" r="6" fill="var(--amber)" opacity="0" style="transition: transform 1s linear, opacity 0.2s;" />
+               <g id="qubitAncilla" opacity="0" style="transition: transform 1s linear, opacity 0.2s; transform: translate(600px, 90px);">
+                   <circle cx="0" cy="0" r="8" fill="var(--amber)" />
+                   <text x="0" y="3" font-family="var(--mono)" font-size="8" fill="white" text-anchor="middle" font-weight="700">|E⟩</text>
+               </g>
 
                <!-- Outcome display above Bob -->
                <text id="bobOutcome" x="1050" y="90" font-family="var(--mono)" font-size="12" fill="var(--ink-1)" text-anchor="middle" opacity="0" style="transition: opacity 0.2s;">Received</text>
 
+               <!-- Verdict Banner -->
+               <g id="verdictBanner" style="transition: opacity 0.4s ease; opacity: 1;" transform="translate(800, 14)">
+                 <rect width="380" height="36" rx="8" fill="var(--green-tint)" stroke="var(--green)" stroke-width="1" id="verdictRect"/>
+                 <text x="190" y="23" font-family="var(--sans)" font-size="12" fill="var(--green)" text-anchor="middle" font-weight="700" id="verdictText">✓ SIGNATURE VERIFIED</text>
+               </g>
             </svg>
             <div id="animationExplanation" style="margin-top: 20px; font-family: var(--sans); font-size: 15px; font-weight: 500; color: var(--ink-0); background: var(--bg-inset); padding: 16px; border-radius: 8px; border: 1px solid var(--border);">
                Initializing Quantum Channel...
+            </div>
+          </div>
+
+          <!-- Restored Stats panel -->
+          <div class="diagram-stats">
+            <div class="dstat accent">
+              <div class="lbl">Bell parameter S</div>
+              <div class="val" id="bellSVal">—</div>
+              <div class="foot">classical bound 2.000</div>
+            </div>
+            <div class="dstat">
+              <div class="lbl">Margin over bound</div>
+              <div class="val" id="marginVal">—</div>
+              <div class="foot">singlet ideal 2√2 ≈ 2.828</div>
+            </div>
+            <div class="dstat good">
+              <div class="lbl">Fidelity</div>
+              <div class="val" id="fidNum">—</div>
+              <div class="foot">last correction verified</div>
+            </div>
+            <div class="dstat">
+              <div class="lbl">Cycle</div>
+              <div class="val" id="cycleNum">—</div>
+              <div class="foot">rounds this session</div>
             </div>
           </div>
         </div>
@@ -1098,6 +1133,13 @@
     }
 
     const table = document.getElementById('fullEventLogTable');
+    
+    // Restored DOM element bindings
+    const bellSVal = document.getElementById('bellSVal');
+    const marginVal = document.getElementById('marginVal');
+    const fidNum = document.getElementById('fidNum');
+    const cycleNum = document.getElementById('cycleNum');
+    const heroStage = document.getElementById('heroStage');
 
     const attackLabels = {
       'HONEST': 'Honest Protocol',
@@ -1188,24 +1230,26 @@
       if (visualKey === _lastVisualKey) return;
       _lastVisualKey = visualKey;
 
+      const verdictRect = document.getElementById('verdictRect');
+      const verdictTextEl = document.getElementById('verdictText');
+      if (verdictRect && verdictTextEl) {
+          if (isForged) {
+            verdictRect.setAttribute('fill', '#fde8e4');
+            verdictRect.setAttribute('stroke', 'var(--red)');
+            verdictTextEl.setAttribute('fill', 'var(--red)');
+            verdictTextEl.textContent = '✗ SIGNATURE FORGED — ' + (attackLabels[currentAttackMode] || 'Attack');
+          } else {
+            verdictRect.setAttribute('fill', 'var(--green-tint)');
+            verdictRect.setAttribute('stroke', 'var(--green)');
+            verdictTextEl.setAttribute('fill', 'var(--green)');
+            verdictTextEl.textContent = '✓ SIGNATURE VERIFIED';
+          }
+      }
+
       eveGroup.style.opacity = isUnderAttack ? '1' : '0';
       const eveLabel = document.getElementById('eveLabel');
       if (eveLabel && eveActions[currentAttackMode]) {
         eveLabel.textContent = eveActions[currentAttackMode];
-      }
-
-      const verdictRect = document.getElementById('verdictRect');
-      const verdictTextEl = document.getElementById('verdictText');
-      if (isForged) {
-        verdictRect.setAttribute('fill', '#fde8e4');
-        verdictRect.setAttribute('stroke', 'var(--red)');
-        verdictTextEl.setAttribute('fill', 'var(--red)');
-        verdictTextEl.textContent = '✗ SIGNATURE FORGED — ' + (attackLabels[currentAttackMode] || 'Attack');
-      } else {
-        verdictRect.setAttribute('fill', 'var(--green-tint)');
-        verdictRect.setAttribute('stroke', 'var(--green)');
-        verdictTextEl.setAttribute('fill', 'var(--green)');
-        verdictTextEl.textContent = '✓ SIGNATURE VERIFIED';
       }
 
       const beams = heroStage.querySelectorAll('.beam');
@@ -1583,7 +1627,12 @@
         qubitAncilla.style.transform = 'translate(0, 0)';
         qubitParticle.style.opacity = '0';
         qubitAncilla.style.opacity = '0';
-        qubitParticle.setAttribute('fill', 'var(--blue)');
+        
+        const qubitLabel = document.getElementById('qubitLabel');
+        const qubitCore = document.getElementById('qubitCore');
+        if (qubitLabel) qubitLabel.textContent = '|ψ⟩';
+        if (qubitCore) qubitCore.setAttribute('fill', 'var(--blue)');
+        
         bobNodeBorder.setAttribute('stroke', 'var(--blue)');
         bobOutcome.style.opacity = '0';
         eveNodeBorder.setAttribute('stroke', 'var(--ink-2)');
@@ -1604,6 +1653,8 @@
         setTimeout(() => {
             qubitParticle.style.transition = 'transform 1s linear, opacity 0.2s';
             qubitParticle.style.opacity = '1';
+            const qubitLabel = document.getElementById('qubitLabel');
+            const qubitCore = document.getElementById('qubitCore');
             
             if (attack === 'HONEST') {
                 explanationText.innerHTML = "<b>Step 1:</b> Alice prepares a secure quantum state |ψ⟩ and sends it directly over the fiber channel.";
@@ -1628,15 +1679,19 @@
 
         // Phase 2: Action at Eve
         setTimeout(() => {
+            const qubitLabel = document.getElementById('qubitLabel');
+            const qubitCore = document.getElementById('qubitCore');
+            
             if (attack === 'HONEST') {
                 explanationText.innerHTML = "<b>Step 2:</b> The quantum state passes through safely, maintaining its original superposition.";
                 qubitParticle.style.transform = 'translate(860px, 0)'; // Move to Bob
             } else if (attack === 'INDIVIDUAL' || attack === 'IMPERSONATION' || attack === 'REPLAY') {
-                explanationText.innerHTML = "<b>Step 2:</b> Eve measures the intercepted qubit, destroying its quantum state. She prepares a fake classical copy and resends it.";
-                qubitParticle.setAttribute('fill', 'var(--red)');
+                explanationText.innerHTML = "<b>Step 2:</b> Eve measures the intercepted qubit, collapsing it to |0⟩ or |1⟩. She prepares a fake classical copy and resends it.";
+                qubitCore.setAttribute('fill', 'var(--red)');
+                qubitLabel.textContent = Math.random() > 0.5 ? '|0⟩' : '|1⟩'; // Collapsed state notation
                 qubitParticle.style.transform = 'translate(860px, 0)'; // Resend to Bob
             } else if (attack === 'COLLECTIVE' || attack === 'COHERENT') {
-                explanationText.innerHTML = "<b>Step 2:</b> Eve entangles her ancilla qubit with Alice's qubit. The state continues, but they are now quantumly linked!";
+                explanationText.innerHTML = "<b>Step 2:</b> Eve entangles her ancilla |E⟩ with Alice's qubit. The state continues, but they are now quantumly linked: α|0⟩|e₀⟩ + β|1⟩|e₁⟩!";
                 qubitAncilla.style.transition = 'transform 1s linear, opacity 0.2s';
                 qubitAncilla.style.transform = 'translate(0, 60px)'; // Entangle with main qubit
                 qubitParticle.style.transform = 'translate(860px, 0)';
