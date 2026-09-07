@@ -1264,26 +1264,7 @@
           }
       }
 
-      eveGroup.style.opacity = isUnderAttack ? '1' : '0';
-      const eveLabel = document.getElementById('eveLabel');
-      if (eveLabel && eveActions[currentAttackMode]) {
-        eveLabel.textContent = eveActions[currentAttackMode];
-      }
 
-      const beams = heroStage.querySelectorAll('.beam');
-      beams.forEach(b => {
-        b.setAttribute('stroke', isForged ? 'var(--red)' : 'var(--blue)');
-      });
-
-      const bobOuter = heroStage.querySelector('circle[cx="1050"][cy="250"][r="54"]');
-      if (bobOuter) {
-        bobOuter.setAttribute('stroke', isForged ? 'var(--red)' : 'var(--border)');
-      }
-
-      const aliceOuter = heroStage.querySelector('circle[cx="150"][cy="250"][r="54"]');
-      if (aliceOuter) {
-        aliceOuter.setAttribute('stroke', isUnderAttack ? 'var(--amber)' : 'var(--border)');
-      }
 
       const mhStatusBox = document.getElementById('mhStatusBox');
       const mhLiveDot = document.getElementById('mhLiveDot');
