@@ -39,7 +39,10 @@ current_state = {
     'qber': 0.0,
     'entropy': 0.0,
     'chsh_history': [],
-    'sprt_decision': 'INCONCLUSIVE'
+    'sprt_decision': 'INCONCLUSIVE',
+    'attack_mode': 'HONEST',
+    'latest_decision': 'ACCEPT',
+    'attribution': 'NONE'
 }
 
 from attack_simulation.collective_attack import CollectiveAttackStrategy
@@ -92,12 +95,13 @@ def simulation_loop():
         integrity, final_records = verifier.verify(payload)
         statistics = inspect(final_records, pairs, integrity, 0.03, 0.18)
         
+        att = attribute(statistics)
         report = {
             'session_id': payload.session_id,
             'decision': statistics['decision'],
             'qber': statistics['qber'],
             'statistics': statistics,
-            'attribution': attribute(statistics)
+            'attribution': att
         }
         log.append(report)
         
@@ -113,6 +117,9 @@ def simulation_loop():
             current_state['qber'] = statistics['qber']
             current_state['entropy'] = statistics['entropy']
             current_state['sprt_decision'] = statistics['sprt_decision']
+            current_state['attack_mode'] = attack_mode
+            current_state['latest_decision'] = statistics['decision']
+            current_state['attribution'] = att.get('attack_class', 'NONE') if isinstance(att, dict) else 'NONE'
             
             current_state['chsh_history'].append(s_val)
             if len(current_state['chsh_history']) > 20:
@@ -149,4 +156,6 @@ def index():
         return HTMLResponse(f.read())
 
 if __name__ == '__main__':
-    uvicorn.run('app:app', host='127.0.0.1', port=8000, reload=True)
+    import os
+    port = int(os.environ.get('PORT', 8000))
+    uvicorn.run('app:app', host='0.0.0.0', port=port, reload=False)

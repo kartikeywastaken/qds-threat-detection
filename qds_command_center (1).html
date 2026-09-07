@@ -242,6 +242,7 @@
   .apparatus-box{ transition:stroke .25s ease, fill .25s ease; }
   .flash .apparatus-box{ stroke:var(--blue); fill:var(--blue-tint); }
   .flash-green .apparatus-box{ stroke:var(--green); fill:var(--green-tint); }
+  .flash-red .apparatus-box{ stroke:var(--red); fill:#fde8e4; }
 
   .playhead{ animation:sweep 11s linear infinite; }
   @keyframes sweep{ 0%{ transform:translateX(0); } 100%{ transform:translateX(1010px); } }
@@ -663,7 +664,7 @@
     el.classList.add('active');
   }
 
-  function pad(n){ return n.toString().padStart(2,'0'); }
+  function pad(n, len){ return n.toString().padStart(len || 2,'0'); }
   function tick(){
     const d = new Date();
     document.getElementById('clock').textContent = pad(d.getHours())+':'+pad(d.getMinutes())+':'+pad(d.getSeconds());
@@ -675,10 +676,71 @@
   const bellApp = document.getElementById('bellApparatus');
   const pauliApp = document.getElementById('pauliApparatus');
   const bobCheck = document.getElementById('bobCheck');
+  const bobCore = document.getElementById('bobCore');
   const cycleNum = document.getElementById('cycleNum');
   const fidNum = document.getElementById('fidNum');
+  const heroStage = document.getElementById('heroStage');
   const outcomes = ['00','01','10','11'];
-  
+
+  /* ========== EVE OVERLAY (injected into SVG) ========== */
+  const eveGroup = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+  eveGroup.id = 'eveOverlay';
+  eveGroup.style.transition = 'opacity 0.5s ease';
+  eveGroup.style.opacity = '0';
+  eveGroup.innerHTML = `
+    <circle cx="600" cy="250" r="38" fill="#fdf0e6" stroke="var(--red)" stroke-width="1.6" stroke-dasharray="4 3"/>
+    <text x="600" y="245" font-family="var(--sans)" font-size="18" fill="var(--red)" text-anchor="middle" font-weight="700">EVE</text>
+    <text x="600" y="264" font-family="var(--mono)" font-size="10" fill="var(--red)" text-anchor="middle" id="eveLabel">eavesdropping</text>
+    <line x1="500" y1="250" x2="562" y2="250" stroke="var(--red)" stroke-width="1.5" stroke-dasharray="5 4" opacity="0.7"/>
+    <line x1="638" y1="250" x2="700" y2="250" stroke="var(--red)" stroke-width="1.5" stroke-dasharray="5 4" opacity="0.7"/>
+  `;
+  heroStage.appendChild(eveGroup);
+
+  /* ========== BOB FAIL X (injected into SVG) ========== */
+  const bobFail = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+  bobFail.id = 'bobFail';
+  bobFail.style.opacity = '0';
+  bobFail.style.transition = 'opacity 0.3s ease';
+  bobFail.innerHTML = `
+    <line x1="1035" y1="235" x2="1065" y2="265" stroke="var(--red)" stroke-width="3" stroke-linecap="round"/>
+    <line x1="1065" y1="235" x2="1035" y2="265" stroke="var(--red)" stroke-width="3" stroke-linecap="round"/>
+  `;
+  heroStage.appendChild(bobFail);
+
+  /* ========== VERDICT BANNER ========== */
+  const verdictBanner = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+  verdictBanner.id = 'verdictBanner';
+  verdictBanner.style.transition = 'opacity 0.4s ease';
+  verdictBanner.innerHTML = `
+    <rect x="380" y="62" width="240" height="36" rx="8" fill="var(--green-tint)" stroke="var(--green)" stroke-width="1" id="verdictRect"/>
+    <text x="500" y="85" font-family="var(--sans)" font-size="13" fill="var(--green)" text-anchor="middle" font-weight="700" id="verdictText">✓ SIGNATURE VERIFIED</text>
+  `;
+  heroStage.appendChild(verdictBanner);
+
+  /* ========== ATTACK LABEL MAP ========== */
+  const attackLabels = {
+    'HONEST': 'Honest Protocol',
+    'INDIVIDUAL': 'Intercept-Resend',
+    'COLLECTIVE': 'Entanglement Attack',
+    'COHERENT': 'Coherent Probe',
+    'IMPERSONATION': 'Forgery Attempt',
+    'CHANNEL_MANIPULATION': 'Channel Tampered',
+    'REPLAY': 'Replay Attack'
+  };
+
+  const eveActions = {
+    'INDIVIDUAL': 'intercept-resend',
+    'COLLECTIVE': 'entangling qubits',
+    'COHERENT': 'joint probe active',
+    'IMPERSONATION': 'forging signature',
+    'CHANNEL_MANIPULATION': 'manipulating channel',
+    'REPLAY': 'replaying old states'
+  };
+
+  let currentAttackMode = 'HONEST';
+  let currentDecision = 'ACCEPT';
+
+  /* ========== SPRT CHART ========== */
   const sprtChart = document.getElementById('sprtChart');
   const sprtPath = sprtChart.querySelector('path[stroke="var(--blue)"][stroke-width="2"]');
   const sprtDash = sprtChart.querySelector('path[stroke-dasharray="2 4"]');
@@ -764,8 +826,102 @@
       const c2 = chshChart.querySelectorAll('circle')[1];
       c1.setAttribute("cx", lastX); c1.setAttribute("cy", lastY);
       c2.setAttribute("cx", lastX); c2.setAttribute("cy", lastY);
+
+      /* Change CHSH line color based on attack */
+      if (currentDecision === 'REJECT') {
+          chshLine.setAttribute("stroke", "var(--red)");
+      } else {
+          chshLine.setAttribute("stroke", "var(--blue)");
+      }
   }
-  
+
+  /* ========== VISUAL STATE ENGINE ========== */
+  function updateVisuals(state) {
+      currentAttackMode = state.attack_mode || 'HONEST';
+      currentDecision = state.latest_decision || 'ACCEPT';
+      const isUnderAttack = currentAttackMode !== 'HONEST';
+      const isForged = currentDecision === 'REJECT';
+
+      /* --- Eve overlay --- */
+      eveGroup.style.opacity = isUnderAttack ? '1' : '0';
+      const eveLabel = document.getElementById('eveLabel');
+      if (eveLabel && eveActions[currentAttackMode]) {
+          eveLabel.textContent = eveActions[currentAttackMode];
+      }
+
+      /* --- Verdict banner --- */
+      const verdictRect = document.getElementById('verdictRect');
+      const verdictTextEl = document.getElementById('verdictText');
+      if (isForged) {
+          verdictRect.setAttribute('fill', '#fde8e4');
+          verdictRect.setAttribute('stroke', 'var(--red)');
+          verdictTextEl.setAttribute('fill', 'var(--red)');
+          verdictTextEl.textContent = '✗ SIGNATURE FORGED — ' + (attackLabels[currentAttackMode] || 'Attack');
+      } else {
+          verdictRect.setAttribute('fill', 'var(--green-tint)');
+          verdictRect.setAttribute('stroke', 'var(--green)');
+          verdictTextEl.setAttribute('fill', 'var(--green)');
+          verdictTextEl.textContent = '✓ SIGNATURE VERIFIED';
+      }
+
+      /* --- Beam colors --- */
+      const beams = heroStage.querySelectorAll('.beam');
+      beams.forEach(b => {
+          b.setAttribute('stroke', isForged ? 'var(--red)' : 'var(--blue)');
+      });
+
+      /* --- Bob outer ring --- */
+      const bobOuter = heroStage.querySelector('circle[cx="1050"][cy="250"][r="54"]');
+      if (bobOuter) {
+          bobOuter.setAttribute('stroke', isForged ? 'var(--red)' : 'var(--border)');
+      }
+
+      /* --- Alice outer ring --- */
+      const aliceOuter = heroStage.querySelector('circle[cx="150"][cy="250"][r="54"]');
+      if (aliceOuter) {
+          aliceOuter.setAttribute('stroke', isUnderAttack ? 'var(--amber)' : 'var(--border)');
+      }
+
+      /* --- Masthead status --- */
+      const mhStatusBox = document.getElementById('mhStatusBox');
+      const mhLiveDot = document.getElementById('mhLiveDot');
+      const mhStatusText = document.getElementById('mhStatusText');
+      if (isForged) {
+          mhStatusBox.style.background = '#fde8e4';
+          mhStatusBox.style.borderColor = '#e5b8b0';
+          mhLiveDot.style.background = 'var(--red)';
+          mhStatusText.style.color = 'var(--red)';
+          mhStatusText.textContent = '⚠ Forgery Detected';
+      } else if (isUnderAttack) {
+          mhStatusBox.style.background = 'var(--amber-tint)';
+          mhStatusBox.style.borderColor = '#e3d2b8';
+          mhLiveDot.style.background = 'var(--amber)';
+          mhStatusText.style.color = '#7d5520';
+          mhStatusText.textContent = 'Attack in Progress';
+      } else {
+          mhStatusBox.style.background = 'var(--green-tint)';
+          mhStatusBox.style.borderColor = '#d7e6da';
+          mhLiveDot.style.background = 'var(--green)';
+          mhStatusText.style.color = '#2f5c3d';
+          mhStatusText.textContent = 'System Nominal';
+      }
+
+      /* --- QBER stat row color --- */
+      const qberNum = document.querySelectorAll('.stat-row .num')[0];
+      if (qberNum) {
+          qberNum.style.color = isForged ? 'var(--red)' : 'var(--ink-0)';
+      }
+
+      /* --- Fidelity color --- */
+      fidNum.style.color = isForged ? 'var(--red)' : 'var(--ink-0)';
+
+      /* --- Bell parameter color --- */
+      const bellVal = document.querySelector('.dstat.accent .val');
+      if (bellVal) {
+          bellVal.style.color = isForged ? 'var(--red)' : 'var(--blue)';
+      }
+  }
+
   async function fetchState() {
       try {
           const res = await fetch('/api/state');
@@ -784,6 +940,7 @@
               
               updateSPRT(state);
               updateCHSH(state);
+              updateVisuals(state);
           }
       } catch (e) {}
   }
@@ -799,6 +956,7 @@
               if (ev.decision === 'ACCEPT') dotClass = 'green';
               else if (ev.decision === 'REJECT') dotClass = 'amber';
               
+              const attackClass = ev.attribution ? (ev.attribution.attack_class || 'NONE') : 'NONE';
               const div = document.createElement('div');
               div.className = 'event';
               div.innerHTML = `
@@ -806,32 +964,12 @@
                 <div class="event-body">
                   <div class="event-time">Session ${ev.session_id.substring(0,4).toUpperCase()}</div>
                   <div class="event-name">Verification ${ev.decision.toLowerCase()}</div>
-                  <div class="event-detail">QBER: ${(ev.qber*100).toFixed(1)}%. Result: ${ev.decision}. Attack: <span style="font-weight:600;color:var(--amber);">${ev.attribution.attack_class}</span></div>
+                  <div class="event-detail">QBER: ${(ev.qber*100).toFixed(1)}%. Result: ${ev.decision}. Attack: <span style="font-weight:600;color:${attackClass !== 'NONE' ? 'var(--red)' : 'var(--green)'};">${attackClass !== 'NONE' ? attackClass : 'None detected'}</span></div>
                 </div>
               `;
               div.addEventListener('click', ()=> div.classList.toggle('open'));
               eventsList.appendChild(div);
           });
-          
-          if (events.length > 0) {
-              const latest = events[0];
-              const mhStatusBox = document.getElementById('mhStatusBox');
-              const mhLiveDot = document.getElementById('mhLiveDot');
-              const mhStatusText = document.getElementById('mhStatusText');
-              if (latest.decision === 'REJECT') {
-                  mhStatusBox.style.background = 'var(--amber-tint)';
-                  mhStatusBox.style.borderColor = '#e3d2b8';
-                  mhLiveDot.style.background = 'var(--amber)';
-                  mhStatusText.style.color = '#7d5520';
-                  mhStatusText.textContent = 'Threat Detected';
-              } else {
-                  mhStatusBox.style.background = 'var(--green-tint)';
-                  mhStatusBox.style.borderColor = '#d7e6da';
-                  mhLiveDot.style.background = 'var(--green)';
-                  mhStatusText.style.color = '#2f5c3d';
-                  mhStatusText.textContent = 'System Nominal';
-              }
-          }
       } catch (e) {}
   }
 
@@ -859,10 +997,11 @@
               const row = document.createElement('div');
               row.style.cssText = 'display:flex; padding:16px 24px; border-bottom:1px solid var(--border); font-size:13px; font-family:var(--mono); color:var(--ink-1); align-items:center;';
               
-              let decisionColor = ev.decision === 'ACCEPT' ? 'var(--green)' : 'var(--amber)';
-              let attackHtml = ev.attribution.attack_class === 'NONE' 
+              let decisionColor = ev.decision === 'ACCEPT' ? 'var(--green)' : 'var(--red)';
+              let attackClass = ev.attribution ? (ev.attribution.attack_class || 'NONE') : 'NONE';
+              let attackHtml = attackClass === 'NONE' 
                 ? `<span style="color:var(--ink-3)">None</span>` 
-                : `<span style="color:var(--amber); font-weight:600;">${ev.attribution.attack_class}</span>`;
+                : `<span style="color:var(--red); font-weight:600;">${attackClass}</span>`;
 
               row.innerHTML = `
                 <div style="flex:1; display:flex; align-items:center; gap:8px;">
@@ -870,7 +1009,7 @@
                   Sess: ${ev.session_id.substring(0,6).toUpperCase()}
                 </div>
                 <div style="flex:1;">${(ev.qber*100).toFixed(2)}%</div>
-                <div style="flex:1;">${ev.statistics.chsh ? ev.statistics.chsh.s.toFixed(3) : 'N/A'}</div>
+                <div style="flex:1;">${ev.statistics && ev.statistics.chsh ? ev.statistics.chsh.s.toFixed(3) : 'N/A'}</div>
                 <div style="flex:1; color:${decisionColor}; font-weight:600;">${ev.decision}</div>
                 <div style="flex:1;">${attackHtml}</div>
               `;
@@ -887,8 +1026,11 @@
   fetchState();
   fetchEvents();
 
+  /* ========== TELEPORTATION ANIMATION LOOP ========== */
   setInterval(() => {
+      const isForged = currentDecision === 'REJECT';
       const outcome = outcomes[Math.floor(Math.random()*outcomes.length)];
+
       bellText.textContent = 'measuring…';
       bellApp.classList.add('flash');
       setTimeout(()=>{
@@ -902,17 +1044,32 @@
       }, 1500);
 
       setTimeout(()=>{
-        pauliText.textContent = 'applied';
-        pauliApp.classList.remove('flash');
-        pauliApp.classList.add('flash-green');
-        bobCheck.style.transition = 'opacity .25s ease';
-        bobCheck.style.opacity = '1';
+        if (isForged) {
+          /* Attack detected — red flash, failed correction */
+          pauliText.textContent = 'FAILED';
+          pauliApp.classList.remove('flash');
+          pauliApp.classList.remove('flash-green');
+          bobCheck.style.opacity = '0';
+          bobFail.style.opacity = '1';
+          bobCore.setAttribute('fill', 'var(--red)');
+        } else {
+          /* Honest — green flash, verified */
+          pauliText.textContent = 'applied';
+          pauliApp.classList.remove('flash');
+          pauliApp.classList.add('flash-green');
+          bobFail.style.opacity = '0';
+          bobCore.setAttribute('fill', 'var(--blue)');
+          bobCheck.style.transition = 'opacity .25s ease';
+          bobCheck.style.opacity = '1';
+        }
       }, 2100);
 
       setTimeout(()=>{
         pauliApp.classList.remove('flash-green');
         bobCheck.style.opacity = '0';
+        bobFail.style.opacity = '0';
         pauliText.textContent = 'idle';
+        bobCore.setAttribute('fill', 'var(--blue)');
       }, 3000);
   }, 3200);
 </script>
