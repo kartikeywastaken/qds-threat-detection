@@ -1,0 +1,14 @@
+services:
+  - type: web
+    name: qds-threat-detection
+    env: docker
+    region: ohio
+    plan: free
+    branch: main
+    numInstances: 1
+    envVars:
+      - key: PORT
+        value: 8000
+    secretFiles:
+      - name: firebase-credentials.json
+        content: '{ "paste_your_service_account_json": "here" }'

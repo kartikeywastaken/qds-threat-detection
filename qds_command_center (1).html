@@ -1,0 +1,924 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>QDS — Quantum Signature Verification</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+
+  :root{
+    --bg:#f6f3ec;
+    --bg-inset:#efeadf;
+    --surface:#ffffff;
+    --border:#e3ddd0;
+    --border-soft:#ece7db;
+    --ink-0:#26261f;
+    --ink-1:#57564c;
+    --ink-2:#847f70;
+    --ink-3:#aca894;
+    --blue:#4e6f92;
+    --blue-soft:#9db0c6;
+    --blue-tint:#eaeff4;
+    --amber:#a97a3a;
+    --amber-tint:#f6efe1;
+    --green:#4f7f5c;
+    --green-tint:#eaf1eb;
+    --red:#a15b4e;
+    --radius:14px;
+    --radius-sm:9px;
+    --sans:'Inter',-apple-system,'Segoe UI',sans-serif;
+    --mono:'IBM Plex Mono','SFMono-Regular',monospace;
+  }
+
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html,body{ background:var(--bg); color:var(--ink-0); font-family:var(--sans); height:100%; -webkit-font-smoothing:antialiased; }
+  ::selection{ background:var(--blue-soft); color:#fff; }
+  :focus-visible{ outline:2px solid var(--blue); outline-offset:2px; }
+
+  /* ================= SHELL ================= */
+
+  .app{ display:grid; grid-template-columns:64px 1fr; min-height:100vh; }
+
+  .rail{
+    display:flex; flex-direction:column; align-items:center;
+    padding:24px 0 18px;
+    background:var(--surface);
+    border-right:1px solid var(--border);
+  }
+  .rail-mark{
+    width:20px; height:20px;
+    border:1.5px solid var(--ink-2);
+    border-radius:5px;
+    margin-bottom:34px;
+    position:relative;
+  }
+  .rail-mark::after{
+    content:""; position:absolute; inset:5px; border-radius:2px; background:var(--blue);
+  }
+  .rail-nav{ display:flex; flex-direction:column; gap:22px; align-items:center; }
+  .rail-item{
+    position:relative;
+    color:var(--ink-3);
+    cursor:pointer;
+    transition:color .15s ease, background .15s ease;
+    padding:8px; border-radius:8px;
+  }
+  .rail-item svg{ width:16px; height:16px; display:block; }
+  .rail-item:hover{ color:var(--ink-1); background:var(--bg-inset); }
+  .rail-item.active{ color:var(--blue); background:var(--blue-tint); }
+  .rail-spacer{ flex:1; }
+  .rail-foot{ display:flex; flex-direction:column; align-items:center; gap:16px; }
+  .rail-dot{ width:6px; height:6px; border-radius:50%; background:var(--green); }
+
+  .main{ min-width:0; display:flex; flex-direction:column; }
+
+  /* ================= MASTHEAD ================= */
+
+  .masthead{
+    display:flex; align-items:flex-start; justify-content:space-between;
+    padding:30px 44px 24px;
+    border-bottom:1px solid var(--border);
+    background:var(--surface);
+  }
+  .mh-left .mh-mark{
+    font-family:var(--mono); font-size:10.5px; letter-spacing:0.14em; color:var(--ink-3);
+    margin-bottom:8px;
+  }
+  .mh-left h1{
+    font-size:22px; font-weight:600; letter-spacing:-0.01em; color:var(--ink-0);
+    margin-bottom:6px;
+  }
+  .mh-left p{
+    font-size:13px; color:var(--ink-2); max-width:44ch; line-height:1.55;
+  }
+
+  .mh-right{ text-align:right; flex-shrink:0; margin-left:24px; }
+  .mh-status{
+    display:inline-flex; align-items:center; gap:8px;
+    padding:7px 14px 7px 11px;
+    background:var(--green-tint);
+    border:1px solid #d7e6da;
+    border-radius:999px;
+  }
+  .mh-live-dot{
+    width:7px; height:7px; border-radius:50%; background:var(--green);
+    position:relative; flex-shrink:0;
+  }
+  .mh-live-dot::after{
+    content:""; position:absolute; inset:-5px; border-radius:50%;
+    border:1px solid var(--green);
+    opacity:0.35;
+    animation:pulse-ring 2.8s ease-out infinite;
+  }
+  @keyframes pulse-ring{ 0%{ transform:scale(.6); opacity:.5;} 100%{ transform:scale(1.9); opacity:0;} }
+  .mh-status-text{ font-size:13px; font-weight:600; color:#2f5c3d; }
+  .mh-sub{
+    font-family:var(--mono); font-size:11px; color:var(--ink-3);
+    margin-top:9px; letter-spacing:0.01em;
+  }
+  .mh-sub b{ color:var(--ink-1); font-weight:500; }
+
+  /* ================= CONTENT WRAPPER ================= */
+
+  .content{ padding:28px 44px 20px; display:flex; flex-direction:column; gap:22px; }
+
+  .card{
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:var(--radius);
+  }
+
+  .card-head{
+    display:flex; align-items:baseline; justify-content:space-between;
+    gap:16px;
+    padding:20px 26px 0;
+  }
+  .card-title{ font-size:14px; font-weight:600; color:var(--ink-0); letter-spacing:-0.005em; }
+  .card-desc{ font-family:var(--mono); font-size:11px; color:var(--ink-3); }
+
+  /* ================= DIAGRAM CARD ================= */
+
+  .diagram-card{ padding-bottom:8px; }
+  .diagram-stage{ position:relative; padding:6px 20px 0; }
+  .diagram-grid{
+    position:absolute; inset:20px 20px 0 20px;
+    background-image:
+      linear-gradient(var(--border-soft) 1px, transparent 1px),
+      linear-gradient(90deg, var(--border-soft) 1px, transparent 1px);
+    background-size:60px 60px;
+    -webkit-mask-image:radial-gradient(ellipse 72% 80% at 50% 46%, black 25%, transparent 76%);
+    mask-image:radial-gradient(ellipse 72% 80% at 50% 46%, black 25%, transparent 76%);
+    opacity:0.6;
+    pointer-events:none;
+  }
+  .diagram-svg{ width:100%; height:auto; display:block; position:relative; z-index:1; }
+
+  .diagram-stats{
+    display:grid; grid-template-columns:repeat(4,1fr);
+    gap:1px;
+    background:var(--border);
+    border-top:1px solid var(--border);
+    margin-top:18px;
+    border-radius:0 0 var(--radius) var(--radius);
+    overflow:hidden;
+  }
+  .dstat{
+    background:var(--surface);
+    padding:16px 22px 18px;
+  }
+  .dstat .lbl{ font-size:11px; color:var(--ink-2); margin-bottom:6px; }
+  .dstat .val{ font-family:var(--mono); font-weight:500; font-size:22px; color:var(--ink-0); letter-spacing:-0.01em; }
+  .dstat .val span{ font-size:12px; color:var(--ink-3); font-weight:400; margin-left:3px; }
+  .dstat .foot{ font-family:var(--mono); font-size:10.5px; color:var(--ink-3); margin-top:5px; }
+  .dstat.accent .val{ color:var(--blue); }
+  .dstat.good .foot{ color:var(--green); }
+
+  /* ================= CHSH BAND ================= */
+
+  .chsh-svg{ width:100%; height:auto; display:block; padding:0 26px 22px; }
+
+  /* ================= LOWER GRID ================= */
+
+  .lower{ display:grid; grid-template-columns:1fr 320px; gap:22px; align-items:start; }
+
+  .sprt-svg{ width:100%; height:auto; display:block; margin-top:6px; padding:0 26px 22px; }
+
+  .side-zone{ display:flex; flex-direction:column; gap:22px; }
+
+  .stat-rows{ padding:6px 24px 4px; }
+  .stat-row{
+    display:flex; align-items:baseline; justify-content:space-between;
+    padding:13px 0;
+    border-bottom:1px solid var(--border-soft);
+  }
+  .stat-row:first-child{ padding-top:2px; }
+  .stat-row:last-child{ border-bottom:none; padding-bottom:16px; }
+  .stat-row .lbl{ font-size:12px; color:var(--ink-2); }
+  .stat-row .num{ font-family:var(--mono); font-size:20px; color:var(--ink-0); font-weight:500; }
+  .stat-row .num span{ font-size:11px; color:var(--ink-3); font-weight:400; margin-left:2px; }
+
+  .events-zone{ padding-bottom:6px; }
+  .events-list{ padding:2px 4px 4px; }
+  .event{
+    padding:12px 22px;
+    border-bottom:1px solid var(--border-soft);
+    cursor:pointer;
+    display:flex; gap:10px;
+    transition:background .12s ease;
+  }
+  .event:hover{ background:var(--bg-inset); }
+  .event:last-child{ border-bottom:none; }
+  .event-dot{ width:6px; height:6px; border-radius:50%; margin-top:6px; flex-shrink:0; background:var(--ink-3); }
+  .event-dot.green{ background:var(--green); }
+  .event-dot.amber{ background:var(--amber); }
+  .event-body{ flex:1; min-width:0; }
+  .event-time{ font-family:var(--mono); font-size:10px; color:var(--ink-3); }
+  .event-name{ font-size:12.5px; color:var(--ink-1); font-weight:500; margin-top:1px; }
+  .event-detail{
+    font-size:12px; color:var(--ink-2); line-height:1.55; padding-top:5px;
+    max-height:0; overflow:hidden; transition:max-height .2s ease;
+  }
+  .event.open .event-detail{ max-height:60px; }
+  .event.open .event-name{ color:var(--ink-0); }
+
+  /* ================= FOOTER ================= */
+
+  .footbar{
+    padding:14px 44px 26px;
+    display:flex; justify-content:space-between;
+    font-family:var(--mono); font-size:10.5px; color:var(--ink-3);
+  }
+
+  /* ================= SVG shared bits ================= */
+
+  .beam{ stroke-dasharray:3 6; animation:dash 2.2s linear infinite; }
+  @keyframes dash{ to{ stroke-dashoffset:-18; } }
+  .slow-spin{ transform-origin:center; animation:spin 16s linear infinite; }
+  @keyframes spin{ to{ transform:rotate(360deg); } }
+
+  .apparatus-box{ transition:stroke .25s ease, fill .25s ease; }
+  .flash .apparatus-box{ stroke:var(--blue); fill:var(--blue-tint); }
+  .flash-green .apparatus-box{ stroke:var(--green); fill:var(--green-tint); }
+
+  .playhead{ animation:sweep 11s linear infinite; }
+  @keyframes sweep{ 0%{ transform:translateX(0); } 100%{ transform:translateX(1010px); } }
+
+  .bit-travel{ animation:travel 3.4s ease-in-out infinite; }
+  @keyframes travel{
+    0%{ offset-distance:0%; opacity:0; }
+    8%{ opacity:1; }
+    46%{ offset-distance:100%; opacity:1; }
+    50%{ opacity:0; }
+    100%{ offset-distance:100%; opacity:0; }
+  }
+
+  @media (max-width:1100px){
+    .lower{ grid-template-columns:1fr; }
+    .diagram-stats{ grid-template-columns:repeat(2,1fr); }
+  }
+  @media (max-width:720px){
+    .app{ grid-template-columns:1fr; }
+    .rail{ flex-direction:row; padding:12px 16px; }
+    .rail-nav{ flex-direction:row; }
+    .rail-mark{ margin-bottom:0; margin-right:20px; }
+    .rail-spacer{ display:none; }
+    .masthead, .content{ padding-left:20px; padding-right:20px; }
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *{ animation:none !important; transition:none !important; }
+  }
+
+</style>
+</head>
+<body>
+
+<div class="app">
+
+  <div class="rail">
+    <div class="rail-mark"></div>
+    <!-- NAV ICONS -->
+    <div class="rail-nav">
+      <div class="rail-item active" title="Command Center" onclick="switchView('view-command-center', this)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="2.3" fill="currentColor" stroke="none"/></svg>
+      </div>
+      <div class="rail-item" title="Statistical Tests" onclick="switchView('view-statistical-tests', this)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 3v18h18M7 16l4-4 4 4 6-6"/></svg>
+      </div>
+      <div class="rail-item" title="Event Log" onclick="switchView('view-event-log', this)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 4h16v16H4z M4 9h16 M9 4v16"/></svg>
+      </div>
+      <div class="rail-item" title="Key Management" onclick="switchView('view-key-management', this)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"/></svg>
+      </div>
+    </div>
+    <div class="rail-spacer"></div>
+    <div class="rail-foot">
+      <div class="rail-item" title="Configuration">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M2 12h3M19 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1"/></svg>
+      </div>
+      <div class="rail-dot" title="Systems operational"></div>
+    </div>
+  </div>
+
+  <div class="main">
+
+    <!-- MASTHEAD -->
+    <div class="masthead">
+      <div class="mh-left">
+        <div class="mh-mark">QDS · COMMAND CENTER</div>
+        <h1>Quantum Signature Verification</h1>
+        <p>Statistical evidence that teleported signatures originate from a genuine entangled channel, not a forgery.</p>
+      </div>
+      <div class="mh-right">
+        <div style="display:flex; gap:12px; align-items:center; justify-content:flex-end;">
+          <select id="attackSelect" style="padding:6px 14px; border-radius:999px; border:1px solid var(--border); background:var(--surface) url('data:image/svg+xml;utf8,<svg fill=%22%23aca894%22 viewBox=%220 0 24 24%22 width=%2216%22 height=%2216%22 xmlns=%22http://www.w3.org/2000/svg%22><path d=%22M7 10l5 5 5-5H7z%22/></svg>') no-repeat right 8px center; font-family:var(--sans); font-size:12.5px; font-weight:500; color:var(--ink-1); cursor:pointer; outline:none; appearance:none; padding-right:28px; transition:all .15s ease;">
+            <option value="HONEST">Honest Protocol</option>
+            <option value="INDIVIDUAL">Intercept-Resend (Individual)</option>
+            <option value="COLLECTIVE">Entanglement (Collective)</option>
+            <option value="COHERENT">Joint Probe (Coherent)</option>
+            <option value="IMPERSONATION">Impersonation / Forgery</option>
+            <option value="CHANNEL_MANIPULATION">Classical Manipulation</option>
+            <option value="REPLAY">Replay Attack</option>
+          </select>
+          <div class="mh-status" id="mhStatusBox">
+            <span class="mh-live-dot" id="mhLiveDot"></span>
+            <span class="mh-status-text" id="mhStatusText">System Nominal</span>
+          </div>
+        </div>
+        <div class="mh-sub"><b>184,206</b> rounds verified &nbsp;·&nbsp; last anomaly <b>11d 04h</b> ago &nbsp;·&nbsp; <span id="clock">09:41:22</span> UTC</div>
+      </div>
+    </div>
+
+    <div class="content" id="view-command-center">
+
+      <!-- DIAGRAM CARD -->
+      <div class="card diagram-card">
+        <div class="card-head">
+          <div class="card-title">Teleportation channel</div>
+          <div class="card-desc">live protocol trace</div>
+        </div>
+
+        <div class="diagram-stage">
+          <div class="diagram-grid"></div>
+
+          <svg class="diagram-svg" viewBox="0 0 1200 480" id="heroStage">
+
+            <!-- baseline ruler -->
+            <line x1="70" y1="430" x2="1130" y2="430" stroke="var(--border)" stroke-width="1"/>
+            <g stroke="var(--border)" stroke-width="1">
+              <line x1="150" y1="425" x2="150" y2="435"/>
+              <line x1="370" y1="425" x2="370" y2="435"/>
+              <line x1="600" y1="425" x2="600" y2="435"/>
+              <line x1="830" y1="425" x2="830" y2="435"/>
+              <line x1="1050" y1="425" x2="1050" y2="435"/>
+            </g>
+            <rect class="playhead" x="70" y="426" width="2" height="8" fill="var(--blue)"/>
+
+            <!-- ===== ALICE ===== -->
+            <g>
+              <circle cx="150" cy="250" r="54" fill="var(--surface)" stroke="var(--border)" stroke-width="1.4"/>
+              <ellipse class="slow-spin" cx="150" cy="250" rx="54" ry="18" fill="none" stroke="var(--blue-soft)" stroke-width="1.2"/>
+              <circle cx="150" cy="250" r="7" fill="var(--blue)"/>
+              <text x="150" y="330" font-family="var(--sans)" font-size="13" fill="var(--ink-0)" text-anchor="middle" font-weight="600">Alice</text>
+              <text x="150" y="347" font-family="var(--mono)" font-size="10.5" fill="var(--ink-3)" text-anchor="middle">holds |ψ⟩</text>
+            </g>
+
+            <!-- Alice -> Bell beam -->
+            <line x1="204" y1="250" x2="322" y2="250" stroke="var(--blue)" stroke-width="1.3" class="beam" opacity="0.65"/>
+
+            <!-- ===== BELL MEASUREMENT ===== -->
+            <g id="bellApparatus">
+              <rect class="apparatus-box" x="325" y="205" width="90" height="90" rx="16" fill="var(--surface)" stroke="var(--ink-2)" stroke-width="1.3"/>
+              <line x1="345" y1="250" x2="395" y2="250" stroke="var(--ink-2)" stroke-width="1.2"/>
+              <line x1="370" y1="225" x2="370" y2="275" stroke="var(--ink-2)" stroke-width="1.2"/>
+              <circle cx="370" cy="250" r="4" fill="none" stroke="var(--blue)" stroke-width="1.2"/>
+              <text x="370" y="325" font-family="var(--sans)" font-size="12.5" fill="var(--ink-1)" text-anchor="middle" font-weight="600">Bell measurement</text>
+              <text x="370" y="341" font-family="var(--mono)" font-size="10.5" fill="var(--blue)" text-anchor="middle" id="bellText">outcome 01</text>
+            </g>
+
+            <!-- ===== ENTANGLED RESOURCE ===== -->
+            <g>
+              <text x="600" y="108" font-family="var(--sans)" font-size="12" fill="var(--ink-1)" text-anchor="middle" font-weight="600">Entangled resource</text>
+              <text x="600" y="124" font-family="var(--mono)" font-size="10.5" fill="var(--ink-3)" text-anchor="middle">Bell state |Φ⁺⟩</text>
+
+              <circle cx="600" cy="164" r="9" fill="var(--surface)" stroke="var(--blue)" stroke-width="1.6"/>
+              <circle cx="600" cy="336" r="9" fill="var(--surface)" stroke="var(--blue)" stroke-width="1.6"/>
+              <path d="M600,173 C 566,205 566,295 600,327" fill="none" stroke="var(--blue-soft)" stroke-width="1" opacity="0.55"/>
+              <path d="M600,173 C 600,225 600,275 600,327" fill="none" stroke="var(--blue-soft)" stroke-width="1" opacity="0.75"/>
+              <path d="M600,173 C 634,205 634,295 600,327" fill="none" stroke="var(--blue-soft)" stroke-width="1" opacity="0.55"/>
+              <circle cx="600" cy="164" r="3.2" fill="var(--blue)">
+                <animate attributeName="opacity" values="1;0.25;1" dur="2.8s" repeatCount="indefinite"/>
+              </circle>
+              <circle cx="600" cy="336" r="3.2" fill="var(--blue)">
+                <animate attributeName="opacity" values="0.25;1;0.25" dur="2.8s" repeatCount="indefinite"/>
+              </circle>
+            </g>
+
+            <!-- correlation legs to Bell + Pauli -->
+            <path d="M584,168 C 500,188 440,205 411,232" fill="none" stroke="var(--blue-soft)" stroke-width="1.1" class="beam" opacity="0.6"/>
+            <path d="M616,332 C 700,352 750,335 789,282" fill="none" stroke="var(--blue-soft)" stroke-width="1.1" class="beam" opacity="0.6"/>
+
+            <!-- classical channel -->
+            <path id="classicalPath" d="M370,296 C 430,380 770,380 830,296" fill="none" stroke="var(--amber)" stroke-width="1.2" stroke-dasharray="1 6" opacity="0.8"/>
+            <text x="600" y="405" font-family="var(--sans)" font-size="11.5" fill="var(--amber)" text-anchor="middle" font-weight="600">Classical channel</text>
+            <text x="600" y="420" font-family="var(--mono)" font-size="10" fill="var(--ink-3)" text-anchor="middle">2 bits</text>
+            <g class="bit-travel" style="offset-path:path('M370,296 C 430,380 770,380 830,296');">
+              <circle r="4" fill="var(--amber)"/>
+            </g>
+
+            <!-- ===== PAULI CORRECTION ===== -->
+            <g id="pauliApparatus">
+              <rect class="apparatus-box" x="785" y="205" width="90" height="90" rx="16" fill="var(--surface)" stroke="var(--ink-2)" stroke-width="1.3"/>
+              <text x="830" y="257" font-family="var(--mono)" font-size="17" fill="var(--blue)" text-anchor="middle">σ</text>
+              <text x="830" y="325" font-family="var(--sans)" font-size="12.5" fill="var(--ink-1)" text-anchor="middle" font-weight="600">Pauli correction</text>
+              <text x="830" y="341" font-family="var(--mono)" font-size="10.5" fill="var(--ink-3)" text-anchor="middle" id="pauliText">idle</text>
+            </g>
+
+            <!-- Pauli -> Bob beam -->
+            <line x1="878" y1="250" x2="996" y2="250" stroke="var(--blue)" stroke-width="1.3" class="beam" opacity="0.65"/>
+
+            <!-- ===== BOB ===== -->
+            <g>
+              <circle cx="1050" cy="250" r="54" fill="var(--surface)" stroke="var(--border)" stroke-width="1.4"/>
+              <ellipse class="slow-spin" cx="1050" cy="250" rx="54" ry="18" fill="none" stroke="var(--blue-soft)" stroke-width="1.2" style="animation-delay:-5s;"/>
+              <circle cx="1050" cy="250" r="7" fill="var(--blue)" id="bobCore"/>
+              <path id="bobCheck" d="M1032,250 l11,11 l22,-24" fill="none" stroke="var(--green)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" opacity="0"/>
+              <text x="1050" y="330" font-family="var(--sans)" font-size="13" fill="var(--ink-0)" text-anchor="middle" font-weight="600">Bob</text>
+              <text x="1050" y="347" font-family="var(--mono)" font-size="10.5" fill="var(--ink-3)" text-anchor="middle">reconstructs |ψ⟩</text>
+            </g>
+
+          </svg>
+        </div>
+
+        <div class="diagram-stats">
+          <div class="dstat accent">
+            <div class="lbl">Bell parameter S</div>
+            <div class="val">2.81</div>
+            <div class="foot">classical bound 2.000</div>
+          </div>
+          <div class="dstat">
+            <div class="lbl">Margin over bound</div>
+            <div class="val">+0.81</div>
+            <div class="foot">singlet ideal 2√2 ≈ 2.828</div>
+          </div>
+          <div class="dstat good">
+            <div class="lbl">Fidelity</div>
+            <div class="val" id="fidNum">0.984</div>
+            <div class="foot">last correction verified</div>
+          </div>
+          <div class="dstat">
+            <div class="lbl">Cycle</div>
+            <div class="val" id="cycleNum">0412</div>
+            <div class="foot">rounds this session</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CHSH BAND -->
+      <div class="card">
+        <div class="card-head">
+          <div class="card-title">CHSH correlation</div>
+          <div class="card-desc">rolling window · bound 2√2 ≈ 2.828</div>
+        </div>
+        <svg class="chsh-svg" viewBox="0 0 1000 170" id="chshChart">
+          <defs>
+            <linearGradient id="chshFill" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="var(--blue)" stop-opacity="0.12"/>
+              <stop offset="100%" stop-color="var(--blue)" stop-opacity="0"/>
+            </linearGradient>
+          </defs>
+          <rect x="0" y="118" width="1000" height="30" fill="var(--red)" opacity="0.05"/>
+          <line x1="0" y1="118" x2="1000" y2="118" stroke="var(--ink-3)" stroke-width="1" stroke-dasharray="5 5" opacity="0.8"/>
+          <text x="0" y="112" font-family="var(--mono)" font-size="10.5" fill="var(--ink-2)">classical limit — S = 2.000</text>
+
+          <path d="M0,40 L0,148 L1000,148 L1000,36 L960,42 L920,32 L880,40 L840,26 L800,36 L760,24 L720,34 L680,20 L640,30 L600,18 L560,28 L520,16 L480,26 L440,34 L400,24 L360,32 L320,22 L280,30 L240,20 L200,28 L160,38 L120,28 L80,36 L40,26 L0,34 Z"
+                fill="url(#chshFill)" stroke="none"/>
+          <path d="M0,34 L40,26 L80,36 L120,28 L160,38 L200,28 L240,20 L280,30 L320,22 L360,32 L400,24 L440,34 L480,26 L520,16 L560,28 L600,18 L640,30 L680,20 L720,34 L760,24 L800,36 L840,26 L880,40 L920,32 L960,42 L1000,36"
+                fill="none" stroke="var(--blue)" stroke-width="1.8"/>
+          <circle cx="1000" cy="36" r="4" fill="var(--surface)" stroke="var(--blue)" stroke-width="1.8"/>
+          <circle cx="1000" cy="36" r="9" fill="none" stroke="var(--blue)" stroke-width="1" opacity="0.35">
+            <animate attributeName="r" values="9;15;9" dur="2.8s" repeatCount="indefinite"/>
+            <animate attributeName="opacity" values="0.35;0;0.35" dur="2.8s" repeatCount="indefinite"/>
+          </circle>
+        </svg>
+      </div>
+
+      <!-- LOWER: SPRT + sidebar -->
+      <div class="lower">
+        <div class="card">
+          <div class="card-head">
+            <div class="card-title">SPRT sequential detection</div>
+            <div class="card-desc" id="sprtTag" style="color:var(--green);">accept H₀ — round 187</div>
+          </div>
+          <svg class="sprt-svg" viewBox="0 0 1000 360" id="sprtChart">
+            <g stroke="var(--border-soft)" stroke-width="1">
+              <line x1="0" y1="120" x2="1000" y2="120"/>
+              <line x1="0" y1="180" x2="1000" y2="180"/>
+              <line x1="0" y1="240" x2="1000" y2="240"/>
+            </g>
+            <line x1="0" y1="40" x2="1000" y2="40" stroke="var(--red)" stroke-width="1" stroke-dasharray="5 5" opacity="0.55"/>
+            <line x1="0" y1="320" x2="1000" y2="320" stroke="var(--green)" stroke-width="1" stroke-dasharray="5 5" opacity="0.75"/>
+            <text x="1000" y="34" font-family="var(--mono)" font-size="10.5" fill="var(--red)" text-anchor="end" opacity="0.9">reject — ln A = 4.60</text>
+            <text x="1000" y="316" font-family="var(--mono)" font-size="10.5" fill="var(--green)" text-anchor="end" opacity="0.9">accept — ln B = −4.60</text>
+
+            <text x="0" y="45" font-family="var(--mono)" font-size="9.5" fill="var(--ink-3)">+4.6</text>
+            <text x="0" y="125" font-family="var(--mono)" font-size="9.5" fill="var(--ink-3)">+2.3</text>
+            <text x="0" y="185" font-family="var(--mono)" font-size="9.5" fill="var(--ink-3)">0</text>
+            <text x="0" y="245" font-family="var(--mono)" font-size="9.5" fill="var(--ink-3)">−2.3</text>
+            <text x="0" y="325" font-family="var(--mono)" font-size="9.5" fill="var(--ink-3)">−4.6</text>
+
+            <path d="M40,181 L104,171 L168,183 L232,166 L296,176 L360,158 L424,169 L488,150 L552,163 L616,181 L680,197 L744,190 L784,232 L800,268 L806,300"
+                  fill="none" stroke="var(--blue)" stroke-width="2" opacity="0.95"/>
+            <path d="M806,300 L806,320" fill="none" stroke="var(--blue)" stroke-width="1" opacity="0.35" stroke-dasharray="2 4"/>
+
+            <circle cx="806" cy="320" r="5" fill="var(--surface)" stroke="var(--green)" stroke-width="2"/>
+            <circle cx="806" cy="320" r="11" fill="none" stroke="var(--green)" stroke-width="1" opacity="0.35">
+              <animate attributeName="r" values="11;18;11" dur="3s" repeatCount="indefinite"/>
+              <animate attributeName="opacity" values="0.35;0;0.35" dur="3s" repeatCount="indefinite"/>
+            </circle>
+            <text x="822" y="316" font-family="var(--mono)" font-size="11" fill="var(--green)" font-weight="600">ACCEPT</text>
+            <text x="822" y="330" font-family="var(--mono)" font-size="9.5" fill="var(--ink-2)">round 187 of 240</text>
+
+            <text x="0" y="352" font-family="var(--mono)" font-size="9.5" fill="var(--ink-3)">0</text>
+            <text x="330" y="352" font-family="var(--mono)" font-size="9.5" fill="var(--ink-3)" text-anchor="middle">80</text>
+            <text x="660" y="352" font-family="var(--mono)" font-size="9.5" fill="var(--ink-3)" text-anchor="middle">160</text>
+            <text x="1000" y="352" font-family="var(--mono)" font-size="9.5" fill="var(--ink-3)" text-anchor="end">240</text>
+          </svg>
+        </div>
+
+        <div class="side-zone">
+          <div class="card stat-rows">
+            <div class="stat-row"><span class="lbl">QBER</span><span class="num">1.8<span>%</span></span></div>
+            <div class="stat-row"><span class="lbl">Min-entropy</span><span class="num">7.42<span>bits</span></span></div>
+            <div class="stat-row"><span class="lbl">Run ID</span><span class="num" style="font-size:16px;">A83F</span></div>
+          </div>
+
+          <div class="card events-zone">
+            <div class="card-head" style="padding-bottom:14px;">
+              <div class="card-title">Live events</div>
+            </div>
+            <div class="events-list" id="eventsList">
+              <div class="event">
+                <span class="event-dot green"></span>
+                <div class="event-body">
+                  <div class="event-time">09:41:15</div>
+                  <div class="event-name">Verification accepted</div>
+                  <div class="event-detail">SPRT boundary crossed at round 187. Signature accepted under H₀.</div>
+                </div>
+              </div>
+              <div class="event">
+                <span class="event-dot"></span>
+                <div class="event-body">
+                  <div class="event-time">09:41:12</div>
+                  <div class="event-name">CHSH measurement</div>
+                  <div class="event-detail">S = 2.81 recorded across four measurement bases.</div>
+                </div>
+              </div>
+              <div class="event">
+                <span class="event-dot"></span>
+                <div class="event-body">
+                  <div class="event-time">09:41:08</div>
+                  <div class="event-name">Signature received</div>
+                  <div class="event-detail">Incoming quantum signature queued for verification.</div>
+                </div>
+              </div>
+              <div class="event">
+                <span class="event-dot green"></span>
+                <div class="event-body">
+                  <div class="event-time">09:40:51</div>
+                  <div class="event-name">Teleportation complete</div>
+                  <div class="event-detail">Pauli correction applied. Fidelity 0.984.</div>
+                </div>
+              </div>
+              <div class="event">
+                <span class="event-dot amber"></span>
+                <div class="event-body">
+                  <div class="event-time">09:38:03</div>
+                  <div class="event-name">QBER drift flagged</div>
+                  <div class="event-detail">Transient rise to 2.4%, resolved within six rounds.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="footbar">
+        <span>QDS Command · Build 4.12.0</span>
+        <span>FIPS-validated entropy source</span>
+      </div>
+
+    </div>
+  </div>
+    </div>
+
+    <!-- STATISTICAL TESTS VIEW -->
+    <div class="content" id="view-statistical-tests" style="display:none; padding:40px; flex-direction:column; gap:24px;">
+      <h2 style="font-size:24px; font-weight:600;">Statistical Tests & Mathematical Bounds</h2>
+      <div class="card" style="padding:24px;">
+        <h3 style="font-size:16px; font-weight:600; margin-bottom:12px;">Minimum Entropy Bound (Quantum-Secured)</h3>
+        <p style="font-size:14px; color:var(--ink-2); line-height:1.6; max-width:800px;">
+          The system evaluates the real-time min-entropy bound to ensure that an eavesdropper cannot guess the teleported signature. 
+          When the CHSH parameter drops below 2.0 (classical bound), the evaluated min-entropy falls to 0. 
+        </p>
+      </div>
+      <div class="card" style="padding:24px;">
+        <h3 style="font-size:16px; font-weight:600; margin-bottom:12px;">SPRT Decision Boundary</h3>
+        <p style="font-size:14px; color:var(--ink-2); line-height:1.6; max-width:800px;">
+          The Sequential Probability Ratio Test monitors the log-likelihood ratio of an honest channel vs. an intercept-resend attack. 
+          The upper bound is fixed at 4.60 (Reject) and lower bound at -4.60 (Accept).
+        </p>
+      </div>
+    </div>
+
+    <!-- EVENT LOG VIEW -->
+    <div class="content" id="view-event-log" style="display:none; padding:40px; flex-direction:column; gap:16px;">
+      <h2 style="font-size:24px; font-weight:600; display:flex; justify-content:space-between; align-items:center;">
+        Global Event Log
+        <span style="font-size:12px; font-weight:500; color:var(--ink-2); background:var(--bg-inset); padding:4px 10px; border-radius:4px;">Firestore Backed</span>
+      </h2>
+      <div class="card" style="flex:1; overflow:hidden; display:flex; flex-direction:column; padding:0;">
+        <div style="display:flex; padding:16px 24px; border-bottom:1px solid var(--border); font-weight:600; font-size:12px; color:var(--ink-2); text-transform:uppercase; letter-spacing:0.05em;">
+          <div style="flex:1;">Timestamp / Session</div>
+          <div style="flex:1;">QBER</div>
+          <div style="flex:1;">CHSH S-Value</div>
+          <div style="flex:1;">Decision</div>
+          <div style="flex:1;">Attribution</div>
+        </div>
+        <div id="fullEventLogTable" style="flex:1; overflow-y:auto; padding:0; margin:0; list-style:none;">
+          <div style="padding:24px; text-align:center; color:var(--ink-3); font-size:14px;">Loading historical events from Firebase...</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- KEY MANAGEMENT VIEW -->
+    <div class="content" id="view-key-management" style="display:none; padding:40px; flex-direction:column; gap:24px;">
+      <h2 style="font-size:24px; font-weight:600;">Quantum Key Management</h2>
+      <div style="display:flex; gap:24px;">
+        <div class="card" style="flex:1; padding:24px;">
+          <h3 style="font-size:16px; font-weight:600; margin-bottom:8px;">Active Key Pool</h3>
+          <div style="font-size:32px; font-weight:300; font-family:var(--mono);">1,048,576 bits</div>
+          <div style="font-size:12px; color:var(--green); margin-top:8px;">+ 12.4 kbps generation rate</div>
+        </div>
+        <div class="card" style="flex:1; padding:24px;">
+          <h3 style="font-size:16px; font-weight:600; margin-bottom:8px;">Entropy Source Health</h3>
+          <div style="display:flex; align-items:center; gap:8px;">
+            <span class="event-dot green"></span>
+            <span style="font-size:14px; color:var(--ink-1);">QRNG Hardware Nominal</span>
+          </div>
+          <div style="font-size:13px; color:var(--ink-2); margin-top:12px;">Passes all FIPS 140-3 continuous health tests.</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  function switchView(viewId, el) {
+    document.querySelectorAll('.content').forEach(el => el.style.display = 'none');
+    document.getElementById(viewId).style.display = 'flex';
+    document.querySelectorAll('.rail-item').forEach(el => el.classList.remove('active'));
+    el.classList.add('active');
+  }
+
+  function pad(n){ return n.toString().padStart(2,'0'); }
+  function tick(){
+    const d = new Date();
+    document.getElementById('clock').textContent = pad(d.getHours())+':'+pad(d.getMinutes())+':'+pad(d.getSeconds());
+  }
+  tick(); setInterval(tick,1000);
+
+  const bellText = document.getElementById('bellText');
+  const pauliText = document.getElementById('pauliText');
+  const bellApp = document.getElementById('bellApparatus');
+  const pauliApp = document.getElementById('pauliApparatus');
+  const bobCheck = document.getElementById('bobCheck');
+  const cycleNum = document.getElementById('cycleNum');
+  const fidNum = document.getElementById('fidNum');
+  const outcomes = ['00','01','10','11'];
+  
+  const sprtChart = document.getElementById('sprtChart');
+  const sprtPath = sprtChart.querySelector('path[stroke="var(--blue)"][stroke-width="2"]');
+  const sprtDash = sprtChart.querySelector('path[stroke-dasharray="2 4"]');
+  const sprtCircle1 = sprtChart.querySelector('circle[stroke-width="2"]');
+  const sprtCircle2 = sprtChart.querySelector('circle[opacity="0.35"]');
+  const sprtText1 = sprtChart.querySelector('text[font-weight="600"]');
+  const sprtText2 = sprtChart.querySelector('text[fill="var(--ink-2)"]');
+  const sprtTag = document.getElementById('sprtTag');
+  
+  function updateSPRT(state) {
+      if (!state.sprt_trace || state.sprt_trace.length === 0) return;
+      const maxRounds = 512;
+      const xStep = 1000 / maxRounds;
+      const yCenter = 180;
+      const yMax = 40; 
+      const yMin = 320; 
+      
+      let d = "M0,180 ";
+      let lastX = 0, lastY = 180;
+      for (let i = 0; i < state.sprt_trace.length; i++) {
+          const llr = state.sprt_trace[i];
+          const x = i * xStep;
+          const y = yCenter - (llr * ((180 - 40) / 4.6));
+          d += `L${x},${y} `;
+          lastX = x; lastY = y;
+      }
+      
+      sprtPath.setAttribute("d", d);
+      sprtDash.setAttribute("d", `M${lastX},${lastY} L${lastX},${state.sprt_decision === 'ACCEPT' ? yMin : yMax}`);
+      
+      const dotY = state.sprt_decision === 'ACCEPT' ? yMin : (state.sprt_decision === 'REJECT' ? yMax : lastY);
+      
+      sprtCircle1.setAttribute("cx", lastX); sprtCircle1.setAttribute("cy", dotY);
+      sprtCircle2.setAttribute("cx", lastX); sprtCircle2.setAttribute("cy", dotY);
+      
+      let color = state.sprt_decision === 'ACCEPT' ? "var(--green)" : (state.sprt_decision === 'REJECT' ? "var(--red)" : "var(--ink-0)");
+      
+      sprtText1.setAttribute("x", lastX + 16); sprtText1.setAttribute("y", dotY - 4);
+      sprtText1.textContent = state.sprt_decision;
+      sprtText1.setAttribute("fill", color);
+      
+      sprtText2.setAttribute("x", lastX + 16); sprtText2.setAttribute("y", dotY + 10);
+      sprtText2.textContent = `round ${state.sprt_trace.length} of ${maxRounds}`;
+      
+      sprtTag.textContent = `${state.sprt_decision.toLowerCase()} — round ${state.sprt_trace.length}`;
+      sprtTag.style.color = color;
+      
+      sprtCircle1.setAttribute("stroke", color);
+      sprtCircle2.setAttribute("stroke", color);
+  }
+  
+  function updateCHSH(state) {
+      if (!state.chsh_history || state.chsh_history.length === 0) return;
+      const chshChart = document.getElementById('chshChart');
+      const chshLine = chshChart.querySelectorAll('path')[1];
+      const chshFill = chshChart.querySelectorAll('path')[0];
+      
+      const points = state.chsh_history;
+      const xStep = 1000 / Math.max(points.length - 1, 1);
+      
+      let dLine = "";
+      let dFill = "";
+      let lastX = 0, lastY = 148;
+      
+      for(let i=0; i<points.length; i++) {
+          const x = i * xStep;
+          const y = 148 - ((points[i] - 2.0) * ((148 - 20) / 1.0));
+          if (i === 0) {
+              dLine += `M${x},${y} `;
+              dFill += `M${x},148 L${x},${y} `;
+          } else {
+              dLine += `L${x},${y} `;
+              dFill += `L${x},${y} `;
+          }
+          lastX = x; lastY = y;
+      }
+      dFill += `L${lastX},148 Z`;
+      
+      chshLine.setAttribute("d", dLine);
+      chshFill.setAttribute("d", dFill);
+      
+      const c1 = chshChart.querySelectorAll('circle')[0];
+      const c2 = chshChart.querySelectorAll('circle')[1];
+      c1.setAttribute("cx", lastX); c1.setAttribute("cy", lastY);
+      c2.setAttribute("cx", lastX); c2.setAttribute("cy", lastY);
+  }
+  
+  async function fetchState() {
+      try {
+          const res = await fetch('http://127.0.0.1:8000/api/state');
+          const state = await res.json();
+          
+          if (state.session_id !== 'N/A') {
+              document.querySelector('.dstat.accent .val').innerHTML = state.s.toFixed(2);
+              document.querySelectorAll('.dstat .val')[1].innerHTML = '+' + (state.s - 2.0).toFixed(2);
+              fidNum.innerHTML = state.fidelity.toFixed(3);
+              cycleNum.innerHTML = pad(state.cycle, 4);
+              
+              const statRows = document.querySelectorAll('.stat-row .num');
+              statRows[0].innerHTML = (state.qber * 100).toFixed(1) + '<span>%</span>';
+              statRows[1].innerHTML = state.entropy.toFixed(2) + '<span>bits</span>';
+              statRows[2].innerHTML = state.session_id;
+              
+              updateSPRT(state);
+              updateCHSH(state);
+          }
+      } catch (e) {}
+  }
+  
+  async function fetchEvents() {
+      try {
+          const res = await fetch('http://127.0.0.1:8000/api/events');
+          const events = await res.json();
+          const eventsList = document.getElementById('eventsList');
+          eventsList.innerHTML = '';
+          events.forEach(ev => {
+              let dotClass = '';
+              if (ev.decision === 'ACCEPT') dotClass = 'green';
+              else if (ev.decision === 'REJECT') dotClass = 'amber';
+              
+              const div = document.createElement('div');
+              div.className = 'event';
+              div.innerHTML = `
+                <span class="event-dot ${dotClass}"></span>
+                <div class="event-body">
+                  <div class="event-time">Session ${ev.session_id.substring(0,4).toUpperCase()}</div>
+                  <div class="event-name">Verification ${ev.decision.toLowerCase()}</div>
+                  <div class="event-detail">QBER: ${(ev.qber*100).toFixed(1)}%. Result: ${ev.decision}. Attack: <span style="font-weight:600;color:var(--amber);">${ev.attribution.attack_class}</span></div>
+                </div>
+              `;
+              div.addEventListener('click', ()=> div.classList.toggle('open'));
+              eventsList.appendChild(div);
+          });
+          
+          if (events.length > 0) {
+              const latest = events[0];
+              const mhStatusBox = document.getElementById('mhStatusBox');
+              const mhLiveDot = document.getElementById('mhLiveDot');
+              const mhStatusText = document.getElementById('mhStatusText');
+              if (latest.decision === 'REJECT') {
+                  mhStatusBox.style.background = 'var(--amber-tint)';
+                  mhStatusBox.style.borderColor = '#e3d2b8';
+                  mhLiveDot.style.background = 'var(--amber)';
+                  mhStatusText.style.color = '#7d5520';
+                  mhStatusText.textContent = 'Threat Detected';
+              } else {
+                  mhStatusBox.style.background = 'var(--green-tint)';
+                  mhStatusBox.style.borderColor = '#d7e6da';
+                  mhLiveDot.style.background = 'var(--green)';
+                  mhStatusText.style.color = '#2f5c3d';
+                  mhStatusText.textContent = 'System Nominal';
+              }
+          }
+      } catch (e) {}
+  }
+
+  const attackSelect = document.getElementById('attackSelect');
+  attackSelect.addEventListener('change', async (e) => {
+      try {
+          await fetch('http://127.0.0.1:8000/api/set_attack', {
+              method: 'POST',
+              headers: {'Content-Type': 'application/json'},
+              body: JSON.stringify({mode: e.target.value})
+          });
+      } catch (err) {
+          console.error('Failed to set attack mode');
+      }
+  });
+  
+  async function fetchAllEvents() {
+      try {
+          const res = await fetch('http://127.0.0.1:8000/api/events_all');
+          const events = await res.json();
+          const table = document.getElementById('fullEventLogTable');
+          if (!table) return;
+          table.innerHTML = '';
+          events.forEach(ev => {
+              const row = document.createElement('div');
+              row.style.cssText = 'display:flex; padding:16px 24px; border-bottom:1px solid var(--border); font-size:13px; font-family:var(--mono); color:var(--ink-1); align-items:center;';
+              
+              let decisionColor = ev.decision === 'ACCEPT' ? 'var(--green)' : 'var(--amber)';
+              let attackHtml = ev.attribution.attack_class === 'NONE' 
+                ? `<span style="color:var(--ink-3)">None</span>` 
+                : `<span style="color:var(--amber); font-weight:600;">${ev.attribution.attack_class}</span>`;
+
+              row.innerHTML = `
+                <div style="flex:1; display:flex; align-items:center; gap:8px;">
+                  <span style="width:6px; height:6px; border-radius:50%; background:${decisionColor}"></span>
+                  Sess: ${ev.session_id.substring(0,6).toUpperCase()}
+                </div>
+                <div style="flex:1;">${(ev.qber*100).toFixed(2)}%</div>
+                <div style="flex:1;">${ev.statistics.chsh ? ev.statistics.chsh.s.toFixed(3) : 'N/A'}</div>
+                <div style="flex:1; color:${decisionColor}; font-weight:600;">${ev.decision}</div>
+                <div style="flex:1;">${attackHtml}</div>
+              `;
+              table.appendChild(row);
+          });
+      } catch (e) {}
+  }
+  
+  setInterval(() => {
+      fetchState();
+      fetchEvents();
+      fetchAllEvents();
+  }, 1000);
+  fetchState();
+  fetchEvents();
+
+  setInterval(() => {
+      const outcome = outcomes[Math.floor(Math.random()*outcomes.length)];
+      bellText.textContent = 'measuring…';
+      bellApp.classList.add('flash');
+      setTimeout(()=>{
+        bellText.textContent = 'outcome ' + outcome;
+        bellApp.classList.remove('flash');
+      }, 420);
+
+      setTimeout(()=>{
+        pauliText.textContent = 'applying σx·σz';
+        pauliApp.classList.add('flash');
+      }, 1500);
+
+      setTimeout(()=>{
+        pauliText.textContent = 'applied';
+        pauliApp.classList.remove('flash');
+        pauliApp.classList.add('flash-green');
+        bobCheck.style.transition = 'opacity .25s ease';
+        bobCheck.style.opacity = '1';
+      }, 2100);
+
+      setTimeout(()=>{
+        pauliApp.classList.remove('flash-green');
+        bobCheck.style.opacity = '0';
+        pauliText.textContent = 'idle';
+      }, 3000);
+  }, 3200);
+</script>
+
+</body>
+</html>

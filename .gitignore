@@ -1,4 +1,25 @@
+# Environments
+venv/
+env/
 .venv/
+.env/
+
+# Python
 __pycache__/
-.pytest_cache/
-*.pyc
+*.py[cod]
+*$py.class
+*.so
+
+# Firebase & Secrets
+firebase-credentials.json
+.env
+
+# Logs and databases
+*.log
+*.sqlite3
+events.jsonl
+artifacts/
+
+# OS generated files
+.DS_Store
+Thumbs.db
