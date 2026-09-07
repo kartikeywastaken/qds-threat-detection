@@ -64,9 +64,17 @@ def simulation_loop():
     while True:
         cycle += 1
         d = distribute(512, 821 + cycle)
-        payload, _ = sign(d, 'Approve teleportation channel', 0.1, 822 + cycle)
-        
         attack_mode = current_attack_mode
+        import random
+        if attack_mode == 'HONEST':
+            tx_amount = random.choice(["15,000", "5,500", "8,250", "42,000"])
+            tx_bank = random.choice(["SBI", "HDFC", "ICICI", "AXIS"])
+            tx_msg = f"PAY ₹{tx_amount} TO {tx_bank}_A/C"
+        else:
+            tx_amount = random.choice(["9,99,999", "50,00,000", "7,50,000"])
+            tx_msg = f"PAY ₹{tx_amount} TO OFFSHORE_WALLET_EVE"
+            
+        payload, _ = sign(d, tx_msg, 0.1, 822 + cycle)
         
         if attack_mode == 'HONEST':
             strategy = AttackStrategyBase(0)
@@ -121,6 +129,7 @@ def simulation_loop():
             current_state['attack_mode'] = attack_mode
             current_state['latest_decision'] = statistics['decision']
             current_state['attribution'] = att.get('attack_class', 'NONE') if isinstance(att, dict) else 'NONE'
+            current_state['transaction_payload'] = tx_msg
             
             current_state['chsh_history'].append(s_val)
             if len(current_state['chsh_history']) > 20:
