@@ -84,3 +84,33 @@
     required. The live dashboard is a local Matplotlib window watching the log;
     it updates per completed verification event and displays the complete SPRT
     trace. It does not stream intermediate quantum shots while Aer is running.
+12. **E91 entangled-pair key agreement — simulation only.** The E91 module
+    (`e91/key_exchange.py`) runs entirely on the Qiskit Aer statevector and
+    QASM simulators. No physical entangled photon source is used. The abort
+    threshold `ABORT_QBER = 0.02` is calibrated for a noiseless simulator
+    channel with exactly zero baseline error; running the same protocol on
+    physical hardware or a noise-modelled backend would require recalibration
+    against a measured honest baseline.
+13. **Light attacker detection gap.** A light eavesdropper (e.g. 10% interception
+    fraction) produces an expected QBER of 2.5% which may land below the 2%
+    abort threshold on individual finite samples. In such cases the channel is
+    not aborted, yet Alice and Bob independently derive different keys, and the
+    HMAC verification at Bob's gateway refuses the payment. Detection (QBER and
+    CHSH tests) and consequence (key mismatch) are deliberately two separate
+    checks. The payment gate requires both. This gap is a known property of
+    finite-sample hypothesis testing, not a bug; widening the threshold to catch
+    all light attackers would cause false refusals on noisy hardware.
+14. **Eve causes denial, not theft.** An eavesdropper on the E91 channel causes
+    the derived keys to diverge and the payment to be refused. No balance is
+    moved. The system "fails safe" — Eve triggers a refusal, not a
+    compromise. The claim demonstrated is denial under eavesdropping, not
+    unconditional unbreakability.
+15. **Endpoint compromise.** If Eve controls Alice's or Bob's local process —
+    reading memory, intercepting keys after derivation — no quantum protocol
+    can help. The E91 channel protects the distribution path between two
+    honest endpoints, not the endpoints themselves.
+16. **No composable security proof.** The E91 implementation is a faithful
+    simulation of the textbook protocol. No composable, finite-key security
+    proof is claimed. The CHSH test uses an empirical mean over finite samples;
+    the Tsirelson bound can be exceeded slightly by sampling error on small
+    runs. Key hashing uses SHA-256, not a quantum-safe randomness extractor.

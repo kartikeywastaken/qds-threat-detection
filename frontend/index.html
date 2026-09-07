@@ -619,51 +619,64 @@
       }
     }
 
-    @media (max-width:1100px) {
-      .lower {
-        grid-template-columns: 1fr;
-      }
+    /* ================= E91 PANEL ================= */
 
-      .diagram-stats {
-        grid-template-columns: repeat(2, 1fr);
-      }
+    .e91-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    .e91-full { grid-column: 1 / -1; }
+
+    .key-compare { display: flex; flex-direction: column; gap: 6px; }
+    .key-row { display: flex; align-items: center; gap: 10px; font-family: var(--mono); font-size: 13px; }
+    .key-label { width: 48px; font-size: 11px; font-weight: 600; color: var(--ink-2); text-transform: uppercase; letter-spacing: 0.05em; flex-shrink: 0; }
+    .key-chars { display: flex; flex-wrap: wrap; gap: 1px; }
+    .key-char { display: inline-flex; align-items: center; justify-content: center; width: 18px; height: 24px; border-radius: 3px; font-size: 12px; font-weight: 600; transition: background .25s, color .25s; }
+    .key-char.match { background: var(--green-tint); color: var(--green); }
+    .key-char.mismatch { background: var(--red-tint); color: var(--red); }
+    .key-char.empty { background: var(--bg-inset); color: var(--ink-3); }
+
+    .e91-gauge { position: relative; height: 8px; background: var(--bg-inset); border-radius: 4px; overflow: hidden; margin: 8px 0; }
+    .e91-gauge-fill { position: absolute; left: 0; top: 0; height: 100%; border-radius: 4px; transition: width .4s ease, background .4s ease; }
+    .e91-gauge-mark { position: absolute; top: -2px; bottom: -2px; width: 2px; background: var(--ink-0); border-radius: 1px; z-index: 1; }
+
+    .e91-metric { font-size: 11px; color: var(--ink-2); margin-top: 4px; }
+    .e91-metric .val { font-family: var(--mono); font-weight: 600; color: var(--ink-0); font-size: 14px; }
+
+    .e91-slider-wrap { display: flex; align-items: center; gap: 14px; }
+    .e91-slider { flex: 1; appearance: none; -webkit-appearance: none; height: 6px; border-radius: 3px; background: var(--bg-inset); outline: none; cursor: pointer; }
+    .e91-slider::-webkit-slider-thumb { appearance: none; -webkit-appearance: none; width: 18px; height: 18px; border-radius: 50%; background: var(--blue); border: 2px solid var(--surface); box-shadow: 0 1px 4px rgba(0,0,0,.15); cursor: pointer; }
+    .e91-slider-val { font-family: var(--mono); font-size: 14px; font-weight: 600; min-width: 40px; text-align: right; }
+
+    .e91-verdict { padding: 14px 18px; border-radius: var(--radius-sm); font-size: 13px; line-height: 1.5; transition: background .3s, border-color .3s; border: 1px solid var(--border); }
+    .e91-verdict.ok { background: var(--green-tint); border-color: #b9d4be; }
+    .e91-verdict.refused { background: var(--red-tint); border-color: #e5b8b0; }
+    .e91-verdict.idle { background: var(--bg-inset); }
+
+    .bit-stream { display: flex; flex-direction: column; gap: 2px; overflow-x: auto; padding: 6px 0; }
+    .bit-stream-row { display: flex; gap: 1px; align-items: center; }
+    .bit-stream-label { width: 36px; font-size: 10px; font-weight: 600; color: var(--ink-2); font-family: var(--mono); flex-shrink: 0; }
+    .bit { display: inline-flex; align-items: center; justify-content: center; width: 14px; height: 18px; font-size: 10px; font-family: var(--mono); font-weight: 600; border-radius: 2px; }
+    .bit.agree { background: var(--green-tint); color: var(--green); }
+    .bit.disagree { background: var(--red-tint); color: var(--red); animation: bitflash .6s ease; }
+    @keyframes bitflash { 0%,100%{opacity:1} 50%{opacity:.4} }
+
+    .sim-tag { display: inline-block; font-size: 10px; font-weight: 500; color: var(--ink-2); background: var(--bg-inset); padding: 2px 8px; border-radius: 3px; margin-left: 8px; vertical-align: middle; }
+
+    @media (max-width:1100px) {
+      .lower { grid-template-columns: 1fr; }
+      .diagram-stats { grid-template-columns: repeat(2, 1fr); }
+      .e91-grid { grid-template-columns: 1fr; }
     }
 
     @media (max-width:720px) {
-      .app {
-        grid-template-columns: 1fr;
-      }
-
-      .rail {
-        flex-direction: row;
-        padding: 12px 16px;
-      }
-
-      .rail-nav {
-        flex-direction: row;
-      }
-
-      .rail-mark {
-        margin-bottom: 0;
-        margin-right: 20px;
-      }
-
-      .rail-spacer {
-        display: none;
-      }
-
-      .masthead,
-      .content {
-        padding-left: 20px;
-        padding-right: 20px;
-      }
+      .app { grid-template-columns: 1fr; }
+      .rail { flex-direction: row; padding: 12px 16px; }
+      .rail-nav { flex-direction: row; }
+      .rail-mark { margin-bottom: 0; margin-right: 20px; }
+      .rail-spacer { display: none; }
+      .masthead, .content { padding-left: 20px; padding-right: 20px; }
     }
 
     @media (prefers-reduced-motion: reduce) {
-      * {
-        animation: none !important;
-        transition: none !important;
-      }
+      * { animation: none !important; transition: none !important; }
     }
   </style>
 </head>
@@ -1042,21 +1055,70 @@
 
       <div class="content" id="view-key-management"
         style="display:none; padding:40px; flex-direction:column; gap:24px;">
-        <h2 style="font-size:24px; font-weight:600;">Quantum Key Management</h2>
-        <div style="display:flex; gap:24px;">
-          <div class="card" style="flex:1; padding:24px;">
-            <h3 style="font-size:16px; font-weight:600; margin-bottom:8px;">Active Key Pool</h3>
-            <div style="font-size:32px; font-weight:300; font-family:var(--mono);">No persistent key pool</div>
-            <div style="font-size:12px; color:var(--green); margin-top:8px;">Keys are created per E91 session · simulated</div>
+        <h2 style="font-size:24px; font-weight:600;">E91 Payment Channel <span class="sim-tag">simulated · Qiskit Aer</span></h2>
+        <p style="font-size:13px; color:var(--ink-2); max-width:700px; line-height:1.5;">Entangled-pair key agreement between Alice and Bob. Eve's interception degrades key correlation — the payment is refused, not stolen.</p>
+
+        <!-- 1. KEY COMPARISON (money shot) -->
+        <div class="card e91-full" style="padding:24px;">
+          <h3 style="font-size:14px; font-weight:600; margin-bottom:12px;">Derived Keys <span class="sim-tag">simulated</span></h3>
+          <div class="key-compare" id="e91Keys">
+            <div class="key-row"><span class="key-label">Alice</span><span class="key-chars" id="e91KeyAlice"><span class="key-char empty">—</span></span></div>
+            <div class="key-row"><span class="key-label">Bob</span><span class="key-chars" id="e91KeyBob"><span class="key-char empty">—</span></span></div>
           </div>
-          <div class="card" style="flex:1; padding:24px;">
-            <h3 style="font-size:16px; font-weight:600; margin-bottom:8px;">Entropy Source Health</h3>
-            <div style="display:flex; align-items:center; gap:8px;">
-              <span class="event-dot green"></span>
-              <span style="font-size:14px; color:var(--ink-1);">Qiskit Aer simulator</span>
+          <div class="e91-metric" style="margin-top:10px;">Key status: <span id="e91KeyStatus" class="val" style="color:var(--ink-3)">awaiting session</span></div>
+        </div>
+
+        <div class="e91-grid">
+          <!-- 2. ATTACK SLIDER -->
+          <div class="card" style="padding:20px;">
+            <h3 style="font-size:14px; font-weight:600; margin-bottom:10px;">Eve Interception <span class="sim-tag">simulated</span></h3>
+            <div class="e91-slider-wrap">
+              <input type="range" class="e91-slider" id="e91Slider" min="0" max="100" value="0">
+              <span class="e91-slider-val" id="e91SliderVal">0%</span>
             </div>
-            <div style="font-size:13px; color:var(--ink-2); margin-top:12px;">Software sampling only; no hardware entropy certification.</div>
+            <div class="e91-metric" style="margin-top:6px;">Expected QBER ≈ <span id="e91ExpQber" class="val">0.00%</span> (0.25 × fraction)</div>
           </div>
+
+          <!-- 5. PAYMENT STATUS -->
+          <div class="card" style="padding:20px;">
+            <h3 style="font-size:14px; font-weight:600; margin-bottom:10px;">Payment Verdict <span class="sim-tag">simulated</span></h3>
+            <div class="e91-verdict idle" id="e91Verdict">No payment attempted yet. Use FastPay at <a href="http://127.0.0.1:3000" target="_blank" style="color:var(--blue)">:3000</a> or wait for telemetry.</div>
+          </div>
+
+          <!-- 3. QBER GAUGE -->
+          <div class="card" style="padding:20px;">
+            <h3 style="font-size:14px; font-weight:600; margin-bottom:10px;">QBER <span class="sim-tag">simulated</span></h3>
+            <div class="e91-gauge">
+              <div class="e91-gauge-mark" style="left:8%;" title="Abort threshold 2%"></div>
+              <div class="e91-gauge-fill" id="e91QberFill" style="width:0%; background:var(--green);"></div>
+            </div>
+            <div style="display:flex; justify-content:space-between; font-size:10px; color:var(--ink-3); font-family:var(--mono);">
+              <span>0%</span><span style="position:relative; left:-42%;">2% abort</span><span>25%</span>
+            </div>
+            <div class="e91-metric">Measured: <span id="e91QberVal" class="val">—</span></div>
+          </div>
+
+          <!-- 4. CHSH GAUGE -->
+          <div class="card" style="padding:20px;">
+            <h3 style="font-size:14px; font-weight:600; margin-bottom:10px;">CHSH S-parameter <span class="sim-tag">simulated</span></h3>
+            <div class="e91-gauge">
+              <div class="e91-gauge-mark" style="left:70.7%;" title="Classical bound S=2.0"></div>
+              <div class="e91-gauge-fill" id="e91ChshFill" style="width:100%; background:var(--green);"></div>
+            </div>
+            <div style="display:flex; justify-content:space-between; font-size:10px; color:var(--ink-3); font-family:var(--mono);">
+              <span>0</span><span style="position:relative; left:-29%;">2.0 classical</span><span>2√2 ≈ 2.83</span>
+            </div>
+            <div class="e91-metric">Measured: <span id="e91ChshVal" class="val">—</span></div>
+          </div>
+        </div>
+
+        <!-- 6. BIT STREAM -->
+        <div class="card" style="padding:20px;">
+          <h3 style="font-size:14px; font-weight:600; margin-bottom:10px;">Round-by-Round Bit Stream <span class="sim-tag">sampled · simulated</span></h3>
+          <div class="bit-stream" id="e91BitStream">
+            <div style="font-size:12px; color:var(--ink-3);">Waiting for session data…</div>
+          </div>
+          <div class="e91-metric">Shown bits are published samples only, never surviving key material.</div>
         </div>
       </div>
 
@@ -1507,6 +1569,146 @@
     }, 1000);
     fetchState();
     fetchEvents();
+
+    /* ========== E91 PAYMENT PANEL ========== */
+
+    const e91Slider = document.getElementById('e91Slider');
+    const e91SliderVal = document.getElementById('e91SliderVal');
+    const e91ExpQber = document.getElementById('e91ExpQber');
+    let e91Debounce = null;
+
+    e91Slider.addEventListener('input', () => {
+      const pct = parseInt(e91Slider.value);
+      e91SliderVal.textContent = pct + '%';
+      e91ExpQber.textContent = (pct * 0.25).toFixed(2) + '%';
+      clearTimeout(e91Debounce);
+      e91Debounce = setTimeout(async () => {
+        try {
+          await fetch('/channel/attack', {
+            method: 'POST', headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({fraction: pct / 100})
+          });
+        } catch (_) {}
+      }, 200);
+    });
+
+    function renderKeys(aliceKey, bobKey) {
+      const aliceEl = document.getElementById('e91KeyAlice');
+      const bobEl = document.getElementById('e91KeyBob');
+      const statusEl = document.getElementById('e91KeyStatus');
+
+      if (!aliceKey && !bobKey) {
+        aliceEl.innerHTML = '<span class="key-char empty">—</span>';
+        bobEl.innerHTML = '<span class="key-char empty">—</span>';
+        statusEl.textContent = 'aborted — keys not derived';
+        statusEl.style.color = 'var(--red)';
+        return;
+      }
+      const a = aliceKey || '', b = bobKey || '';
+      const maxLen = Math.max(a.length, b.length, 1);
+      let aHtml = '', bHtml = '', allMatch = true;
+      for (let i = 0; i < maxLen; i++) {
+        const ac = a[i] || ' ', bc = b[i] || ' ';
+        const match = ac === bc && ac !== ' ';
+        if (!match) allMatch = false;
+        const cls = (ac === ' ' && bc === ' ') ? 'empty' : (match ? 'match' : 'mismatch');
+        aHtml += `<span class="key-char ${cls}">${ac}</span>`;
+        bHtml += `<span class="key-char ${cls}">${bc}</span>`;
+      }
+      aliceEl.innerHTML = aHtml;
+      bobEl.innerHTML = bHtml;
+      if (allMatch && a.length > 0) {
+        statusEl.textContent = 'identical ✓ — channel secure';
+        statusEl.style.color = 'var(--green)';
+      } else {
+        statusEl.textContent = 'DIVERGED — channel disturbed';
+        statusEl.style.color = 'var(--red)';
+      }
+    }
+
+    function updateE91Gauges(qber, chshS) {
+      // QBER gauge: 0–25% range
+      const qberPct = Math.min(qber * 100, 25);
+      const qberFill = document.getElementById('e91QberFill');
+      qberFill.style.width = (qberPct / 25 * 100) + '%';
+      qberFill.style.background = qber > 0.02 ? 'var(--red)' : 'var(--green)';
+      document.getElementById('e91QberVal').textContent = (qber * 100).toFixed(2) + '%';
+      document.getElementById('e91QberVal').style.color = qber > 0.02 ? 'var(--red)' : 'var(--green)';
+
+      // CHSH gauge: 0–2.83 range
+      const chshMax = 2.828;
+      const chshFill = document.getElementById('e91ChshFill');
+      const chshPct = Math.max(0, Math.min(chshS / chshMax * 100, 100));
+      chshFill.style.width = chshPct + '%';
+      chshFill.style.background = chshS <= 2.0 ? 'var(--red)' : 'var(--green)';
+      document.getElementById('e91ChshVal').textContent = chshS.toFixed(3);
+      document.getElementById('e91ChshVal').style.color = chshS <= 2.0 ? 'var(--red)' : 'var(--green)';
+    }
+
+    function renderBitStream(rounds) {
+      const container = document.getElementById('e91BitStream');
+      if (!rounds || rounds.length === 0) {
+        container.innerHTML = '<div style="font-size:12px; color:var(--ink-3);">No sample bits available for this session.</div>';
+        return;
+      }
+      let aliceBits = '', bobBits = '';
+      for (const r of rounds) {
+        const cls = r.agree ? 'agree' : 'disagree';
+        aliceBits += `<span class="bit ${cls}">${r.alice}</span>`;
+        bobBits += `<span class="bit ${cls}">${r.bob}</span>`;
+      }
+      container.innerHTML = `
+        <div class="bit-stream-row"><span class="bit-stream-label">Alice</span>${aliceBits}</div>
+        <div class="bit-stream-row"><span class="bit-stream-label">Bob</span>${bobBits}</div>
+      `;
+    }
+
+    function updateE91Verdict(payment) {
+      const el = document.getElementById('e91Verdict');
+      if (!payment) {
+        el.className = 'e91-verdict idle';
+        el.textContent = 'No payment recorded yet.';
+        return;
+      }
+      const accepted = payment.status === 'accepted';
+      el.className = 'e91-verdict ' + (accepted ? 'ok' : 'refused');
+      const from = payment.envelope?.from_user || '?';
+      const to = payment.envelope?.to_user || '?';
+      const amt = payment.envelope?.amount_paise ? '₹' + (payment.envelope.amount_paise / 100).toFixed(2) : '';
+      el.innerHTML = `<strong>${accepted ? '✓ ACCEPTED' : '✗ REFUSED'}</strong> · ${from} → ${to} ${amt}<br>` +
+        `<span style="font-size:12px;">Stage: ${payment.stage || '—'} · ${payment.reason || '—'}</span>`;
+    }
+
+    let _lastE91Session = null;
+    async function fetchE91() {
+      try {
+        const res = await fetch('/channel/latest');
+        const data = await res.json();
+        const sid = data.session_id;
+        updateE91Verdict(data.payment);
+        if (!sid) return;
+        if (sid !== _lastE91Session) {
+          _lastE91Session = sid;
+          // Fetch status
+          const statusRes = await fetch('/channel/' + sid + '/status');
+          const st = await statusRes.json();
+          updateE91Gauges(st.qber || 0, st.chsh_s || 0);
+          // Fetch keys (may 404 if aborted)
+          let aliceKey = null, bobKey = null;
+          try { aliceKey = (await (await fetch('/channel/' + sid + '/key/alice')).json()).key; } catch (_) {}
+          try { bobKey = (await (await fetch('/channel/' + sid + '/key/bob')).json()).key; } catch (_) {}
+          renderKeys(aliceKey, bobKey);
+          // Fetch rounds
+          try {
+            const rr = await fetch('/channel/' + sid + '/rounds?limit=64');
+            const rd = await rr.json();
+            renderBitStream(rd.rounds || []);
+          } catch (_) {}
+        }
+      } catch (_) {}
+    }
+    setInterval(fetchE91, 1500);
+    fetchE91();
 
     /* ========== TELEPORTATION ANIMATION LOOP ========== */
     setInterval(() => {

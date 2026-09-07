@@ -54,3 +54,46 @@ and gateway response bodies; no matches.
 The long-running dashboard process has exceeded ten minutes. At the retention
 check its two segments were 171415 and 258478 bytes, total 429893 bytes; rotation
 has occurred repeatedly and the API remains capped at 200 events.
+
+## Phase 4
+
+FastPay (tauh33dkhan/FastPay) cloned and modified. server.js port changed from
+hardcoded 80 to process.env.PORT || 3000. models/db.js gains a Transfers table
+(id, from_user, to_user, amount_paise, status, stage, reason, session_id, qber,
+chsh_s, created_at) and seeds alice/bob users at 100000 paise each.
+controller/transfer_controller.js implements POST /transfer (calls Alice gateway
+at :8001, validates envelope schema, commits wallet debits/credits inside an
+IMMEDIATE SQLite transaction with conditional WHERE guards, publishes result to
+the engine dashboard at POST /channel/payment) and GET /transfers, GET /wallet.
+routes/app.js wires the three endpoints. views/dashboard.ejs provides a minimal
+wallet UI with a Pay Bob button, balance display, and transfer history table.
+Stripe and other original FastPay flows are untouched.
+
+Two transfer tests pass: (1) atomic debit/credit with injected trigger fault and
+concurrent double-spend guard, (2) insufficient balance rejected before gateway
+fetch. grep -ri razorpay clean on both repos.
+
+## Phase 5
+
+frontend/index.html extended with the E91 Payment Channel panel (Key Management
+tab). Components added:
+1. Character-by-character key comparison with green/red per-hex-digit colouring.
+2. Eve interception slider (0–100%) posting to /channel/attack with 200ms debounce.
+3. QBER gauge (0–25% range, 2% abort threshold marker).
+4. CHSH S-parameter gauge (0–2√2 range, 2.0 classical bound marker).
+5. Payment verdict display fed by /channel/latest polling.
+6. Round-by-round published sample bit stream.
+
+All gauges transition colour at the abort/classical boundary. Slider wires to
+the existing POST /channel/attack endpoint. Every panel element carries a
+"simulated" tag. JS polls /channel/latest every 1.5s and fetches keys, status,
+and rounds on new session_id. 149 tests still pass after changes.
+
+## Phase 6
+
+docs/demo-runbook.md created with four-terminal startup sequence and three
+scenarios (honest, 10% attack, 100% attack) with expected outcomes table.
+LIMITATIONS.md extended with items 12–16 covering E91 simulation-only status,
+light attacker detection gap, denial-not-theft semantics, endpoint compromise
+caveat, and absence of composable security proof. No forbidden terms
+("unbreakable", "unhackable", "quantum-proof") used anywhere.
