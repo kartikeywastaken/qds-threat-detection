@@ -813,134 +813,46 @@
             <div class="card-desc">live protocol trace</div>
           </div>
 
-          <div class="diagram-stage">
-            <div class="diagram-grid"></div>
+          <div class="diagram-stage" style="padding: 20px; text-align:center;">
+            <svg class="diagram-svg" viewBox="0 0 1200 300" id="heroStage">
+               <!-- Grid (subtle) -->
+               <rect width="1200" height="300" fill="transparent" stroke="var(--border-soft)" stroke-width="1" />
+               <!-- Nodes -->
+               <!-- Alice -->
+               <g transform="translate(150, 150)">
+                  <circle r="40" fill="var(--surface)" stroke="var(--blue)" stroke-width="2" />
+                  <text y="5" font-family="var(--sans)" font-size="14" fill="var(--ink-0)" text-anchor="middle" font-weight="600">Alice</text>
+               </g>
+               
+               <!-- Eve -->
+               <g transform="translate(600, 150)">
+                  <circle r="50" fill="var(--surface-raised)" stroke="var(--ink-2)" stroke-width="2" stroke-dasharray="4 4" id="eveNodeBorder" />
+                  <text y="-5" font-family="var(--sans)" font-size="14" fill="var(--ink-1)" text-anchor="middle" font-weight="600" id="eveNodeName">Eve</text>
+                  <text y="15" font-family="var(--mono)" font-size="10" fill="var(--ink-3)" text-anchor="middle" id="eveNodeStatus">Inactive</text>
+               </g>
 
-            <svg class="diagram-svg" viewBox="0 0 1200 480" id="heroStage">
+               <!-- Bob -->
+               <g transform="translate(1050, 150)">
+                  <circle r="40" fill="var(--surface)" stroke="var(--blue)" stroke-width="2" id="bobNodeBorder" />
+                  <text y="5" font-family="var(--sans)" font-size="14" fill="var(--ink-0)" text-anchor="middle" font-weight="600">Bob</text>
+               </g>
 
-              <line x1="70" y1="430" x2="1130" y2="430" stroke="var(--border)" stroke-width="1" />
-              <g stroke="var(--border)" stroke-width="1">
-                <line x1="150" y1="425" x2="150" y2="435" />
-                <line x1="370" y1="425" x2="370" y2="435" />
-                <line x1="600" y1="425" x2="600" y2="435" />
-                <line x1="830" y1="425" x2="830" y2="435" />
-                <line x1="1050" y1="425" x2="1050" y2="435" />
-              </g>
-              <rect class="playhead" x="70" y="426" width="2" height="8" fill="var(--blue)" />
+               <!-- Connections -->
+               <line x1="190" y1="150" x2="550" y2="150" stroke="var(--ink-3)" stroke-width="2" stroke-dasharray="2 4" />
+               <line x1="650" y1="150" x2="1010" y2="150" stroke="var(--ink-3)" stroke-width="2" stroke-dasharray="2 4" />
 
-              <g>
-                <circle cx="150" cy="250" r="54" fill="var(--surface)" stroke="var(--border)" stroke-width="1.4" />
-                <ellipse class="slow-spin" cx="150" cy="250" rx="54" ry="18" fill="none" stroke="var(--blue-soft)"
-                  stroke-width="1.2" />
-                <circle cx="150" cy="250" r="7" fill="var(--blue)" />
-                <text x="150" y="330" font-family="var(--sans)" font-size="13" fill="var(--ink-0)" text-anchor="middle"
-                  font-weight="600">Alice</text>
-                <text x="150" y="347" font-family="var(--mono)" font-size="10.5" fill="var(--ink-3)"
-                  text-anchor="middle">holds |ψ⟩</text>
-              </g>
+               <!-- Moving Qubit -->
+               <circle id="qubitParticle" cx="190" cy="150" r="8" fill="var(--blue)" opacity="0" style="transition: transform 1s linear, opacity 0.2s;" />
+               
+               <!-- Secondary Qubit (for Entanglement / specific attacks) -->
+               <circle id="qubitAncilla" cx="600" cy="90" r="6" fill="var(--amber)" opacity="0" style="transition: transform 1s linear, opacity 0.2s;" />
 
-              <line x1="204" y1="250" x2="322" y2="250" stroke="var(--blue)" stroke-width="1.3" class="beam"
-                opacity="0.65" />
-
-              <g id="bellApparatus">
-                <rect class="apparatus-box" x="325" y="205" width="90" height="90" rx="16" fill="var(--surface)"
-                  stroke="var(--ink-2)" stroke-width="1.3" />
-                <line x1="345" y1="250" x2="395" y2="250" stroke="var(--ink-2)" stroke-width="1.2" />
-                <line x1="370" y1="225" x2="370" y2="275" stroke="var(--ink-2)" stroke-width="1.2" />
-                <circle cx="370" cy="250" r="4" fill="none" stroke="var(--blue)" stroke-width="1.2" />
-                <text x="370" y="325" font-family="var(--sans)" font-size="12.5" fill="var(--ink-1)"
-                  text-anchor="middle" font-weight="600">Bell measurement</text>
-                <text x="370" y="341" font-family="var(--mono)" font-size="10.5" fill="var(--blue)" text-anchor="middle"
-                  id="bellText">outcome 01</text>
-              </g>
-
-              <g>
-                <text x="600" y="108" font-family="var(--sans)" font-size="12" fill="var(--ink-1)" text-anchor="middle"
-                  font-weight="600">Entangled resource</text>
-                <text x="600" y="124" font-family="var(--mono)" font-size="10.5" fill="var(--ink-3)"
-                  text-anchor="middle">Bell state |Φ⁺⟩</text>
-
-                <circle cx="600" cy="164" r="9" fill="var(--surface)" stroke="var(--blue)" stroke-width="1.6" />
-                <circle cx="600" cy="336" r="9" fill="var(--surface)" stroke="var(--blue)" stroke-width="1.6" />
-                <path d="M600,173 C 566,205 566,295 600,327" fill="none" stroke="var(--blue-soft)" stroke-width="1"
-                  opacity="0.55" />
-                <path d="M600,173 C 600,225 600,275 600,327" fill="none" stroke="var(--blue-soft)" stroke-width="1"
-                  opacity="0.75" />
-                <path d="M600,173 C 634,205 634,295 600,327" fill="none" stroke="var(--blue-soft)" stroke-width="1"
-                  opacity="0.55" />
-                <circle cx="600" cy="164" r="3.2" fill="var(--blue)">
-                  <animate attributeName="opacity" values="1;0.25;1" dur="2.8s" repeatCount="indefinite" />
-                </circle>
-                <circle cx="600" cy="336" r="3.2" fill="var(--blue)">
-                  <animate attributeName="opacity" values="0.25;1;0.25" dur="2.8s" repeatCount="indefinite" />
-                </circle>
-              </g>
-
-              <path d="M584,168 C 500,188 440,205 411,232" fill="none" stroke="var(--blue-soft)" stroke-width="1.1"
-                class="beam" opacity="0.6" />
-              <path d="M616,332 C 700,352 750,335 789,282" fill="none" stroke="var(--blue-soft)" stroke-width="1.1"
-                class="beam" opacity="0.6" />
-
-              <path id="classicalPath" d="M370,296 C 430,380 770,380 830,296" fill="none" stroke="var(--amber)"
-                stroke-width="1.2" stroke-dasharray="1 6" opacity="0.8" />
-              <text x="600" y="405" font-family="var(--sans)" font-size="11.5" fill="var(--amber)" text-anchor="middle"
-                font-weight="600">Classical channel</text>
-              <text x="600" y="420" font-family="var(--mono)" font-size="10" fill="var(--ink-3)" text-anchor="middle">2
-                bits</text>
-              <g class="bit-travel" style="offset-path:path('M370,296 C 430,380 770,380 830,296');">
-                <circle r="4" fill="var(--amber)" />
-              </g>
-
-              <g id="pauliApparatus">
-                <rect class="apparatus-box" x="785" y="205" width="90" height="90" rx="16" fill="var(--surface)"
-                  stroke="var(--ink-2)" stroke-width="1.3" />
-                <text x="830" y="257" font-family="var(--mono)" font-size="17" fill="var(--blue)"
-                  text-anchor="middle">σ</text>
-                <text x="830" y="325" font-family="var(--sans)" font-size="12.5" fill="var(--ink-1)"
-                  text-anchor="middle" font-weight="600">Pauli correction</text>
-                <text x="830" y="341" font-family="var(--mono)" font-size="10.5" fill="var(--ink-3)"
-                  text-anchor="middle" id="pauliText">idle</text>
-              </g>
-
-              <line x1="878" y1="250" x2="996" y2="250" stroke="var(--blue)" stroke-width="1.3" class="beam"
-                opacity="0.65" />
-
-              <g>
-                <circle cx="1050" cy="250" r="54" fill="var(--surface)" stroke="var(--border)" stroke-width="1.4" />
-                <ellipse class="slow-spin" cx="1050" cy="250" rx="54" ry="18" fill="none" stroke="var(--blue-soft)"
-                  stroke-width="1.2" style="animation-delay:-5s;" />
-                <circle cx="1050" cy="250" r="7" fill="var(--blue)" id="bobCore" />
-                <path id="bobCheck" d="M1032,250 l11,11 l22,-24" fill="none" stroke="var(--green)" stroke-width="2.6"
-                  stroke-linecap="round" stroke-linejoin="round" opacity="0" />
-                <text x="1050" y="330" font-family="var(--sans)" font-size="13" fill="var(--ink-0)" text-anchor="middle"
-                  font-weight="600">Bob</text>
-                <text x="1050" y="347" font-family="var(--mono)" font-size="10.5" fill="var(--ink-3)"
-                  text-anchor="middle">reconstructs |ψ⟩</text>
-              </g>
+               <!-- Outcome display above Bob -->
+               <text id="bobOutcome" x="1050" y="90" font-family="var(--mono)" font-size="12" fill="var(--ink-1)" text-anchor="middle" opacity="0" style="transition: opacity 0.2s;">Received</text>
 
             </svg>
-          </div>
-
-          <div class="diagram-stats">
-            <div class="dstat accent">
-              <div class="lbl">Bell parameter S</div>
-              <div class="val" id="bellSVal">—</div>
-              <div class="foot">classical bound 2.000</div>
-            </div>
-            <div class="dstat">
-              <div class="lbl">Margin over bound</div>
-              <div class="val" id="marginVal">—</div>
-              <div class="foot">singlet ideal 2√2 ≈ 2.828</div>
-            </div>
-            <div class="dstat good">
-              <div class="lbl">Fidelity</div>
-              <div class="val" id="fidNum">—</div>
-              <div class="foot">last correction verified</div>
-            </div>
-            <div class="dstat">
-              <div class="lbl">Cycle</div>
-              <div class="val" id="cycleNum">—</div>
-              <div class="foot">rounds this session</div>
+            <div id="animationExplanation" style="margin-top: 20px; font-family: var(--sans); font-size: 15px; font-weight: 500; color: var(--ink-0); background: var(--bg-inset); padding: 16px; border-radius: 8px; border: 1px solid var(--border);">
+               Initializing Quantum Channel...
             </div>
           </div>
         </div>
@@ -1186,44 +1098,6 @@
     }
 
     const table = document.getElementById('fullEventLogTable');
-    const bellApp = document.getElementById('bellApparatus');
-    const pauliApp = document.getElementById('pauliApparatus');
-    const bobCheck = document.getElementById('bobCheck');
-    const bobCore = document.getElementById('bobCore');
-    const cycleNum = document.getElementById('cycleNum');
-    const fidNum = document.getElementById('fidNum');
-    const heroStage = document.getElementById('heroStage');
-    const outcomes = ['00', '01', '10', '11'];
-
-    const eveGroup = document.createElementNS('http://www.w3.org/2000/svg', 'g');
-    eveGroup.id = 'eveOverlay';
-    eveGroup.style.transition = 'opacity 0.5s ease';
-    eveGroup.style.opacity = '0';
-    eveGroup.innerHTML = `
-    <rect x="70" y="14" width="140" height="44" rx="8" fill="#fdf0e6" stroke="var(--red)" stroke-width="1.4" stroke-dasharray="4 3"/>
-    <text x="140" y="33" font-family="var(--sans)" font-size="13" fill="var(--red)" text-anchor="middle" font-weight="700">⚠ EVE ACTIVE</text>
-    <text x="140" y="49" font-family="var(--mono)" font-size="9.5" fill="var(--red)" text-anchor="middle" id="eveLabel">eavesdropping</text>
-  `;
-    heroStage.appendChild(eveGroup);
-
-    const bobFail = document.createElementNS('http://www.w3.org/2000/svg', 'g');
-    bobFail.id = 'bobFail';
-    bobFail.style.opacity = '0';
-    bobFail.style.transition = 'opacity 0.3s ease';
-    bobFail.innerHTML = `
-    <line x1="1035" y1="235" x2="1065" y2="265" stroke="var(--red)" stroke-width="3" stroke-linecap="round"/>
-    <line x1="1065" y1="235" x2="1035" y2="265" stroke="var(--red)" stroke-width="3" stroke-linecap="round"/>
-  `;
-    heroStage.appendChild(bobFail);
-
-    const verdictBanner = document.createElementNS('http://www.w3.org/2000/svg', 'g');
-    verdictBanner.id = 'verdictBanner';
-    verdictBanner.style.transition = 'opacity 0.4s ease';
-    verdictBanner.innerHTML = `
-    <rect x="800" y="14" width="380" height="36" rx="8" fill="var(--green-tint)" stroke="var(--green)" stroke-width="1" id="verdictRect"/>
-    <text x="990" y="37" font-family="var(--sans)" font-size="12" fill="var(--green)" text-anchor="middle" font-weight="700" id="verdictText">✓ SIGNATURE VERIFIED</text>
-  `;
-    heroStage.appendChild(verdictBanner);
 
     const attackLabels = {
       'HONEST': 'Honest Protocol',
@@ -1692,52 +1566,109 @@
     };
 
 
-    /* ========== TELEPORTATION ANIMATION LOOP ========== */
-    setInterval(() => {
-      const isForged = currentDecision === 'REJECT';
-      const outcome = outcomes[Math.floor(Math.random() * outcomes.length)];
+    /* ========== EDUCATIONAL QUBIT ANIMATION LOOP ========== */
+    const qubitParticle = document.getElementById('qubitParticle');
+    const qubitAncilla = document.getElementById('qubitAncilla');
+    const eveNodeBorder = document.getElementById('eveNodeBorder');
+    const eveNodeName = document.getElementById('eveNodeName');
+    const eveNodeStatus = document.getElementById('eveNodeStatus');
+    const bobNodeBorder = document.getElementById('bobNodeBorder');
+    const bobOutcome = document.getElementById('bobOutcome');
+    const explanationText = document.getElementById('animationExplanation');
 
-      bellText.textContent = 'measuring…';
-      bellApp.classList.add('flash');
-      setTimeout(() => {
-        bellText.textContent = 'outcome ' + outcome;
-        bellApp.classList.remove('flash');
-      }, 420);
+    function resetAnimation() {
+        qubitParticle.style.transition = 'none';
+        qubitAncilla.style.transition = 'none';
+        qubitParticle.style.transform = 'translate(0, 0)';
+        qubitAncilla.style.transform = 'translate(0, 0)';
+        qubitParticle.style.opacity = '0';
+        qubitAncilla.style.opacity = '0';
+        qubitParticle.setAttribute('fill', 'var(--blue)');
+        bobNodeBorder.setAttribute('stroke', 'var(--blue)');
+        bobOutcome.style.opacity = '0';
+        eveNodeBorder.setAttribute('stroke', 'var(--ink-2)');
+        eveNodeBorder.setAttribute('stroke-dasharray', '4 4');
+        eveNodeStatus.textContent = 'Inactive';
+        eveNodeStatus.setAttribute('fill', 'var(--ink-3)');
+    }
 
-      setTimeout(() => {
-        pauliText.textContent = 'applying σx·σz';
-        pauliApp.classList.add('flash');
-      }, 1500);
+    function runAnimationSequence() {
+        resetAnimation();
+        
+        // Force reflow
+        void qubitParticle.offsetWidth;
 
-      setTimeout(() => {
-        if (isForged) {
-          /* Attack detected — red flash, failed correction */
-          pauliText.textContent = 'FAILED';
-          pauliApp.classList.remove('flash');
-          pauliApp.classList.remove('flash-green');
-          bobCheck.style.opacity = '0';
-          bobFail.style.opacity = '1';
-          bobCore.setAttribute('fill', 'var(--red)');
-        } else {
-          /* Honest — green flash, verified */
-          pauliText.textContent = 'applied';
-          pauliApp.classList.remove('flash');
-          pauliApp.classList.add('flash-green');
-          bobFail.style.opacity = '0';
-          bobCore.setAttribute('fill', 'var(--blue)');
-          bobCheck.style.transition = 'opacity .25s ease';
-          bobCheck.style.opacity = '1';
-        }
-      }, 2100);
+        const attack = currentAttackMode;
+        
+        // Phase 1: Alice sends qubit
+        setTimeout(() => {
+            qubitParticle.style.transition = 'transform 1s linear, opacity 0.2s';
+            qubitParticle.style.opacity = '1';
+            
+            if (attack === 'HONEST') {
+                explanationText.innerHTML = "<b>Step 1:</b> Alice prepares a secure quantum state |ψ⟩ and sends it directly over the fiber channel.";
+                qubitParticle.style.transform = 'translate(410px, 0)'; // Move to Eve's zone but bypass
+            } else if (attack === 'INDIVIDUAL' || attack === 'IMPERSONATION' || attack === 'REPLAY') {
+                explanationText.innerHTML = "<b>Step 1:</b> Alice sends a qubit, but Eve intercepts it in the middle of the channel and stops it.";
+                qubitParticle.style.transform = 'translate(410px, 0)'; // Stop at Eve
+                eveNodeBorder.setAttribute('stroke', 'var(--red)');
+                eveNodeBorder.setAttribute('stroke-dasharray', 'none');
+                eveNodeStatus.textContent = 'Intercepting';
+                eveNodeStatus.setAttribute('fill', 'var(--red)');
+            } else if (attack === 'COLLECTIVE' || attack === 'COHERENT') {
+                explanationText.innerHTML = "<b>Step 1:</b> Alice sends a qubit. Eve prepares a secondary (ancilla) qubit to entangle with Alice's passing state.";
+                qubitParticle.style.transform = 'translate(410px, 0)';
+                qubitAncilla.style.opacity = '1';
+                eveNodeBorder.setAttribute('stroke', 'var(--amber)');
+                eveNodeBorder.setAttribute('stroke-dasharray', 'none');
+                eveNodeStatus.textContent = 'Entangling';
+                eveNodeStatus.setAttribute('fill', 'var(--amber)');
+            }
+        }, 100);
 
-      setTimeout(() => {
-        pauliApp.classList.remove('flash-green');
-        bobCheck.style.opacity = '0';
-        bobFail.style.opacity = '0';
-        pauliText.textContent = 'idle';
-        bobCore.setAttribute('fill', 'var(--blue)');
-      }, 3000);
-    }, 3200);
+        // Phase 2: Action at Eve
+        setTimeout(() => {
+            if (attack === 'HONEST') {
+                explanationText.innerHTML = "<b>Step 2:</b> The quantum state passes through safely, maintaining its original superposition.";
+                qubitParticle.style.transform = 'translate(860px, 0)'; // Move to Bob
+            } else if (attack === 'INDIVIDUAL' || attack === 'IMPERSONATION' || attack === 'REPLAY') {
+                explanationText.innerHTML = "<b>Step 2:</b> Eve measures the intercepted qubit, destroying its quantum state. She prepares a fake classical copy and resends it.";
+                qubitParticle.setAttribute('fill', 'var(--red)');
+                qubitParticle.style.transform = 'translate(860px, 0)'; // Resend to Bob
+            } else if (attack === 'COLLECTIVE' || attack === 'COHERENT') {
+                explanationText.innerHTML = "<b>Step 2:</b> Eve entangles her ancilla qubit with Alice's qubit. The state continues, but they are now quantumly linked!";
+                qubitAncilla.style.transition = 'transform 1s linear, opacity 0.2s';
+                qubitAncilla.style.transform = 'translate(0, 60px)'; // Entangle with main qubit
+                qubitParticle.style.transform = 'translate(860px, 0)';
+            }
+        }, 1800);
+
+        // Phase 3: Arrives at Bob
+        setTimeout(() => {
+            qubitParticle.style.opacity = '0';
+            if (attack === 'COLLECTIVE' || attack === 'COHERENT') {
+                qubitAncilla.style.opacity = '0';
+            }
+
+            if (attack === 'HONEST') {
+                explanationText.innerHTML = "<b>Step 3:</b> Bob successfully measures the pristine state. QDS Signature is Verified ✅.";
+                bobNodeBorder.setAttribute('stroke', 'var(--green)');
+                bobOutcome.textContent = 'Verified ✓';
+                bobOutcome.setAttribute('fill', 'var(--green)');
+                bobOutcome.style.opacity = '1';
+            } else {
+                explanationText.innerHTML = `<b>Step 3:</b> Bob measures the state. Anomaly detected (QBER Spike)! Transaction BLOCKED 🛑.`;
+                bobNodeBorder.setAttribute('stroke', 'var(--red)');
+                bobOutcome.textContent = 'Corrupted ✗';
+                bobOutcome.setAttribute('fill', 'var(--red)');
+                bobOutcome.style.opacity = '1';
+            }
+        }, 3000);
+    }
+
+    // Run animation continuously
+    runAnimationSequence();
+    setInterval(runAnimationSequence, 4500);
   </script>
 
   <!-- Custom Modal for Payment Status -->
