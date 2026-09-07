@@ -914,12 +914,20 @@
               /* Side stats */
               const statRows = document.querySelectorAll('.stat-row .num');
               statRows[0].innerHTML = (state.qber * 100).toFixed(1) + '<span>%</span>';
-              statRows[1].innerHTML = state.entropy.toFixed(2) + '<span>bits</span>';
+              
+              /* Entropy can be a number OR an object — handle both */
+              let entropyVal = 0;
+              if (typeof state.entropy === 'number') {
+                  entropyVal = state.entropy;
+              } else if (state.entropy && typeof state.entropy === 'object') {
+                  entropyVal = state.entropy.chsh_bits_per_round_lower || 0;
+              }
+              statRows[1].innerHTML = entropyVal.toFixed(2) + '<span>bits</span>';
               statRows[2].innerHTML = state.session_id;
               
-              /* Attack label row */
+              /* Attack label row — normalize case */
               const attackLabel = document.getElementById('attackLabel');
-              const atk = state.attribution || 'NONE';
+              const atk = (state.attribution || 'none').toString().toUpperCase();
               if (atk !== 'NONE') {
                   attackLabel.textContent = atk;
                   attackLabel.style.color = 'var(--red)';
@@ -950,8 +958,9 @@
               updateCHSH(state);
           }
       } catch (e) {
+          console.error('fetchState error:', e);
           const conn = document.getElementById('connStatus');
-          conn.textContent = '✗ disconnected';
+          conn.textContent = '✗ error: ' + e.message;
           conn.style.color = 'var(--red)';
       }
   }
