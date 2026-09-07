@@ -222,22 +222,6 @@ def index():
     with open('qds_command_center (1).html', 'r', encoding='utf-8') as f:
         return HTMLResponse(f.read())
 
-@app.get('/terms')
-def terms():
-    with open('terms.html', 'r', encoding='utf-8') as f: return HTMLResponse(f.read())
-
-@app.get('/privacy')
-def privacy():
-    with open('privacy.html', 'r', encoding='utf-8') as f: return HTMLResponse(f.read())
-
-@app.get('/refund')
-def refund():
-    with open('refund.html', 'r', encoding='utf-8') as f: return HTMLResponse(f.read())
-
-@app.get('/contact')
-def contact():
-    with open('contact.html', 'r', encoding='utf-8') as f: return HTMLResponse(f.read())
-
 if __name__ == '__main__':
     import os
     port = int(os.environ.get('PORT', 8000))
