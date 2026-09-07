@@ -1473,16 +1473,40 @@
           const paymentLogsList = document.getElementById('paymentLogsList');
           if (state.transactions && state.transactions.length > 0) {
             paymentLogsList.innerHTML = state.transactions.map(tx => {
-              const color = tx.decision === 'REJECT' ? 'var(--red)' : 'var(--green)';
-              return `<div class="event" style="border-bottom: 1px solid var(--border); padding-bottom: 12px; display:flex;">
-                <span class="event-dot" style="background: ${color}; width:8px; height:8px;"></span>
+              const color = tx.decision === 'REJECT' ? 'var(--red)' : (tx.decision === 'FAILED' ? 'var(--amber)' : 'var(--green)');
+              
+              let qStats = '';
+              if (tx.qber !== undefined && tx.s_val !== undefined) {
+                  const qberStr = (tx.qber * 100).toFixed(1) + '%';
+                  const sStr = tx.s_val.toFixed(3);
+                  let whyHtml = '';
+                  if (tx.decision === 'REJECT') {
+                      whyHtml = `<div style="color:var(--red); font-weight:600; font-size:11px; margin-top:6px;">Signature state collapsed (QBER ${qberStr} > 11% threshold). Bell state CHSH violated (S=${sStr} < 2.0). Interception detected.</div>`;
+                  } else if (tx.decision === 'ACCEPT') {
+                      whyHtml = `<div style="color:var(--green); font-weight:600; font-size:11px; margin-top:6px;">Signature intact (QBER ${qberStr} < 11%). Entanglement preserved (S=${sStr} > 2.0).</div>`;
+                  } else if (tx.decision === 'FAILED') {
+                      whyHtml = `<div style="color:var(--amber); font-weight:600; font-size:11px; margin-top:6px;">Classical Network Error: ${tx.error || 'Payment gateway failed natively.'}</div>`;
+                  }
+                  
+                  qStats = `
+                  <div style="font-family:var(--mono); font-size:11px; color:var(--ink-2); display:flex; gap:12px; margin-top:6px; background:var(--bg-inset); padding:6px; border-radius:4px;">
+                    <span>QBER: <b style="color:var(--ink-1);">${qberStr}</b></span>
+                    <span>CHSH S: <b style="color:var(--ink-1);">${sStr}</b></span>
+                  </div>
+                  ${whyHtml}
+                  `;
+              }
+
+              return `<div class="event" style="border-bottom: 1px solid var(--border); padding-bottom: 16px; margin-bottom: 12px; display:flex;">
+                <span class="event-dot" style="background: ${color}; width:8px; height:8px; margin-top:6px;"></span>
                 <div class="event-body" style="width:100%;">
                   <div class="event-time">${tx.time} | ID: ${tx.id.substring(0,12)}</div>
-                  <div class="event-name" style="color: ${color};">${tx.decision === 'REJECT' ? 'BLOCKED' : 'APPROVED'}</div>
-                  <div class="event-detail" style="display:flex; justify-content:space-between; width:100%;">
-                    <span>Amount: ₹${tx.amount}</span>
+                  <div class="event-name" style="color: ${color}; font-size:14px;">${tx.decision === 'REJECT' ? 'BLOCKED' : (tx.decision === 'FAILED' ? 'FAILED' : 'APPROVED')}</div>
+                  <div class="event-detail" style="display:flex; justify-content:space-between; width:100%; margin-top:4px;">
+                    <span style="font-weight:600; color:var(--ink-0);">₹${tx.amount}</span>
                     <span>Attack: ${tx.attack_mode}</span>
                   </div>
+                  ${qStats}
                 </div>
               </div>`;
             }).join('');
@@ -1671,7 +1695,17 @@
           };
           const rzp1 = new Razorpay(options);
           
-          rzp1.on('payment.failed', function (response){
+          rzp1.on('payment.failed', async function (response){
+              try {
+                  await fetch('/api/log_failed_payment', {
+                      method: 'POST',
+                      headers: { 'Content-Type': 'application/json' },
+                      body: JSON.stringify({
+                          error_code: response.error.code || "unknown",
+                          error_description: response.error.description || "Unknown error"
+                      })
+                  });
+              } catch(e) {}
               alert("Payment Failed natively inside Razorpay: " + response.error.description);
           });
 

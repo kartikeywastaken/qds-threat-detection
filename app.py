@@ -230,7 +230,9 @@ def verify_payment(data: PaymentVerification):
             'amount': 500,
             'time': "Just now",
             'decision': current_state.get('latest_decision', 'ACCEPT'),
-            'attack_mode': current_state.get('attack_mode', 'HONEST')
+            'attack_mode': current_state.get('attack_mode', 'HONEST'),
+            'qber': current_state.get('qber', 0.0),
+            's_val': current_state.get('s', 0.0)
         }
         current_state['transactions'].insert(0, tx)
         
@@ -238,6 +240,29 @@ def verify_payment(data: PaymentVerification):
         return {"status": "blocked", "message": "Quantum signature tampered."}
         
     return {"status": "success"}
+
+class FailedPayment(BaseModel):
+    error_code: str
+    error_description: str
+
+@app.post('/api/log_failed_payment')
+def log_failed_payment(data: FailedPayment):
+    with state_lock:
+        if 'transactions' not in current_state:
+            current_state['transactions'] = []
+            
+        tx = {
+            'id': f"fail_{int(time.time())}",
+            'amount': 500,
+            'time': "Just now",
+            'decision': 'FAILED',
+            'attack_mode': current_state.get('attack_mode', 'HONEST'),
+            'qber': current_state.get('qber', 0.0),
+            's_val': current_state.get('s', 0.0),
+            'error': data.error_description
+        }
+        current_state['transactions'].insert(0, tx)
+    return {"status": "logged"}
 
 @app.get('/')
 def index():
