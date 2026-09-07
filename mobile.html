@@ -122,18 +122,19 @@
                 const res = await fetch('/api/state');
                 const state = await res.json();
                 
-                // Dynamically Render Transactions
-                if (state.transactions && state.transactions.length > 0) {
-                    
+                // Filter out natively failed classical transactions (Bob shouldn't see these)
+                const visibleTx = state.transactions ? state.transactions.filter(tx => tx.decision !== 'FAILED') : [];
+                
+                if (visibleTx.length > 0) {
                     // Update Balance dynamically
                     const baseBalance = 24500;
-                    const acceptedTx = state.transactions.filter(tx => tx.decision === 'ACCEPT').length;
+                    const acceptedTx = visibleTx.filter(tx => tx.decision === 'ACCEPT').length;
                     const newBalance = baseBalance + (acceptedTx * 500);
                     document.getElementById('availBalance').innerText = '₹' + newBalance.toLocaleString('en-IN') + '.00';
 
                     const txList = document.getElementById('txList');
                     let html = '';
-                    state.transactions.forEach((tx, idx) => {
+                    visibleTx.forEach((tx, idx) => {
                         html += `
                             <div class="tx-card" id="txCard_${tx.id}" onclick="toggleExpand(this)">
                                 <div class="tx-header">
@@ -160,9 +161,9 @@
                     });
                     
                     // Only update DOM if transactions changed (to prevent closing open panels)
-                    if (txList.dataset.txCount !== String(state.transactions.length)) {
+                    if (txList.dataset.txCount !== String(visibleTx.length)) {
                         txList.innerHTML = html;
-                        txList.dataset.txCount = state.transactions.length;
+                        txList.dataset.txCount = visibleTx.length;
                     }
                 }
 
