@@ -25,9 +25,9 @@ from fastapi.middleware.cors import CORSMiddleware
 
 load_dotenv()
 
-# Initialize Razorpay Client with Test Keys
-RAZORPAY_KEY_ID = os.getenv('RAZORPAY_KEY_ID', 'rzp_test_TZELL9iPOQFxZd')
-RAZORPAY_KEY_SECRET = os.getenv('RAZORPAY_KEY_SECRET', 'vTLqRTr9jrR4D6XC8H1hISY1')
+# Initialize Razorpay Client with Environment Variables
+RAZORPAY_KEY_ID = os.getenv('RAZORPAY_KEY_ID')
+RAZORPAY_KEY_SECRET = os.getenv('RAZORPAY_KEY_SECRET')
 
 try:
     rzp_client = razorpay.Client(auth=(RAZORPAY_KEY_ID, RAZORPAY_KEY_SECRET))
