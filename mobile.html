@@ -127,7 +127,8 @@
                     
                     // Update Balance dynamically
                     const baseBalance = 24500;
-                    const newBalance = baseBalance + (state.transactions.length * 500);
+                    const acceptedTx = state.transactions.filter(tx => tx.decision === 'ACCEPT').length;
+                    const newBalance = baseBalance + (acceptedTx * 500);
                     document.getElementById('availBalance').innerText = '₹' + newBalance.toLocaleString('en-IN') + '.00';
 
                     const txList = document.getElementById('txList');
@@ -145,7 +146,7 @@
                                             <div class="tx-time">${tx.time} · UPI</div>
                                         </div>
                                     </div>
-                                    <div class="tx-amount">+ ₹${tx.amount}</div>
+                                    <div class="tx-amount" style="${tx.decision === 'REJECT' ? 'text-decoration: line-through; color: var(--red);' : ''}">+ ₹${tx.amount}</div>
                                 </div>
                                 
                                 <div class="qds-panel" onclick="event.stopPropagation()">

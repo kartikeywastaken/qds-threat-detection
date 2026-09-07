@@ -1612,8 +1612,12 @@
                           })
                       });
                       
-                      if (verifyRes.ok) {
-                          alert("Payment Successful!");
+                      const verifyData = await verifyRes.json();
+                      
+                      if (verifyData.status === 'blocked') {
+                          alert("🛑 TRANSACTION BLOCKED BY GATEWAY 🛑\n\nQuantum Forgery Detected! The signature was tampered with.\nThe funds have NOT been transferred.");
+                      } else if (verifyRes.ok) {
+                          alert("Payment Successful! Quantum Signature Verified.");
                       } else {
                           alert("Payment Verification Error");
                       }

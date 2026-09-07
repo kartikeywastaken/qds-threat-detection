@@ -234,6 +234,9 @@ def verify_payment(data: PaymentVerification):
         }
         current_state['transactions'].insert(0, tx)
         
+    if tx['decision'] == 'REJECT':
+        return {"status": "blocked", "message": "Quantum signature tampered."}
+        
     return {"status": "success"}
 
 @app.get('/')
