@@ -1,0 +1,414 @@
+{
+  "results": [
+    {
+      "backend": "ideal",
+      "scenario": "legitimate",
+      "shots": 300,
+      "expected_ideal": {
+        "m": 0
+      },
+      "histogram": {
+        "m": {
+          "0": 300
+        }
+      },
+      "observed_error_rate": 0.0,
+      "baseline_error_rate": 0.0,
+      "baseline_threshold": 3e-05,
+      "delta": 0.0,
+      "tv_distance": 0.0,
+      "classification": "legitimate",
+      "reason": "Observed error rate 0.0000 is within 3.0\u03c3 of calibrated baseline 0.0000. TV distance 0.0000.",
+      "duration_ms": 6.2,
+      "backend_metadata": {
+        "processor": null,
+        "simulated": true,
+        "noisy": false,
+        "display_name": "Ideal Cirq Simulator"
+      }
+    },
+    {
+      "backend": "ideal",
+      "scenario": "pauli_x",
+      "shots": 300,
+      "expected_ideal": {
+        "m": 0
+      },
+      "histogram": {
+        "m": {
+          "1": 300
+        }
+      },
+      "observed_error_rate": 1.0,
+      "baseline_error_rate": 0.0,
+      "baseline_threshold": 3e-05,
+      "delta": 1.0,
+      "tv_distance": 1.0,
+      "classification": "attack",
+      "reason": "Observed error rate 1.0000 exceeds baseline threshold 0.0000 (baseline 0.0000 + 3.0\u03c3). TV distance 1.0000.",
+      "duration_ms": 6.1,
+      "backend_metadata": {
+        "processor": null,
+        "simulated": true,
+        "noisy": false,
+        "display_name": "Ideal Cirq Simulator"
+      }
+    },
+    {
+      "backend": "ideal",
+      "scenario": "pauli_y",
+      "shots": 300,
+      "expected_ideal": {
+        "m": 0
+      },
+      "histogram": {
+        "m": {
+          "1": 300
+        }
+      },
+      "observed_error_rate": 1.0,
+      "baseline_error_rate": 0.0,
+      "baseline_threshold": 3e-05,
+      "delta": 1.0,
+      "tv_distance": 1.0,
+      "classification": "attack",
+      "reason": "Observed error rate 1.0000 exceeds baseline threshold 0.0000 (baseline 0.0000 + 3.0\u03c3). TV distance 1.0000.",
+      "duration_ms": 6.1,
+      "backend_metadata": {
+        "processor": null,
+        "simulated": true,
+        "noisy": false,
+        "display_name": "Ideal Cirq Simulator"
+      }
+    },
+    {
+      "backend": "ideal",
+      "scenario": "pauli_z",
+      "shots": 300,
+      "expected_ideal": {
+        "m": 0
+      },
+      "histogram": {
+        "m": {
+          "1": 300
+        }
+      },
+      "observed_error_rate": 1.0,
+      "baseline_error_rate": 0.0,
+      "baseline_threshold": 3e-05,
+      "delta": 1.0,
+      "tv_distance": 1.0,
+      "classification": "attack",
+      "reason": "Observed error rate 1.0000 exceeds baseline threshold 0.0000 (baseline 0.0000 + 3.0\u03c3). TV distance 1.0000.",
+      "duration_ms": 6.4,
+      "backend_metadata": {
+        "processor": null,
+        "simulated": true,
+        "noisy": false,
+        "display_name": "Ideal Cirq Simulator"
+      }
+    },
+    {
+      "backend": "ideal",
+      "scenario": "intercept_resend",
+      "shots": 300,
+      "expected_ideal": {
+        "m": 0
+      },
+      "histogram": {
+        "m": {
+          "0": 300
+        }
+      },
+      "observed_error_rate": 0.0,
+      "baseline_error_rate": 0.0,
+      "baseline_threshold": 3e-05,
+      "delta": 0.0,
+      "tv_distance": 0.0,
+      "classification": "legitimate",
+      "reason": "Observed error rate 0.0000 is within 3.0\u03c3 of calibrated baseline 0.0000. TV distance 0.0000.",
+      "duration_ms": 6.1,
+      "backend_metadata": {
+        "processor": null,
+        "simulated": true,
+        "noisy": false,
+        "display_name": "Ideal Cirq Simulator"
+      }
+    },
+    {
+      "backend": "ideal",
+      "scenario": "channel_manipulation",
+      "shots": 300,
+      "expected_ideal": {
+        "m": 0
+      },
+      "histogram": {
+        "m": {
+          "0": 180,
+          "1": 120
+        }
+      },
+      "observed_error_rate": 0.4,
+      "baseline_error_rate": 0.0,
+      "baseline_threshold": 3e-05,
+      "delta": 0.4,
+      "tv_distance": 0.4,
+      "classification": "attack",
+      "reason": "Observed error rate 0.4000 exceeds baseline threshold 0.0000 (baseline 0.0000 + 3.0\u03c3). TV distance 0.4000.",
+      "duration_ms": 6.2,
+      "backend_metadata": {
+        "processor": null,
+        "simulated": true,
+        "noisy": false,
+        "display_name": "Ideal Cirq Simulator"
+      }
+    },
+    {
+      "backend": "ideal",
+      "scenario": "forgery",
+      "shots": 300,
+      "expected_ideal": {
+        "m0": 0,
+        "m1": 0
+      },
+      "histogram": {
+        "m0": {
+          "1": 300
+        },
+        "m1": {
+          "1": 300
+        }
+      },
+      "observed_error_rate": 2.0,
+      "baseline_error_rate": 0.0,
+      "baseline_threshold": 3e-05,
+      "delta": 2.0,
+      "tv_distance": 0.5,
+      "classification": "attack",
+      "reason": "Observed error rate 1.0000 exceeds baseline threshold 0.0000 (baseline 0.0000 + 3.0\u03c3). TV distance 0.5000.",
+      "duration_ms": 6.9,
+      "backend_metadata": {
+        "processor": null,
+        "simulated": true,
+        "noisy": false,
+        "display_name": "Ideal Cirq Simulator"
+      }
+    },
+    {
+      "backend": "qvm",
+      "scenario": "legitimate",
+      "shots": 300,
+      "expected_ideal": {
+        "m": 0
+      },
+      "histogram": {
+        "m": {
+          "0": 299,
+          "1": 1
+        }
+      },
+      "observed_error_rate": 0.003333,
+      "baseline_error_rate": 0.005859,
+      "baseline_threshold": 0.015978,
+      "delta": -0.002526,
+      "tv_distance": 0.002526,
+      "classification": "legitimate",
+      "reason": "Observed error rate 0.0033 is within 3.0\u03c3 of calibrated baseline 0.0059. TV distance 0.0025.",
+      "duration_ms": 9.7,
+      "backend_metadata": {
+        "processor": "willow_pink",
+        "simulated": true,
+        "noisy": true,
+        "display_name": "Google Quantum Virtual Machine \u2014 noisy virtual Willow processor"
+      }
+    },
+    {
+      "backend": "qvm",
+      "scenario": "pauli_x",
+      "shots": 300,
+      "expected_ideal": {
+        "m": 0
+      },
+      "histogram": {
+        "m": {
+          "0": 3,
+          "1": 297
+        }
+      },
+      "observed_error_rate": 0.99,
+      "baseline_error_rate": 0.005859,
+      "baseline_threshold": 0.015978,
+      "delta": 0.984141,
+      "tv_distance": 0.984141,
+      "classification": "attack",
+      "reason": "Observed error rate 0.9900 exceeds baseline threshold 0.0160 (baseline 0.0059 + 3.0\u03c3). TV distance 0.9841.",
+      "duration_ms": 21.9,
+      "backend_metadata": {
+        "processor": "willow_pink",
+        "simulated": true,
+        "noisy": true,
+        "display_name": "Google Quantum Virtual Machine \u2014 noisy virtual Willow processor"
+      }
+    },
+    {
+      "backend": "qvm",
+      "scenario": "pauli_y",
+      "shots": 300,
+      "expected_ideal": {
+        "m": 0
+      },
+      "histogram": {
+        "m": {
+          "0": 1,
+          "1": 299
+        }
+      },
+      "observed_error_rate": 0.996667,
+      "baseline_error_rate": 0.005859,
+      "baseline_threshold": 0.015978,
+      "delta": 0.990807,
+      "tv_distance": 0.990807,
+      "classification": "attack",
+      "reason": "Observed error rate 0.9967 exceeds baseline threshold 0.0160 (baseline 0.0059 + 3.0\u03c3). TV distance 0.9908.",
+      "duration_ms": 16.3,
+      "backend_metadata": {
+        "processor": "willow_pink",
+        "simulated": true,
+        "noisy": true,
+        "display_name": "Google Quantum Virtual Machine \u2014 noisy virtual Willow processor"
+      }
+    },
+    {
+      "backend": "qvm",
+      "scenario": "pauli_z",
+      "shots": 300,
+      "expected_ideal": {
+        "m": 0
+      },
+      "histogram": {
+        "m": {
+          "0": 1,
+          "1": 299
+        }
+      },
+      "observed_error_rate": 0.996667,
+      "baseline_error_rate": 0.005859,
+      "baseline_threshold": 0.015978,
+      "delta": 0.990807,
+      "tv_distance": 0.990807,
+      "classification": "attack",
+      "reason": "Observed error rate 0.9967 exceeds baseline threshold 0.0160 (baseline 0.0059 + 3.0\u03c3). TV distance 0.9908.",
+      "duration_ms": 17.5,
+      "backend_metadata": {
+        "processor": "willow_pink",
+        "simulated": true,
+        "noisy": true,
+        "display_name": "Google Quantum Virtual Machine \u2014 noisy virtual Willow processor"
+      }
+    },
+    {
+      "backend": "qvm",
+      "scenario": "intercept_resend",
+      "shots": 300,
+      "expected_ideal": {
+        "m": 0
+      },
+      "histogram": {
+        "m": {
+          "0": 299,
+          "1": 1
+        }
+      },
+      "observed_error_rate": 0.003333,
+      "baseline_error_rate": 0.005859,
+      "baseline_threshold": 0.015978,
+      "delta": -0.002526,
+      "tv_distance": 0.002526,
+      "classification": "legitimate",
+      "reason": "Observed error rate 0.0033 is within 3.0\u03c3 of calibrated baseline 0.0059. TV distance 0.0025.",
+      "duration_ms": 11.3,
+      "backend_metadata": {
+        "processor": "willow_pink",
+        "simulated": true,
+        "noisy": true,
+        "display_name": "Google Quantum Virtual Machine \u2014 noisy virtual Willow processor"
+      }
+    },
+    {
+      "backend": "qvm",
+      "scenario": "channel_manipulation",
+      "shots": 300,
+      "expected_ideal": {
+        "m": 0
+      },
+      "histogram": {
+        "m": {
+          "0": 181,
+          "1": 119
+        }
+      },
+      "observed_error_rate": 0.396667,
+      "baseline_error_rate": 0.005859,
+      "baseline_threshold": 0.015978,
+      "delta": 0.390807,
+      "tv_distance": 0.390807,
+      "classification": "attack",
+      "reason": "Observed error rate 0.3967 exceeds baseline threshold 0.0160 (baseline 0.0059 + 3.0\u03c3). TV distance 0.3908.",
+      "duration_ms": 16.0,
+      "backend_metadata": {
+        "processor": "willow_pink",
+        "simulated": true,
+        "noisy": true,
+        "display_name": "Google Quantum Virtual Machine \u2014 noisy virtual Willow processor"
+      }
+    },
+    {
+      "backend": "qvm",
+      "scenario": "forgery",
+      "shots": 300,
+      "expected_ideal": {
+        "m0": 0,
+        "m1": 0
+      },
+      "histogram": {
+        "m0": {
+          "0": 2,
+          "1": 298
+        },
+        "m1": {
+          "0": 4,
+          "1": 296
+        }
+      },
+      "observed_error_rate": 1.98,
+      "baseline_error_rate": 0.005859,
+      "baseline_threshold": 0.015978,
+      "delta": 1.974141,
+      "tv_distance": 0.5,
+      "classification": "attack",
+      "reason": "Observed error rate 0.9900 exceeds baseline threshold 0.0160 (baseline 0.0059 + 3.0\u03c3). TV distance 0.5000.",
+      "duration_ms": 20.7,
+      "backend_metadata": {
+        "processor": "willow_pink",
+        "simulated": true,
+        "noisy": true,
+        "display_name": "Google Quantum Virtual Machine \u2014 noisy virtual Willow processor"
+      }
+    }
+  ],
+  "summary": {
+    "backends": [
+      "ideal",
+      "qvm"
+    ],
+    "shots": 300,
+    "calibration_shots": 512,
+    "total_scenarios": 7,
+    "rows": 14,
+    "attack_flags": 10,
+    "suspicious_flags": 0,
+    "legitimate_flags": 4,
+    "errors": 0,
+    "note": "QVM is a noisy virtual Willow processor running locally \u2014 it is NOT physical quantum hardware."
+  }
+}

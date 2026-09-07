@@ -97,6 +97,77 @@ coherent-attack QDS security proof.
 .venv/bin/python evaluation/run_full_evaluation.py --output artifacts/evaluation
 ```
 
+## Quantum execution backends
+
+The DPM framework supports two quantum execution backends, selectable via
+environment variable.  Neither backend is physical quantum hardware.
+
+### Ideal Cirq Simulator
+
+Fast, noise-free simulation using Google's Cirq framework.
+
+```sh
+DPM_QUANTUM_BACKEND=ideal
+```
+
+Used for:
+- Unit tests (default)
+- Deterministic debugging
+- Reference / comparison baselines
+- Fast development iteration
+
+### Google Quantum Virtual Machine — Willow
+
+Local noisy simulation of a virtual Google Willow processor environment.
+**QVM does NOT execute on physical quantum hardware.**  No Google credentials,
+API keys, or network access are required.
+
+```sh
+DPM_QUANTUM_BACKEND=qvm
+DPM_QUANTUM_SHOTS=2000
+DPM_QVM_PROCESSOR=willow
+```
+
+Used for:
+- Hardware-like noise modelling (T1/T2/gate/readout noise)
+- Processor-oriented circuit constraints and qubit routing
+- DPM experimental results and demonstration
+
+The QVM backend uses `cirq-google` and `qsimcirq` to create a local noisy
+simulation using bundled Google calibration data for the virtual Willow
+processor.  All packages are installed from `requirements.txt`.
+
+### Run with ideal simulator
+
+```sh
+DPM_QUANTUM_BACKEND=ideal .venv/bin/python run.py
+```
+
+### Run with QVM (recommended for demonstrations)
+
+```sh
+DPM_QUANTUM_BACKEND=qvm DPM_QUANTUM_SHOTS=2000 .venv/bin/python run.py
+```
+
+### Compare backends (ideal vs QVM experiment)
+
+```sh
+.venv/bin/python evaluation/run_attack_matrix.py --compare --shots 1000
+```
+
+This runs all attack scenarios against both backends and reports:
+- Error rates, TV distances, and classification decisions
+- Side-by-side ideal vs Willow QVM measurements
+- No real hardware required
+
+### Backend status API
+
+```sh
+curl http://127.0.0.1:8000/quantum/status
+```
+
+Returns `{"backend": "qvm", "simulated": true, "noisy": true, ...}`.
+
 ## Primary references
 
 - [Qiskit Aer device-noise construction](https://qiskit.github.io/qiskit-aer/tutorials/2_device_noise_simulation)
