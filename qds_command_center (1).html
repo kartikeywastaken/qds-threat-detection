@@ -5,6 +5,7 @@
   <meta charset="UTF-8">
   <title>QDS · Command Center</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdnjs.cloudflare.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
@@ -971,40 +972,22 @@
                   style="font-size:14px; color:var(--green);">None</span></div>
             </div>
 
-            <!-- ALICE / BOB TRANSFER VISUALIZER -->
-            <div class="card" id="transferWidget" style="margin-bottom:16px; padding:16px; border:2px solid var(--border); transition:all 0.2s;">
-              <div style="font-size:11px; font-weight:700; color:var(--ink-2); text-transform:uppercase; letter-spacing:0.05em; margin-bottom:12px; display:flex; align-items:center; justify-content:space-between;">
-                <div style="display:flex; align-items:center; gap:6px;">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="16" rx="2"></rect><line x1="3" y1="10" x2="21" y2="10"></line></svg>
-                  Quantum Financial Transfer
-                </div>
-                <button id="send-btn" style="background:var(--blue); color:white; border:none; border-radius:4px; padding:4px 10px; font-size:11px; font-weight:600; cursor:pointer; text-transform:uppercase; letter-spacing:0.05em; transition:opacity 0.2s;">Alice: Send ₹500</button>
+            <div class="card" id="gatewayWidget" style="margin-bottom:16px; padding:16px; border:2px solid var(--border);">
+              <div style="font-size:11px; font-weight:700; color:var(--ink-2); text-transform:uppercase; letter-spacing:0.05em; margin-bottom:12px; display:flex; align-items:center; gap:6px;">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="16" rx="2"></rect><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                Real-Time P2P Transfer
               </div>
-              
-              <div style="display:flex; justify-content:space-between; align-items:center; background:var(--surface-raised); padding:20px; border-radius:8px; position:relative;">
-                  
-                  <div style="display:flex; flex-direction:column; align-items:center; z-index:2;">
-                      <div style="width:40px; height:40px; border-radius:50%; background:var(--blue); color:white; display:flex; justify-content:center; align-items:center; font-weight:bold; font-size:18px;">A</div>
-                      <div style="font-size:10px; font-weight:700; color:var(--ink-2); margin-top:6px; text-transform:uppercase;">Alice</div>
+              <div style="display:flex; gap:16px; align-items:center; background:var(--surface-raised); padding:16px; border-radius:8px;">
+                  <!-- QR Code Container -->
+                  <div id="qrBox" style="background:white; padding:8px; border-radius:8px; width:100px; height:100px; display:flex; justify-content:center; align-items:center;">
+                      <div id="qrHonest"></div>
                   </div>
-  
-                  <div style="flex:1; height:2px; background:var(--border); margin:0 10px; position:relative;" id="transferChannel">
-                      <div id="dataPacket" style="width:12px; height:12px; background:var(--green); border-radius:50%; position:absolute; top:-5px; left:0; display:none; transition:left 1.2s linear;"></div>
-                      
-                      <div id="eveNode" style="position:absolute; top:-24px; left:50%; transform:translateX(-50%); display:none; flex-direction:column; align-items:center; z-index:2;">
-                          <div style="width:30px; height:30px; border-radius:50%; background:var(--red); color:white; display:flex; justify-content:center; align-items:center; font-weight:bold; font-size:14px;">E</div>
-                          <div style="font-size:9px; font-weight:700; color:var(--red); margin-top:4px; text-transform:uppercase;">Eve</div>
-                      </div>
+                  <!-- Status Text -->
+                  <div style="font-family:var(--mono); font-size:12px; font-weight:600; flex:1; color:var(--ink-1);">
+                     1. Scan QR to pay ₹1<br>
+                     2. QDS transmits payload<br>
+                     3. Verify on Bob's Terminal
                   </div>
-  
-                  <div style="display:flex; flex-direction:column; align-items:center; z-index:2;">
-                      <div id="bobIcon" style="width:40px; height:40px; border-radius:50%; background:var(--surface); border:2px solid var(--ink-3); color:var(--ink-1); display:flex; justify-content:center; align-items:center; font-weight:bold; font-size:18px; transition:all 0.2s;">B</div>
-                      <div style="font-size:10px; font-weight:700; color:var(--ink-2); margin-top:6px; text-transform:uppercase;">Bob (Bank)</div>
-                  </div>
-              </div>
-  
-              <div id="transferStatus" style="font-family:var(--mono); font-size:12px; font-weight:600; padding-top:12px; text-align:center; color:var(--ink-2); transition:color 0.2s;">
-                 Channel Idle. Waiting for Alice.
               </div>
             </div>
 
@@ -1351,18 +1334,6 @@
       fidNum.style.color = isForged ? 'var(--red)' : 'var(--ink-0)';
       const bellVal = document.querySelector('.dstat.accent .val');
       if (bellVal) bellVal.style.color = isForged ? 'var(--red)' : 'var(--blue)';
-
-      const eveNode = document.getElementById('eveNode');
-      const transferChannel = document.getElementById('transferChannel');
-      if (eveNode && transferChannel) {
-          if (isUnderAttack || isForged) {
-              eveNode.style.display = 'flex';
-              transferChannel.style.background = 'var(--red-tint)';
-          } else {
-              eveNode.style.display = 'none';
-              transferChannel.style.background = 'var(--border)';
-          }
-      }
     }
 
     let totalRounds = 0;
@@ -1601,6 +1572,19 @@
     }, 250);
     fetchState();
     fetchEvents();
+
+    /* --- Generate Static QR Code on Load --- */
+    window.addEventListener('DOMContentLoaded', () => {
+        const honestUri = "upi://pay?pa=8770711250@ptaxis&pn=QDS%20Secure&am=1.00&cu=INR";
+        new QRCode(document.getElementById("qrHonest"), {
+            text: honestUri,
+            width: 100,
+            height: 100,
+            colorDark : "#26261f",
+            colorLight : "#ffffff",
+            correctLevel : QRCode.CorrectLevel.L
+        });
+    });
 
     /* ========== TELEPORTATION ANIMATION LOOP ========== */
     setInterval(() => {
