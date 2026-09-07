@@ -813,7 +813,8 @@
           currentDecision = state.latest_decision || 'ACCEPT';
       }
       const isUnderAttack = currentAttackMode !== 'HONEST';
-      const isForged = currentDecision === 'REJECT';
+      // Force visual state to FORGED if we are in an attack mode, to prevent flickering back to green if API is delayed
+      const isForged = currentDecision === 'REJECT' || isUnderAttack;
 
       /* Build a key from the values that affect visuals — skip update if unchanged */
       const visualKey = `${currentAttackMode}|${currentDecision}`;
