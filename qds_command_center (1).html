@@ -1611,6 +1611,20 @@
 
       if (currentDecision === 'REJECT') {
           const interferenceStr = currentAttackMode !== 'HONEST' ? attackLabels[currentAttackMode] : 'Unknown Interference';
+          
+          try {
+              await fetch('/api/verify_payment', {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({
+                      razorpay_order_id: "order_aborted",
+                      razorpay_payment_id: "pay_abort_" + Date.now().toString().slice(-6),
+                      razorpay_signature: "aborted_sig"
+                  })
+              });
+              fetchState(); // Immediately refresh logs
+          } catch(e) {}
+
           showPaymentModal('error', 'TRANSACTION BLOCKED', `Quantum Forgery Actively Detected!<br><br>An interference (${interferenceStr}) occurred during transfer. The transaction was aborted to prevent funds loss.`);
           return;
       }
