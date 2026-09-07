@@ -234,7 +234,6 @@ def verify_payment(data: PaymentVerification):
         }
         current_state['transactions'].insert(0, tx)
         
-    log.write("Payment verified and completed successfully.")
     return {"status": "success"}
 
 @app.get('/')
