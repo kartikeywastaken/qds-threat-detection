@@ -1608,6 +1608,12 @@
     /* --- Razorpay Checkout Logic --- */
     document.getElementById('rzp-button1').onclick = async function(e) {
       e.preventDefault();
+
+      if (currentDecision === 'REJECT') {
+          showPaymentModal('error', 'TRANSACTION BLOCKED INITIALLY', 'Quantum Forgery Actively Detected!<br><br>The classical channel is compromised. Transaction aborted before initiating.');
+          return;
+      }
+
       try {
           const res = await fetch('/api/create_order', { method: 'POST' });
           const orderData = await res.json();
