@@ -41,3 +41,16 @@ Store capacity is 64, TTL 15 minutes; HTTP requests allow at most 8192 rounds.
 The animation publishes only sacrificed sample bits, never the surviving bits
 from which either digest could be reconstructed. Payment telemetry is bounded
 to 64 public envelopes/verdicts and is not a source of authorization.
+
+## Phase 3
+
+Two gateway tests pass. Integration starts three independent OS processes and
+uses real HTTP: honest MAC accepted; seed-7 10% interception refused at signature;
+full interception refused at quantum_channel without a MAC or a Bob request;
+changing amount_paise after signing refused. Canonical encoding is order-independent
+and domain-separated. Actual fetched keys were compared against all three logs
+and gateway response bodies; no matches.
+
+The long-running dashboard process has exceeded ten minutes. At the retention
+check its two segments were 171415 and 258478 bytes, total 429893 bytes; rotation
+has occurred repeatedly and the API remains capped at 200 events.
