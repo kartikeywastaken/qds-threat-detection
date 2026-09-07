@@ -1,11 +1,22 @@
 import json
+import asyncio
+import os
 import threading
 import time
 from typing import Literal
-from fastapi import FastAPI
+from fastapi import FastAPI, BackgroundTasks
 from fastapi.responses import HTMLResponse
 import uvicorn
 from pydantic import BaseModel
+import razorpay
+
+# Initialize Razorpay Client (Using Environment Variables or Placeholders)
+RAZORPAY_KEY_ID = os.environ.get('RAZORPAY_KEY_ID', 'rzp_test_replace_me')
+RAZORPAY_KEY_SECRET = os.environ.get('RAZORPAY_KEY_SECRET', 'replace_me')
+try:
+    rzp_client = razorpay.Client(auth=(RAZORPAY_KEY_ID, RAZORPAY_KEY_SECRET))
+except Exception:
+    rzp_client = None
 
 from qds_protocol.key_distribution import distribute
 from qds_protocol.signing_engine import sign
@@ -64,17 +75,9 @@ def simulation_loop():
     while True:
         cycle += 1
         d = distribute(512, 821 + cycle)
+        payload, _ = sign(d, 'Approve teleportation channel', 0.1, 822 + cycle)
+        
         attack_mode = current_attack_mode
-        import random
-        if attack_mode == 'HONEST':
-            tx_amount = random.choice(["15,000", "5,500", "8,250", "42,000"])
-            tx_bank = random.choice(["SBI", "HDFC", "ICICI", "AXIS"])
-            tx_msg = f"PAY ₹{tx_amount} TO {tx_bank}_A/C"
-        else:
-            tx_amount = random.choice(["9,99,999", "50,00,000", "7,50,000"])
-            tx_msg = f"PAY ₹{tx_amount} TO OFFSHORE_WALLET_EVE"
-            
-        payload, _ = sign(d, tx_msg, 0.1, 822 + cycle)
         
         if attack_mode == 'HONEST':
             strategy = AttackStrategyBase(0)
@@ -129,7 +132,6 @@ def simulation_loop():
             current_state['attack_mode'] = attack_mode
             current_state['latest_decision'] = statistics['decision']
             current_state['attribution'] = att.get('attack_class', 'NONE') if isinstance(att, dict) else 'NONE'
-            current_state['transaction_payload'] = tx_msg
             
             current_state['chsh_history'].append(s_val)
             if len(current_state['chsh_history']) > 20:
@@ -168,6 +170,48 @@ def set_attack(config: AttackConfig):
     # Wake the simulation loop to recalculate NOW
     attack_changed.set()
     return {"status": "success", "mode": current_attack_mode}
+
+class PaymentVerification(BaseModel):
+    razorpay_payment_id: str
+    razorpay_order_id: str
+    razorpay_signature: str
+
+@app.get('/api/create_order')
+def create_order():
+    if not rzp_client:
+        return {"error": "Razorpay client not configured"}
+    try:
+        # Create an order for ₹500 (50000 paise)
+        order = rzp_client.order.create({
+            "amount": 50000, 
+            "currency": "INR", 
+            "payment_capture": "1"
+        })
+        return {"order_id": order['id'], "key_id": RAZORPAY_KEY_ID}
+    except Exception as e:
+        return {"error": str(e)}
+
+@app.post('/api/verify_payment')
+def verify_payment(payment: PaymentVerification):
+    # CRITICAL: QDS Intercept Gatekeeper
+    with state_lock:
+        decision = current_state.get('latest_decision', 'ACCEPT')
+        
+    if decision == 'REJECT':
+        return {"status": "blocked", "message": "Transaction aborted: Quantum Signature Forgery Detected"}
+        
+    try:
+        if rzp_client:
+            rzp_client.utility.verify_payment_signature({
+                'razorpay_order_id': payment.razorpay_order_id,
+                'razorpay_payment_id': payment.razorpay_payment_id,
+                'razorpay_signature': payment.razorpay_signature
+            })
+        return {"status": "success", "message": "Payment Verified & Processed"}
+    except razorpay.errors.SignatureVerificationError:
+        return {"status": "error", "message": "Razorpay signature verification failed"}
+    except Exception as e:
+        return {"status": "error", "message": str(e)}
 
 @app.get('/')
 def index():

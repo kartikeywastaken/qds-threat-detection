@@ -1,803 +1,1262 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="UTF-8">
-<title>QDS — Quantum Signature Verification</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-<style>
+  <meta charset="UTF-8">
+  <title>QDS · Command Center</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap"
+    rel="stylesheet">
+  <style>
+    :root {
+      --bg: #f6f3ec;
+      --bg-inset: #efeadf;
+      --surface: #ffffff;
+      --border: #e3ddd0;
+      --border-soft: #ece7db;
+      --ink-0: #26261f;
+      --ink-1: #57564c;
+      --ink-2: #847f70;
+      --ink-3: #aca894;
+      --blue: #4e6f92;
+      --blue-soft: #9db0c6;
+      --blue-tint: #eaeff4;
+      --amber: #a97a3a;
+      --amber-tint: #f6efe1;
+      --green: #4f7f5c;
+      --green-tint: #eaf1eb;
+      --red: #a15b4e;
+      --radius: 14px;
+      --radius-sm: 9px;
+      --sans: 'Inter', -apple-system, 'Segoe UI', sans-serif;
+      --mono: 'IBM Plex Mono', 'SFMono-Regular', monospace;
+    }
 
-  :root{
-    --bg:#f6f3ec;
-    --bg-inset:#efeadf;
-    --surface:#ffffff;
-    --border:#e3ddd0;
-    --border-soft:#ece7db;
-    --ink-0:#26261f;
-    --ink-1:#57564c;
-    --ink-2:#847f70;
-    --ink-3:#aca894;
-    --blue:#4e6f92;
-    --blue-soft:#9db0c6;
-    --blue-tint:#eaeff4;
-    --amber:#a97a3a;
-    --amber-tint:#f6efe1;
-    --green:#4f7f5c;
-    --green-tint:#eaf1eb;
-    --red:#a15b4e;
-    --radius:14px;
-    --radius-sm:9px;
-    --sans:'Inter',-apple-system,'Segoe UI',sans-serif;
-    --mono:'IBM Plex Mono','SFMono-Regular',monospace;
-  }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
-  *{box-sizing:border-box; margin:0; padding:0;}
-  html,body{ background:var(--bg); color:var(--ink-0); font-family:var(--sans); height:100%; -webkit-font-smoothing:antialiased; }
-  ::selection{ background:var(--blue-soft); color:#fff; }
-  :focus-visible{ outline:2px solid var(--blue); outline-offset:2px; }
+    html,
+    body {
+      background: var(--bg);
+      color: var(--ink-0);
+      font-family: var(--sans);
+      height: 100%;
+      -webkit-font-smoothing: antialiased;
+    }
 
-  /* ================= SHELL ================= */
+    ::selection {
+      background: var(--blue-soft);
+      color: #fff;
+    }
 
-  .app{ display:grid; grid-template-columns:64px 1fr; min-height:100vh; }
+    :focus-visible {
+      outline: 2px solid var(--blue);
+      outline-offset: 2px;
+    }
 
-  .rail{
-    display:flex; flex-direction:column; align-items:center;
-    padding:24px 0 18px;
-    background:var(--surface);
-    border-right:1px solid var(--border);
-  }
-  .rail-mark{
-    width:20px; height:20px;
-    border:1.5px solid var(--ink-2);
-    border-radius:5px;
-    margin-bottom:34px;
-    position:relative;
-  }
-  .rail-mark::after{
-    content:""; position:absolute; inset:5px; border-radius:2px; background:var(--blue);
-  }
-  .rail-nav{ display:flex; flex-direction:column; gap:22px; align-items:center; }
-  .rail-item{
-    position:relative;
-    color:var(--ink-3);
-    cursor:pointer;
-    transition:color .15s ease, background .15s ease;
-    padding:8px; border-radius:8px;
-  }
-  .rail-item svg{ width:16px; height:16px; display:block; }
-  .rail-item:hover{ color:var(--ink-1); background:var(--bg-inset); }
-  .rail-item.active{ color:var(--blue); background:var(--blue-tint); }
-  .rail-spacer{ flex:1; }
-  .rail-foot{ display:flex; flex-direction:column; align-items:center; gap:16px; }
-  .rail-dot{ width:6px; height:6px; border-radius:50%; background:var(--green); }
+    /* ================= SHELL ================= */
 
-  .main{ min-width:0; display:flex; flex-direction:column; }
+    .app {
+      display: grid;
+      grid-template-columns: 64px 1fr;
+      min-height: 100vh;
+    }
 
-  /* ================= MASTHEAD ================= */
+    .rail {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 24px 0 18px;
+      background: var(--surface);
+      border-right: 1px solid var(--border);
+    }
 
-  .masthead{
-    display:flex; align-items:flex-start; justify-content:space-between;
-    padding:30px 44px 24px;
-    border-bottom:1px solid var(--border);
-    background:var(--surface);
-  }
-  .mh-left .mh-mark{
-    font-family:var(--mono); font-size:10.5px; letter-spacing:0.14em; color:var(--ink-3);
-    margin-bottom:8px;
-  }
-  .mh-left h1{
-    font-size:22px; font-weight:600; letter-spacing:-0.01em; color:var(--ink-0);
-    margin-bottom:6px;
-  }
-  .mh-left p{
-    font-size:13px; color:var(--ink-2); max-width:44ch; line-height:1.55;
-  }
+    .rail-mark {
+      width: 20px;
+      height: 20px;
+      border: 1.5px solid var(--ink-2);
+      border-radius: 5px;
+      margin-bottom: 34px;
+      position: relative;
+    }
 
-  .mh-right{ text-align:right; flex-shrink:0; margin-left:24px; }
-  .mh-status{
-    display:inline-flex; align-items:center; gap:8px;
-    padding:7px 14px 7px 11px;
-    background:var(--green-tint);
-    border:1px solid #d7e6da;
-    border-radius:999px;
-  }
-  .mh-live-dot{
-    width:7px; height:7px; border-radius:50%; background:var(--green);
-    position:relative; flex-shrink:0;
-  }
-  .mh-live-dot::after{
-    content:""; position:absolute; inset:-5px; border-radius:50%;
-    border:1px solid var(--green);
-    opacity:0.35;
-    animation:pulse-ring 2.8s ease-out infinite;
-  }
-  @keyframes pulse-ring{ 0%{ transform:scale(.6); opacity:.5;} 100%{ transform:scale(1.9); opacity:0;} }
-  .mh-status-text{ font-size:13px; font-weight:600; color:#2f5c3d; }
-  .mh-sub{
-    font-family:var(--mono); font-size:11px; color:var(--ink-3);
-    margin-top:9px; letter-spacing:0.01em;
-  }
-  .mh-sub b{ color:var(--ink-1); font-weight:500; }
+    .rail-mark::after {
+      content: "";
+      position: absolute;
+      inset: 5px;
+      border-radius: 2px;
+      background: var(--blue);
+    }
 
-  /* ================= CONTENT WRAPPER ================= */
+    .rail-nav {
+      display: flex;
+      flex-direction: column;
+      gap: 22px;
+      align-items: center;
+    }
 
-  .content{ padding:28px 44px 20px; display:flex; flex-direction:column; gap:22px; }
+    .rail-item {
+      position: relative;
+      color: var(--ink-3);
+      cursor: pointer;
+      transition: color .15s ease, background .15s ease;
+      padding: 8px;
+      border-radius: 8px;
+    }
 
-  .card{
-    background:var(--surface);
-    border:1px solid var(--border);
-    border-radius:var(--radius);
-  }
+    .rail-item svg {
+      width: 16px;
+      height: 16px;
+      display: block;
+    }
 
-  .card-head{
-    display:flex; align-items:baseline; justify-content:space-between;
-    gap:16px;
-    padding:20px 26px 0;
-  }
-  .card-title{ font-size:14px; font-weight:600; color:var(--ink-0); letter-spacing:-0.005em; }
-  .card-desc{ font-family:var(--mono); font-size:11px; color:var(--ink-3); }
+    .rail-item:hover {
+      color: var(--ink-1);
+      background: var(--bg-inset);
+    }
 
-  /* ================= DIAGRAM CARD ================= */
+    .rail-item.active {
+      color: var(--blue);
+      background: var(--blue-tint);
+    }
 
-  .diagram-card{ padding-bottom:8px; }
-  .diagram-stage{ position:relative; padding:6px 20px 0; }
-  .diagram-grid{
-    position:absolute; inset:20px 20px 0 20px;
-    background-image:
-      linear-gradient(var(--border-soft) 1px, transparent 1px),
-      linear-gradient(90deg, var(--border-soft) 1px, transparent 1px);
-    background-size:60px 60px;
-    -webkit-mask-image:radial-gradient(ellipse 72% 80% at 50% 46%, black 25%, transparent 76%);
-    mask-image:radial-gradient(ellipse 72% 80% at 50% 46%, black 25%, transparent 76%);
-    opacity:0.6;
-    pointer-events:none;
-  }
-  .diagram-svg{ width:100%; height:auto; display:block; position:relative; z-index:1; }
+    .rail-spacer {
+      flex: 1;
+    }
 
-  .diagram-stats{
-    display:grid; grid-template-columns:repeat(4,1fr);
-    gap:1px;
-    background:var(--border);
-    border-top:1px solid var(--border);
-    margin-top:18px;
-    border-radius:0 0 var(--radius) var(--radius);
-    overflow:hidden;
-  }
-  .dstat{
-    background:var(--surface);
-    padding:16px 22px 18px;
-  }
-  .dstat .lbl{ font-size:11px; color:var(--ink-2); margin-bottom:6px; }
-  .dstat .val{ font-family:var(--mono); font-weight:500; font-size:22px; color:var(--ink-0); letter-spacing:-0.01em; }
-  .dstat .val span{ font-size:12px; color:var(--ink-3); font-weight:400; margin-left:3px; }
-  .dstat .foot{ font-family:var(--mono); font-size:10.5px; color:var(--ink-3); margin-top:5px; }
-  .dstat.accent .val{ color:var(--blue); }
-  .dstat.good .foot{ color:var(--green); }
+    .rail-foot {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+    }
 
-  /* ================= CHSH BAND ================= */
+    .rail-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--green);
+    }
 
-  .chsh-svg{ width:100%; height:auto; display:block; padding:0 26px 22px; }
+    .main {
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+    }
 
-  /* ================= LOWER GRID ================= */
+    /* ================= MASTHEAD ================= */
 
-  .lower{ display:grid; grid-template-columns:1fr 320px; gap:22px; align-items:start; }
+    .masthead {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      padding: 30px 44px 24px;
+      border-bottom: 1px solid var(--border);
+      background: var(--surface);
+    }
 
-  .sprt-svg{ width:100%; height:auto; display:block; margin-top:6px; padding:0 26px 22px; }
+    .mh-left .mh-mark {
+      font-family: var(--mono);
+      font-size: 10.5px;
+      letter-spacing: 0.14em;
+      color: var(--ink-3);
+      margin-bottom: 8px;
+    }
 
-  .side-zone{ display:flex; flex-direction:column; gap:22px; }
+    .mh-left h1 {
+      font-size: 22px;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      color: var(--ink-0);
+      margin-bottom: 6px;
+    }
 
-  .stat-rows{ padding:6px 24px 4px; }
-  .stat-row{
-    display:flex; align-items:baseline; justify-content:space-between;
-    padding:13px 0;
-    border-bottom:1px solid var(--border-soft);
-  }
-  .stat-row:first-child{ padding-top:2px; }
-  .stat-row:last-child{ border-bottom:none; padding-bottom:16px; }
-  .stat-row .lbl{ font-size:12px; color:var(--ink-2); }
-  .stat-row .num{ font-family:var(--mono); font-size:20px; color:var(--ink-0); font-weight:500; }
-  .stat-row .num span{ font-size:11px; color:var(--ink-3); font-weight:400; margin-left:2px; }
+    .mh-left p {
+      font-size: 13px;
+      color: var(--ink-2);
+      max-width: 44ch;
+      line-height: 1.55;
+    }
 
-  .events-zone{ padding-bottom:6px; }
-  .events-list{ padding:2px 4px 4px; }
-  .event{
-    padding:12px 22px;
-    border-bottom:1px solid var(--border-soft);
-    cursor:pointer;
-    display:flex; gap:10px;
-    transition:background .12s ease;
-  }
-  .event:hover{ background:var(--bg-inset); }
-  .event:last-child{ border-bottom:none; }
-  .event-dot{ width:6px; height:6px; border-radius:50%; margin-top:6px; flex-shrink:0; background:var(--ink-3); }
-  .event-dot.green{ background:var(--green); }
-  .event-dot.amber{ background:var(--amber); }
-  .event-body{ flex:1; min-width:0; }
-  .event-time{ font-family:var(--mono); font-size:10px; color:var(--ink-3); }
-  .event-name{ font-size:12.5px; color:var(--ink-1); font-weight:500; margin-top:1px; }
-  .event-detail{
-    font-size:12px; color:var(--ink-2); line-height:1.55; padding-top:5px;
-    max-height:0; overflow:hidden; transition:max-height .2s ease;
-  }
-  .event.open .event-detail{ max-height:60px; }
-  .event.open .event-name{ color:var(--ink-0); }
+    .mh-right {
+      text-align: right;
+      flex-shrink: 0;
+      margin-left: 24px;
+    }
 
-  /* ================= FOOTER ================= */
+    .mh-status {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 7px 14px 7px 11px;
+      background: var(--green-tint);
+      border: 1px solid #d7e6da;
+      border-radius: 999px;
+    }
 
-  .footbar{
-    padding:14px 44px 26px;
-    display:flex; justify-content:space-between;
-    font-family:var(--mono); font-size:10.5px; color:var(--ink-3);
-  }
+    .mh-live-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--green);
+      position: relative;
+      flex-shrink: 0;
+    }
 
-  /* ================= SVG shared bits ================= */
+    .mh-live-dot::after {
+      content: "";
+      position: absolute;
+      inset: -5px;
+      border-radius: 50%;
+      border: 1px solid var(--green);
+      opacity: 0.35;
+      animation: pulse-ring 2.8s ease-out infinite;
+    }
 
-  .beam{ stroke-dasharray:3 6; animation:dash 2.2s linear infinite; }
-  @keyframes dash{ to{ stroke-dashoffset:-18; } }
-  .slow-spin{ transform-origin:center; animation:spin 16s linear infinite; }
-  @keyframes spin{ to{ transform:rotate(360deg); } }
+    @keyframes pulse-ring {
+      0% {
+        transform: scale(.6);
+        opacity: .5;
+      }
 
-  .apparatus-box{ transition:stroke .25s ease, fill .25s ease; }
-  .flash .apparatus-box{ stroke:var(--blue); fill:var(--blue-tint); }
-  .flash-green .apparatus-box{ stroke:var(--green); fill:var(--green-tint); }
-  .flash-red .apparatus-box{ stroke:var(--red); fill:#fde8e4; }
+      100% {
+        transform: scale(1.9);
+        opacity: 0;
+      }
+    }
 
-  .playhead{ animation:sweep 11s linear infinite; }
-  @keyframes sweep{ 0%{ transform:translateX(0); } 100%{ transform:translateX(1010px); } }
+    .mh-status-text {
+      font-size: 13px;
+      font-weight: 600;
+      color: #2f5c3d;
+    }
 
-  .bit-travel{ animation:travel 3.4s ease-in-out infinite; }
-  @keyframes travel{
-    0%{ offset-distance:0%; opacity:0; }
-    8%{ opacity:1; }
-    46%{ offset-distance:100%; opacity:1; }
-    50%{ opacity:0; }
-    100%{ offset-distance:100%; opacity:0; }
-  }
+    .mh-sub {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--ink-3);
+      margin-top: 9px;
+      letter-spacing: 0.01em;
+    }
 
-  @media (max-width:1100px){
-    .lower{ grid-template-columns:1fr; }
-    .diagram-stats{ grid-template-columns:repeat(2,1fr); }
-  }
-  @media (max-width:720px){
-    .app{ grid-template-columns:1fr; }
-    .rail{ flex-direction:row; padding:12px 16px; }
-    .rail-nav{ flex-direction:row; }
-    .rail-mark{ margin-bottom:0; margin-right:20px; }
-    .rail-spacer{ display:none; }
-    .masthead, .content{ padding-left:20px; padding-right:20px; }
-  }
+    .mh-sub b {
+      color: var(--ink-1);
+      font-weight: 500;
+    }
 
-  @media (prefers-reduced-motion: reduce){
-    *{ animation:none !important; transition:none !important; }
-  }
+    /* ================= CONTENT WRAPPER ================= */
 
-</style>
+    .content {
+      padding: 28px 44px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 22px;
+    }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+    }
+
+    .card-head {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 20px 26px 0;
+    }
+
+    .card-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--ink-0);
+      letter-spacing: -0.005em;
+    }
+
+    .card-desc {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--ink-3);
+    }
+
+    /* ================= DIAGRAM CARD ================= */
+
+    .diagram-card {
+      padding-bottom: 8px;
+    }
+
+    .diagram-stage {
+      position: relative;
+      padding: 6px 20px 0;
+    }
+
+    .diagram-grid {
+      position: absolute;
+      inset: 20px 20px 0 20px;
+      background-image:
+        linear-gradient(var(--border-soft) 1px, transparent 1px),
+        linear-gradient(90deg, var(--border-soft) 1px, transparent 1px);
+      background-size: 60px 60px;
+      -webkit-mask-image: radial-gradient(ellipse 72% 80% at 50% 46%, black 25%, transparent 76%);
+      mask-image: radial-gradient(ellipse 72% 80% at 50% 46%, black 25%, transparent 76%);
+      opacity: 0.6;
+      pointer-events: none;
+    }
+
+    .diagram-svg {
+      width: 100%;
+      height: auto;
+      display: block;
+      position: relative;
+      z-index: 1;
+    }
+
+    .diagram-stats {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1px;
+      background: var(--border);
+      border-top: 1px solid var(--border);
+      margin-top: 18px;
+      border-radius: 0 0 var(--radius) var(--radius);
+      overflow: hidden;
+    }
+
+    .dstat {
+      background: var(--surface);
+      padding: 16px 22px 18px;
+    }
+
+    .dstat .lbl {
+      font-size: 11px;
+      color: var(--ink-2);
+      margin-bottom: 6px;
+    }
+
+    .dstat .val {
+      font-family: var(--mono);
+      font-weight: 500;
+      font-size: 22px;
+      color: var(--ink-0);
+      letter-spacing: -0.01em;
+    }
+
+    .dstat .val span {
+      font-size: 12px;
+      color: var(--ink-3);
+      font-weight: 400;
+      margin-left: 3px;
+    }
+
+    .dstat .foot {
+      font-family: var(--mono);
+      font-size: 10.5px;
+      color: var(--ink-3);
+      margin-top: 5px;
+    }
+
+    .dstat.accent .val {
+      color: var(--blue);
+    }
+
+    .dstat.good .foot {
+      color: var(--green);
+    }
+
+    /* ================= CHSH BAND ================= */
+
+    .chsh-svg {
+      width: 100%;
+      height: auto;
+      display: block;
+      padding: 0 26px 22px;
+    }
+
+    /* ================= LOWER GRID ================= */
+
+    .lower {
+      display: grid;
+      grid-template-columns: 1fr 320px;
+      gap: 22px;
+      align-items: start;
+    }
+
+    .sprt-svg {
+      width: 100%;
+      height: auto;
+      display: block;
+      margin-top: 6px;
+      padding: 0 26px 22px;
+    }
+
+    .side-zone {
+      display: flex;
+      flex-direction: column;
+      gap: 22px;
+    }
+
+    .stat-rows {
+      padding: 6px 24px 4px;
+    }
+
+    .stat-row {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      padding: 13px 0;
+      border-bottom: 1px solid var(--border-soft);
+    }
+
+    .stat-row:first-child {
+      padding-top: 2px;
+    }
+
+    .stat-row:last-child {
+      border-bottom: none;
+      padding-bottom: 16px;
+    }
+
+    .stat-row .lbl {
+      font-size: 12px;
+      color: var(--ink-2);
+    }
+
+    .stat-row .num {
+      font-family: var(--mono);
+      font-size: 20px;
+      color: var(--ink-0);
+      font-weight: 500;
+    }
+
+    .stat-row .num span {
+      font-size: 11px;
+      color: var(--ink-3);
+      font-weight: 400;
+      margin-left: 2px;
+    }
+
+    .events-zone {
+      padding-bottom: 6px;
+    }
+
+    .events-list {
+      padding: 2px 4px 4px;
+    }
+
+    .event {
+      padding: 12px 22px;
+      border-bottom: 1px solid var(--border-soft);
+      cursor: pointer;
+      display: flex;
+      gap: 10px;
+      transition: background .12s ease;
+    }
+
+    .event:hover {
+      background: var(--bg-inset);
+    }
+
+    .event:last-child {
+      border-bottom: none;
+    }
+
+    .event-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      margin-top: 6px;
+      flex-shrink: 0;
+      background: var(--ink-3);
+    }
+
+    .event-dot.green {
+      background: var(--green);
+    }
+
+    .event-dot.amber {
+      background: var(--amber);
+    }
+
+    .event-body {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .event-time {
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--ink-3);
+    }
+
+    .event-name {
+      font-size: 12.5px;
+      color: var(--ink-1);
+      font-weight: 500;
+      margin-top: 1px;
+    }
+
+    .event-detail {
+      font-size: 12px;
+      color: var(--ink-2);
+      line-height: 1.55;
+      padding-top: 5px;
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height .2s ease;
+    }
+
+    .event.open .event-detail {
+      max-height: 60px;
+    }
+
+    .event.open .event-name {
+      color: var(--ink-0);
+    }
+
+    /* ================= FOOTER ================= */
+
+    .footbar {
+      padding: 14px 44px 26px;
+      display: flex;
+      justify-content: space-between;
+      font-family: var(--mono);
+      font-size: 10.5px;
+      color: var(--ink-3);
+    }
+
+    /* ================= SVG shared bits ================= */
+
+    .beam {
+      stroke-dasharray: 3 6;
+      animation: dash 2.2s linear infinite;
+    }
+
+    @keyframes dash {
+      to {
+        stroke-dashoffset: -18;
+      }
+    }
+
+    .slow-spin {
+      transform-origin: center;
+      animation: spin 16s linear infinite;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    .apparatus-box {
+      transition: stroke .25s ease, fill .25s ease;
+    }
+
+    .flash .apparatus-box {
+      stroke: var(--blue);
+      fill: var(--blue-tint);
+    }
+
+    .flash-green .apparatus-box {
+      stroke: var(--green);
+      fill: var(--green-tint);
+    }
+
+    .flash-red .apparatus-box {
+      stroke: var(--red);
+      fill: #fde8e4;
+    }
+
+    .playhead {
+      animation: sweep 11s linear infinite;
+    }
+
+    @keyframes sweep {
+      0% {
+        transform: translateX(0);
+      }
+
+      100% {
+        transform: translateX(1010px);
+      }
+    }
+
+    .bit-travel {
+      animation: travel 3.4s ease-in-out infinite;
+    }
+
+    @keyframes travel {
+      0% {
+        offset-distance: 0%;
+        opacity: 0;
+      }
+
+      8% {
+        opacity: 1;
+      }
+
+      46% {
+        offset-distance: 100%;
+        opacity: 1;
+      }
+
+      50% {
+        opacity: 0;
+      }
+
+      100% {
+        offset-distance: 100%;
+        opacity: 0;
+      }
+    }
+
+    @media (max-width:1100px) {
+      .lower {
+        grid-template-columns: 1fr;
+      }
+
+      .diagram-stats {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width:720px) {
+      .app {
+        grid-template-columns: 1fr;
+      }
+
+      .rail {
+        flex-direction: row;
+        padding: 12px 16px;
+      }
+
+      .rail-nav {
+        flex-direction: row;
+      }
+
+      .rail-mark {
+        margin-bottom: 0;
+        margin-right: 20px;
+      }
+
+      .rail-spacer {
+        display: none;
+      }
+
+      .masthead,
+      .content {
+        padding-left: 20px;
+        padding-right: 20px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      * {
+        animation: none !important;
+        transition: none !important;
+      }
+    }
+  </style>
 </head>
+
 <body>
 
-<div class="app">
+  <div class="app">
 
-  <div class="rail">
-    <div class="rail-mark"></div>
-    <!-- NAV ICONS -->
-    <div class="rail-nav">
-      <div class="rail-item active" title="Command Center" onclick="switchView('view-command-center', this)">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="2.3" fill="currentColor" stroke="none"/></svg>
-      </div>
-      <div class="rail-item" title="Statistical Tests" onclick="switchView('view-statistical-tests', this)">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 3v18h18M7 16l4-4 4 4 6-6"/></svg>
-      </div>
-      <div class="rail-item" title="Event Log" onclick="switchView('view-event-log', this)">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 4h16v16H4z M4 9h16 M9 4v16"/></svg>
-      </div>
-      <div class="rail-item" title="Key Management" onclick="switchView('view-key-management', this)">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"/></svg>
-      </div>
-    </div>
-    <div class="rail-spacer"></div>
-    <div class="rail-foot">
-      <div class="rail-item" title="Configuration">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M2 12h3M19 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1"/></svg>
-      </div>
-      <div class="rail-dot" title="Systems operational"></div>
-    </div>
-  </div>
-
-  <div class="main">
-
-    <!-- MASTHEAD -->
-    <div class="masthead">
-      <div class="mh-left">
-        <div class="mh-mark">QDS · COMMAND CENTER</div>
-        <h1>Quantum Signature Verification</h1>
-        <p>Statistical evidence that teleported signatures originate from a genuine entangled channel, not a forgery.</p>
-      </div>
-      <div class="mh-right">
-        <div style="display:flex; gap:12px; align-items:center; justify-content:flex-end;">
-          <select id="attackSelect" style="padding:6px 14px; border-radius:999px; border:1px solid var(--border); background:var(--surface) url('data:image/svg+xml;utf8,<svg fill=%22%23aca894%22 viewBox=%220 0 24 24%22 width=%2216%22 height=%2216%22 xmlns=%22http://www.w3.org/2000/svg%22><path d=%22M7 10l5 5 5-5H7z%22/></svg>') no-repeat right 8px center; font-family:var(--sans); font-size:12.5px; font-weight:500; color:var(--ink-1); cursor:pointer; outline:none; appearance:none; padding-right:28px; transition:all .15s ease;">
-            <option value="HONEST">Honest Protocol</option>
-            <option value="INDIVIDUAL">Intercept-Resend (Individual)</option>
-            <option value="COLLECTIVE">Entanglement (Collective)</option>
-            <option value="COHERENT">Joint Probe (Coherent)</option>
-            <option value="IMPERSONATION">Impersonation / Forgery</option>
-            <option value="CHANNEL_MANIPULATION">Classical Manipulation</option>
-            <option value="REPLAY">Replay Attack</option>
-          </select>
-          <div class="mh-status" id="mhStatusBox">
-            <span class="mh-live-dot" id="mhLiveDot"></span>
-            <span class="mh-status-text" id="mhStatusText">System Nominal</span>
-          </div>
-        </div>
-        <div class="mh-sub"><b id="roundsCount">—</b> rounds verified &nbsp;·&nbsp; last anomaly <b id="lastAnomaly">—</b> ago &nbsp;·&nbsp; <span id="clock">—</span> UTC &nbsp;·&nbsp; <span id="connStatus" style="color:var(--amber);">connecting…</span></div>
-      </div>
-    </div>
-
-    <div class="content" id="view-command-center">
-
-      <!-- DIAGRAM CARD -->
-      <div class="card diagram-card">
-        <div class="card-head">
-          <div class="card-title">Teleportation channel</div>
-          <div class="card-desc">live protocol trace</div>
-        </div>
-
-        <div class="diagram-stage">
-          <div class="diagram-grid"></div>
-
-          <svg class="diagram-svg" viewBox="0 0 1200 480" id="heroStage">
-
-            <!-- baseline ruler -->
-            <line x1="70" y1="430" x2="1130" y2="430" stroke="var(--border)" stroke-width="1"/>
-            <g stroke="var(--border)" stroke-width="1">
-              <line x1="150" y1="425" x2="150" y2="435"/>
-              <line x1="370" y1="425" x2="370" y2="435"/>
-              <line x1="600" y1="425" x2="600" y2="435"/>
-              <line x1="830" y1="425" x2="830" y2="435"/>
-              <line x1="1050" y1="425" x2="1050" y2="435"/>
-            </g>
-            <rect class="playhead" x="70" y="426" width="2" height="8" fill="var(--blue)"/>
-
-            <!-- ===== ALICE ===== -->
-            <g>
-              <circle cx="150" cy="250" r="54" fill="var(--surface)" stroke="var(--border)" stroke-width="1.4"/>
-              <ellipse class="slow-spin" cx="150" cy="250" rx="54" ry="18" fill="none" stroke="var(--blue-soft)" stroke-width="1.2"/>
-              <circle cx="150" cy="250" r="7" fill="var(--blue)"/>
-              <text x="150" y="330" font-family="var(--sans)" font-size="13" fill="var(--ink-0)" text-anchor="middle" font-weight="600">Alice</text>
-              <text x="150" y="347" font-family="var(--mono)" font-size="10.5" fill="var(--ink-3)" text-anchor="middle">holds |ψ⟩</text>
-            </g>
-
-            <!-- Alice -> Bell beam -->
-            <line x1="204" y1="250" x2="322" y2="250" stroke="var(--blue)" stroke-width="1.3" class="beam" opacity="0.65"/>
-
-            <!-- ===== BELL MEASUREMENT ===== -->
-            <g id="bellApparatus">
-              <rect class="apparatus-box" x="325" y="205" width="90" height="90" rx="16" fill="var(--surface)" stroke="var(--ink-2)" stroke-width="1.3"/>
-              <line x1="345" y1="250" x2="395" y2="250" stroke="var(--ink-2)" stroke-width="1.2"/>
-              <line x1="370" y1="225" x2="370" y2="275" stroke="var(--ink-2)" stroke-width="1.2"/>
-              <circle cx="370" cy="250" r="4" fill="none" stroke="var(--blue)" stroke-width="1.2"/>
-              <text x="370" y="325" font-family="var(--sans)" font-size="12.5" fill="var(--ink-1)" text-anchor="middle" font-weight="600">Bell measurement</text>
-              <text x="370" y="341" font-family="var(--mono)" font-size="10.5" fill="var(--blue)" text-anchor="middle" id="bellText">outcome 01</text>
-            </g>
-
-            <!-- ===== ENTANGLED RESOURCE ===== -->
-            <g>
-              <text x="600" y="108" font-family="var(--sans)" font-size="12" fill="var(--ink-1)" text-anchor="middle" font-weight="600">Entangled resource</text>
-              <text x="600" y="124" font-family="var(--mono)" font-size="10.5" fill="var(--ink-3)" text-anchor="middle">Bell state |Φ⁺⟩</text>
-
-              <circle cx="600" cy="164" r="9" fill="var(--surface)" stroke="var(--blue)" stroke-width="1.6"/>
-              <circle cx="600" cy="336" r="9" fill="var(--surface)" stroke="var(--blue)" stroke-width="1.6"/>
-              <path d="M600,173 C 566,205 566,295 600,327" fill="none" stroke="var(--blue-soft)" stroke-width="1" opacity="0.55"/>
-              <path d="M600,173 C 600,225 600,275 600,327" fill="none" stroke="var(--blue-soft)" stroke-width="1" opacity="0.75"/>
-              <path d="M600,173 C 634,205 634,295 600,327" fill="none" stroke="var(--blue-soft)" stroke-width="1" opacity="0.55"/>
-              <circle cx="600" cy="164" r="3.2" fill="var(--blue)">
-                <animate attributeName="opacity" values="1;0.25;1" dur="2.8s" repeatCount="indefinite"/>
-              </circle>
-              <circle cx="600" cy="336" r="3.2" fill="var(--blue)">
-                <animate attributeName="opacity" values="0.25;1;0.25" dur="2.8s" repeatCount="indefinite"/>
-              </circle>
-            </g>
-
-            <!-- correlation legs to Bell + Pauli -->
-            <path d="M584,168 C 500,188 440,205 411,232" fill="none" stroke="var(--blue-soft)" stroke-width="1.1" class="beam" opacity="0.6"/>
-            <path d="M616,332 C 700,352 750,335 789,282" fill="none" stroke="var(--blue-soft)" stroke-width="1.1" class="beam" opacity="0.6"/>
-
-            <!-- classical channel -->
-            <path id="classicalPath" d="M370,296 C 430,380 770,380 830,296" fill="none" stroke="var(--amber)" stroke-width="1.2" stroke-dasharray="1 6" opacity="0.8"/>
-            <text x="600" y="405" font-family="var(--sans)" font-size="11.5" fill="var(--amber)" text-anchor="middle" font-weight="600">Classical channel</text>
-            <text x="600" y="420" font-family="var(--mono)" font-size="10" fill="var(--ink-3)" text-anchor="middle">2 bits</text>
-            <g class="bit-travel" style="offset-path:path('M370,296 C 430,380 770,380 830,296');">
-              <circle r="4" fill="var(--amber)"/>
-            </g>
-
-            <!-- ===== PAULI CORRECTION ===== -->
-            <g id="pauliApparatus">
-              <rect class="apparatus-box" x="785" y="205" width="90" height="90" rx="16" fill="var(--surface)" stroke="var(--ink-2)" stroke-width="1.3"/>
-              <text x="830" y="257" font-family="var(--mono)" font-size="17" fill="var(--blue)" text-anchor="middle">σ</text>
-              <text x="830" y="325" font-family="var(--sans)" font-size="12.5" fill="var(--ink-1)" text-anchor="middle" font-weight="600">Pauli correction</text>
-              <text x="830" y="341" font-family="var(--mono)" font-size="10.5" fill="var(--ink-3)" text-anchor="middle" id="pauliText">idle</text>
-            </g>
-
-            <!-- Pauli -> Bob beam -->
-            <line x1="878" y1="250" x2="996" y2="250" stroke="var(--blue)" stroke-width="1.3" class="beam" opacity="0.65"/>
-
-            <!-- ===== BOB ===== -->
-            <g>
-              <circle cx="1050" cy="250" r="54" fill="var(--surface)" stroke="var(--border)" stroke-width="1.4"/>
-              <ellipse class="slow-spin" cx="1050" cy="250" rx="54" ry="18" fill="none" stroke="var(--blue-soft)" stroke-width="1.2" style="animation-delay:-5s;"/>
-              <circle cx="1050" cy="250" r="7" fill="var(--blue)" id="bobCore"/>
-              <path id="bobCheck" d="M1032,250 l11,11 l22,-24" fill="none" stroke="var(--green)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" opacity="0"/>
-              <text x="1050" y="330" font-family="var(--sans)" font-size="13" fill="var(--ink-0)" text-anchor="middle" font-weight="600">Bob</text>
-              <text x="1050" y="347" font-family="var(--mono)" font-size="10.5" fill="var(--ink-3)" text-anchor="middle">reconstructs |ψ⟩</text>
-            </g>
-
+    <div class="rail">
+      <div class="rail-mark"></div>
+      <!-- NAV ICONS -->
+      <div class="rail-nav">
+        <div class="rail-item active" title="Command Center" onclick="switchView('view-command-center', this)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+            <circle cx="12" cy="12" r="9" />
+            <circle cx="12" cy="12" r="2.3" fill="currentColor" stroke="none" />
           </svg>
         </div>
+        <div class="rail-item" title="Statistical Tests" onclick="switchView('view-statistical-tests', this)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+            <path d="M3 3v18h18M7 16l4-4 4 4 6-6" />
+          </svg>
+        </div>
+        <div class="rail-item" title="Event Log" onclick="switchView('view-event-log', this)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+            <path d="M4 4h16v16H4z M4 9h16 M9 4v16" />
+          </svg>
+        </div>
+        <div class="rail-item" title="Key Management" onclick="switchView('view-key-management', this)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+            <path
+              d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4" />
+          </svg>
+        </div>
+      </div>
+      <div class="rail-spacer"></div>
+      <div class="rail-foot">
+        <div class="rail-item" title="Configuration">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+            <circle cx="12" cy="12" r="3" />
+            <path
+              d="M12 2v3M12 19v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M2 12h3M19 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1" />
+          </svg>
+        </div>
+        <div class="rail-dot" title="Systems operational"></div>
+      </div>
+    </div>
 
-        <div class="diagram-stats">
-          <div class="dstat accent">
-            <div class="lbl">Bell parameter S</div>
-            <div class="val" id="bellSVal">—</div>
-            <div class="foot">classical bound 2.000</div>
+    <div class="main">
+
+      <!-- MASTHEAD -->
+      <div class="masthead">
+        <div class="mh-left">
+          <div class="mh-mark">QDS · COMMAND CENTER</div>
+          <h1>Quantum Signature Verification</h1>
+          <p>Statistical evidence that teleported signatures originate from a genuine entangled channel, not a forgery.
+          </p>
+        </div>
+        <div class="mh-right">
+          <div style="display:flex; gap:12px; align-items:center; justify-content:flex-end;">
+            <select id="attackSelect"
+              style="padding:6px 14px; border-radius:999px; border:1px solid var(--border); background:var(--surface) url('data:image/svg+xml;utf8,<svg fill=%22%23aca894%22 viewBox=%220 0 24 24%22 width=%2216%22 height=%2216%22 xmlns=%22http://www.w3.org/2000/svg%22><path d=%22M7 10l5 5 5-5H7z%22/></svg>') no-repeat right 8px center; font-family:var(--sans); font-size:12.5px; font-weight:500; color:var(--ink-1); cursor:pointer; outline:none; appearance:none; padding-right:28px; transition:all .15s ease;">
+              <option value="HONEST">Honest Protocol</option>
+              <option value="INDIVIDUAL">Intercept-Resend (Individual)</option>
+              <option value="COLLECTIVE">Entanglement (Collective)</option>
+              <option value="COHERENT">Joint Probe (Coherent)</option>
+              <option value="IMPERSONATION">Impersonation / Forgery</option>
+              <option value="CHANNEL_MANIPULATION">Classical Manipulation</option>
+              <option value="REPLAY">Replay Attack</option>
+            </select>
+            <div class="mh-status" id="mhStatusBox">
+              <span class="mh-live-dot" id="mhLiveDot"></span>
+              <span class="mh-status-text" id="mhStatusText">System Nominal</span>
+            </div>
           </div>
-          <div class="dstat">
-            <div class="lbl">Margin over bound</div>
-            <div class="val" id="marginVal">—</div>
-            <div class="foot">singlet ideal 2√2 ≈ 2.828</div>
-          </div>
-          <div class="dstat good">
-            <div class="lbl">Fidelity</div>
-            <div class="val" id="fidNum">—</div>
-            <div class="foot">last correction verified</div>
-          </div>
-          <div class="dstat">
-            <div class="lbl">Cycle</div>
-            <div class="val" id="cycleNum">—</div>
-            <div class="foot">rounds this session</div>
-          </div>
+          <div class="mh-sub"><b id="roundsCount">—</b> rounds verified &nbsp;·&nbsp; last anomaly <b
+              id="lastAnomaly">—</b> ago &nbsp;·&nbsp; <span id="clock">—</span> UTC &nbsp;·&nbsp; <span id="connStatus"
+              style="color:var(--amber);">connecting…</span></div>
         </div>
       </div>
 
-      <!-- CHSH BAND -->
-      <div class="card">
-        <div class="card-head">
-          <div class="card-title">CHSH correlation</div>
-          <div class="card-desc">rolling window · bound 2√2 ≈ 2.828</div>
+      <div class="content" id="view-command-center">
+
+        <!-- DIAGRAM CARD -->
+        <div class="card diagram-card">
+          <div class="card-head">
+            <div class="card-title">Teleportation channel</div>
+            <div class="card-desc">live protocol trace</div>
+          </div>
+
+          <div class="diagram-stage">
+            <div class="diagram-grid"></div>
+
+            <svg class="diagram-svg" viewBox="0 0 1200 480" id="heroStage">
+
+              <!-- baseline ruler -->
+              <line x1="70" y1="430" x2="1130" y2="430" stroke="var(--border)" stroke-width="1" />
+              <g stroke="var(--border)" stroke-width="1">
+                <line x1="150" y1="425" x2="150" y2="435" />
+                <line x1="370" y1="425" x2="370" y2="435" />
+                <line x1="600" y1="425" x2="600" y2="435" />
+                <line x1="830" y1="425" x2="830" y2="435" />
+                <line x1="1050" y1="425" x2="1050" y2="435" />
+              </g>
+              <rect class="playhead" x="70" y="426" width="2" height="8" fill="var(--blue)" />
+
+              <!-- ===== ALICE ===== -->
+              <g>
+                <circle cx="150" cy="250" r="54" fill="var(--surface)" stroke="var(--border)" stroke-width="1.4" />
+                <ellipse class="slow-spin" cx="150" cy="250" rx="54" ry="18" fill="none" stroke="var(--blue-soft)"
+                  stroke-width="1.2" />
+                <circle cx="150" cy="250" r="7" fill="var(--blue)" />
+                <text x="150" y="330" font-family="var(--sans)" font-size="13" fill="var(--ink-0)" text-anchor="middle"
+                  font-weight="600">Alice</text>
+                <text x="150" y="347" font-family="var(--mono)" font-size="10.5" fill="var(--ink-3)"
+                  text-anchor="middle">holds |ψ⟩</text>
+              </g>
+
+              <!-- Alice -> Bell beam -->
+              <line x1="204" y1="250" x2="322" y2="250" stroke="var(--blue)" stroke-width="1.3" class="beam"
+                opacity="0.65" />
+
+              <!-- ===== BELL MEASUREMENT ===== -->
+              <g id="bellApparatus">
+                <rect class="apparatus-box" x="325" y="205" width="90" height="90" rx="16" fill="var(--surface)"
+                  stroke="var(--ink-2)" stroke-width="1.3" />
+                <line x1="345" y1="250" x2="395" y2="250" stroke="var(--ink-2)" stroke-width="1.2" />
+                <line x1="370" y1="225" x2="370" y2="275" stroke="var(--ink-2)" stroke-width="1.2" />
+                <circle cx="370" cy="250" r="4" fill="none" stroke="var(--blue)" stroke-width="1.2" />
+                <text x="370" y="325" font-family="var(--sans)" font-size="12.5" fill="var(--ink-1)"
+                  text-anchor="middle" font-weight="600">Bell measurement</text>
+                <text x="370" y="341" font-family="var(--mono)" font-size="10.5" fill="var(--blue)" text-anchor="middle"
+                  id="bellText">outcome 01</text>
+              </g>
+
+              <!-- ===== ENTANGLED RESOURCE ===== -->
+              <g>
+                <text x="600" y="108" font-family="var(--sans)" font-size="12" fill="var(--ink-1)" text-anchor="middle"
+                  font-weight="600">Entangled resource</text>
+                <text x="600" y="124" font-family="var(--mono)" font-size="10.5" fill="var(--ink-3)"
+                  text-anchor="middle">Bell state |Φ⁺⟩</text>
+
+                <circle cx="600" cy="164" r="9" fill="var(--surface)" stroke="var(--blue)" stroke-width="1.6" />
+                <circle cx="600" cy="336" r="9" fill="var(--surface)" stroke="var(--blue)" stroke-width="1.6" />
+                <path d="M600,173 C 566,205 566,295 600,327" fill="none" stroke="var(--blue-soft)" stroke-width="1"
+                  opacity="0.55" />
+                <path d="M600,173 C 600,225 600,275 600,327" fill="none" stroke="var(--blue-soft)" stroke-width="1"
+                  opacity="0.75" />
+                <path d="M600,173 C 634,205 634,295 600,327" fill="none" stroke="var(--blue-soft)" stroke-width="1"
+                  opacity="0.55" />
+                <circle cx="600" cy="164" r="3.2" fill="var(--blue)">
+                  <animate attributeName="opacity" values="1;0.25;1" dur="2.8s" repeatCount="indefinite" />
+                </circle>
+                <circle cx="600" cy="336" r="3.2" fill="var(--blue)">
+                  <animate attributeName="opacity" values="0.25;1;0.25" dur="2.8s" repeatCount="indefinite" />
+                </circle>
+              </g>
+
+              <!-- correlation legs to Bell + Pauli -->
+              <path d="M584,168 C 500,188 440,205 411,232" fill="none" stroke="var(--blue-soft)" stroke-width="1.1"
+                class="beam" opacity="0.6" />
+              <path d="M616,332 C 700,352 750,335 789,282" fill="none" stroke="var(--blue-soft)" stroke-width="1.1"
+                class="beam" opacity="0.6" />
+
+              <!-- classical channel -->
+              <path id="classicalPath" d="M370,296 C 430,380 770,380 830,296" fill="none" stroke="var(--amber)"
+                stroke-width="1.2" stroke-dasharray="1 6" opacity="0.8" />
+              <text x="600" y="405" font-family="var(--sans)" font-size="11.5" fill="var(--amber)" text-anchor="middle"
+                font-weight="600">Classical channel</text>
+              <text x="600" y="420" font-family="var(--mono)" font-size="10" fill="var(--ink-3)" text-anchor="middle">2
+                bits</text>
+              <g class="bit-travel" style="offset-path:path('M370,296 C 430,380 770,380 830,296');">
+                <circle r="4" fill="var(--amber)" />
+              </g>
+
+              <!-- ===== PAULI CORRECTION ===== -->
+              <g id="pauliApparatus">
+                <rect class="apparatus-box" x="785" y="205" width="90" height="90" rx="16" fill="var(--surface)"
+                  stroke="var(--ink-2)" stroke-width="1.3" />
+                <text x="830" y="257" font-family="var(--mono)" font-size="17" fill="var(--blue)"
+                  text-anchor="middle">σ</text>
+                <text x="830" y="325" font-family="var(--sans)" font-size="12.5" fill="var(--ink-1)"
+                  text-anchor="middle" font-weight="600">Pauli correction</text>
+                <text x="830" y="341" font-family="var(--mono)" font-size="10.5" fill="var(--ink-3)"
+                  text-anchor="middle" id="pauliText">idle</text>
+              </g>
+
+              <!-- Pauli -> Bob beam -->
+              <line x1="878" y1="250" x2="996" y2="250" stroke="var(--blue)" stroke-width="1.3" class="beam"
+                opacity="0.65" />
+
+              <!-- ===== BOB ===== -->
+              <g>
+                <circle cx="1050" cy="250" r="54" fill="var(--surface)" stroke="var(--border)" stroke-width="1.4" />
+                <ellipse class="slow-spin" cx="1050" cy="250" rx="54" ry="18" fill="none" stroke="var(--blue-soft)"
+                  stroke-width="1.2" style="animation-delay:-5s;" />
+                <circle cx="1050" cy="250" r="7" fill="var(--blue)" id="bobCore" />
+                <path id="bobCheck" d="M1032,250 l11,11 l22,-24" fill="none" stroke="var(--green)" stroke-width="2.6"
+                  stroke-linecap="round" stroke-linejoin="round" opacity="0" />
+                <text x="1050" y="330" font-family="var(--sans)" font-size="13" fill="var(--ink-0)" text-anchor="middle"
+                  font-weight="600">Bob</text>
+                <text x="1050" y="347" font-family="var(--mono)" font-size="10.5" fill="var(--ink-3)"
+                  text-anchor="middle">reconstructs |ψ⟩</text>
+              </g>
+
+            </svg>
+          </div>
+
+          <div class="diagram-stats">
+            <div class="dstat accent">
+              <div class="lbl">Bell parameter S</div>
+              <div class="val" id="bellSVal">—</div>
+              <div class="foot">classical bound 2.000</div>
+            </div>
+            <div class="dstat">
+              <div class="lbl">Margin over bound</div>
+              <div class="val" id="marginVal">—</div>
+              <div class="foot">singlet ideal 2√2 ≈ 2.828</div>
+            </div>
+            <div class="dstat good">
+              <div class="lbl">Fidelity</div>
+              <div class="val" id="fidNum">—</div>
+              <div class="foot">last correction verified</div>
+            </div>
+            <div class="dstat">
+              <div class="lbl">Cycle</div>
+              <div class="val" id="cycleNum">—</div>
+              <div class="foot">rounds this session</div>
+            </div>
+          </div>
         </div>
-        <svg class="chsh-svg" viewBox="0 0 1000 170" id="chshChart">
-          <defs>
-            <linearGradient id="chshFill" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stop-color="var(--blue)" stop-opacity="0.12"/>
-              <stop offset="100%" stop-color="var(--blue)" stop-opacity="0"/>
-            </linearGradient>
-          </defs>
-          <rect x="0" y="118" width="1000" height="30" fill="var(--red)" opacity="0.05"/>
-          <line x1="0" y1="118" x2="1000" y2="118" stroke="var(--ink-3)" stroke-width="1" stroke-dasharray="5 5" opacity="0.8"/>
-          <text x="0" y="112" font-family="var(--mono)" font-size="10.5" fill="var(--ink-2)">classical limit — S = 2.000</text>
 
-          <path d="M0,148 L1000,148 Z"
-                fill="url(#chshFill)" stroke="none"/>
-          <path d="M0,148 L1000,148"
-                fill="none" stroke="var(--blue)" stroke-width="1.8"/>
-          <circle cx="1000" cy="148" r="4" fill="var(--surface)" stroke="var(--blue)" stroke-width="1.8"/>
-          <circle cx="1000" cy="148" r="9" fill="none" stroke="var(--blue)" stroke-width="1" opacity="0.35">
-            <animate attributeName="r" values="9;15;9" dur="2.8s" repeatCount="indefinite"/>
-            <animate attributeName="opacity" values="0.35;0;0.35" dur="2.8s" repeatCount="indefinite"/>
-          </circle>
-        </svg>
-      </div>
-
-      <!-- LOWER: SPRT + sidebar -->
-      <div class="lower">
+        <!-- CHSH BAND -->
         <div class="card">
           <div class="card-head">
-            <div class="card-title">SPRT sequential detection</div>
-            <div class="card-desc" id="sprtTag" style="color:var(--ink-3);">waiting for data…</div>
+            <div class="card-title">CHSH correlation</div>
+            <div class="card-desc">rolling window · bound 2√2 ≈ 2.828</div>
           </div>
-          <svg class="sprt-svg" viewBox="0 0 1000 360" id="sprtChart">
-            <g stroke="var(--border-soft)" stroke-width="1">
-              <line x1="0" y1="120" x2="1000" y2="120"/>
-              <line x1="0" y1="180" x2="1000" y2="180"/>
-              <line x1="0" y1="240" x2="1000" y2="240"/>
-            </g>
-            <line x1="0" y1="40" x2="1000" y2="40" stroke="var(--red)" stroke-width="1" stroke-dasharray="5 5" opacity="0.55"/>
-            <line x1="0" y1="320" x2="1000" y2="320" stroke="var(--green)" stroke-width="1" stroke-dasharray="5 5" opacity="0.75"/>
-            <text x="1000" y="34" font-family="var(--mono)" font-size="10.5" fill="var(--red)" text-anchor="end" opacity="0.9">reject — ln A = 4.60</text>
-            <text x="1000" y="316" font-family="var(--mono)" font-size="10.5" fill="var(--green)" text-anchor="end" opacity="0.9">accept — ln B = −4.60</text>
+          <svg class="chsh-svg" viewBox="0 0 1000 170" id="chshChart">
+            <defs>
+              <linearGradient id="chshFill" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="var(--blue)" stop-opacity="0.12" />
+                <stop offset="100%" stop-color="var(--blue)" stop-opacity="0" />
+              </linearGradient>
+            </defs>
+            <rect x="0" y="118" width="1000" height="30" fill="var(--red)" opacity="0.05" />
+            <line x1="0" y1="118" x2="1000" y2="118" stroke="var(--ink-3)" stroke-width="1" stroke-dasharray="5 5"
+              opacity="0.8" />
+            <text x="0" y="112" font-family="var(--mono)" font-size="10.5" fill="var(--ink-2)">classical limit — S =
+              2.000</text>
 
-            <text x="0" y="45" font-family="var(--mono)" font-size="9.5" fill="var(--ink-3)">+4.6</text>
-            <text x="0" y="125" font-family="var(--mono)" font-size="9.5" fill="var(--ink-3)">+2.3</text>
-            <text x="0" y="185" font-family="var(--mono)" font-size="9.5" fill="var(--ink-3)">0</text>
-            <text x="0" y="245" font-family="var(--mono)" font-size="9.5" fill="var(--ink-3)">−2.3</text>
-            <text x="0" y="325" font-family="var(--mono)" font-size="9.5" fill="var(--ink-3)">−4.6</text>
-
-            <path d="M0,180" fill="none" stroke="var(--blue)" stroke-width="2" opacity="0.95"/>
-            <path d="" fill="none" stroke="var(--blue)" stroke-width="1" opacity="0.35" stroke-dasharray="2 4"/>
-
-            <circle cx="0" cy="180" r="5" fill="var(--surface)" stroke="var(--ink-3)" stroke-width="2"/>
-            <circle cx="0" cy="180" r="11" fill="none" stroke="var(--ink-3)" stroke-width="1" opacity="0.35">
-              <animate attributeName="r" values="11;18;11" dur="3s" repeatCount="indefinite"/>
-              <animate attributeName="opacity" values="0.35;0;0.35" dur="3s" repeatCount="indefinite"/>
+            <path d="M0,148 L1000,148 Z" fill="url(#chshFill)" stroke="none" />
+            <path d="M0,148 L1000,148" fill="none" stroke="var(--blue)" stroke-width="1.8" />
+            <circle cx="1000" cy="148" r="4" fill="var(--surface)" stroke="var(--blue)" stroke-width="1.8" />
+            <circle cx="1000" cy="148" r="9" fill="none" stroke="var(--blue)" stroke-width="1" opacity="0.35">
+              <animate attributeName="r" values="9;15;9" dur="2.8s" repeatCount="indefinite" />
+              <animate attributeName="opacity" values="0.35;0;0.35" dur="2.8s" repeatCount="indefinite" />
             </circle>
-            <text x="16" y="176" font-family="var(--mono)" font-size="11" fill="var(--ink-3)" font-weight="600">—</text>
-            <text x="16" y="190" font-family="var(--mono)" font-size="9.5" fill="var(--ink-2)">waiting for data</text>
-
-            <text x="0" y="352" font-family="var(--mono)" font-size="9.5" fill="var(--ink-3)">0</text>
-            <text x="330" y="352" font-family="var(--mono)" font-size="9.5" fill="var(--ink-3)" text-anchor="middle">80</text>
-            <text x="660" y="352" font-family="var(--mono)" font-size="9.5" fill="var(--ink-3)" text-anchor="middle">160</text>
-            <text x="1000" y="352" font-family="var(--mono)" font-size="9.5" fill="var(--ink-3)" text-anchor="end">240</text>
           </svg>
         </div>
 
-        <div class="side-zone">
-          <div class="card stat-rows" style="margin-bottom:16px;">
-            <div class="stat-row"><span class="lbl">QBER</span><span class="num">—<span>%</span></span></div>
-            <div class="stat-row"><span class="lbl">Min-entropy</span><span class="num">—<span>bits</span></span></div>
-            <div class="stat-row"><span class="lbl">Run ID</span><span class="num" style="font-size:16px;">—</span></div>
-            <div class="stat-row"><span class="lbl">Attack</span><span class="num" id="attackLabel" style="font-size:14px; color:var(--green);">None</span></div>
+        <!-- LOWER: SPRT + sidebar -->
+        <div class="lower">
+          <div class="card">
+            <div class="card-head">
+              <div class="card-title">SPRT sequential detection</div>
+              <div class="card-desc" id="sprtTag" style="color:var(--ink-3);">waiting for data…</div>
+            </div>
+            <svg class="sprt-svg" viewBox="0 0 1000 360" id="sprtChart">
+              <g stroke="var(--border-soft)" stroke-width="1">
+                <line x1="0" y1="120" x2="1000" y2="120" />
+                <line x1="0" y1="180" x2="1000" y2="180" />
+                <line x1="0" y1="240" x2="1000" y2="240" />
+              </g>
+              <line x1="0" y1="40" x2="1000" y2="40" stroke="var(--red)" stroke-width="1" stroke-dasharray="5 5"
+                opacity="0.55" />
+              <line x1="0" y1="320" x2="1000" y2="320" stroke="var(--green)" stroke-width="1" stroke-dasharray="5 5"
+                opacity="0.75" />
+              <text x="1000" y="34" font-family="var(--mono)" font-size="10.5" fill="var(--red)" text-anchor="end"
+                opacity="0.9">reject — ln A = 4.60</text>
+              <text x="1000" y="316" font-family="var(--mono)" font-size="10.5" fill="var(--green)" text-anchor="end"
+                opacity="0.9">accept — ln B = −4.60</text>
+
+              <text x="0" y="45" font-family="var(--mono)" font-size="9.5" fill="var(--ink-3)">+4.6</text>
+              <text x="0" y="125" font-family="var(--mono)" font-size="9.5" fill="var(--ink-3)">+2.3</text>
+              <text x="0" y="185" font-family="var(--mono)" font-size="9.5" fill="var(--ink-3)">0</text>
+              <text x="0" y="245" font-family="var(--mono)" font-size="9.5" fill="var(--ink-3)">−2.3</text>
+              <text x="0" y="325" font-family="var(--mono)" font-size="9.5" fill="var(--ink-3)">−4.6</text>
+
+              <path d="M0,180" fill="none" stroke="var(--blue)" stroke-width="2" opacity="0.95" />
+              <path d="" fill="none" stroke="var(--blue)" stroke-width="1" opacity="0.35" stroke-dasharray="2 4" />
+
+              <circle cx="0" cy="180" r="5" fill="var(--surface)" stroke="var(--ink-3)" stroke-width="2" />
+              <circle cx="0" cy="180" r="11" fill="none" stroke="var(--ink-3)" stroke-width="1" opacity="0.35">
+                <animate attributeName="r" values="11;18;11" dur="3s" repeatCount="indefinite" />
+                <animate attributeName="opacity" values="0.35;0;0.35" dur="3s" repeatCount="indefinite" />
+              </circle>
+              <text x="16" y="176" font-family="var(--mono)" font-size="11" fill="var(--ink-3)"
+                font-weight="600">—</text>
+              <text x="16" y="190" font-family="var(--mono)" font-size="9.5" fill="var(--ink-2)">waiting for data</text>
+
+              <text x="0" y="352" font-family="var(--mono)" font-size="9.5" fill="var(--ink-3)">0</text>
+              <text x="330" y="352" font-family="var(--mono)" font-size="9.5" fill="var(--ink-3)"
+                text-anchor="middle">80</text>
+              <text x="660" y="352" font-family="var(--mono)" font-size="9.5" fill="var(--ink-3)"
+                text-anchor="middle">160</text>
+              <text x="1000" y="352" font-family="var(--mono)" font-size="9.5" fill="var(--ink-3)"
+                text-anchor="end">240</text>
+            </svg>
           </div>
 
-          <div class="card" id="gatewayWidget" style="margin-bottom:16px; padding:16px; border:2px solid var(--border); transition:border-color 0.2s;">
-            <div style="font-size:11px; font-weight:700; color:var(--ink-2); text-transform:uppercase; letter-spacing:0.05em; margin-bottom:12px; display:flex; align-items:center; gap:6px;">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="16" rx="2"></rect><line x1="3" y1="10" x2="21" y2="10"></line></svg>
-              Secure Payment Gateway (UPI)
+          <div class="side-zone">
+            <div class="card stat-rows">
+              <div class="stat-row"><span class="lbl">QBER</span><span class="num">—<span>%</span></span></div>
+              <div class="stat-row"><span class="lbl">Min-entropy</span><span class="num">—<span>bits</span></span>
+              </div>
+              <div class="stat-row"><span class="lbl">Run ID</span><span class="num" style="font-size:16px;">—</span>
+              </div>
+              <div class="stat-row"><span class="lbl">Attack</span><span class="num" id="attackLabel"
+                  style="font-size:14px; color:var(--green);">None</span></div>
             </div>
-            <div id="gatewayStatus" style="font-family:var(--mono); font-size:13px; font-weight:600; padding:12px; border-radius:6px; background:var(--surface-raised); transition:all 0.2s;">
-               Waiting for transaction...
-            </div>
-          </div>
 
-          <div class="card events-zone">
-            <div class="card-head" style="padding-bottom:14px;">
-              <div class="card-title">Live events</div>
-            </div>
-            <div class="events-list" id="eventsList">
-              <div class="event">
-                <span class="event-dot"></span>
-                <div class="event-body">
-                  <div class="event-time">—</div>
-                  <div class="event-name">Waiting for backend…</div>
-                  <div class="event-detail">The simulation loop runs every 5 seconds. Events will appear here once the first cycle completes.</div>
+            <div class="card events-zone">
+              <div class="card-head" style="padding-bottom:14px;">
+                <div class="card-title">Live events</div>
+              </div>
+              <div class="events-list" id="eventsList">
+                <div class="event">
+                  <span class="event-dot"></span>
+                  <div class="event-body">
+                    <div class="event-time">—</div>
+                    <div class="event-name">Waiting for backend…</div>
+                    <div class="event-detail">The simulation loop runs every 5 seconds. Events will appear here once the
+                      first cycle completes.</div>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
 
-      <div class="footbar">
-        <span>QDS Command · Build 4.12.0</span>
-        <span>FIPS-validated entropy source</span>
-      </div>
-    </div> <!-- closes view-command-center -->
-
-    <!-- STATISTICAL TESTS VIEW -->
-    <div class="content" id="view-statistical-tests" style="display:none; padding:40px; flex-direction:column; gap:24px;">
-      <h2 style="font-size:24px; font-weight:600;">Statistical Tests & Mathematical Bounds</h2>
-      <div class="card" style="padding:24px;">
-        <h3 style="font-size:16px; font-weight:600; margin-bottom:12px;">Minimum Entropy Bound (Quantum-Secured)</h3>
-        <p style="font-size:14px; color:var(--ink-2); line-height:1.6; max-width:800px;">
-          The system evaluates the real-time min-entropy bound to ensure that an eavesdropper cannot guess the teleported signature. 
-          When the CHSH parameter drops below 2.0 (classical bound), the evaluated min-entropy falls to 0. 
-        </p>
-      </div>
-      <div class="card" style="padding:24px;">
-        <h3 style="font-size:16px; font-weight:600; margin-bottom:12px;">SPRT Decision Boundary</h3>
-        <p style="font-size:14px; color:var(--ink-2); line-height:1.6; max-width:800px;">
-          The Sequential Probability Ratio Test monitors the log-likelihood ratio of an honest channel vs. an intercept-resend attack. 
-          The upper bound is fixed at 4.60 (Reject) and lower bound at -4.60 (Accept).
-        </p>
-      </div>
-    </div>
-
-    <!-- EVENT LOG VIEW -->
-    <div class="content" id="view-event-log" style="display:none; padding:40px; flex-direction:column; gap:16px;">
-      <h2 style="font-size:24px; font-weight:600; display:flex; justify-content:space-between; align-items:center;">
-        Global Event Log
-        <span style="font-size:12px; font-weight:500; color:var(--ink-2); background:var(--bg-inset); padding:4px 10px; border-radius:4px;">Firestore Backed</span>
-      </h2>
-      <div class="card" style="flex:1; overflow:hidden; display:flex; flex-direction:column; padding:0;">
-        <div style="display:flex; padding:16px 24px; border-bottom:1px solid var(--border); font-weight:600; font-size:12px; color:var(--ink-2); text-transform:uppercase; letter-spacing:0.05em;">
-          <div style="flex:1;">Timestamp / Session</div>
-          <div style="flex:1;">QBER</div>
-          <div style="flex:1;">CHSH S-Value</div>
-          <div style="flex:1;">Decision</div>
-          <div style="flex:1;">Attribution</div>
+        <div class="footbar">
+          <span>QDS Command · Build 4.12.0</span>
+          <span>FIPS-validated entropy source</span>
         </div>
-        <div id="fullEventLogTable" style="flex:1; overflow-y:auto; padding:0; margin:0; list-style:none;">
-          <div style="padding:24px; text-align:center; color:var(--ink-3); font-size:14px;">Loading historical events from Firebase...</div>
+      </div> <!-- closes view-command-center -->
+
+      <!-- STATISTICAL TESTS VIEW -->
+      <div class="content" id="view-statistical-tests"
+        style="display:none; padding:40px; flex-direction:column; gap:24px;">
+        <h2 style="font-size:24px; font-weight:600;">Statistical Tests & Mathematical Bounds</h2>
+        <div class="card" style="padding:24px;">
+          <h3 style="font-size:16px; font-weight:600; margin-bottom:12px;">Minimum Entropy Bound (Quantum-Secured)</h3>
+          <p style="font-size:14px; color:var(--ink-2); line-height:1.6; max-width:800px;">
+            The system evaluates the real-time min-entropy bound to ensure that an eavesdropper cannot guess the
+            teleported signature.
+            When the CHSH parameter drops below 2.0 (classical bound), the evaluated min-entropy falls to 0.
+          </p>
+        </div>
+        <div class="card" style="padding:24px;">
+          <h3 style="font-size:16px; font-weight:600; margin-bottom:12px;">SPRT Decision Boundary</h3>
+          <p style="font-size:14px; color:var(--ink-2); line-height:1.6; max-width:800px;">
+            The Sequential Probability Ratio Test monitors the log-likelihood ratio of an honest channel vs. an
+            intercept-resend attack.
+            The upper bound is fixed at 4.60 (Reject) and lower bound at -4.60 (Accept).
+          </p>
         </div>
       </div>
-    </div>
 
-    <!-- KEY MANAGEMENT VIEW -->
-    <div class="content" id="view-key-management" style="display:none; padding:40px; flex-direction:column; gap:24px;">
-      <h2 style="font-size:24px; font-weight:600;">Quantum Key Management</h2>
-      <div style="display:flex; gap:24px;">
-        <div class="card" style="flex:1; padding:24px;">
-          <h3 style="font-size:16px; font-weight:600; margin-bottom:8px;">Active Key Pool</h3>
-          <div style="font-size:32px; font-weight:300; font-family:var(--mono);">1,048,576 bits</div>
-          <div style="font-size:12px; color:var(--green); margin-top:8px;">+ 12.4 kbps generation rate</div>
-        </div>
-        <div class="card" style="flex:1; padding:24px;">
-          <h3 style="font-size:16px; font-weight:600; margin-bottom:8px;">Entropy Source Health</h3>
-          <div style="display:flex; align-items:center; gap:8px;">
-            <span class="event-dot green"></span>
-            <span style="font-size:14px; color:var(--ink-1);">QRNG Hardware Nominal</span>
+      <!-- EVENT LOG VIEW -->
+      <div class="content" id="view-event-log" style="display:none; padding:40px; flex-direction:column; gap:16px;">
+        <h2 style="font-size:24px; font-weight:600; display:flex; justify-content:space-between; align-items:center;">
+          Global Event Log
+          <span
+            style="font-size:12px; font-weight:500; color:var(--ink-2); background:var(--bg-inset); padding:4px 10px; border-radius:4px;">Firestore
+            Backed</span>
+        </h2>
+        <div class="card" style="flex:1; overflow:hidden; display:flex; flex-direction:column; padding:0;">
+          <div class="card" id="gatewayWidget" style="margin-bottom:16px; padding:16px; border:2px solid var(--border); transition:border-color 0.2s;">
+            <div style="font-size:11px; font-weight:700; color:var(--ink-2); text-transform:uppercase; letter-spacing:0.05em; margin-bottom:12px; display:flex; align-items:center; gap:6px; justify-content:space-between;">
+              <div style="display:flex; align-items:center; gap:6px;">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="16" rx="2"></rect><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                Secure Payment Gateway (UPI)
+              </div>
+              <button id="rzp-button1" style="background:var(--blue); color:white; border:none; border-radius:4px; padding:4px 10px; font-size:11px; font-weight:600; cursor:pointer; text-transform:uppercase; letter-spacing:0.05em;">Live Demo: Pay ₹500</button>
+            </div>
+            <div id="gatewayStatus" style="font-family:var(--mono); font-size:13px; font-weight:600; padding:12px; border-radius:6px; background:var(--surface-raised); transition:all 0.2s;">
+               Click 'Live Demo' to start transaction...
+            </div>
           </div>
-          <div style="font-size:13px; color:var(--ink-2); margin-top:12px;">Passes all FIPS 140-3 continuous health tests.</div>
+          <div
+            style="display:flex; padding:16px 24px; border-bottom:1px solid var(--border); font-weight:600; font-size:12px; color:var(--ink-2); text-transform:uppercase; letter-spacing:0.05em;">
+            <div style="flex:1;">Timestamp / Session</div>
+            <div style="flex:1;">QBER</div>
+            <div style="flex:1;">CHSH S-Value</div>
+            <div style="flex:1;">Decision</div>
+            <div style="flex:1;">Attribution</div>
+          </div>
+          <div id="fullEventLogTable" style="flex:1; overflow-y:auto; padding:0; margin:0; list-style:none;">
+            <div style="padding:24px; text-align:center; color:var(--ink-3); font-size:14px;">Loading historical events
+              from Firebase...</div>
+          </div>
         </div>
       </div>
-    </div>
 
-  </div> <!-- closes .main -->
-</div> <!-- closes .layout -->
+      <!-- KEY MANAGEMENT VIEW -->
+      <div class="content" id="view-key-management"
+        style="display:none; padding:40px; flex-direction:column; gap:24px;">
+        <h2 style="font-size:24px; font-weight:600;">Quantum Key Management</h2>
+        <div style="display:flex; gap:24px;">
+          <div class="card" style="flex:1; padding:24px;">
+            <h3 style="font-size:16px; font-weight:600; margin-bottom:8px;">Active Key Pool</h3>
+            <div style="font-size:32px; font-weight:300; font-family:var(--mono);">1,048,576 bits</div>
+            <div style="font-size:12px; color:var(--green); margin-top:8px;">+ 12.4 kbps generation rate</div>
+          </div>
+          <div class="card" style="flex:1; padding:24px;">
+            <h3 style="font-size:16px; font-weight:600; margin-bottom:8px;">Entropy Source Health</h3>
+            <div style="display:flex; align-items:center; gap:8px;">
+              <span class="event-dot green"></span>
+              <span style="font-size:14px; color:var(--ink-1);">QRNG Hardware Nominal</span>
+            </div>
+            <div style="font-size:13px; color:var(--ink-2); margin-top:12px;">Passes all FIPS 140-3 continuous health
+              tests.</div>
+          </div>
+        </div>
+      </div>
 
-<script>
-  function switchView(viewId, el) {
-    document.querySelectorAll('.content').forEach(el => el.style.display = 'none');
-    document.getElementById(viewId).style.display = 'flex';
-    document.querySelectorAll('.rail-item').forEach(el => el.classList.remove('active'));
-    el.classList.add('active');
-  }
+    </div> <!-- closes .main -->
+  </div> <!-- closes .layout -->
 
-  function pad(n, len){ return n.toString().padStart(len || 2,'0'); }
-  function tick(){
-    const d = new Date();
-    document.getElementById('clock').textContent = pad(d.getHours())+':'+pad(d.getMinutes())+':'+pad(d.getSeconds());
-  }
-  tick(); setInterval(tick,1000);
+  <script>
+    function switchView(viewId, el) {
+      document.querySelectorAll('.content').forEach(el => el.style.display = 'none');
+      document.getElementById(viewId).style.display = 'flex';
+      document.querySelectorAll('.rail-item').forEach(el => el.classList.remove('active'));
+      el.classList.add('active');
+    }
 
-  const bellText = document.getElementById('bellText');
-  const pauliText = document.getElementById('pauliText');
-  const bellApp = document.getElementById('bellApparatus');
-  const pauliApp = document.getElementById('pauliApparatus');
-  const bobCheck = document.getElementById('bobCheck');
-  const bobCore = document.getElementById('bobCore');
-  const cycleNum = document.getElementById('cycleNum');
-  const fidNum = document.getElementById('fidNum');
-  const heroStage = document.getElementById('heroStage');
-  const outcomes = ['00','01','10','11'];
+    function pad(n, len) { return n.toString().padStart(len || 2, '0'); }
+    function tick() {
+      const d = new Date();
+      document.getElementById('clock').textContent = pad(d.getHours()) + ':' + pad(d.getMinutes()) + ':' + pad(d.getSeconds());
+    }
+    tick(); setInterval(tick, 1000);
 
-  /* ========== EVE OVERLAY (injected into SVG) ========== */
-  const eveGroup = document.createElementNS('http://www.w3.org/2000/svg', 'g');
-  eveGroup.id = 'eveOverlay';
-  eveGroup.style.transition = 'opacity 0.5s ease';
-  eveGroup.style.opacity = '0';
-  eveGroup.innerHTML = `
+    const bellText = document.getElementById('bellText');
+    const pauliText = document.getElementById('pauliText');
+    const bellApp = document.getElementById('bellApparatus');
+    const pauliApp = document.getElementById('pauliApparatus');
+    const bobCheck = document.getElementById('bobCheck');
+    const bobCore = document.getElementById('bobCore');
+    const cycleNum = document.getElementById('cycleNum');
+    const fidNum = document.getElementById('fidNum');
+    const heroStage = document.getElementById('heroStage');
+    const outcomes = ['00', '01', '10', '11'];
+
+    /* ========== EVE OVERLAY (injected into SVG) ========== */
+    const eveGroup = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+    eveGroup.id = 'eveOverlay';
+    eveGroup.style.transition = 'opacity 0.5s ease';
+    eveGroup.style.opacity = '0';
+    eveGroup.innerHTML = `
     <rect x="70" y="14" width="140" height="44" rx="8" fill="#fdf0e6" stroke="var(--red)" stroke-width="1.4" stroke-dasharray="4 3"/>
     <text x="140" y="33" font-family="var(--sans)" font-size="13" fill="var(--red)" text-anchor="middle" font-weight="700">⚠ EVE ACTIVE</text>
     <text x="140" y="49" font-family="var(--mono)" font-size="9.5" fill="var(--red)" text-anchor="middle" id="eveLabel">eavesdropping</text>
   `;
-  heroStage.appendChild(eveGroup);
+    heroStage.appendChild(eveGroup);
 
-  /* ========== BOB FAIL X (injected into SVG) ========== */
-  const bobFail = document.createElementNS('http://www.w3.org/2000/svg', 'g');
-  bobFail.id = 'bobFail';
-  bobFail.style.opacity = '0';
-  bobFail.style.transition = 'opacity 0.3s ease';
-  bobFail.innerHTML = `
+    /* ========== BOB FAIL X (injected into SVG) ========== */
+    const bobFail = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+    bobFail.id = 'bobFail';
+    bobFail.style.opacity = '0';
+    bobFail.style.transition = 'opacity 0.3s ease';
+    bobFail.innerHTML = `
     <line x1="1035" y1="235" x2="1065" y2="265" stroke="var(--red)" stroke-width="3" stroke-linecap="round"/>
     <line x1="1065" y1="235" x2="1035" y2="265" stroke="var(--red)" stroke-width="3" stroke-linecap="round"/>
   `;
-  heroStage.appendChild(bobFail);
+    heroStage.appendChild(bobFail);
 
-  /* ========== VERDICT BANNER ========== */
-  const verdictBanner = document.createElementNS('http://www.w3.org/2000/svg', 'g');
-  verdictBanner.id = 'verdictBanner';
-  verdictBanner.style.transition = 'opacity 0.4s ease';
-  verdictBanner.innerHTML = `
+    /* ========== VERDICT BANNER ========== */
+    const verdictBanner = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+    verdictBanner.id = 'verdictBanner';
+    verdictBanner.style.transition = 'opacity 0.4s ease';
+    verdictBanner.innerHTML = `
     <rect x="800" y="14" width="380" height="36" rx="8" fill="var(--green-tint)" stroke="var(--green)" stroke-width="1" id="verdictRect"/>
     <text x="990" y="37" font-family="var(--sans)" font-size="12" fill="var(--green)" text-anchor="middle" font-weight="700" id="verdictText">✓ SIGNATURE VERIFIED</text>
   `;
-  heroStage.appendChild(verdictBanner);
+    heroStage.appendChild(verdictBanner);
 
-  /* ========== ATTACK LABEL MAP ========== */
-  const attackLabels = {
-    'HONEST': 'Honest Protocol',
-    'INDIVIDUAL': 'Intercept-Resend',
-    'COLLECTIVE': 'Entanglement Attack',
-    'COHERENT': 'Coherent Probe',
-    'IMPERSONATION': 'Forgery Attempt',
-    'CHANNEL_MANIPULATION': 'Channel Tampered',
-    'REPLAY': 'Replay Attack'
-  };
+    /* ========== ATTACK LABEL MAP ========== */
+    const attackLabels = {
+      'HONEST': 'Honest Protocol',
+      'INDIVIDUAL': 'Intercept-Resend',
+      'COLLECTIVE': 'Entanglement Attack',
+      'COHERENT': 'Coherent Probe',
+      'IMPERSONATION': 'Forgery Attempt',
+      'CHANNEL_MANIPULATION': 'Channel Tampered',
+      'REPLAY': 'Replay Attack'
+    };
 
-  const eveActions = {
-    'INDIVIDUAL': 'intercept-resend',
-    'COLLECTIVE': 'entangling qubits',
-    'COHERENT': 'joint probe active',
-    'IMPERSONATION': 'forging signature',
-    'CHANNEL_MANIPULATION': 'manipulating channel',
-    'REPLAY': 'replaying old states'
-  };
+    const eveActions = {
+      'INDIVIDUAL': 'intercept-resend',
+      'COLLECTIVE': 'entangling qubits',
+      'COHERENT': 'joint probe active',
+      'IMPERSONATION': 'forging signature',
+      'CHANNEL_MANIPULATION': 'manipulating channel',
+      'REPLAY': 'replaying old states'
+    };
 
-  let currentAttackMode = 'HONEST';
-  let currentDecision = 'ACCEPT';
+    let currentAttackMode = 'HONEST';
+    let currentDecision = 'ACCEPT';
 
-  /* ========== SPRT CHART ========== */
-  const sprtChart = document.getElementById('sprtChart');
-  const sprtPath = sprtChart.querySelector('path[stroke="var(--blue)"][stroke-width="2"]');
-  const sprtDash = sprtChart.querySelector('path[stroke-dasharray="2 4"]');
-  const sprtCircle1 = sprtChart.querySelector('circle[stroke-width="2"]');
-  const sprtCircle2 = sprtChart.querySelector('circle[opacity="0.35"]');
-  const sprtText1 = sprtChart.querySelector('text[font-weight="600"]');
-  const sprtText2 = sprtChart.querySelector('text[fill="var(--ink-2)"]');
-  const sprtTag = document.getElementById('sprtTag');
-  
-  function updateSPRT(state) {
+    /* ========== SPRT CHART ========== */
+    const sprtChart = document.getElementById('sprtChart');
+    const sprtPath = sprtChart.querySelector('path[stroke="var(--blue)"][stroke-width="2"]');
+    const sprtDash = sprtChart.querySelector('path[stroke-dasharray="2 4"]');
+    const sprtCircle1 = sprtChart.querySelector('circle[stroke-width="2"]');
+    const sprtCircle2 = sprtChart.querySelector('circle[opacity="0.35"]');
+    const sprtText1 = sprtChart.querySelector('text[font-weight="600"]');
+    const sprtText2 = sprtChart.querySelector('text[fill="var(--ink-2)"]');
+    const sprtTag = document.getElementById('sprtTag');
+
+    function updateSPRT(state) {
       if (!state.sprt_trace || state.sprt_trace.length === 0) return;
       const maxRounds = 512;
       const xStep = 1000 / maxRounds;
       const yCenter = 180;
-      const yMax = 40; 
-      const yMin = 320; 
-      
+      const yMax = 40;
+      const yMin = 320;
+
       let d = "M0,180 ";
       let lastX = 0, lastY = 180;
       for (let i = 0; i < state.sprt_trace.length; i++) {
-          const llr = state.sprt_trace[i];
-          const x = i * xStep;
-          const y = yCenter - (llr * ((180 - 40) / 4.6));
-          d += `L${x},${y} `;
-          lastX = x; lastY = y;
+        const llr = state.sprt_trace[i];
+        const x = i * xStep;
+        const y = yCenter - (llr * ((180 - 40) / 4.6));
+        d += `L${x},${y} `;
+        lastX = x; lastY = y;
       }
-      
+
       sprtPath.setAttribute("d", d);
       sprtDash.setAttribute("d", `M${lastX},${lastY} L${lastX},${state.sprt_decision === 'ACCEPT' ? yMin : yMax}`);
-      
+
       const dotY = state.sprt_decision === 'ACCEPT' ? yMin : (state.sprt_decision === 'REJECT' ? yMax : lastY);
-      
+
       sprtCircle1.setAttribute("cx", lastX); sprtCircle1.setAttribute("cy", dotY);
       sprtCircle2.setAttribute("cx", lastX); sprtCircle2.setAttribute("cy", dotY);
-      
+
       let color = state.sprt_decision === 'ACCEPT' ? "var(--green)" : (state.sprt_decision === 'REJECT' ? "var(--red)" : "var(--ink-0)");
-      
+
       sprtText1.setAttribute("x", lastX + 16); sprtText1.setAttribute("y", dotY - 4);
       sprtText1.textContent = state.sprt_decision;
       sprtText1.setAttribute("fill", color);
-      
+
       sprtText2.setAttribute("x", lastX + 16); sprtText2.setAttribute("y", dotY + 10);
       sprtText2.textContent = `round ${state.sprt_trace.length} of ${maxRounds}`;
-      
+
       sprtTag.textContent = `${state.sprt_decision.toLowerCase()} — round ${state.sprt_trace.length}`;
       sprtTag.style.color = color;
-      
+
       sprtCircle1.setAttribute("stroke", color);
       sprtCircle2.setAttribute("stroke", color);
-  }
-  
-  function updateCHSH(state) {
+    }
+
+    function updateCHSH(state) {
       if (!state.chsh_history || state.chsh_history.length === 0) return;
       const chshChart = document.getElementById('chshChart');
       const chshLine = chshChart.querySelectorAll('path')[1];
       const chshFill = chshChart.querySelectorAll('path')[0];
-      
+
       const points = state.chsh_history;
       const xStep = 1000 / Math.max(points.length - 1, 1);
-      
+
       let dLine = "";
       let dFill = "";
       let lastX = 0, lastY = 148;
-      
-      for(let i=0; i<points.length; i++) {
-          const x = i * xStep;
-          const y = 148 - ((points[i] - 2.0) * ((148 - 20) / 1.0));
-          if (i === 0) {
-              dLine += `M${x},${y} `;
-              dFill += `M${x},148 L${x},${y} `;
-          } else {
-              dLine += `L${x},${y} `;
-              dFill += `L${x},${y} `;
-          }
-          lastX = x; lastY = y;
+
+      for (let i = 0; i < points.length; i++) {
+        const x = i * xStep;
+        const y = 148 - ((points[i] - 2.0) * ((148 - 20) / 1.0));
+        if (i === 0) {
+          dLine += `M${x},${y} `;
+          dFill += `M${x},148 L${x},${y} `;
+        } else {
+          dLine += `L${x},${y} `;
+          dFill += `L${x},${y} `;
+        }
+        lastX = x; lastY = y;
       }
       dFill += `L${lastX},148 Z`;
-      
+
       chshLine.setAttribute("d", dLine);
       chshFill.setAttribute("d", dFill);
-      
+
       const c1 = chshChart.querySelectorAll('circle')[0];
       const c2 = chshChart.querySelectorAll('circle')[1];
       c1.setAttribute("cx", lastX); c1.setAttribute("cy", lastY);
@@ -805,22 +1264,22 @@
 
       /* Change CHSH line color based on attack */
       if (currentDecision === 'REJECT') {
-          chshLine.setAttribute("stroke", "var(--red)");
+        chshLine.setAttribute("stroke", "var(--red)");
       } else {
-          chshLine.setAttribute("stroke", "var(--blue)");
+        chshLine.setAttribute("stroke", "var(--blue)");
       }
-  }
+    }
 
-  /* ========== VISUAL STATE ENGINE ========== */
-  let _lastVisualKey = '';
-  let _dropdownChangeTime = 0;  // Grace period so API doesn't override instant visual updates
+    /* ========== VISUAL STATE ENGINE ========== */
+    let _lastVisualKey = '';
+    let _dropdownChangeTime = 0;  // Grace period so API doesn't override instant visual updates
 
-  function updateVisuals(state) {
+    function updateVisuals(state) {
       /* Only let API override decision if >5s since last dropdown change */
       const sinceDropdown = Date.now() - _dropdownChangeTime;
       if (sinceDropdown > 5000) {
-          currentAttackMode = state.attack_mode || 'HONEST';
-          currentDecision = state.latest_decision || 'ACCEPT';
+        currentAttackMode = state.attack_mode || 'HONEST';
+        currentDecision = state.latest_decision || 'ACCEPT';
       }
       const isUnderAttack = currentAttackMode !== 'HONEST';
       // Force visual state to FORGED if we are in an attack mode, to prevent flickering back to green if API is delayed
@@ -835,40 +1294,40 @@
       eveGroup.style.opacity = isUnderAttack ? '1' : '0';
       const eveLabel = document.getElementById('eveLabel');
       if (eveLabel && eveActions[currentAttackMode]) {
-          eveLabel.textContent = eveActions[currentAttackMode];
+        eveLabel.textContent = eveActions[currentAttackMode];
       }
 
       /* --- Verdict banner --- */
       const verdictRect = document.getElementById('verdictRect');
       const verdictTextEl = document.getElementById('verdictText');
       if (isForged) {
-          verdictRect.setAttribute('fill', '#fde8e4');
-          verdictRect.setAttribute('stroke', 'var(--red)');
-          verdictTextEl.setAttribute('fill', 'var(--red)');
-          verdictTextEl.textContent = '✗ SIGNATURE FORGED — ' + (attackLabels[currentAttackMode] || 'Attack');
+        verdictRect.setAttribute('fill', '#fde8e4');
+        verdictRect.setAttribute('stroke', 'var(--red)');
+        verdictTextEl.setAttribute('fill', 'var(--red)');
+        verdictTextEl.textContent = '✗ SIGNATURE FORGED — ' + (attackLabels[currentAttackMode] || 'Attack');
       } else {
-          verdictRect.setAttribute('fill', 'var(--green-tint)');
-          verdictRect.setAttribute('stroke', 'var(--green)');
-          verdictTextEl.setAttribute('fill', 'var(--green)');
-          verdictTextEl.textContent = '✓ SIGNATURE VERIFIED';
+        verdictRect.setAttribute('fill', 'var(--green-tint)');
+        verdictRect.setAttribute('stroke', 'var(--green)');
+        verdictTextEl.setAttribute('fill', 'var(--green)');
+        verdictTextEl.textContent = '✓ SIGNATURE VERIFIED';
       }
 
       /* --- Beam colors --- */
       const beams = heroStage.querySelectorAll('.beam');
       beams.forEach(b => {
-          b.setAttribute('stroke', isForged ? 'var(--red)' : 'var(--blue)');
+        b.setAttribute('stroke', isForged ? 'var(--red)' : 'var(--blue)');
       });
 
       /* --- Bob outer ring --- */
       const bobOuter = heroStage.querySelector('circle[cx="1050"][cy="250"][r="54"]');
       if (bobOuter) {
-          bobOuter.setAttribute('stroke', isForged ? 'var(--red)' : 'var(--border)');
+        bobOuter.setAttribute('stroke', isForged ? 'var(--red)' : 'var(--border)');
       }
 
       /* --- Alice outer ring --- */
       const aliceOuter = heroStage.querySelector('circle[cx="150"][cy="250"][r="54"]');
       if (aliceOuter) {
-          aliceOuter.setAttribute('stroke', isUnderAttack ? 'var(--amber)' : 'var(--border)');
+        aliceOuter.setAttribute('stroke', isUnderAttack ? 'var(--amber)' : 'var(--border)');
       }
 
       /* --- Masthead status --- */
@@ -876,23 +1335,23 @@
       const mhLiveDot = document.getElementById('mhLiveDot');
       const mhStatusText = document.getElementById('mhStatusText');
       if (isForged) {
-          mhStatusBox.style.background = '#fde8e4';
-          mhStatusBox.style.borderColor = '#e5b8b0';
-          mhLiveDot.style.background = 'var(--red)';
-          mhStatusText.style.color = 'var(--red)';
-          mhStatusText.textContent = '⚠ Forgery Detected';
+        mhStatusBox.style.background = '#fde8e4';
+        mhStatusBox.style.borderColor = '#e5b8b0';
+        mhLiveDot.style.background = 'var(--red)';
+        mhStatusText.style.color = 'var(--red)';
+        mhStatusText.textContent = '⚠ Forgery Detected';
       } else if (isUnderAttack) {
-          mhStatusBox.style.background = 'var(--amber-tint)';
-          mhStatusBox.style.borderColor = '#e3d2b8';
-          mhLiveDot.style.background = 'var(--amber)';
-          mhStatusText.style.color = '#7d5520';
-          mhStatusText.textContent = 'Attack in Progress';
+        mhStatusBox.style.background = 'var(--amber-tint)';
+        mhStatusBox.style.borderColor = '#e3d2b8';
+        mhLiveDot.style.background = 'var(--amber)';
+        mhStatusText.style.color = '#7d5520';
+        mhStatusText.textContent = 'Attack in Progress';
       } else {
-          mhStatusBox.style.background = 'var(--green-tint)';
-          mhStatusBox.style.borderColor = '#d7e6da';
-          mhLiveDot.style.background = 'var(--green)';
-          mhStatusText.style.color = '#2f5c3d';
-          mhStatusText.textContent = 'System Nominal';
+        mhStatusBox.style.background = 'var(--green-tint)';
+        mhStatusBox.style.borderColor = '#d7e6da';
+        mhLiveDot.style.background = 'var(--green)';
+        mhStatusText.style.color = '#2f5c3d';
+        mhStatusText.textContent = 'System Nominal';
       }
 
       /* --- Metric colors --- */
@@ -901,157 +1360,138 @@
       fidNum.style.color = isForged ? 'var(--red)' : 'var(--ink-0)';
       const bellVal = document.querySelector('.dstat.accent .val');
       if (bellVal) bellVal.style.color = isForged ? 'var(--red)' : 'var(--blue)';
+    }
 
-      /* --- Payment Gateway UPI Simulation --- */
-      const gwWidget = document.getElementById('gatewayWidget');
-      const gwStatus = document.getElementById('gatewayStatus');
-      if (gwWidget && gwStatus && state.transaction_payload) {
-          if (isForged) {
-              gwWidget.style.borderColor = 'var(--red)';
-              gwStatus.style.background = '#fde8e4';
-              gwStatus.innerHTML = `<span style="font-size:10px; color:var(--red); text-transform:uppercase;">✗ Transaction Blocked (Forgery)</span><br/><span style="color:var(--red); text-decoration:line-through;">${state.transaction_payload}</span>`;
-          } else if (isUnderAttack) {
-              gwWidget.style.borderColor = 'var(--amber)';
-              gwStatus.style.background = 'var(--amber-tint)';
-              gwStatus.innerHTML = `<span style="font-size:10px; color:#7d5520; text-transform:uppercase;">⚠ Verifying...</span><br/><span style="color:#7d5520;">${state.transaction_payload}</span>`;
+    let totalRounds = 0;
+    let lastRejectTime = null;
+
+    async function fetchState() {
+      try {
+        const res = await fetch('/api/state');
+        const state = await res.json();
+
+        /* Connection indicator */
+        const conn = document.getElementById('connStatus');
+        conn.textContent = '● connected';
+        conn.style.color = 'var(--green)';
+
+        /* Always update visuals even if still on first cycle */
+        updateVisuals(state);
+
+        if (state.session_id !== 'N/A') {
+          /* Bell S-value */
+          document.getElementById('bellSVal').innerHTML = state.s.toFixed(2);
+          document.getElementById('marginVal').innerHTML = (state.s >= 2.0 ? '+' : '') + (state.s - 2.0).toFixed(2);
+          fidNum.innerHTML = state.fidelity.toFixed(3);
+          cycleNum.innerHTML = pad(state.cycle, 4);
+
+          /* Side stats */
+          const statRows = document.querySelectorAll('.stat-row .num');
+          statRows[0].innerHTML = (state.qber * 100).toFixed(1) + '<span>%</span>';
+
+          /* Entropy can be a number OR an object — handle both */
+          let entropyVal = 0;
+          if (typeof state.entropy === 'number') {
+            entropyVal = state.entropy;
+          } else if (state.entropy && typeof state.entropy === 'object') {
+            entropyVal = state.entropy.chsh_bits_per_round_lower || 0;
+          }
+          statRows[1].innerHTML = entropyVal.toFixed(2) + '<span>bits</span>';
+          statRows[2].innerHTML = state.session_id;
+
+          /* Attack label row — normalize case */
+          const attackLabel = document.getElementById('attackLabel');
+          const atk = (state.attribution || 'none').toString().toUpperCase();
+          if (atk !== 'NONE') {
+            attackLabel.textContent = atk;
+            attackLabel.style.color = 'var(--red)';
           } else {
-              gwWidget.style.borderColor = 'var(--green)';
-              gwStatus.style.background = 'var(--green-tint)';
-              gwStatus.innerHTML = `<span style="font-size:10px; color:var(--green); text-transform:uppercase;">✓ Payment Approved</span><br/><span style="color:#2f5c3d;">${state.transaction_payload}</span>`;
+            attackLabel.textContent = 'None';
+            attackLabel.style.color = 'var(--green)';
           }
-      }
-  }
 
-  let totalRounds = 0;
-  let lastRejectTime = null;
+          /* Rounds counter */
+          totalRounds++;
+          document.getElementById('roundsCount').textContent = totalRounds.toLocaleString();
 
-  async function fetchState() {
-      try {
-          const res = await fetch('/api/state');
-          const state = await res.json();
-          
-          /* Connection indicator */
-          const conn = document.getElementById('connStatus');
-          conn.textContent = '● connected';
-          conn.style.color = 'var(--green)';
-
-          /* Always update visuals even if still on first cycle */
-          updateVisuals(state);
-
-          if (state.session_id !== 'N/A') {
-              /* Bell S-value */
-              document.getElementById('bellSVal').innerHTML = state.s.toFixed(2);
-              document.getElementById('marginVal').innerHTML = (state.s >= 2.0 ? '+' : '') + (state.s - 2.0).toFixed(2);
-              fidNum.innerHTML = state.fidelity.toFixed(3);
-              cycleNum.innerHTML = pad(state.cycle, 4);
-              
-              /* Side stats */
-              const statRows = document.querySelectorAll('.stat-row .num');
-              statRows[0].innerHTML = (state.qber * 100).toFixed(1) + '<span>%</span>';
-              
-              /* Entropy can be a number OR an object — handle both */
-              let entropyVal = 0;
-              if (typeof state.entropy === 'number') {
-                  entropyVal = state.entropy;
-              } else if (state.entropy && typeof state.entropy === 'object') {
-                  entropyVal = state.entropy.chsh_bits_per_round_lower || 0;
-              }
-              statRows[1].innerHTML = entropyVal.toFixed(2) + '<span>bits</span>';
-              statRows[2].innerHTML = state.session_id;
-              
-              /* Attack label row — normalize case */
-              const attackLabel = document.getElementById('attackLabel');
-              const atk = (state.attribution || 'none').toString().toUpperCase();
-              if (atk !== 'NONE') {
-                  attackLabel.textContent = atk;
-                  attackLabel.style.color = 'var(--red)';
-              } else {
-                  attackLabel.textContent = 'None';
-                  attackLabel.style.color = 'var(--green)';
-              }
-
-              /* Rounds counter */
-              totalRounds++;
-              document.getElementById('roundsCount').textContent = totalRounds.toLocaleString();
-              
-              /* Last anomaly tracker */
-              if (state.latest_decision === 'REJECT') {
-                  lastRejectTime = Date.now();
-              }
-              if (lastRejectTime) {
-                  const diff = Date.now() - lastRejectTime;
-                  const secs = Math.floor(diff / 1000);
-                  if (secs < 60) document.getElementById('lastAnomaly').textContent = secs + 's';
-                  else if (secs < 3600) document.getElementById('lastAnomaly').textContent = Math.floor(secs/60) + 'm';
-                  else document.getElementById('lastAnomaly').textContent = Math.floor(secs/3600) + 'h ' + Math.floor((secs%3600)/60) + 'm';
-              } else {
-                  document.getElementById('lastAnomaly').textContent = 'never';
-              }
-
-              updateSPRT(state);
-              updateCHSH(state);
+          /* Last anomaly tracker */
+          if (state.latest_decision === 'REJECT') {
+            lastRejectTime = Date.now();
           }
+          if (lastRejectTime) {
+            const diff = Date.now() - lastRejectTime;
+            const secs = Math.floor(diff / 1000);
+            if (secs < 60) document.getElementById('lastAnomaly').textContent = secs + 's';
+            else if (secs < 3600) document.getElementById('lastAnomaly').textContent = Math.floor(secs / 60) + 'm';
+            else document.getElementById('lastAnomaly').textContent = Math.floor(secs / 3600) + 'h ' + Math.floor((secs % 3600) / 60) + 'm';
+          } else {
+            document.getElementById('lastAnomaly').textContent = 'never';
+          }
+
+          updateSPRT(state);
+          updateCHSH(state);
+        }
       } catch (e) {
-          console.error('fetchState error:', e);
-          const conn = document.getElementById('connStatus');
-          conn.textContent = '✗ error: ' + e.message;
-          conn.style.color = 'var(--red)';
+        console.error('fetchState error:', e);
+        const conn = document.getElementById('connStatus');
+        conn.textContent = '✗ error: ' + e.message;
+        conn.style.color = 'var(--red)';
       }
-  }
-  
-  async function fetchEvents() {
+    }
+
+    async function fetchEvents() {
       try {
-          const res = await fetch('/api/events');
-          const rawEvents = await res.json();
-          const eventsList = document.getElementById('eventsList');
-          eventsList.innerHTML = '';
-          if (rawEvents.length === 0) {
-              eventsList.innerHTML = '<div class="event"><span class="event-dot"></span><div class="event-body"><div class="event-name">No events yet</div></div></div>';
-              return;
+        const res = await fetch('/api/events');
+        const rawEvents = await res.json();
+        const eventsList = document.getElementById('eventsList');
+        eventsList.innerHTML = '';
+        if (rawEvents.length === 0) {
+          eventsList.innerHTML = '<div class="event"><span class="event-dot"></span><div class="event-body"><div class="event-name">No events yet</div></div></div>';
+          return;
+        }
+        rawEvents.forEach((raw, idx) => {
+          const ev = raw.report || raw;
+          const isReject = ev.decision === 'REJECT';
+          const dotClass = isReject ? 'amber' : 'green';
+          const att = ev.attribution || {};
+          const attackClass = (typeof att === 'object' ? (att.attack_class || 'NONE') : String(att)).toUpperCase();
+          const qberPct = ((ev.qber || 0) * 100).toFixed(1);
+          const stats = ev.statistics || {};
+          const sVal = stats.chsh ? stats.chsh.s.toFixed(3) : '—';
+          const sprtRounds = stats.sprt ? stats.sprt.trace.length : '—';
+
+          /* Descriptive event title based on context */
+          let title, detail;
+          if (isReject) {
+            title = '⚠ Forgery Detected';
+            detail = `QBER spiked to ${qberPct}% · CHSH S=${sVal} · SPRT rejected at round ${sprtRounds} · Attack: <span style="font-weight:700;color:var(--red)">${attackClass}</span>`;
+          } else if (parseFloat(qberPct) > 3) {
+            title = 'Verification passed (elevated noise)';
+            detail = `QBER ${qberPct}% (above typical) · S=${sVal} · SPRT accepted at round ${sprtRounds} · No attack detected`;
+          } else {
+            title = 'Signature verified ✓';
+            detail = `QBER ${qberPct}% · Bell S=${sVal} · SPRT accepted round ${sprtRounds} · Fidelity ${(1 - (ev.qber || 0)).toFixed(3)}`;
           }
-          rawEvents.forEach((raw, idx) => {
-              const ev = raw.report || raw;
-              const isReject = ev.decision === 'REJECT';
-              const dotClass = isReject ? 'amber' : 'green';
-              const att = ev.attribution || {};
-              const attackClass = (typeof att === 'object' ? (att.attack_class || 'NONE') : String(att)).toUpperCase();
-              const qberPct = ((ev.qber || 0)*100).toFixed(1);
-              const stats = ev.statistics || {};
-              const sVal = stats.chsh ? stats.chsh.s.toFixed(3) : '—';
-              const sprtRounds = stats.sprt ? stats.sprt.trace.length : '—';
 
-              /* Descriptive event title based on context */
-              let title, detail;
-              if (isReject) {
-                  title = '⚠ Forgery Detected';
-                  detail = `QBER spiked to ${qberPct}% · CHSH S=${sVal} · SPRT rejected at round ${sprtRounds} · Attack: <span style="font-weight:700;color:var(--red)">${attackClass}</span>`;
-              } else if (parseFloat(qberPct) > 3) {
-                  title = 'Verification passed (elevated noise)';
-                  detail = `QBER ${qberPct}% (above typical) · S=${sVal} · SPRT accepted at round ${sprtRounds} · No attack detected`;
-              } else {
-                  title = 'Signature verified ✓';
-                  detail = `QBER ${qberPct}% · Bell S=${sVal} · SPRT accepted round ${sprtRounds} · Fidelity ${(1-(ev.qber||0)).toFixed(3)}`;
-              }
-
-              const div = document.createElement('div');
-              div.className = 'event';
-              div.innerHTML = `
+          const div = document.createElement('div');
+          div.className = 'event';
+          div.innerHTML = `
                 <span class="event-dot ${dotClass}"></span>
                 <div class="event-body">
-                  <div class="event-time">${(ev.session_id || '----').substring(0,4).toUpperCase()} · Cycle ${raw.sequence !== undefined ? raw.sequence + 1 : '—'}</div>
+                  <div class="event-time">${(ev.session_id || '----').substring(0, 4).toUpperCase()} · Cycle ${raw.sequence !== undefined ? raw.sequence + 1 : '—'}</div>
                   <div class="event-name">${title}</div>
                   <div class="event-detail">${detail}</div>
                 </div>
               `;
-              eventsList.appendChild(div);
-          });
+          eventsList.appendChild(div);
+        });
       } catch (e) { console.error('fetchEvents error:', e); }
-  }
+    }
 
-  const attackSelect = document.getElementById('attackSelect');
-  attackSelect.addEventListener('change', async (e) => {
+    const attackSelect = document.getElementById('attackSelect');
+    attackSelect.addEventListener('change', async (e) => {
       const newMode = e.target.value;
-      
+
       /* INSTANT visual update — don't wait for API round-trip */
       _lastVisualKey = '';  /* Reset cache so updateVisuals runs on next poll */
       _dropdownChangeTime = Date.now();  /* Grace period — don't let API override for 5s */
@@ -1061,13 +1501,13 @@
 
       /* Reset decision when going back to honest */
       if (!isUnderAttack) {
-          currentDecision = 'ACCEPT';
+        currentDecision = 'ACCEPT';
       }
       /* Eve overlay */
       eveGroup.style.opacity = isUnderAttack ? '1' : '0';
       const eveLabel = document.getElementById('eveLabel');
       if (eveLabel && eveActions[newMode]) {
-          eveLabel.textContent = eveActions[newMode];
+        eveLabel.textContent = eveActions[newMode];
       }
 
       /* Masthead status immediately shows attack in progress */
@@ -1075,17 +1515,17 @@
       const mhLiveDot = document.getElementById('mhLiveDot');
       const mhStatusText = document.getElementById('mhStatusText');
       if (isUnderAttack) {
-          mhStatusBox.style.background = 'var(--amber-tint)';
-          mhStatusBox.style.borderColor = '#e3d2b8';
-          mhLiveDot.style.background = 'var(--amber)';
-          mhStatusText.style.color = '#7d5520';
-          mhStatusText.textContent = 'Attack in Progress';
+        mhStatusBox.style.background = 'var(--amber-tint)';
+        mhStatusBox.style.borderColor = '#e3d2b8';
+        mhLiveDot.style.background = 'var(--amber)';
+        mhStatusText.style.color = '#7d5520';
+        mhStatusText.textContent = 'Attack in Progress';
       } else {
-          mhStatusBox.style.background = 'var(--green-tint)';
-          mhStatusBox.style.borderColor = '#d7e6da';
-          mhLiveDot.style.background = 'var(--green)';
-          mhStatusText.style.color = '#2f5c3d';
-          mhStatusText.textContent = 'System Nominal';
+        mhStatusBox.style.background = 'var(--green-tint)';
+        mhStatusBox.style.borderColor = '#d7e6da';
+        mhLiveDot.style.background = 'var(--green)';
+        mhStatusText.style.color = '#2f5c3d';
+        mhStatusText.textContent = 'System Nominal';
       }
 
       /* Alice ring */
@@ -1095,106 +1535,169 @@
       /* Attack label in sidebar */
       const attackLabel = document.getElementById('attackLabel');
       if (attackLabel) {
-          attackLabel.textContent = isUnderAttack ? (attackLabels[newMode] || newMode) : 'None';
-          attackLabel.style.color = isUnderAttack ? 'var(--amber)' : 'var(--green)';
+        attackLabel.textContent = isUnderAttack ? (attackLabels[newMode] || newMode) : 'None';
+        attackLabel.style.color = isUnderAttack ? 'var(--amber)' : 'var(--green)';
       }
 
       /* Verdict banner instant reset */
       const verdictRect = document.getElementById('verdictRect');
       const verdictText = document.getElementById('verdictText');
       if (!isUnderAttack && verdictRect && verdictText) {
-          verdictRect.setAttribute('fill', 'var(--green-tint)');
-          verdictRect.setAttribute('stroke', 'var(--green)');
-          verdictText.setAttribute('fill', 'var(--green)');
-          verdictText.textContent = '✓ SIGNATURE VERIFIED';
+        verdictRect.setAttribute('fill', 'var(--green-tint)');
+        verdictRect.setAttribute('stroke', 'var(--green)');
+        verdictText.setAttribute('fill', 'var(--green)');
+        verdictText.textContent = '✓ SIGNATURE VERIFIED';
       }
 
       /* Bob ring + beams */
       const bobOuter = heroStage.querySelector('circle[cx="1050"][cy="250"][r="54"]');
       if (bobOuter) bobOuter.setAttribute('stroke', isUnderAttack ? 'var(--red)' : 'var(--border)');
       document.querySelectorAll('.beam').forEach(b => {
-          b.style.stroke = isUnderAttack ? 'var(--red)' : 'var(--blue)';
+        b.style.stroke = isUnderAttack ? 'var(--red)' : 'var(--blue)';
       });
 
       /* Send to backend */
       try {
-          await fetch('/api/set_attack', {
-              method: 'POST',
-              headers: {'Content-Type': 'application/json'},
-              body: JSON.stringify({mode: newMode})
-          });
+        await fetch('/api/set_attack', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ mode: newMode })
+        });
       } catch (err) {
-          console.error('Failed to set attack mode');
+        console.error('Failed to set attack mode');
       }
-  });
-  
-  async function fetchAllEvents() {
+    });
+
+    async function fetchAllEvents() {
       try {
-          const res = await fetch('/api/events_all');
-          const rawEvents = await res.json();
-          const table = document.getElementById('fullEventLogTable');
-          if (!table) return;
-          table.innerHTML = '';
-          if (rawEvents.length === 0) {
-              table.innerHTML = '<div style="padding:24px; text-align:center; color:var(--ink-3); font-size:14px;">No events recorded yet. Wait for the first simulation cycle.</div>';
-              return;
-          }
-          rawEvents.forEach(raw => {
-              const ev = raw.report || raw;
-              const row = document.createElement('div');
-              row.style.cssText = 'display:flex; padding:16px 24px; border-bottom:1px solid var(--border); font-size:13px; font-family:var(--mono); color:var(--ink-1); align-items:center;';
-              
-              let decisionColor = ev.decision === 'ACCEPT' ? 'var(--green)' : 'var(--red)';
-              const att = ev.attribution || {};
-              let attackClass = (typeof att === 'object' ? (att.attack_class || 'NONE') : String(att)).toUpperCase();
-              let attackHtml = attackClass === 'NONE' 
-                ? `<span style="color:var(--ink-3)">None</span>` 
-                : `<span style="color:var(--red); font-weight:600;">${attackClass}</span>`;
+        const res = await fetch('/api/events_all');
+        const rawEvents = await res.json();
+        const table = document.getElementById('fullEventLogTable');
+        if (!table) return;
+        table.innerHTML = '';
+        if (rawEvents.length === 0) {
+          table.innerHTML = '<div style="padding:24px; text-align:center; color:var(--ink-3); font-size:14px;">No events recorded yet. Wait for the first simulation cycle.</div>';
+          return;
+        }
+        rawEvents.forEach(raw => {
+          const ev = raw.report || raw;
+          const row = document.createElement('div');
+          row.style.cssText = 'display:flex; padding:16px 24px; border-bottom:1px solid var(--border); font-size:13px; font-family:var(--mono); color:var(--ink-1); align-items:center;';
 
-              const stats = ev.statistics || {};
-              const chshVal = stats.chsh ? stats.chsh.s.toFixed(3) : 'N/A';
+          let decisionColor = ev.decision === 'ACCEPT' ? 'var(--green)' : 'var(--red)';
+          const att = ev.attribution || {};
+          let attackClass = (typeof att === 'object' ? (att.attack_class || 'NONE') : String(att)).toUpperCase();
+          let attackHtml = attackClass === 'NONE'
+            ? `<span style="color:var(--ink-3)">None</span>`
+            : `<span style="color:var(--red); font-weight:600;">${attackClass}</span>`;
 
-              row.innerHTML = `
+          const stats = ev.statistics || {};
+          const chshVal = stats.chsh ? stats.chsh.s.toFixed(3) : 'N/A';
+
+          row.innerHTML = `
                 <div style="flex:1; display:flex; align-items:center; gap:8px;">
                   <span style="width:6px; height:6px; border-radius:50%; background:${decisionColor}"></span>
-                  Sess: ${(ev.session_id || '------').substring(0,6).toUpperCase()}
+                  Sess: ${(ev.session_id || '------').substring(0, 6).toUpperCase()}
                 </div>
-                <div style="flex:1;">${((ev.qber || 0)*100).toFixed(2)}%</div>
+                <div style="flex:1;">${((ev.qber || 0) * 100).toFixed(2)}%</div>
                 <div style="flex:1;">${chshVal}</div>
                 <div style="flex:1; color:${decisionColor}; font-weight:600;">${ev.decision || 'N/A'}</div>
                 <div style="flex:1;">${attackHtml}</div>
               `;
-              table.appendChild(row);
-          });
+          table.appendChild(row);
+        });
       } catch (e) { console.error('fetchAllEvents error:', e); }
-  }
-  
-  setInterval(() => {
+    }
+
+    setInterval(() => {
       fetchState();
       fetchEvents();
       fetchAllEvents();
-  }, 250);
-  fetchState();
-  fetchEvents();
+    }, 250);
+    fetchState();
+    fetchEvents();
 
-  /* ========== TELEPORTATION ANIMATION LOOP ========== */
-  setInterval(() => {
+    /* --- Razorpay Integration --- */
+    document.getElementById('rzp-button1').onclick = async function(e) {
+      e.preventDefault();
+      const gwStatus = document.getElementById('gatewayStatus');
+      gwStatus.innerHTML = '<span style="font-size:10px; color:var(--ink-2); text-transform:uppercase;">Connecting to Razorpay...</span>';
+      
+      try {
+          const res = await fetch('/api/create_order');
+          const data = await res.json();
+          
+          if (data.error) {
+              alert("Razorpay API Keys not configured in backend! Please add them to app.py");
+              gwStatus.innerHTML = '<span style="font-size:10px; color:var(--red); text-transform:uppercase;">Error: Keys Missing</span>';
+              return;
+          }
+          
+          const options = {
+              "key": data.key_id,
+              "amount": "50000",
+              "currency": "INR",
+              "name": "QDS Security Demo",
+              "description": "Live UPI Payment Simulation",
+              "order_id": data.order_id,
+              "handler": async function (response) {
+                  // Send to backend for QDS verification
+                  gwStatus.innerHTML = '<span style="font-size:10px; color:var(--amber); text-transform:uppercase;">Verifying Quantum Signature...</span>';
+                  
+                  const verifyRes = await fetch('/api/verify_payment', {
+                      method: 'POST',
+                      headers: {'Content-Type': 'application/json'},
+                      body: JSON.stringify({
+                          razorpay_payment_id: response.razorpay_payment_id,
+                          razorpay_order_id: response.razorpay_order_id,
+                          razorpay_signature: response.razorpay_signature
+                      })
+                  });
+                  const verifyData = await verifyRes.json();
+                  
+                  const gwWidget = document.getElementById('gatewayWidget');
+                  if (verifyData.status === 'blocked') {
+                      // QDS Blocked it!
+                      alert("TRANSACTION BLOCKED BY QDS: \n\n" + verifyData.message);
+                      gwWidget.style.borderColor = 'var(--red)';
+                      gwStatus.style.background = '#fde8e4';
+                      gwStatus.innerHTML = `<span style="font-size:10px; color:var(--red); text-transform:uppercase;">✗ Transaction Blocked (Forgery)</span><br/><span style="color:var(--red); font-weight:700;">₹500 Payment Aborted by Quantum Security</span>`;
+                  } else if (verifyData.status === 'success') {
+                      gwWidget.style.borderColor = 'var(--green)';
+                      gwStatus.style.background = 'var(--green-tint)';
+                      gwStatus.innerHTML = `<span style="font-size:10px; color:var(--green); text-transform:uppercase;">✓ Payment Approved</span><br/><span style="color:#2f5c3d;">₹500 Payment Successfully Verified</span>`;
+                  } else {
+                      alert("Error: " + verifyData.message);
+                      gwStatus.innerHTML = `<span style="font-size:10px; color:var(--red); text-transform:uppercase;">Error processing payment</span>`;
+                  }
+              },
+              "theme": { "color": "#0ea5e9" }
+          };
+          const rzp1 = new Razorpay(options);
+          rzp1.open();
+      } catch (err) {
+          console.error("Razorpay Error:", err);
+      }
+    };
+
+    /* ========== TELEPORTATION ANIMATION LOOP ========== */
+    setInterval(() => {
       const isForged = currentDecision === 'REJECT';
-      const outcome = outcomes[Math.floor(Math.random()*outcomes.length)];
+      const outcome = outcomes[Math.floor(Math.random() * outcomes.length)];
 
       bellText.textContent = 'measuring…';
       bellApp.classList.add('flash');
-      setTimeout(()=>{
+      setTimeout(() => {
         bellText.textContent = 'outcome ' + outcome;
         bellApp.classList.remove('flash');
       }, 420);
 
-      setTimeout(()=>{
+      setTimeout(() => {
         pauliText.textContent = 'applying σx·σz';
         pauliApp.classList.add('flash');
       }, 1500);
 
-      setTimeout(()=>{
+      setTimeout(() => {
         if (isForged) {
           /* Attack detected — red flash, failed correction */
           pauliText.textContent = 'FAILED';
@@ -1215,15 +1718,16 @@
         }
       }, 2100);
 
-      setTimeout(()=>{
+      setTimeout(() => {
         pauliApp.classList.remove('flash-green');
         bobCheck.style.opacity = '0';
         bobFail.style.opacity = '0';
         pauliText.textContent = 'idle';
         bobCore.setAttribute('fill', 'var(--blue)');
       }, 3000);
-  }, 3200);
-</script>
+    }, 3200);
+  </script>
 
 </body>
+
 </html>

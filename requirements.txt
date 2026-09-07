@@ -81,3 +81,4 @@ urllib3==2.7.0
 uvicorn==0.52.4
 xanadu-cloud-client==0.3.2
 firebase-admin
+razorpay
