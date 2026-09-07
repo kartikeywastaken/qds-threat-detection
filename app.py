@@ -53,6 +53,7 @@ from attack_simulation.replay_injector import ReplayInjector
 from attack_simulation.attack_strategy_base import AttackStrategyBase
 
 current_attack_mode = 'HONEST'
+attack_changed = threading.Event()  # Signal to wake sim loop immediately
 
 class AttackConfig(BaseModel):
     mode: str
@@ -125,7 +126,9 @@ def simulation_loop():
             if len(current_state['chsh_history']) > 20:
                 current_state['chsh_history'].pop(0)
 
-        time.sleep(5)
+        # Wait 3s OR wake instantly if attack mode changed
+        attack_changed.wait(timeout=3)
+        attack_changed.clear()
 
 threading.Thread(target=simulation_loop, daemon=True).start()
 
@@ -153,6 +156,8 @@ def set_attack(config: AttackConfig):
     # Immediately update the state so frontend sees it on next poll
     with state_lock:
         current_state['attack_mode'] = config.mode
+    # Wake the simulation loop to recalculate NOW
+    attack_changed.set()
     return {"status": "success", "mode": current_attack_mode}
 
 @app.get('/')

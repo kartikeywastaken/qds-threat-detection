@@ -802,11 +802,18 @@
   }
 
   /* ========== VISUAL STATE ENGINE ========== */
+  let _lastVisualKey = '';
+
   function updateVisuals(state) {
       currentAttackMode = state.attack_mode || 'HONEST';
       currentDecision = state.latest_decision || 'ACCEPT';
       const isUnderAttack = currentAttackMode !== 'HONEST';
       const isForged = currentDecision === 'REJECT';
+
+      /* Build a key from the values that affect visuals — skip update if unchanged */
+      const visualKey = `${currentAttackMode}|${currentDecision}`;
+      if (visualKey === _lastVisualKey) return;
+      _lastVisualKey = visualKey;
 
       /* --- Eve overlay --- */
       eveGroup.style.opacity = isUnderAttack ? '1' : '0';
@@ -872,20 +879,12 @@
           mhStatusText.textContent = 'System Nominal';
       }
 
-      /* --- QBER stat row color --- */
+      /* --- Metric colors --- */
       const qberNum = document.querySelectorAll('.stat-row .num')[0];
-      if (qberNum) {
-          qberNum.style.color = isForged ? 'var(--red)' : 'var(--ink-0)';
-      }
-
-      /* --- Fidelity color --- */
+      if (qberNum) qberNum.style.color = isForged ? 'var(--red)' : 'var(--ink-0)';
       fidNum.style.color = isForged ? 'var(--red)' : 'var(--ink-0)';
-
-      /* --- Bell parameter color --- */
       const bellVal = document.querySelector('.dstat.accent .val');
-      if (bellVal) {
-          bellVal.style.color = isForged ? 'var(--red)' : 'var(--blue)';
-      }
+      if (bellVal) bellVal.style.color = isForged ? 'var(--red)' : 'var(--blue)';
   }
 
   let totalRounds = 0;
@@ -1005,6 +1004,7 @@
       const newMode = e.target.value;
       
       /* INSTANT visual update — don't wait for API round-trip */
+      _lastVisualKey = '';  /* Reset cache so updateVisuals runs on next poll */
       currentAttackMode = newMode;
       const isUnderAttack = newMode !== 'HONEST';
 
