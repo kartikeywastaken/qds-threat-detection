@@ -126,8 +126,8 @@ def simulation_loop():
             if len(current_state['chsh_history']) > 20:
                 current_state['chsh_history'].pop(0)
 
-        # Wait 3s OR wake instantly if attack mode changed
-        attack_changed.wait(timeout=3)
+        # Wait 1s OR wake instantly if attack mode changed
+        attack_changed.wait(timeout=1)
         attack_changed.clear()
 
 threading.Thread(target=simulation_loop, daemon=True).start()
