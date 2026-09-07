@@ -5,16 +5,35 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Eve's Secret Controller</title>
     <style>
-        body { font-family: -apple-system, sans-serif; background: #1e1e19; margin: 0; padding: 20px; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; text-align: center; color: white; }
-        .card { background: #26261f; padding: 30px; border-radius: 20px; width: 100%; max-width: 360px; border: 1px solid #3d3d32; }
-        h1 { font-size: 18px; margin-bottom: 20px; text-transform: uppercase; letter-spacing: 0.1em; color: #fdf0e6; }
+        :root {
+            --bg: #f6f3ec;
+            --surface: #ffffff;
+            --ink: #26261f;
+            --ink-light: #6b6b5e;
+            --border: #e3ddd0;
+            --blue: #3b5998;
+            --red: #a15b4e;
+            --green: #4f7f5c;
+            --sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            --mono: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+        }
+
+        body { font-family: var(--sans); background: var(--bg); margin: 0; padding: 20px; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; text-align: center; color: var(--ink); }
+        .card { background: var(--surface); padding: 30px; border-radius: 20px; width: 100%; max-width: 360px; border: 1px solid var(--border); box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
+        h1 { font-size: 18px; margin-bottom: 24px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--ink); }
         .mode-list { display: flex; flex-direction: column; gap: 12px; }
-        button { border: none; padding: 18px; font-size: 15px; font-weight: 700; border-radius: 12px; width: 100%; cursor: pointer; text-transform: uppercase; letter-spacing: 0.05em; transition: transform 0.1s, opacity 0.2s; }
+        
+        button { border: 1px solid var(--border); padding: 18px; font-size: 14px; font-weight: 700; border-radius: 12px; width: 100%; cursor: pointer; text-transform: uppercase; letter-spacing: 0.05em; transition: transform 0.1s, box-shadow 0.2s, background 0.2s; background: var(--surface); color: var(--ink); }
         button:active { transform: scale(0.96); }
-        .btn-honest { background: #3c5e8b; color: white; margin-bottom: 8px; }
-        .btn-attack { background: #a15b4e; color: white; }
-        .btn-active { border: 2px solid #fff; box-shadow: 0 0 12px rgba(255,255,255,0.3); }
-        #status { margin-top: 24px; font-family: monospace; color: #9c9c8d; font-size: 14px; background: #1e1e19; padding: 12px; border-radius: 8px;}
+        
+        /* Active States */
+        button.btn-active { box-shadow: 0 4px 12px rgba(0,0,0,0.1); border-color: transparent; }
+        #btn-HONEST.btn-active { background: var(--blue); color: white; }
+        
+        /* Attack Buttons */
+        .btn-attack.btn-active { background: var(--red); color: white; }
+
+        #status { margin-top: 24px; font-family: var(--mono); color: var(--ink-light); font-size: 13px; background: rgba(0,0,0,0.03); padding: 12px; border-radius: 8px;}
     </style>
 </head>
 <body>
@@ -23,10 +42,10 @@
         
         <div class="mode-list">
             <button class="btn-honest" id="btn-HONEST" onclick="setMode('HONEST')">🟢 Honest Protocol</button>
-            <button class="btn-attack" id="btn-INDIVIDUAL" onclick="setMode('INDIVIDUAL')">🔴 Intercept-Resend (Individual)</button>
-            <button class="btn-attack" id="btn-COLLECTIVE" onclick="setMode('COLLECTIVE')">🔴 Entanglement (Collective)</button>
-            <button class="btn-attack" id="btn-COHERENT" onclick="setMode('COHERENT')">🔴 Joint Probe (Coherent)</button>
-            <button class="btn-attack" id="btn-IMPERSONATION" onclick="setMode('IMPERSONATION')">🔴 Impersonation / Forgery</button>
+            <button class="btn-attack" id="btn-INDIVIDUAL" onclick="setMode('INDIVIDUAL')">🔴 Intercept-Resend</button>
+            <button class="btn-attack" id="btn-COLLECTIVE" onclick="setMode('COLLECTIVE')">🔴 Entanglement Attack</button>
+            <button class="btn-attack" id="btn-COHERENT" onclick="setMode('COHERENT')">🔴 Joint Probe</button>
+            <button class="btn-attack" id="btn-IMPERSONATION" onclick="setMode('IMPERSONATION')">🔴 Impersonation</button>
             <button class="btn-attack" id="btn-CHANNEL_MANIPULATION" onclick="setMode('CHANNEL_MANIPULATION')">🔴 Classical Manipulation</button>
             <button class="btn-attack" id="btn-REPLAY" onclick="setMode('REPLAY')">🔴 Replay Attack</button>
         </div>
@@ -35,16 +54,23 @@
     </div>
 
     <script>
+        let currentMode = 'HONEST';
+
         async function setMode(mode) {
+            // Optimistic UI Update - instant feedback
+            updateUI(mode);
+            currentMode = mode;
+
             try {
                 await fetch('/api/set_attack', { 
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ mode: mode })
                 });
-                updateUI(mode);
             } catch (e) {
-                alert("Error setting mode.");
+                console.error("Error setting mode:", e);
+                // Revert if fetch failed
+                fetchStatus();
             }
         }
 
@@ -56,17 +82,20 @@
             document.getElementById('status').innerText = 'Active: ' + activeMode;
         }
         
-        // Fetch initial status
+        // Polling to keep in sync if another device changes it
         async function fetchStatus() {
             try {
                 const res = await fetch('/api/state');
                 const data = await res.json();
-                updateUI(data.attack_mode || 'HONEST');
+                if (data.attack_mode && data.attack_mode !== currentMode) {
+                    currentMode = data.attack_mode;
+                    updateUI(currentMode);
+                }
             } catch (e) {}
         }
         
         fetchStatus();
-        setInterval(fetchStatus, 2000);
+        setInterval(fetchStatus, 3000); // Throttled to 3s to save network, mostly rely on Optimistic UI
     </script>
 </body>
 </html>

@@ -3,73 +3,114 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bob's Receiver Terminal</title>
+    <title>UPI Receiver</title>
     <style>
-        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #0f1011; margin: 0; padding: 20px; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; text-align: center; color: white; transition: background 0.3s ease; }
-        .card { background: #1a1c1e; padding: 40px 30px; border-radius: 24px; box-shadow: 0 10px 40px rgba(0,0,0,0.5); width: 100%; max-width: 320px; border: 1px solid #2d3034; display: flex; flex-direction: column; align-items: center; }
-        h1 { font-size: 14px; color: #8e949c; margin-bottom: 40px; text-transform: uppercase; letter-spacing: 0.1em; }
+        :root {
+            --bg: #f6f3ec;
+            --surface: #ffffff;
+            --ink: #26261f;
+            --ink-light: #6b6b5e;
+            --border: #e3ddd0;
+            --blue: #3b5998;
+            --red: #a15b4e;
+            --green: #4f7f5c;
+            --amber: #d97706;
+            --sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            --mono: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+        }
+
+        body { font-family: var(--sans); background: var(--bg); margin: 0; padding: 0; color: var(--ink); display: flex; justify-content: center; min-height: 100vh; }
+        .app-container { background: var(--surface); width: 100%; max-width: 400px; min-height: 100vh; box-shadow: 0 0 20px rgba(0,0,0,0.05); position: relative; }
         
-        .status-circle { width: 120px; height: 120px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 30px; transition: all 0.3s ease; }
+        .header { background: var(--blue); color: white; padding: 24px 20px; text-align: center; font-weight: 600; font-size: 18px; box-shadow: 0 2px 10px rgba(59,89,152,0.2); }
+        .balance-card { margin: 20px; padding: 20px; border-radius: 16px; background: linear-gradient(135deg, var(--blue), #2b4170); color: white; box-shadow: 0 8px 16px rgba(59,89,152,0.2); }
+        .balance-lbl { font-size: 13px; opacity: 0.8; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+        .balance-amt { font-size: 32px; font-weight: 700; letter-spacing: -0.02em; }
+
+        .history-title { padding: 0 20px; font-size: 14px; font-weight: 700; text-transform: uppercase; color: var(--ink-light); letter-spacing: 0.05em; margin-bottom: 12px; margin-top: 30px; }
+
+        .tx-list { display: flex; flex-direction: column; }
+        .tx-card { background: var(--surface); border-bottom: 1px solid var(--border); padding: 16px 20px; cursor: pointer; transition: background 0.2s; }
+        .tx-card:hover { background: #fcfbf9; }
         
-        .honest .status-circle { background: rgba(47, 192, 91, 0.1); border: 2px solid #2fc05b; box-shadow: 0 0 40px rgba(47, 192, 91, 0.2); }
-        .attack .status-circle { background: rgba(239, 68, 68, 0.1); border: 2px solid #ef4444; box-shadow: 0 0 60px rgba(239, 68, 68, 0.4); animation: pulseRed 1s infinite alternate; }
+        .tx-header { display: flex; justify-content: space-between; align-items: center; }
+        .tx-info { display: flex; align-items: center; gap: 12px; }
+        .tx-icon { width: 40px; height: 40px; border-radius: 50%; background: #eaf1eb; color: var(--green); display: flex; align-items: center; justify-content: center; }
+        .tx-icon svg { width: 20px; height: 20px; }
+        .tx-title { font-weight: 600; font-size: 15px; margin-bottom: 4px; }
+        .tx-time { font-size: 12px; color: var(--ink-light); }
+        .tx-amount { font-weight: 700; font-size: 16px; color: var(--green); }
 
-        .icon { width: 48px; height: 48px; }
-        .honest .icon-check { display: block; color: #2fc05b; }
-        .honest .icon-cross { display: none; }
-        .attack .icon-check { display: none; }
-        .attack .icon-cross { display: block; color: #ef4444; }
+        /* The expanded QDS Verification panel */
+        .qds-panel { display: none; margin-top: 16px; padding-top: 16px; border-top: 1px dashed var(--border); }
+        .tx-card.expanded .qds-panel { display: block; animation: slideDown 0.3s ease; }
+        @keyframes slideDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
 
-        @keyframes pulseRed { 0% { box-shadow: 0 0 40px rgba(239, 68, 68, 0.3); } 100% { box-shadow: 0 0 80px rgba(239, 68, 68, 0.6); } }
+        .qds-btn { background: #26261f; color: white; border: none; padding: 12px 16px; width: 100%; border-radius: 8px; font-weight: 600; font-size: 14px; cursor: pointer; text-transform: uppercase; letter-spacing: 0.05em; transition: transform 0.1s; }
+        .qds-btn:active { transform: scale(0.97); }
 
-        .title { font-size: 22px; font-weight: 700; margin-bottom: 12px; letter-spacing: -0.02em; }
-        .honest .title { color: #2fc05b; }
-        .attack .title { color: #ef4444; }
+        /* Verification Results */
+        .qds-result { display: none; margin-top: 12px; padding: 16px; border-radius: 8px; font-size: 13px; line-height: 1.5; }
+        .qds-success { background: #eaf1eb; border: 1px solid #4f7f5c; color: #2f5c3d; }
+        .qds-error { background: #fde8e4; border: 1px solid var(--red); color: var(--red); }
+        
+        .loader { margin: 16px auto; width: 24px; height: 24px; border: 3px solid #f3f3f3; border-top: 3px solid var(--ink); border-radius: 50%; animation: spin 1s linear infinite; display: none; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
-        .desc { font-size: 14px; color: #8e949c; line-height: 1.5; margin-bottom: 24px; }
-        .attack .desc { color: #ffb3b3; }
+        .attack-tag { display: inline-block; background: var(--red); color: white; padding: 2px 6px; border-radius: 4px; font-weight: 700; font-size: 11px; margin-top: 8px; text-transform: uppercase; }
 
-        .meta-box { background: #0f1011; border-radius: 12px; padding: 16px; width: 100%; border: 1px solid #2d3034; text-align: left; }
-        .meta-row { display: flex; justify-content: space-between; margin-bottom: 8px; font-family: monospace; font-size: 12px; }
-        .meta-row:last-child { margin-bottom: 0; }
-        .meta-lbl { color: #5a6068; }
-        .meta-val { color: #e0e4e8; font-weight: 600; }
-
-        /* The specific attack explanation */
-        .attack-explanation { display: none; background: #2a1111; border-left: 3px solid #ef4444; padding: 12px 16px; text-align: left; border-radius: 4px; margin-top: 20px; width: 100%; font-size: 13px; line-height: 1.5; color: #ffc2c2; }
-        .attack .attack-explanation { display: block; }
     </style>
 </head>
-<body id="appBody" class="honest">
-    <div class="card">
-        <h1>Bob's Terminal</h1>
+<body>
+    <div class="app-container">
+        <div class="header">Bank App</div>
         
-        <div class="status-circle">
-            <svg class="icon icon-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
-            <svg class="icon icon-cross" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+        <div class="balance-card">
+            <div class="balance-lbl">Available Balance</div>
+            <div class="balance-amt">₹24,500.00</div>
         </div>
 
-        <div class="title" id="statusTitle">CHANNEL SECURE</div>
-        <div class="desc" id="statusDesc">Receiving entangled signatures. Waiting for transaction.</div>
+        <div class="history-title">Recent Transactions</div>
+        
+        <div class="tx-list">
+            <!-- Dynamic Latest Transaction -->
+            <div class="tx-card" id="txLatest" onclick="toggleExpand(this)">
+                <div class="tx-header">
+                    <div class="tx-info">
+                        <div class="tx-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="19" x2="12" y2="5"></line><polyline points="5 12 12 5 19 12"></polyline></svg>
+                        </div>
+                        <div>
+                            <div class="tx-title">Payment Received</div>
+                            <div class="tx-time">Just now · UPI</div>
+                        </div>
+                    </div>
+                    <div class="tx-amount">+ ₹500</div>
+                </div>
+                
+                <div class="qds-panel" onclick="event.stopPropagation()">
+                    <div style="font-size:12px; color:var(--ink-light); margin-bottom:12px; font-family:var(--mono);">Quantum Signature Attached</div>
+                    <button class="qds-btn" id="verifyBtn" onclick="verifySignature()">Verify Authenticity</button>
+                    <div class="loader" id="loader"></div>
+                    <div class="qds-result" id="qdsResult"></div>
+                </div>
+            </div>
 
-        <div class="meta-box">
-            <div class="meta-row">
-                <span class="meta-lbl">Session ID</span>
-                <span class="meta-val" id="valSession">----</span>
+            <!-- Static Old Transaction -->
+            <div class="tx-card">
+                <div class="tx-header">
+                    <div class="tx-info">
+                        <div class="tx-icon" style="background:#f3f3f3; color:#a0a0a0;">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><polyline points="19 12 12 19 5 12"></polyline></svg>
+                        </div>
+                        <div>
+                            <div class="tx-title" style="color:var(--ink-light)">Paid to Coffee Shop</div>
+                            <div class="tx-time">Yesterday · UPI</div>
+                        </div>
+                    </div>
+                    <div class="tx-amount" style="color:var(--ink)">- ₹120</div>
+                </div>
             </div>
-            <div class="meta-row">
-                <span class="meta-lbl">QBER</span>
-                <span class="meta-val" id="valQber">--%</span>
-            </div>
-            <div class="meta-row">
-                <span class="meta-lbl">Decision</span>
-                <span class="meta-val" id="valDecision">ACCEPT</span>
-            </div>
-        </div>
-
-        <div class="attack-explanation" id="attackExp">
-            <b>Attack Detected:</b> <span id="valAttackMode">NONE</span><br><br>
-            The physical properties of the teleported state have been altered in transit. 
         </div>
     </div>
 
@@ -83,44 +124,47 @@
             'REPLAY': "Replay Attack detected. Eve attempted to resend a previously valid signature block."
         };
 
-        async function pollState() {
+        function toggleExpand(el) {
+            // Only expand if result hasn't been shown yet
+            if (document.getElementById('qdsResult').style.display === 'block') return;
+            el.classList.toggle('expanded');
+        }
+
+        async function verifySignature() {
+            const btn = document.getElementById('verifyBtn');
+            const loader = document.getElementById('loader');
+            const resDiv = document.getElementById('qdsResult');
+            
+            btn.style.display = 'none';
+            loader.style.display = 'block';
+
             try {
+                // Fetch current QDS state
                 const res = await fetch('/api/state');
                 const state = await res.json();
                 
-                const isAttack = state.latest_decision === 'REJECT';
-                const body = document.getElementById('appBody');
-                
-                if (isAttack) {
-                    body.className = 'attack';
-                    document.getElementById('statusTitle').innerText = 'FORGERY BLOCKED';
-                    document.getElementById('statusDesc').innerText = 'Transaction intercepted. The quantum signature was mathematically corrupted.';
-                    
-                    const mode = state.attack_mode || 'UNKNOWN';
-                    document.getElementById('valAttackMode').innerText = mode.replace('_', ' ');
-                    
-                    const expDiv = document.getElementById('attackExp');
-                    if (attackDescriptions[mode]) {
-                        expDiv.innerHTML = `<b>Attribution:</b> ${mode.replace('_', ' ')}<br><br>${attackDescriptions[mode]}`;
+                setTimeout(() => {
+                    loader.style.display = 'none';
+                    resDiv.style.display = 'block';
+
+                    if (state.latest_decision === 'REJECT') {
+                        const mode = state.attack_mode || 'UNKNOWN';
+                        const exp = attackDescriptions[mode] || "The physical properties of the teleported state have been altered in transit.";
+                        
+                        resDiv.className = 'qds-result qds-error';
+                        resDiv.innerHTML = `<b>🚨 FORGERY DETECTED</b><br><br>The payload was mathematically tampered with by an eavesdropper.<br><br><b>Explanation:</b> ${exp}<br><div class="attack-tag">${mode.replace('_', ' ')}</div>`;
                     } else {
-                        expDiv.innerHTML = `<b>Attribution:</b> ${mode.replace('_', ' ')}<br><br>The physical properties of the teleported state have been altered in transit.`;
+                        resDiv.className = 'qds-result qds-success';
+                        resDiv.innerHTML = `<b>✓ SIGNATURE INTACT</b><br><br>Quantum verification passed. Funds have been securely credited to your account.`;
                     }
-                } else {
-                    body.className = 'honest';
-                    document.getElementById('statusTitle').innerText = 'CHANNEL SECURE';
-                    document.getElementById('statusDesc').innerText = 'Receiving entangled signatures. Waiting for transaction.';
-                }
-
-                if (state.session_id) document.getElementById('valSession').innerText = state.session_id;
-                if (state.qber !== undefined) document.getElementById('valQber').innerText = (state.qber * 100).toFixed(2) + '%';
-                if (state.latest_decision) document.getElementById('valDecision').innerText = state.latest_decision;
-
+                }, 1000); // 1s dramatic loading
+                
             } catch (e) {
-                console.error("Polling error", e);
+                loader.style.display = 'none';
+                btn.style.display = 'block';
+                alert("Network error connecting to QDS node.");
             }
         }
-
-        setInterval(pollState, 500);
     </script>
 </body>
 </html>

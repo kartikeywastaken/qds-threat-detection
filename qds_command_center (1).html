@@ -1432,6 +1432,23 @@
         }
         rawEvents.forEach((raw, idx) => {
           const ev = raw.report || raw;
+          
+          if (ev.message) {
+              const div = document.createElement('div');
+              div.className = 'event';
+              const isError = ev.message.includes("BLOCKED") || ev.message.includes("failed");
+              div.innerHTML = `
+                  <span class="event-dot ${isError ? 'red' : 'blue'}"></span>
+                  <div class="event-body">
+                    <div class="event-time">System Event</div>
+                    <div class="event-name">${isError ? 'Payment Intercepted' : 'Payment Update'}</div>
+                    <div class="event-detail">${ev.message}</div>
+                  </div>
+              `;
+              eventsList.appendChild(div);
+              return;
+          }
+
           const isReject = ev.decision === 'REJECT';
           const dotClass = isReject ? 'amber' : 'green';
           const att = ev.attribution || {};
@@ -1483,15 +1500,17 @@
         }
         rawEvents.forEach(raw => {
           const ev = raw.report || raw;
-          const row = document.createElement('div');
-          row.style.cssText = 'display:flex; padding:16px 24px; border-bottom:1px solid var(--border); font-size:13px; font-family:var(--mono); color:var(--ink-1); align-items:center;';
-
-          let decisionColor = ev.decision === 'ACCEPT' ? 'var(--green)' : 'var(--red)';
+          if (ev.message) return; // Skip text logs in the stats table
+          
+          const decisionColor = ev.decision === 'REJECT' ? 'var(--amber)' : 'var(--green)';
           const att = ev.attribution || {};
           let attackClass = (typeof att === 'object' ? (att.attack_class || 'NONE') : String(att)).toUpperCase();
           let attackHtml = attackClass === 'NONE'
             ? `<span style="color:var(--ink-3)">None</span>`
             : `<span style="color:var(--red); font-weight:600;">${attackClass}</span>`;
+
+          const row = document.createElement('div');
+          row.style.cssText = 'display:flex; padding:16px 24px; border-bottom:1px solid var(--border); font-size:13px; font-family:var(--mono); color:var(--ink-1); align-items:center;';
 
           const stats = ev.statistics || {};
           const chshVal = stats.chsh ? stats.chsh.s.toFixed(3) : 'N/A';
@@ -1515,7 +1534,7 @@
       fetchState();
       fetchEvents();
       fetchAllEvents();
-    }, 250);
+    }, 1500);
     fetchState();
     fetchEvents();
 
