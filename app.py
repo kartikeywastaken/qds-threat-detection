@@ -2,8 +2,12 @@ import asyncio
 import os
 import threading
 import time
+import math
+import random
 from typing import Literal
-from fastapi import FastAPI, BackgroundTasks
+from dotenv import load_dotenv
+import razorpay
+from fastapi import FastAPI, BackgroundTasks, HTTPException
 from fastapi.responses import HTMLResponse
 import uvicorn
 from pydantic import BaseModel
@@ -18,6 +22,18 @@ from presentation.security_event_log import SecurityEventLog
 from attribution_engine.rule_engine import attribute
 
 from fastapi.middleware.cors import CORSMiddleware
+
+load_dotenv()
+
+# Initialize Razorpay Client with Test Keys
+RAZORPAY_KEY_ID = os.getenv('RAZORPAY_KEY_ID', 'rzp_test_yN1Hw84O1z1mYf')
+RAZORPAY_KEY_SECRET = os.getenv('RAZORPAY_KEY_SECRET', 'SBYlP8T2FwZ9K329RWh8oXz1')
+
+try:
+    rzp_client = razorpay.Client(auth=(RAZORPAY_KEY_ID, RAZORPAY_KEY_SECRET))
+except Exception as e:
+    print(f"Warning: Razorpay initialization failed: {e}")
+    rzp_client = None
 
 app = FastAPI(title='QDS Dashboard API')
 app.add_middleware(
@@ -58,6 +74,11 @@ attack_changed = threading.Event()  # Signal to wake sim loop immediately
 
 class AttackConfig(BaseModel):
     mode: str
+
+class PaymentVerification(BaseModel):
+    razorpay_order_id: str
+    razorpay_payment_id: str
+    razorpay_signature: str
 
 def simulation_loop():
     verifier = VerificationEngine()
@@ -136,7 +157,6 @@ threading.Thread(target=simulation_loop, daemon=True).start()
 @app.get('/api/state')
 def get_state():
     with state_lock:
-        # Always return the LIVE attack mode, not just what was last set by simulation
         current_state['attack_mode'] = current_attack_mode
         return current_state
 
@@ -154,12 +174,59 @@ def get_events_all():
 def set_attack(config: AttackConfig):
     global current_attack_mode
     current_attack_mode = config.mode
-    # Immediately update the state so frontend sees it on next poll
     with state_lock:
         current_state['attack_mode'] = config.mode
-    # Wake the simulation loop to recalculate NOW
     attack_changed.set()
-    return {"status": "success", "mode": current_attack_mode}
+    return {"status": "ok", "mode": config.mode}
+
+@app.post('/api/create_order')
+def create_order():
+    if not rzp_client:
+        return {"error": "Razorpay not initialized"}
+    
+    amount_in_paise = 50000 # 500 INR
+    
+    data = {
+        "amount": amount_in_paise,
+        "currency": "INR",
+        "receipt": "receipt#1",
+        "notes": {
+            "policy_name": "QDS Secure"
+        }
+    }
+    try:
+        order = rzp_client.order.create(data=data)
+        return {"order_id": order['id'], "amount": amount_in_paise, "currency": "INR", "key": RAZORPAY_KEY_ID}
+    except Exception as e:
+        return {"error": str(e)}
+
+@app.post('/api/verify_payment')
+def verify_payment(data: PaymentVerification):
+    # QDS Security Check: intercept if we are under attack
+    with state_lock:
+        decision = current_state.get('latest_decision', 'ACCEPT')
+        
+    if decision == 'REJECT':
+        log.write("System intercepted and BLOCKED payment forgery attempt.")
+        raise HTTPException(status_code=400, detail="QDS VERIFICATION FAILED: Signature anomaly detected.")
+        
+    # If Honest, verify the signature with Razorpay
+    params_dict = {
+        'razorpay_order_id': data.razorpay_order_id,
+        'razorpay_payment_id': data.razorpay_payment_id,
+        'razorpay_signature': data.razorpay_signature
+    }
+    
+    try:
+        if rzp_client:
+            rzp_client.utility.verify_payment_signature(params_dict)
+            log.write("Payment verified and completed successfully.")
+            return {"status": "success"}
+        else:
+            return {"status": "success", "note": "verified (mock)"}
+    except Exception as e:
+        log.write("Razorpay signature verification failed.")
+        raise HTTPException(status_code=400, detail=str(e))
 
 @app.get('/')
 def index():

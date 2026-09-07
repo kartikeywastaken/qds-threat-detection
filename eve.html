@@ -28,7 +28,11 @@
     <script>
         async function setMode(mode) {
             try {
-                await fetch('/api/start_attack?attack_type=' + mode, { method: 'POST' });
+                await fetch('/api/set_attack', { 
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ mode: mode })
+                });
                 document.getElementById('status').innerText = 'Mode set to: ' + (mode === 'none' ? 'HONEST' : 'ATTACK');
             } catch (e) {
                 alert("Error setting mode.");
