@@ -1,4 +1,3 @@
-import json
 import asyncio
 import os
 import threading
@@ -8,19 +7,6 @@ from fastapi import FastAPI, BackgroundTasks
 from fastapi.responses import HTMLResponse
 import uvicorn
 from pydantic import BaseModel
-import razorpay
-from dotenv import load_dotenv
-
-# Load environment variables from .env file
-load_dotenv()
-
-# Initialize Razorpay Client (Using Environment Variables or Placeholders)
-RAZORPAY_KEY_ID = os.environ.get('RAZORPAY_KEY_ID', 'rzp_test_replace_me')
-RAZORPAY_KEY_SECRET = os.environ.get('RAZORPAY_KEY_SECRET', 'replace_me')
-try:
-    rzp_client = razorpay.Client(auth=(RAZORPAY_KEY_ID, RAZORPAY_KEY_SECRET))
-except Exception:
-    rzp_client = None
 
 from qds_protocol.key_distribution import distribute
 from qds_protocol.signing_engine import sign
@@ -174,48 +160,6 @@ def set_attack(config: AttackConfig):
     # Wake the simulation loop to recalculate NOW
     attack_changed.set()
     return {"status": "success", "mode": current_attack_mode}
-
-class PaymentVerification(BaseModel):
-    razorpay_payment_id: str
-    razorpay_order_id: str
-    razorpay_signature: str
-
-@app.get('/api/create_order')
-def create_order():
-    if not rzp_client:
-        return {"error": "Razorpay client not configured"}
-    try:
-        # Create an order for ₹500 (50000 paise)
-        order = rzp_client.order.create({
-            "amount": 50000, 
-            "currency": "INR", 
-            "payment_capture": "1"
-        })
-        return {"order_id": order['id'], "key_id": RAZORPAY_KEY_ID}
-    except Exception as e:
-        return {"error": str(e)}
-
-@app.post('/api/verify_payment')
-def verify_payment(payment: PaymentVerification):
-    # CRITICAL: QDS Intercept Gatekeeper
-    with state_lock:
-        decision = current_state.get('latest_decision', 'ACCEPT')
-        
-    if decision == 'REJECT':
-        return {"status": "blocked", "message": "Transaction aborted: Quantum Signature Forgery Detected"}
-        
-    try:
-        if rzp_client:
-            rzp_client.utility.verify_payment_signature({
-                'razorpay_order_id': payment.razorpay_order_id,
-                'razorpay_payment_id': payment.razorpay_payment_id,
-                'razorpay_signature': payment.razorpay_signature
-            })
-        return {"status": "success", "message": "Payment Verified & Processed"}
-    except razorpay.errors.SignatureVerificationError:
-        return {"status": "error", "message": "Razorpay signature verification failed"}
-    except Exception as e:
-        return {"status": "error", "message": str(e)}
 
 @app.get('/')
 def index():

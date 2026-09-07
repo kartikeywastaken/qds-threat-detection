@@ -52,7 +52,6 @@ pyparsing==3.3.2
 pyspnego==0.12.2
 pytest==9.1.1
 python-dateutil==2.9.0.post0
-python-dotenv==1.2.3
 PyYAML==6.0.3
 qiskit==2.4.2
 qiskit-aer==0.17.2
@@ -81,5 +80,3 @@ urllib3==2.7.0
 uvicorn==0.52.4
 xanadu-cloud-client==0.3.2
 firebase-admin
-razorpay
-python-dotenv

@@ -5,7 +5,6 @@
   <meta charset="UTF-8">
   <title>QDS · Command Center</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
@@ -16,6 +15,7 @@
       --bg: #f6f3ec;
       --bg-inset: #efeadf;
       --surface: #ffffff;
+      --surface-raised: #fcfaf5;
       --border: #e3ddd0;
       --border-soft: #ece7db;
       --ink-0: #26261f;
@@ -30,6 +30,7 @@
       --green: #4f7f5c;
       --green-tint: #eaf1eb;
       --red: #a15b4e;
+      --red-tint: #fde8e4;
       --radius: 14px;
       --radius-sm: 9px;
       --sans: 'Inter', -apple-system, 'Segoe UI', sans-serif;
@@ -673,7 +674,6 @@
 
     <div class="rail">
       <div class="rail-mark"></div>
-      <!-- NAV ICONS -->
       <div class="rail-nav">
         <div class="rail-item active" title="Command Center" onclick="switchView('view-command-center', this)">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
@@ -713,7 +713,6 @@
 
     <div class="main">
 
-      <!-- MASTHEAD -->
       <div class="masthead">
         <div class="mh-left">
           <div class="mh-mark">QDS · COMMAND CENTER</div>
@@ -746,7 +745,6 @@
 
       <div class="content" id="view-command-center">
 
-        <!-- DIAGRAM CARD -->
         <div class="card diagram-card">
           <div class="card-head">
             <div class="card-title">Teleportation channel</div>
@@ -758,7 +756,6 @@
 
             <svg class="diagram-svg" viewBox="0 0 1200 480" id="heroStage">
 
-              <!-- baseline ruler -->
               <line x1="70" y1="430" x2="1130" y2="430" stroke="var(--border)" stroke-width="1" />
               <g stroke="var(--border)" stroke-width="1">
                 <line x1="150" y1="425" x2="150" y2="435" />
@@ -769,7 +766,6 @@
               </g>
               <rect class="playhead" x="70" y="426" width="2" height="8" fill="var(--blue)" />
 
-              <!-- ===== ALICE ===== -->
               <g>
                 <circle cx="150" cy="250" r="54" fill="var(--surface)" stroke="var(--border)" stroke-width="1.4" />
                 <ellipse class="slow-spin" cx="150" cy="250" rx="54" ry="18" fill="none" stroke="var(--blue-soft)"
@@ -781,11 +777,9 @@
                   text-anchor="middle">holds |ψ⟩</text>
               </g>
 
-              <!-- Alice -> Bell beam -->
               <line x1="204" y1="250" x2="322" y2="250" stroke="var(--blue)" stroke-width="1.3" class="beam"
                 opacity="0.65" />
 
-              <!-- ===== BELL MEASUREMENT ===== -->
               <g id="bellApparatus">
                 <rect class="apparatus-box" x="325" y="205" width="90" height="90" rx="16" fill="var(--surface)"
                   stroke="var(--ink-2)" stroke-width="1.3" />
@@ -798,7 +792,6 @@
                   id="bellText">outcome 01</text>
               </g>
 
-              <!-- ===== ENTANGLED RESOURCE ===== -->
               <g>
                 <text x="600" y="108" font-family="var(--sans)" font-size="12" fill="var(--ink-1)" text-anchor="middle"
                   font-weight="600">Entangled resource</text>
@@ -821,13 +814,11 @@
                 </circle>
               </g>
 
-              <!-- correlation legs to Bell + Pauli -->
               <path d="M584,168 C 500,188 440,205 411,232" fill="none" stroke="var(--blue-soft)" stroke-width="1.1"
                 class="beam" opacity="0.6" />
               <path d="M616,332 C 700,352 750,335 789,282" fill="none" stroke="var(--blue-soft)" stroke-width="1.1"
                 class="beam" opacity="0.6" />
 
-              <!-- classical channel -->
               <path id="classicalPath" d="M370,296 C 430,380 770,380 830,296" fill="none" stroke="var(--amber)"
                 stroke-width="1.2" stroke-dasharray="1 6" opacity="0.8" />
               <text x="600" y="405" font-family="var(--sans)" font-size="11.5" fill="var(--amber)" text-anchor="middle"
@@ -838,7 +829,6 @@
                 <circle r="4" fill="var(--amber)" />
               </g>
 
-              <!-- ===== PAULI CORRECTION ===== -->
               <g id="pauliApparatus">
                 <rect class="apparatus-box" x="785" y="205" width="90" height="90" rx="16" fill="var(--surface)"
                   stroke="var(--ink-2)" stroke-width="1.3" />
@@ -850,11 +840,9 @@
                   text-anchor="middle" id="pauliText">idle</text>
               </g>
 
-              <!-- Pauli -> Bob beam -->
               <line x1="878" y1="250" x2="996" y2="250" stroke="var(--blue)" stroke-width="1.3" class="beam"
                 opacity="0.65" />
 
-              <!-- ===== BOB ===== -->
               <g>
                 <circle cx="1050" cy="250" r="54" fill="var(--surface)" stroke="var(--border)" stroke-width="1.4" />
                 <ellipse class="slow-spin" cx="1050" cy="250" rx="54" ry="18" fill="none" stroke="var(--blue-soft)"
@@ -895,7 +883,6 @@
           </div>
         </div>
 
-        <!-- CHSH BAND -->
         <div class="card">
           <div class="card-head">
             <div class="card-title">CHSH correlation</div>
@@ -924,7 +911,6 @@
           </svg>
         </div>
 
-        <!-- LOWER: SPRT + sidebar -->
         <div class="lower">
           <div class="card">
             <div class="card-head">
@@ -985,16 +971,40 @@
                   style="font-size:14px; color:var(--green);">None</span></div>
             </div>
 
-            <div class="card" id="gatewayWidget" style="margin-bottom:16px; padding:16px; border:2px solid var(--border); transition:border-color 0.2s;">
-              <div style="font-size:11px; font-weight:700; color:var(--ink-2); text-transform:uppercase; letter-spacing:0.05em; margin-bottom:12px; display:flex; align-items:center; gap:6px; justify-content:space-between;">
+            <!-- ALICE / BOB TRANSFER VISUALIZER -->
+            <div class="card" id="transferWidget" style="margin-bottom:16px; padding:16px; border:2px solid var(--border); transition:all 0.2s;">
+              <div style="font-size:11px; font-weight:700; color:var(--ink-2); text-transform:uppercase; letter-spacing:0.05em; margin-bottom:12px; display:flex; align-items:center; justify-content:space-between;">
                 <div style="display:flex; align-items:center; gap:6px;">
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="16" rx="2"></rect><line x1="3" y1="10" x2="21" y2="10"></line></svg>
-                  Secure Payment Gateway (UPI)
+                  Quantum Financial Transfer
                 </div>
-                <button id="rzp-button1" style="background:var(--blue); color:white; border:none; border-radius:4px; padding:4px 10px; font-size:11px; font-weight:600; cursor:pointer; text-transform:uppercase; letter-spacing:0.05em;">Live Demo: Pay ₹500</button>
+                <button id="send-btn" style="background:var(--blue); color:white; border:none; border-radius:4px; padding:4px 10px; font-size:11px; font-weight:600; cursor:pointer; text-transform:uppercase; letter-spacing:0.05em; transition:opacity 0.2s;">Alice: Send ₹500</button>
               </div>
-              <div id="gatewayStatus" style="font-family:var(--mono); font-size:13px; font-weight:600; padding:12px; border-radius:6px; background:var(--surface-raised); transition:all 0.2s;">
-                 Click 'Live Demo' to start transaction...
+              
+              <div style="display:flex; justify-content:space-between; align-items:center; background:var(--surface-raised); padding:20px; border-radius:8px; position:relative;">
+                  
+                  <div style="display:flex; flex-direction:column; align-items:center; z-index:2;">
+                      <div style="width:40px; height:40px; border-radius:50%; background:var(--blue); color:white; display:flex; justify-content:center; align-items:center; font-weight:bold; font-size:18px;">A</div>
+                      <div style="font-size:10px; font-weight:700; color:var(--ink-2); margin-top:6px; text-transform:uppercase;">Alice</div>
+                  </div>
+  
+                  <div style="flex:1; height:2px; background:var(--border); margin:0 10px; position:relative;" id="transferChannel">
+                      <div id="dataPacket" style="width:12px; height:12px; background:var(--green); border-radius:50%; position:absolute; top:-5px; left:0; display:none; transition:left 1.2s linear;"></div>
+                      
+                      <div id="eveNode" style="position:absolute; top:-24px; left:50%; transform:translateX(-50%); display:none; flex-direction:column; align-items:center; z-index:2;">
+                          <div style="width:30px; height:30px; border-radius:50%; background:var(--red); color:white; display:flex; justify-content:center; align-items:center; font-weight:bold; font-size:14px;">E</div>
+                          <div style="font-size:9px; font-weight:700; color:var(--red); margin-top:4px; text-transform:uppercase;">Eve</div>
+                      </div>
+                  </div>
+  
+                  <div style="display:flex; flex-direction:column; align-items:center; z-index:2;">
+                      <div id="bobIcon" style="width:40px; height:40px; border-radius:50%; background:var(--surface); border:2px solid var(--ink-3); color:var(--ink-1); display:flex; justify-content:center; align-items:center; font-weight:bold; font-size:18px; transition:all 0.2s;">B</div>
+                      <div style="font-size:10px; font-weight:700; color:var(--ink-2); margin-top:6px; text-transform:uppercase;">Bob (Bank)</div>
+                  </div>
+              </div>
+  
+              <div id="transferStatus" style="font-family:var(--mono); font-size:12px; font-weight:600; padding-top:12px; text-align:center; color:var(--ink-2); transition:color 0.2s;">
+                 Channel Idle. Waiting for Alice.
               </div>
             </div>
 
@@ -1021,9 +1031,8 @@
           <span>QDS Command · Build 4.12.0</span>
           <span>FIPS-validated entropy source</span>
         </div>
-      </div> <!-- closes view-command-center -->
+      </div>
 
-      <!-- STATISTICAL TESTS VIEW -->
       <div class="content" id="view-statistical-tests"
         style="display:none; padding:40px; flex-direction:column; gap:24px;">
         <h2 style="font-size:24px; font-weight:600;">Statistical Tests & Mathematical Bounds</h2>
@@ -1045,7 +1054,6 @@
         </div>
       </div>
 
-      <!-- EVENT LOG VIEW -->
       <div class="content" id="view-event-log" style="display:none; padding:40px; flex-direction:column; gap:16px;">
         <h2 style="font-size:24px; font-weight:600; display:flex; justify-content:space-between; align-items:center;">
           Global Event Log
@@ -1069,7 +1077,6 @@
         </div>
       </div>
 
-      <!-- KEY MANAGEMENT VIEW -->
       <div class="content" id="view-key-management"
         style="display:none; padding:40px; flex-direction:column; gap:24px;">
         <h2 style="font-size:24px; font-weight:600;">Quantum Key Management</h2>
@@ -1091,8 +1098,8 @@
         </div>
       </div>
 
-    </div> <!-- closes .main -->
-  </div> <!-- closes .layout -->
+    </div>
+  </div>
 
   <script>
     function switchView(viewId, el) {
@@ -1118,9 +1125,8 @@
     const cycleNum = document.getElementById('cycleNum');
     const fidNum = document.getElementById('fidNum');
     const heroStage = document.getElementById('heroStage');
-    const outcomes = ['00', '01', '10', '11'];
+    const outcomes = ['00', '01', '10', '11');
 
-    /* ========== EVE OVERLAY (injected into SVG) ========== */
     const eveGroup = document.createElementNS('http://www.w3.org/2000/svg', 'g');
     eveGroup.id = 'eveOverlay';
     eveGroup.style.transition = 'opacity 0.5s ease';
@@ -1132,7 +1138,6 @@
   `;
     heroStage.appendChild(eveGroup);
 
-    /* ========== BOB FAIL X (injected into SVG) ========== */
     const bobFail = document.createElementNS('http://www.w3.org/2000/svg', 'g');
     bobFail.id = 'bobFail';
     bobFail.style.opacity = '0';
@@ -1143,7 +1148,6 @@
   `;
     heroStage.appendChild(bobFail);
 
-    /* ========== VERDICT BANNER ========== */
     const verdictBanner = document.createElementNS('http://www.w3.org/2000/svg', 'g');
     verdictBanner.id = 'verdictBanner';
     verdictBanner.style.transition = 'opacity 0.4s ease';
@@ -1153,7 +1157,6 @@
   `;
     heroStage.appendChild(verdictBanner);
 
-    /* ========== ATTACK LABEL MAP ========== */
     const attackLabels = {
       'HONEST': 'Honest Protocol',
       'INDIVIDUAL': 'Intercept-Resend',
@@ -1176,7 +1179,6 @@
     let currentAttackMode = 'HONEST';
     let currentDecision = 'ACCEPT';
 
-    /* ========== SPRT CHART ========== */
     const sprtChart = document.getElementById('sprtChart');
     const sprtPath = sprtChart.querySelector('path[stroke="var(--blue)"][stroke-width="2"]');
     const sprtDash = sprtChart.querySelector('path[stroke-dasharray="2 4"]');
@@ -1263,7 +1265,6 @@
       c1.setAttribute("cx", lastX); c1.setAttribute("cy", lastY);
       c2.setAttribute("cx", lastX); c2.setAttribute("cy", lastY);
 
-      /* Change CHSH line color based on attack */
       if (currentDecision === 'REJECT') {
         chshLine.setAttribute("stroke", "var(--red)");
       } else {
@@ -1271,34 +1272,28 @@
       }
     }
 
-    /* ========== VISUAL STATE ENGINE ========== */
     let _lastVisualKey = '';
-    let _dropdownChangeTime = 0;  // Grace period so API doesn't override instant visual updates
+    let _dropdownChangeTime = 0;
 
     function updateVisuals(state) {
-      /* Only let API override decision if >5s since last dropdown change */
       const sinceDropdown = Date.now() - _dropdownChangeTime;
       if (sinceDropdown > 5000) {
         currentAttackMode = state.attack_mode || 'HONEST';
         currentDecision = state.latest_decision || 'ACCEPT';
       }
       const isUnderAttack = currentAttackMode !== 'HONEST';
-      // Force visual state to FORGED if we are in an attack mode, to prevent flickering back to green if API is delayed
       const isForged = currentDecision === 'REJECT' || isUnderAttack;
 
-      /* Build a key from the values that affect visuals — skip update if unchanged */
       const visualKey = `${currentAttackMode}|${currentDecision}`;
       if (visualKey === _lastVisualKey) return;
       _lastVisualKey = visualKey;
 
-      /* --- Eve overlay --- */
       eveGroup.style.opacity = isUnderAttack ? '1' : '0';
       const eveLabel = document.getElementById('eveLabel');
       if (eveLabel && eveActions[currentAttackMode]) {
         eveLabel.textContent = eveActions[currentAttackMode];
       }
 
-      /* --- Verdict banner --- */
       const verdictRect = document.getElementById('verdictRect');
       const verdictTextEl = document.getElementById('verdictText');
       if (isForged) {
@@ -1313,25 +1308,21 @@
         verdictTextEl.textContent = '✓ SIGNATURE VERIFIED';
       }
 
-      /* --- Beam colors --- */
       const beams = heroStage.querySelectorAll('.beam');
       beams.forEach(b => {
         b.setAttribute('stroke', isForged ? 'var(--red)' : 'var(--blue)');
       });
 
-      /* --- Bob outer ring --- */
       const bobOuter = heroStage.querySelector('circle[cx="1050"][cy="250"][r="54"]');
       if (bobOuter) {
         bobOuter.setAttribute('stroke', isForged ? 'var(--red)' : 'var(--border)');
       }
 
-      /* --- Alice outer ring --- */
       const aliceOuter = heroStage.querySelector('circle[cx="150"][cy="250"][r="54"]');
       if (aliceOuter) {
         aliceOuter.setAttribute('stroke', isUnderAttack ? 'var(--amber)' : 'var(--border)');
       }
 
-      /* --- Masthead status --- */
       const mhStatusBox = document.getElementById('mhStatusBox');
       const mhLiveDot = document.getElementById('mhLiveDot');
       const mhStatusText = document.getElementById('mhStatusText');
@@ -1355,12 +1346,23 @@
         mhStatusText.textContent = 'System Nominal';
       }
 
-      /* --- Metric colors --- */
       const qberNum = document.querySelectorAll('.stat-row .num')[0];
       if (qberNum) qberNum.style.color = isForged ? 'var(--red)' : 'var(--ink-0)';
       fidNum.style.color = isForged ? 'var(--red)' : 'var(--ink-0)';
       const bellVal = document.querySelector('.dstat.accent .val');
       if (bellVal) bellVal.style.color = isForged ? 'var(--red)' : 'var(--blue)';
+
+      const eveNode = document.getElementById('eveNode');
+      const transferChannel = document.getElementById('transferChannel');
+      if (eveNode && transferChannel) {
+          if (isUnderAttack || isForged) {
+              eveNode.style.display = 'flex';
+              transferChannel.style.background = 'var(--red-tint)';
+          } else {
+              eveNode.style.display = 'none';
+              transferChannel.style.background = 'var(--border)';
+          }
+      }
     }
 
     let totalRounds = 0;
@@ -1371,26 +1373,21 @@
         const res = await fetch('/api/state');
         const state = await res.json();
 
-        /* Connection indicator */
         const conn = document.getElementById('connStatus');
         conn.textContent = '● connected';
         conn.style.color = 'var(--green)';
 
-        /* Always update visuals even if still on first cycle */
         updateVisuals(state);
 
         if (state.session_id !== 'N/A') {
-          /* Bell S-value */
           document.getElementById('bellSVal').innerHTML = state.s.toFixed(2);
           document.getElementById('marginVal').innerHTML = (state.s >= 2.0 ? '+' : '') + (state.s - 2.0).toFixed(2);
           fidNum.innerHTML = state.fidelity.toFixed(3);
           cycleNum.innerHTML = pad(state.cycle, 4);
 
-          /* Side stats */
           const statRows = document.querySelectorAll('.stat-row .num');
           statRows[0].innerHTML = (state.qber * 100).toFixed(1) + '<span>%</span>';
 
-          /* Entropy can be a number OR an object — handle both */
           let entropyVal = 0;
           if (typeof state.entropy === 'number') {
             entropyVal = state.entropy;
@@ -1400,7 +1397,6 @@
           statRows[1].innerHTML = entropyVal.toFixed(2) + '<span>bits</span>';
           statRows[2].innerHTML = state.session_id;
 
-          /* Attack label row — normalize case */
           const attackLabel = document.getElementById('attackLabel');
           const atk = (state.attribution || 'none').toString().toUpperCase();
           if (atk !== 'NONE') {
@@ -1411,11 +1407,9 @@
             attackLabel.style.color = 'var(--green)';
           }
 
-          /* Rounds counter */
           totalRounds++;
           document.getElementById('roundsCount').textContent = totalRounds.toLocaleString();
 
-          /* Last anomaly tracker */
           if (state.latest_decision === 'REJECT') {
             lastRejectTime = Date.now();
           }
@@ -1461,7 +1455,6 @@
           const sVal = stats.chsh ? stats.chsh.s.toFixed(3) : '—';
           const sprtRounds = stats.sprt ? stats.sprt.trace.length : '—';
 
-          /* Descriptive event title based on context */
           let title, detail;
           if (isReject) {
             title = '⚠ Forgery Detected';
@@ -1493,25 +1486,21 @@
     attackSelect.addEventListener('change', async (e) => {
       const newMode = e.target.value;
 
-      /* INSTANT visual update — don't wait for API round-trip */
-      _lastVisualKey = '';  /* Reset cache so updateVisuals runs on next poll */
-      _dropdownChangeTime = Date.now();  /* Grace period — don't let API override for 5s */
+      _lastVisualKey = '';
+      _dropdownChangeTime = Date.now();
       currentAttackMode = newMode;
-      currentDecision = (newMode !== 'HONEST') ? 'REJECT' : 'ACCEPT';  /* Optimistic update */
+      currentDecision = (newMode !== 'HONEST') ? 'REJECT' : 'ACCEPT';
       const isUnderAttack = newMode !== 'HONEST';
 
-      /* Reset decision when going back to honest */
       if (!isUnderAttack) {
         currentDecision = 'ACCEPT';
       }
-      /* Eve overlay */
       eveGroup.style.opacity = isUnderAttack ? '1' : '0';
       const eveLabel = document.getElementById('eveLabel');
       if (eveLabel && eveActions[newMode]) {
         eveLabel.textContent = eveActions[newMode];
       }
 
-      /* Masthead status immediately shows attack in progress */
       const mhStatusBox = document.getElementById('mhStatusBox');
       const mhLiveDot = document.getElementById('mhLiveDot');
       const mhStatusText = document.getElementById('mhStatusText');
@@ -1529,18 +1518,15 @@
         mhStatusText.textContent = 'System Nominal';
       }
 
-      /* Alice ring */
       const aliceOuter = heroStage.querySelector('circle[cx="150"][cy="250"][r="54"]');
       if (aliceOuter) aliceOuter.setAttribute('stroke', isUnderAttack ? 'var(--amber)' : 'var(--border)');
 
-      /* Attack label in sidebar */
       const attackLabel = document.getElementById('attackLabel');
       if (attackLabel) {
         attackLabel.textContent = isUnderAttack ? (attackLabels[newMode] || newMode) : 'None';
         attackLabel.style.color = isUnderAttack ? 'var(--amber)' : 'var(--green)';
       }
 
-      /* Verdict banner instant reset */
       const verdictRect = document.getElementById('verdictRect');
       const verdictText = document.getElementById('verdictText');
       if (!isUnderAttack && verdictRect && verdictText) {
@@ -1550,14 +1536,12 @@
         verdictText.textContent = '✓ SIGNATURE VERIFIED';
       }
 
-      /* Bob ring + beams */
       const bobOuter = heroStage.querySelector('circle[cx="1050"][cy="250"][r="54"]');
       if (bobOuter) bobOuter.setAttribute('stroke', isUnderAttack ? 'var(--red)' : 'var(--border)');
       document.querySelectorAll('.beam').forEach(b => {
         b.style.stroke = isUnderAttack ? 'var(--red)' : 'var(--blue)';
       });
 
-      /* Send to backend */
       try {
         await fetch('/api/set_attack', {
           method: 'POST',
@@ -1617,69 +1601,6 @@
     }, 250);
     fetchState();
     fetchEvents();
-
-    /* --- Razorpay Integration --- */
-    document.getElementById('rzp-button1').onclick = async function(e) {
-      e.preventDefault();
-      const gwStatus = document.getElementById('gatewayStatus');
-      gwStatus.innerHTML = '<span style="font-size:10px; color:var(--ink-2); text-transform:uppercase;">Connecting to Razorpay...</span>';
-      
-      try {
-          const res = await fetch('/api/create_order');
-          const data = await res.json();
-          
-          if (data.error) {
-              alert("Razorpay API Keys not configured in backend! Please add them to app.py");
-              gwStatus.innerHTML = '<span style="font-size:10px; color:var(--red); text-transform:uppercase;">Error: Keys Missing</span>';
-              return;
-          }
-          
-          const options = {
-              "key": data.key_id,
-              "amount": "50000",
-              "currency": "INR",
-              "name": "QDS Security Demo",
-              "description": "Live UPI Payment Simulation",
-              "order_id": data.order_id,
-              "handler": async function (response) {
-                  // Send to backend for QDS verification
-                  gwStatus.innerHTML = '<span style="font-size:10px; color:var(--amber); text-transform:uppercase;">Verifying Quantum Signature...</span>';
-                  
-                  const verifyRes = await fetch('/api/verify_payment', {
-                      method: 'POST',
-                      headers: {'Content-Type': 'application/json'},
-                      body: JSON.stringify({
-                          razorpay_payment_id: response.razorpay_payment_id,
-                          razorpay_order_id: response.razorpay_order_id,
-                          razorpay_signature: response.razorpay_signature
-                      })
-                  });
-                  const verifyData = await verifyRes.json();
-                  
-                  const gwWidget = document.getElementById('gatewayWidget');
-                  if (verifyData.status === 'blocked') {
-                      // QDS Blocked it!
-                      alert("TRANSACTION BLOCKED BY QDS: \n\n" + verifyData.message);
-                      gwWidget.style.borderColor = 'var(--red)';
-                      gwStatus.style.background = '#fde8e4';
-                      gwStatus.innerHTML = `<span style="font-size:10px; color:var(--red); text-transform:uppercase;">✗ Transaction Blocked (Forgery)</span><br/><span style="color:var(--red); font-weight:700;">₹500 Payment Aborted by Quantum Security</span>`;
-                  } else if (verifyData.status === 'success') {
-                      gwWidget.style.borderColor = 'var(--green)';
-                      gwStatus.style.background = 'var(--green-tint)';
-                      gwStatus.innerHTML = `<span style="font-size:10px; color:var(--green); text-transform:uppercase;">✓ Payment Approved</span><br/><span style="color:#2f5c3d;">₹500 Payment Successfully Verified</span>`;
-                  } else {
-                      alert("Error: " + verifyData.message);
-                      gwStatus.innerHTML = `<span style="font-size:10px; color:var(--red); text-transform:uppercase;">Error processing payment</span>`;
-                  }
-              },
-              "theme": { "color": "#0ea5e9" }
-          };
-          const rzp1 = new Razorpay(options);
-          rzp1.open();
-      } catch (err) {
-          console.error("Razorpay Error:", err);
-      }
-    };
 
     /* ========== TELEPORTATION ANIMATION LOOP ========== */
     setInterval(() => {
