@@ -591,10 +591,7 @@
         <span>QDS Command · Build 4.12.0</span>
         <span>FIPS-validated entropy source</span>
       </div>
-
-    </div>
-  </div>
-    </div>
+    </div> <!-- closes view-command-center -->
 
     <!-- STATISTICAL TESTS VIEW -->
     <div class="content" id="view-statistical-tests" style="display:none; padding:40px; flex-direction:column; gap:24px;">
@@ -655,8 +652,8 @@
       </div>
     </div>
 
-  </div>
-</div>
+  </div> <!-- closes .main -->
+</div> <!-- closes .layout -->
 
 <script>
   function switchView(viewId, el) {
@@ -771,7 +768,7 @@
   
   async function fetchState() {
       try {
-          const res = await fetch('http://127.0.0.1:8000/api/state');
+          const res = await fetch('/api/state');
           const state = await res.json();
           
           if (state.session_id !== 'N/A') {
@@ -793,7 +790,7 @@
   
   async function fetchEvents() {
       try {
-          const res = await fetch('http://127.0.0.1:8000/api/events');
+          const res = await fetch('/api/events');
           const events = await res.json();
           const eventsList = document.getElementById('eventsList');
           eventsList.innerHTML = '';
@@ -841,7 +838,7 @@
   const attackSelect = document.getElementById('attackSelect');
   attackSelect.addEventListener('change', async (e) => {
       try {
-          await fetch('http://127.0.0.1:8000/api/set_attack', {
+          await fetch('/api/set_attack', {
               method: 'POST',
               headers: {'Content-Type': 'application/json'},
               body: JSON.stringify({mode: e.target.value})
@@ -853,7 +850,7 @@
   
   async function fetchAllEvents() {
       try {
-          const res = await fetch('http://127.0.0.1:8000/api/events_all');
+          const res = await fetch('/api/events_all');
           const events = await res.json();
           const table = document.getElementById('fullEventLogTable');
           if (!table) return;
