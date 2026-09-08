@@ -1390,6 +1390,7 @@
     async function fetchState() {
       try {
         const res = await fetch('/api/state');
+        if (!res.ok) return;
         const state = await res.json();
 
         const conn = document.getElementById('connStatus');
@@ -1498,6 +1499,7 @@
     async function fetchEvents() {
       try {
         const res = await fetch('/api/events');
+        if (!res.ok) return;
         const rawEvents = await res.json();
         const eventsList = document.getElementById('eventsList');
         eventsList.innerHTML = '';
@@ -1565,6 +1567,7 @@
     async function fetchAllEvents() {
       try {
         const res = await fetch('/api/events_all');
+        if (!res.ok) return;
         const rawEvents = await res.json();
         const table = document.getElementById('fullEventLogTable');
         if (!table) return;
@@ -1609,7 +1612,7 @@
       fetchState();
       fetchEvents();
       fetchAllEvents();
-    }, 3000); // Increased interval to 3s to reduce server load
+    }, 500); // Super fast 500ms sync latency
     fetchState();
     fetchEvents();
 
