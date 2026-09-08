@@ -1315,6 +1315,7 @@
         currentDecision = state.latest_decision || 'ACCEPT';
       }
       const isUnderAttack = currentAttackMode !== 'HONEST';
+      if (!isUnderAttack) currentDecision = 'ACCEPT'; // Instant 0 latency clearing
       const isForged = currentDecision === 'REJECT' || isUnderAttack;
 
       const visualKey = `${currentAttackMode}|${currentDecision}`;
