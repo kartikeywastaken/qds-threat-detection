@@ -1,4 +1,7 @@
-import fcntl
+try:
+    import fcntl
+except ImportError:
+    fcntl = None
 import hashlib
 import json
 import logging
@@ -35,7 +38,8 @@ class SecurityEventLog:
         """Append and fsync one event; reject any existing broken chain. Pushes to Firebase."""
         import os
         with self.path.open('a+') as handle:
-            fcntl.flock(handle,fcntl.LOCK_EX);handle.seek(0)
+            if fcntl: fcntl.flock(handle,fcntl.LOCK_EX)
+            handle.seek(0)
             previous='0'*64;sequence=0
             for line in handle:
                 if not line.strip(): continue
@@ -46,6 +50,9 @@ class SecurityEventLog:
                 sequence+=1
             event={'sequence':sequence,'previous':previous,'report':report};event['hash']=digest(event)
             handle.write(json.dumps(event,sort_keys=True,allow_nan=False)+'\n');handle.flush();os.fsync(handle.fileno())
+            if fcntl:
+                try: fcntl.flock(handle,fcntl.LOCK_UN)
+                except Exception: pass
             
         # Push to Firebase asynchronously or safely
         if firebase_db:
@@ -61,8 +68,11 @@ class SecurityEventLog:
         # If Firebase is active, we could read from there, but for speed we read local cache
         if not self.path.exists(): return []
         with self.path.open() as handle:
-            fcntl.flock(handle,fcntl.LOCK_SH)
+            if fcntl: fcntl.flock(handle,fcntl.LOCK_SH)
             events=[json.loads(line) for line in handle if line.strip()]
+            if fcntl:
+                try: fcntl.flock(handle,fcntl.LOCK_UN)
+                except Exception: pass
         previous='0'*64
         for i,event in enumerate(events):
             content={k:v for k,v in event.items() if k!='hash'}

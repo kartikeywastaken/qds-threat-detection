@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -19,59 +20,244 @@
             --mono: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
         }
 
-        body { font-family: var(--sans); background: var(--bg); margin: 0; padding: 0; color: var(--ink); display: flex; justify-content: center; min-height: 100vh; }
-        .app-container { background: var(--surface); width: 100%; max-width: 400px; min-height: 100vh; box-shadow: 0 0 20px rgba(0,0,0,0.05); position: relative; }
-        
-        .header { background: var(--blue); color: white; padding: 24px 20px; text-align: center; font-weight: 600; font-size: 18px; box-shadow: 0 2px 10px rgba(59,89,152,0.2); }
-        .balance-card { margin: 20px; padding: 20px; border-radius: 16px; background: linear-gradient(135deg, var(--blue), #2b4170); color: white; box-shadow: 0 8px 16px rgba(59,89,152,0.2); }
-        .balance-lbl { font-size: 13px; opacity: 0.8; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
-        .balance-amt { font-size: 32px; font-weight: 700; letter-spacing: -0.02em; }
+        body {
+            font-family: var(--sans);
+            background: var(--bg);
+            margin: 0;
+            padding: 0;
+            color: var(--ink);
+            display: flex;
+            justify-content: center;
+            min-height: 100vh;
+        }
 
-        .history-title { padding: 0 20px; font-size: 14px; font-weight: 700; text-transform: uppercase; color: var(--ink-light); letter-spacing: 0.05em; margin-bottom: 12px; margin-top: 30px; }
+        .app-container {
+            background: var(--surface);
+            width: 100%;
+            max-width: 400px;
+            min-height: 100vh;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.05);
+            position: relative;
+        }
 
-        .tx-list { display: flex; flex-direction: column; }
-        .tx-card { background: var(--surface); border-bottom: 1px solid var(--border); padding: 16px 20px; cursor: pointer; transition: background 0.2s; }
-        .tx-card:hover { background: #fcfbf9; }
-        
-        .tx-header { display: flex; justify-content: space-between; align-items: center; }
-        .tx-info { display: flex; align-items: center; gap: 12px; }
-        .tx-icon { width: 40px; height: 40px; border-radius: 50%; background: #eaf1eb; color: var(--green); display: flex; align-items: center; justify-content: center; }
-        .tx-icon svg { width: 20px; height: 20px; }
-        .tx-title { font-weight: 600; font-size: 15px; margin-bottom: 4px; }
-        .tx-time { font-size: 12px; color: var(--ink-light); }
-        .tx-amount { font-weight: 700; font-size: 16px; color: var(--green); }
+        .header {
+            background: var(--blue);
+            color: white;
+            padding: 24px 20px;
+            text-align: center;
+            font-weight: 600;
+            font-size: 18px;
+            box-shadow: 0 2px 10px rgba(59, 89, 152, 0.2);
+        }
+
+        .balance-card {
+            margin: 20px;
+            padding: 20px;
+            border-radius: 16px;
+            background: linear-gradient(135deg, var(--blue), #2b4170);
+            color: white;
+            box-shadow: 0 8px 16px rgba(59, 89, 152, 0.2);
+        }
+
+        .balance-lbl {
+            font-size: 13px;
+            opacity: 0.8;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .balance-amt {
+            font-size: 32px;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+        }
+
+        .history-title {
+            padding: 0 20px;
+            font-size: 14px;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: var(--ink-light);
+            letter-spacing: 0.05em;
+            margin-bottom: 12px;
+            margin-top: 30px;
+        }
+
+        .tx-list {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .tx-card {
+            background: var(--surface);
+            border-bottom: 1px solid var(--border);
+            padding: 16px 20px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .tx-card:hover {
+            background: #fcfbf9;
+        }
+
+        .tx-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .tx-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .tx-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #eaf1eb;
+            color: var(--green);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .tx-icon svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        .tx-title {
+            font-weight: 600;
+            font-size: 15px;
+            margin-bottom: 4px;
+        }
+
+        .tx-time {
+            font-size: 12px;
+            color: var(--ink-light);
+        }
+
+        .tx-amount {
+            font-weight: 700;
+            font-size: 16px;
+            color: var(--green);
+        }
 
         /* The expanded QDS Verification panel */
-        .qds-panel { display: none; margin-top: 16px; padding-top: 16px; border-top: 1px dashed var(--border); }
-        .tx-card.expanded .qds-panel { display: block; animation: slideDown 0.3s ease; }
-        @keyframes slideDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+        .qds-panel {
+            display: none;
+            margin-top: 16px;
+            padding-top: 16px;
+            border-top: 1px dashed var(--border);
+        }
 
-        .qds-btn { background: #26261f; color: white; border: none; padding: 12px 16px; width: 100%; border-radius: 8px; font-weight: 600; font-size: 14px; cursor: pointer; text-transform: uppercase; letter-spacing: 0.05em; transition: transform 0.1s; }
-        .qds-btn:active { transform: scale(0.97); }
+        .tx-card.expanded .qds-panel {
+            display: block;
+            animation: slideDown 0.3s ease;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .qds-btn {
+            background: #26261f;
+            color: white;
+            border: none;
+            padding: 12px 16px;
+            width: 100%;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            transition: transform 0.1s;
+        }
+
+        .qds-btn:active {
+            transform: scale(0.97);
+        }
 
         /* Verification Results */
-        .qds-result { display: none; margin-top: 12px; padding: 16px; border-radius: 8px; font-size: 13px; line-height: 1.5; }
-        .qds-success { background: #eaf1eb; border: 1px solid #4f7f5c; color: #2f5c3d; }
-        .qds-error { background: #fde8e4; border: 1px solid var(--red); color: var(--red); }
-        
-        .loader { margin: 16px auto; width: 24px; height: 24px; border: 3px solid #f3f3f3; border-top: 3px solid var(--ink); border-radius: 50%; animation: spin 1s linear infinite; display: none; }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        .qds-result {
+            display: none;
+            margin-top: 12px;
+            padding: 16px;
+            border-radius: 8px;
+            font-size: 13px;
+            line-height: 1.5;
+        }
 
-        .attack-tag { display: inline-block; background: var(--red); color: white; padding: 2px 6px; border-radius: 4px; font-weight: 700; font-size: 11px; margin-top: 8px; text-transform: uppercase; }
+        .qds-success {
+            background: #eaf1eb;
+            border: 1px solid #4f7f5c;
+            color: #2f5c3d;
+        }
 
+        .qds-error {
+            background: #fde8e4;
+            border: 1px solid var(--red);
+            color: var(--red);
+        }
+
+        .loader {
+            margin: 16px auto;
+            width: 24px;
+            height: 24px;
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid var(--ink);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            display: none;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        .attack-tag {
+            display: inline-block;
+            background: var(--red);
+            color: white;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: 700;
+            font-size: 11px;
+            margin-top: 8px;
+            text-transform: uppercase;
+        }
     </style>
 </head>
+
 <body>
     <div class="app-container">
         <div class="header">Bank App</div>
-        
+
         <div class="balance-card">
             <div class="balance-lbl">Available Balance</div>
             <div class="balance-amt" id="availBalance">₹24,500.00</div>
         </div>
 
         <div class="history-title">Recent Transactions</div>
-        
+
         <div class="tx-list" id="txList">
             <div style="padding: 20px; text-align: center; color: var(--ink-light); font-size: 14px;">
                 Waiting for incoming transactions...
@@ -86,7 +272,8 @@
             'COHERENT': "Coherent Joint Probe detected. Eve attacked the entire quantum block globally.",
             'IMPERSONATION': "Impersonation forgery detected. The sender is not mathematically correlated with Alice.",
             'CHANNEL_MANIPULATION': "Classical Channel Manipulation detected. The Pauli correction bits were altered in transit.",
-            'REPLAY': "Replay Attack detected. Eve attempted to resend a previously valid signature block."
+            'REPLAY': "Replay Attack detected. Eve attempted to resend a previously valid signature block.",
+            'ROGUE_PROXY_MITM': "Rogue ATM Switch (Man-in-the-Middle) Interception detected. Attacker injected an internal proxy and tried to alter payee to offshore accounts. Wave-function collapsed under unauthorized observation."
         };
 
         function toggleExpand(el) {
@@ -97,7 +284,7 @@
             const btn = document.getElementById('verifyBtn_' + txId);
             const loader = document.getElementById('loader_' + txId);
             const resDiv = document.getElementById('qdsResult_' + txId);
-            
+
             btn.style.display = 'none';
             loader.style.display = 'block';
 
@@ -107,7 +294,7 @@
 
                 if (decision === 'REJECT') {
                     const exp = attackDescriptions[mode] || "The physical properties of the teleported state have been altered in transit.";
-                    
+
                     resDiv.className = 'qds-result qds-error';
                     resDiv.innerHTML = `<b>🚨 FORGERY DETECTED</b><br><br>The payload was mathematically tampered with by an eavesdropper.<br><br><b>Explanation:</b> ${exp}<br><div class="attack-tag">${mode.replace('_', ' ')}</div>`;
                 } else {
@@ -121,10 +308,10 @@
             try {
                 const res = await fetch('/api/state');
                 const state = await res.json();
-                
-                // Filter out natively failed classical transactions and blocked transactions (Bob shouldn't see these)
-                const visibleTx = state.transactions ? state.transactions.filter(tx => tx.decision !== 'FAILED' && tx.decision !== 'REJECT') : [];
-                
+
+                // Filter out natively failed classical transactions (Bob can verify all signatures)
+                const visibleTx = state.transactions ? state.transactions.filter(tx => tx.decision !== 'FAILED') : [];
+
                 if (visibleTx.length > 0) {
                     // Update Balance dynamically
                     const baseBalance = 24500;
@@ -135,6 +322,7 @@
                     const txList = document.getElementById('txList');
                     let html = '';
                     visibleTx.forEach((tx, idx) => {
+                        const formattedAmt = Number(tx.amount || 500).toLocaleString('en-IN');
                         html += `
                             <div class="tx-card" id="txCard_${tx.id}" onclick="toggleExpand(this)">
                                 <div class="tx-header">
@@ -143,11 +331,11 @@
                                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="19" x2="12" y2="5"></line><polyline points="5 12 12 5 19 12"></polyline></svg>
                                         </div>
                                         <div>
-                                            <div class="tx-title">Payment Received</div>
-                                            <div class="tx-time">${tx.time} · UPI</div>
+                                            <div class="tx-title">${tx.amount > 100000 ? 'SWIFT Wire Transfer' : 'Payment Received'}</div>
+                                            <div class="tx-time">${tx.time} · ${tx.amount > 100000 ? 'Core Switch' : 'UPI'}</div>
                                         </div>
                                     </div>
-                                    <div class="tx-amount" style="${tx.decision === 'REJECT' ? 'text-decoration: line-through; color: var(--red);' : ''}">+ ₹${tx.amount}</div>
+                                    <div class="tx-amount" style="${tx.decision === 'REJECT' ? 'text-decoration: line-through; color: var(--red);' : ''}">+ ₹${formattedAmt}</div>
                                 </div>
                                 
                                 <div class="qds-panel" onclick="event.stopPropagation()">
@@ -159,7 +347,7 @@
                             </div>
                         `;
                     });
-                    
+
                     // Only update DOM if transactions changed (to prevent closing open panels)
                     if (txList.dataset.txCount !== String(visibleTx.length)) {
                         txList.innerHTML = html;
@@ -175,4 +363,5 @@
         setInterval(pollState, 3000); // Increased interval to 3s
     </script>
 </body>
+
 </html>
