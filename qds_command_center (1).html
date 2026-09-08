@@ -1489,6 +1489,7 @@
 
         }
       } catch (e) {
+        if (e instanceof SyntaxError) return;
         console.error('fetchState error:', e);
         const conn = document.getElementById('connStatus');
         conn.textContent = '✗ error: ' + e.message;
@@ -1559,7 +1560,10 @@
               `;
           eventsList.appendChild(div);
         });
-      } catch (e) { console.error('fetchEvents error:', e); }
+      } catch (e) { 
+        if (e instanceof SyntaxError) return;
+        console.error('fetchEvents error:', e); 
+      }
     }
 
 
@@ -1605,7 +1609,10 @@
               `;
           table.appendChild(row);
         });
-      } catch (e) { console.error('fetchAllEvents error:', e); }
+      } catch (e) { 
+        if (e instanceof SyntaxError) return;
+        console.error('fetchAllEvents error:', e); 
+      }
     }
 
     setInterval(() => {
