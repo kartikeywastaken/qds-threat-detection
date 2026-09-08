@@ -1830,7 +1830,13 @@
 
     const attackSelect = document.getElementById('attackSelect');
     attackSelect.addEventListener('change', async (e) => {
+      // Immediately reset visual state so stale REJECT from previous mode doesn't persist.
       currentDecision = 'INCONCLUSIVE';
+      currentAttackMode = e.target.value;
+      _lastVisualKey = '';  // Force next updateVisuals() to always redraw.
+      // Optimistic UI reset — draw the neutral/pending state right away.
+      updateVisuals({ attack_mode: e.target.value, latest_decision: 'INCONCLUSIVE',
+                      bell_outcome: latestBellOutcome });
       document.getElementById('mhStatusText').textContent = 'Measuring — verdict pending';
       try {
         const response = await fetch('/api/set_attack', {
