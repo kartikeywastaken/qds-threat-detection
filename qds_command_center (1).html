@@ -703,140 +703,6 @@
         padding-right: 20px;
       }
     }
-
-    /* ================= BANK HEIST SIMULATION ANIMATIONS ================= */
-    @keyframes ripple-expand {
-      0% {
-        r: 12px;
-        opacity: 0.95;
-        stroke-width: 3.5px;
-      }
-
-      50% {
-        opacity: 0.7;
-      }
-
-      100% {
-        r: 160px;
-        opacity: 0;
-        stroke-width: 0.5px;
-      }
-    }
-
-    @keyframes glitch-vibe {
-      0% {
-        transform: translate(0, 0);
-      }
-
-      25% {
-        transform: translate(-3px, 2px);
-      }
-
-      50% {
-        transform: translate(3px, -2px);
-      }
-
-      75% {
-        transform: translate(-2px, -1px);
-      }
-
-      100% {
-        transform: translate(0, 0);
-      }
-    }
-
-    @keyframes shield-pulsing {
-      0% {
-        stroke: #a15b4e;
-        stroke-width: 2.2px;
-        filter: drop-shadow(0 0 6px rgba(161, 91, 78, 0.4));
-      }
-
-      50% {
-        stroke: #e04836;
-        stroke-width: 3.8px;
-        filter: drop-shadow(0 0 18px rgba(224, 72, 54, 0.85));
-      }
-
-      100% {
-        stroke: #a15b4e;
-        stroke-width: 2.2px;
-        filter: drop-shadow(0 0 6px rgba(161, 91, 78, 0.4));
-      }
-    }
-
-    @keyframes probe-pulse {
-      0% {
-        stroke-dashoffset: 0;
-        opacity: 0.7;
-      }
-
-      50% {
-        opacity: 1;
-      }
-
-      100% {
-        stroke-dashoffset: -24;
-        opacity: 0.7;
-      }
-    }
-
-    @keyframes packet-glow {
-      0% {
-        filter: drop-shadow(0 0 4px rgba(78, 111, 146, 0.5));
-      }
-
-      50% {
-        filter: drop-shadow(0 0 12px rgba(78, 111, 146, 0.9));
-      }
-
-      100% {
-        filter: drop-shadow(0 0 4px rgba(78, 111, 146, 0.5));
-      }
-    }
-
-    .heist-badge-live {
-      animation: pulse-ring 1.8s ease-out infinite;
-    }
-
-    .heist-beam-corrupted {
-      stroke: var(--red) !important;
-      stroke-dasharray: 2 4 !important;
-      animation: dash 0.8s linear infinite, glitch-vibe 0.15s ease infinite !important;
-    }
-
-    .forensic-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 12px;
-      margin: 20px 0;
-      text-align: left;
-    }
-
-    .forensic-item {
-      background: var(--bg-inset);
-      padding: 12px 16px;
-      border-radius: var(--radius-sm);
-      border: 1px solid var(--border);
-    }
-
-    .forensic-label {
-      font-family: var(--sans);
-      font-size: 10px;
-      font-weight: 700;
-      color: var(--ink-3);
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      margin-bottom: 4px;
-    }
-
-    .forensic-val {
-      font-family: var(--mono);
-      font-size: 13px;
-      font-weight: 600;
-      color: var(--ink-0);
-    }
-
     /* ================= AUTONOMOUS GUIDED TOUR SYSTEM STYLES ================= */
     .tour-scrim {
       position: fixed;
@@ -1255,51 +1121,6 @@
                 title="Start Autonomous Guided Tour (or Press 'T')">
                 <span>✨ Guided Tour [T]</span>
               </button>
-              <button id="soundToggleBtn" onclick="toggleSimAudio()"
-                style="background:var(--bg-inset); color:var(--ink-1); border:1px solid var(--border); padding:7px 12px; border-radius:var(--radius-sm); font-family:var(--mono); font-size:11px; font-weight:600; cursor:pointer; display:flex; align-items:center; gap:6px; transition:all .15s ease;">
-                <span id="soundIcon">🔊</span> <span id="soundText">SFX ON</span>
-              </button>
-              <button id="btnSimBankHeist" onclick="startBankHeistSimulation()"
-                style="background:linear-gradient(135deg, #a15b4e 0%, #7d3326 100%); color:#fff; border:none; padding:8px 16px; border-radius:var(--radius-sm); font-family:var(--sans); font-size:12px; font-weight:700; cursor:pointer; display:flex; align-items:center; gap:8px; box-shadow:0 3px 10px rgba(161,91,78,0.3); transition:transform 0.15s ease, box-shadow 0.15s ease;">
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
-                  <path d="M3 21h18M3 10h18M5 10v11M19 10v11M9 10v11M14 10v11M4 10l8-6 8 6" />
-                </svg>
-                SIMULATE BANK HEIST (COSMOS MITM)
-              </button>
-            </div>
-          </div>
-
-          <!-- Interactive Bank Heist Stepper & Narrative HUD Bar -->
-          <div id="heistControlBar"
-            style="display:none; background:var(--bg-inset); border-bottom:1px solid var(--border); padding:12px 20px; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px;">
-            <div style="display:flex; align-items:center; gap:12px; flex:1; min-width:280px;">
-              <span
-                style="font-family:var(--mono); font-size:10px; font-weight:700; background:var(--red); color:white; padding:3px 8px; border-radius:4px; text-transform:uppercase;"
-                id="heistStepBadge">PHASE 1 / 5</span>
-              <div style="display:flex; flex-direction:column;">
-                <div style="font-size:13px; font-weight:700; color:var(--ink-0);" id="heistStepTitle">Core Banking SWIFT
-                  Authorization</div>
-                <div style="font-size:11.5px; color:var(--ink-2); font-family:var(--sans); line-height:1.4;"
-                  id="heistStepDesc">Alice initiates ₹94,40,00,000 transfer to overseas settlement. Quantum signature
-                  encoded on photon states.</div>
-              </div>
-            </div>
-            <div style="display:flex; align-items:center; gap:8px;">
-              <button onclick="prevHeistStep()" id="btnHeistPrev"
-                style="background:var(--surface); border:1px solid var(--border); color:var(--ink-1); padding:6px 12px; border-radius:6px; font-size:12px; font-weight:600; cursor:pointer;"
-                disabled>◀ Prev</button>
-              <button onclick="toggleHeistPlayPause()" id="btnHeistPlayPause"
-                style="background:var(--blue); border:none; color:white; padding:6px 14px; border-radius:6px; font-size:12px; font-weight:600; cursor:pointer;">⏸
-                Pause</button>
-              <button onclick="nextHeistStep()" id="btnHeistNext"
-                style="background:var(--surface); border:1px solid var(--border); color:var(--ink-1); padding:6px 12px; border-radius:6px; font-size:12px; font-weight:600; cursor:pointer;">Next
-                ▶</button>
-              <button onclick="showForensicModal()"
-                style="background:var(--surface-raised); border:1px solid var(--amber); color:var(--amber); padding:6px 12px; border-radius:6px; font-size:12px; font-weight:700; cursor:pointer;">📋
-                Dossier</button>
-              <button onclick="stopBankHeistSimulation()"
-                style="background:transparent; border:none; color:var(--ink-3); font-size:16px; cursor:pointer; padding:4px 8px;"
-                title="Exit Simulation">✕</button>
             </div>
           </div>
 
@@ -1427,119 +1248,6 @@
                   id="sDeltaDec" fill="var(--ink-0)">+0.00</tspan></text>
               <text id="verdictTextDec" x="650" y="570" fill="var(--ink-2)" font-family="var(--sans)" font-size="18"
                 font-weight="800" text-anchor="middle" style="transition: fill 0.3s">[ PENDING ]</text>
-
-              <!-- ================= BANK HEIST SIMULATION DYNAMIC SVG LAYER ================= -->
-              <g id="heistSvgLayer">
-                <!-- Heist Top HUD Banner -->
-                <g id="heistSvgBanner" style="opacity:0; transition:opacity 0.4s ease;">
-                  <rect x="300" y="12" width="600" height="42" rx="10" fill="var(--surface-raised)" stroke="var(--red)"
-                    stroke-width="1.5" stroke-dasharray="6 3" />
-                  <circle cx="324" cy="33" r="6" fill="var(--red)">
-                    <animate attributeName="opacity" values="1;0.2;1" dur="1s" repeatCount="indefinite" />
-                  </circle>
-                  <text x="340" y="28" font-family="var(--sans)" font-size="12" font-weight="700" fill="var(--red)"
-                    id="heistSvgBannerTitle">⚡ BANK HEIST SIMULATION ACTIVE</text>
-                  <text x="340" y="44" font-family="var(--mono)" font-size="10" fill="var(--ink-2)"
-                    id="heistSvgBannerSub">Cosmos Bank MITM Blueprint · Quantum Physical Layer Enforcement</text>
-                </g>
-
-                <!-- High-Value SWIFT Authorization Packet Capsule -->
-                <g id="heistPacketGroup" transform="translate(150, 140)"
-                  style="opacity:0; transition:transform 0.8s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.3s ease;">
-                  <rect x="-75" y="-18" width="150" height="36" rx="8" fill="#1b2a4a" stroke="var(--blue-soft)"
-                    stroke-width="1.8" filter="drop-shadow(0 0 8px rgba(78,111,146,0.6))" id="heistPacketBg" />
-                  <circle cx="-55" cy="0" r="5" fill="#4ade80" id="heistPacketDot" />
-                  <text x="-42" y="-3" font-family="var(--mono)" font-size="9" fill="#9db0c6"
-                    letter-spacing="0.05em">SWIFT TX-94CR</text>
-                  <text x="-42" y="11" font-family="var(--sans)" font-size="12" font-weight="700" fill="#ffffff"
-                    id="heistPacketAmount">₹94,40,00,000</text>
-                </g>
-
-                <!-- Eve's Rogue Proxy Interception Rig -->
-                <g id="heistEveRig" transform="translate(600, 340)"
-                  style="opacity:0; transition:opacity 0.5s ease, transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);">
-                  <!-- Rig Body -->
-                  <rect x="-105" y="-30" width="210" height="74" rx="10" fill="#201515" stroke="var(--red)"
-                    stroke-width="1.8" />
-                  <!-- Diagonal warning stripe on header -->
-                  <rect x="-105" y="-30" width="210" height="12" rx="4" fill="var(--red)" opacity="0.85" />
-                  <text x="0" y="-21" font-family="var(--mono)" font-size="8.5" font-weight="700" fill="#ffffff"
-                    text-anchor="middle" letter-spacing="0.1em">ROGUE ATM SWITCH · MITM PROXY</text>
-                  <!-- Cyber terminal readout -->
-                  <text x="-90" y="2" font-family="var(--mono)" font-size="9" fill="#fca5a5" id="heistEveLine1">TAP
-                    0x7F: INTERCEPTING AUTH...</text>
-                  <text x="-90" y="16" font-family="var(--mono)" font-size="9" fill="#ef4444" font-weight="700"
-                    id="heistEveLine2">FORGE: REROUTE TO HK9982</text>
-                  <text x="-90" y="32" font-family="var(--mono)" font-size="8" fill="#9ca3af" id="heistEveLine3">CLONING
-                    QUANTUM STATES [TRYING...]</text>
-
-                  <!-- Tapping Clamps pointing upward to optical fiber channel at y=150 -->
-                  <line x1="-50" y1="-30" x2="-50" y2="-140" stroke="var(--red)" stroke-width="2.2"
-                    stroke-dasharray="4 3" class="probe-line" />
-                  <line x1="50" y1="-30" x2="50" y2="-140" stroke="var(--red)" stroke-width="2.2" stroke-dasharray="4 3"
-                    class="probe-line" />
-                  <!-- Clamp claws onto the fiber at y=150 (dy = -190 from 340) -->
-                  <polygon points="-58,-140 -42,-140 -50,-150" fill="var(--red)" />
-                  <polygon points="42,-140 58,-140 50,-150" fill="var(--red)" />
-                  <circle cx="-50" cy="-140" r="4" fill="none" stroke="var(--red)" stroke-width="1.5">
-                    <animate attributeName="r" values="4;9;4" dur="1.2s" repeatCount="indefinite" />
-                    <animate attributeName="opacity" values="1;0.2;1" dur="1.2s" repeatCount="indefinite" />
-                  </circle>
-                  <circle cx="50" cy="-140" r="4" fill="none" stroke="var(--red)" stroke-width="1.5">
-                    <animate attributeName="r" values="4;9;4" dur="1.2s" repeatCount="indefinite" />
-                    <animate attributeName="opacity" values="1;0.2;1" dur="1.2s" repeatCount="indefinite" />
-                  </circle>
-                </g>
-
-                <!-- Quantum Wave-Function Collapse & Shockwave Layer -->
-                <g id="heistCollapseGroup" transform="translate(600, 150)" style="opacity:0; pointer-events:none;">
-                  <!-- Shockwave expanding concentric rings -->
-                  <circle id="heistShockwave1" cx="0" cy="0" r="10" fill="none" stroke="var(--red)" stroke-width="3"
-                    opacity="0" />
-                  <circle id="heistShockwave2" cx="0" cy="0" r="10" fill="none" stroke="#f87171" stroke-width="2"
-                    opacity="0" />
-
-                  <!-- Particle Burst sparks -->
-                  <g id="heistSparks">
-                    <line x1="0" y1="0" x2="-45" y2="-45" stroke="#ef4444" stroke-width="2" stroke-linecap="round" />
-                    <line x1="0" y1="0" x2="45" y2="-45" stroke="#ef4444" stroke-width="2" stroke-linecap="round" />
-                    <line x1="0" y1="0" x2="-55" y2="25" stroke="#f87171" stroke-width="2" stroke-linecap="round" />
-                    <line x1="0" y1="0" x2="55" y2="25" stroke="#f87171" stroke-width="2" stroke-linecap="round" />
-                    <line x1="0" y1="0" x2="0" y2="-60" stroke="#dc2626" stroke-width="2.5" stroke-linecap="round" />
-                    <line x1="0" y1="0" x2="-65" y2="-10" stroke="#fca5a5" stroke-width="2" stroke-linecap="round" />
-                    <line x1="0" y1="0" x2="65" y2="-10" stroke="#fca5a5" stroke-width="2" stroke-linecap="round" />
-                    <line x1="0" y1="0" x2="0" y2="55" stroke="#dc2626" stroke-width="2.5" stroke-linecap="round" />
-                  </g>
-
-                  <!-- Warning badge -->
-                  <g id="heistNoCloningBadge" transform="translate(0, -45)">
-                    <rect x="-130" y="-14" width="260" height="28" rx="6" fill="#fee2e2" stroke="#dc2626"
-                      stroke-width="1.4" />
-                    <text x="0" y="4" font-family="var(--sans)" font-size="11" font-weight="700" fill="#b91c1c"
-                      text-anchor="middle">⚡ NO-CLONING THEOREM: STATE COLLAPSED</text>
-                  </g>
-                </g>
-
-                <!-- Bob's Hexagonal Quantum Shield Forcefield -->
-                <g id="heistBobShield" transform="translate(1060, 140)"
-                  style="opacity:0; transition:opacity 0.4s ease;">
-                  <!-- Hexagonal Shield Perimeter wrapping Bob Card -->
-                  <polygon points="0,-75 105,-40 105,40 0,75 -105,40 -105,-40" fill="rgba(253, 232, 228, 0.4)"
-                    stroke="var(--red)" stroke-width="3" stroke-dasharray="12 4" id="heistShieldPoly"
-                    style="animation: shield-pulsing 1.6s ease-in-out infinite;" />
-                  <!-- Shield Deflection Sparks -->
-                  <circle cx="-105" cy="0" r="8" fill="none" stroke="var(--red)" stroke-width="2" />
-                  <line x1="-115" y1="-12" x2="-95" y2="12" stroke="var(--red)" stroke-width="2.5" />
-                  <line x1="-95" y1="-12" x2="-115" y2="12" stroke="var(--red)" stroke-width="2.5" />
-                  <!-- Beam sever indicator -->
-                  <line x1="-140" y1="-25" x2="-130" y2="25" stroke="var(--red)" stroke-width="3.5"
-                    stroke-linecap="round" />
-                  <!-- Shield status label -->
-                  <rect x="-80" y="80" width="160" height="24" rx="6" fill="#7f1d1d" />
-                  <text x="0" y="96" font-family="var(--mono)" font-size="10" font-weight="700" fill="#ffffff"
-                    text-anchor="middle" letter-spacing="0.05em">SHIELD ACTIVE · LOCKED</text>
-                </g>
-              </g>
 
               <!-- Particles layer -->
               <g id="qubitParticle1" opacity="0"
@@ -1883,7 +1591,6 @@
     const sprtTag = document.getElementById('sprtTag');
 
     function updateSPRT(state) {
-      if (isHeistRunning) return;
       if (!state.sprt_trace || state.sprt_trace.length === 0) return;
       const maxRounds = 512;
       const xStep = 1000 / maxRounds;
@@ -1929,7 +1636,6 @@
     let _dropdownChangeTime = 0;
 
     function updateVisuals(state) {
-      if (isHeistRunning) return;
       const sinceDropdown = Date.now() - _dropdownChangeTime;
       if (sinceDropdown > 5000) {
         currentAttackMode = state.attack_mode || 'HONEST';
@@ -1999,38 +1705,34 @@
         conn.textContent = '● connected';
         conn.style.color = 'var(--green)';
 
-        if (!isHeistRunning) {
-          updateVisuals(state);
-        }
+        updateVisuals(state);
 
         if (state.session_id !== 'N/A') {
-          if (!isHeistRunning) {
-            document.getElementById('bellSVal').innerHTML = state.s.toFixed(2);
-            document.getElementById('marginVal').innerHTML = (state.s >= 2.0 ? '+' : '') + (state.s - 2.0).toFixed(2);
-            fidNum.innerHTML = state.fidelity.toFixed(3);
-            cycleNum.innerHTML = pad(state.cycle, 4);
+          document.getElementById('bellSVal').innerHTML = state.s.toFixed(2);
+          document.getElementById('marginVal').innerHTML = (state.s >= 2.0 ? '+' : '') + (state.s - 2.0).toFixed(2);
+          fidNum.innerHTML = state.fidelity.toFixed(3);
+          cycleNum.innerHTML = pad(state.cycle, 4);
 
-            const statRows = document.querySelectorAll('.stat-row .num');
-            statRows[0].innerHTML = (state.qber * 100).toFixed(1) + '<span>%</span>';
+          const statRows = document.querySelectorAll('.stat-row .num');
+          statRows[0].innerHTML = (state.qber * 100).toFixed(1) + '<span>%</span>';
 
-            let entropyVal = 0;
-            if (typeof state.entropy === 'number') {
-              entropyVal = state.entropy;
-            } else if (state.entropy && typeof state.entropy === 'object') {
-              entropyVal = state.entropy.chsh_bits_per_round_lower || 0;
-            }
-            statRows[1].innerHTML = entropyVal.toFixed(2) + '<span>bits</span>';
-            statRows[2].innerHTML = state.session_id;
+          let entropyVal = 0;
+          if (typeof state.entropy === 'number') {
+            entropyVal = state.entropy;
+          } else if (state.entropy && typeof state.entropy === 'object') {
+            entropyVal = state.entropy.chsh_bits_per_round_lower || 0;
+          }
+          statRows[1].innerHTML = entropyVal.toFixed(2) + '<span>bits</span>';
+          statRows[2].innerHTML = state.session_id;
 
-            const attackLabel = document.getElementById('attackLabel');
-            const atk = (state.attribution || 'none').toString().toUpperCase();
-            if (atk !== 'NONE') {
-              attackLabel.textContent = atk;
-              attackLabel.style.color = 'var(--red)';
-            } else {
-              attackLabel.textContent = 'None';
-              attackLabel.style.color = 'var(--green)';
-            }
+          const attackLabel = document.getElementById('attackLabel');
+          const atk = (state.attribution || 'none').toString().toUpperCase();
+          if (atk !== 'NONE') {
+            attackLabel.textContent = atk;
+            attackLabel.style.color = 'var(--red)';
+          } else {
+            attackLabel.textContent = 'None';
+            attackLabel.style.color = 'var(--green)';
           }
 
           totalRounds++;
@@ -2091,9 +1793,7 @@
             }).join('');
           }
 
-          if (!isHeistRunning) {
-            updateSPRT(state);
-          }
+          updateSPRT(state);
 
         }
       } catch (e) {
@@ -2365,510 +2065,14 @@
       if (sDeltaDec) { sDeltaDec.textContent = '+0.00'; sDeltaDec.setAttribute('fill', 'var(--ink-0)'); }
     }
 
-    /* ========== TELEPORTATION ANIMATION LOOP ========== */
-    setInterval(() => {
-      if (isHeistRunning) return;
-      const isForged = currentDecision === 'REJECT';
-      const outcome = outcomes[Math.floor(Math.random() * outcomes.length)];
-
-      if (bellText) {
-        bellText.textContent = 'measuring…';
-      }
-      if (bellApp) {
-        bellApp.classList.add('flash');
-      }
-      setTimeout(() => {
-        if (bellText) bellText.textContent = 'outcome ' + outcome;
-        if (bellApp) bellApp.classList.remove('flash');
-      }, 420);
-
-      setTimeout(() => {
-        if (pauliText) pauliText.textContent = 'applying σx·σz';
-        if (pauliApp) pauliApp.classList.add('flash');
-      }, 1500);
-
-      setTimeout(() => {
-        if (isForged) {
-          /* Attack detected — red flash, failed correction */
-          if (pauliText) pauliText.textContent = 'FAILED';
-          if (pauliApp) {
-            pauliApp.classList.remove('flash');
-            pauliApp.classList.remove('flash-green');
-          }
-          if (bobCheck) bobCheck.style.opacity = '0';
-          if (bobFail) bobFail.style.opacity = '1';
-          if (bobCore) bobCore.setAttribute('fill', 'var(--red)');
-        } else {
-          /* Honest — green flash, verified */
-          if (pauliText) pauliText.textContent = 'applied';
-          if (pauliApp) {
-            pauliApp.classList.remove('flash');
-            pauliApp.classList.add('flash-green');
-          }
-          if (bobFail) bobFail.style.opacity = '0';
-          if (bobCore) bobCore.setAttribute('fill', 'var(--blue)');
-          if (bobCheck) {
-            bobCheck.style.transition = 'opacity .25s ease';
-            bobCheck.style.opacity = '1';
-          }
-        }
-      }, 2200);
-
-      setTimeout(() => {
-        if (pauliApp) pauliApp.classList.remove('flash-green');
-        if (bobCheck) bobCheck.style.opacity = '0';
-        if (bobFail) bobFail.style.opacity = '0';
-        if (pauliText) pauliText.textContent = 'idle';
-        if (bobCore) bobCore.setAttribute('fill', 'var(--blue)');
-      }, 3000);
-    }, 3200);
-
-    /* ========== ZERO-DEPENDENCY WEB AUDIO SYNTHESIS ENGINE ========== */
-    class SimulationSoundEngine {
-      constructor() {
-        this.ctx = null;
-        this.muted = false;
-      }
-
-      init() {
-        if (!this.ctx) {
-          const AudioCtx = window.AudioContext || window.webkitAudioContext;
-          if (AudioCtx) this.ctx = new AudioCtx();
-        }
-        if (this.ctx && this.ctx.state === 'suspended') {
-          this.ctx.resume();
-        }
-      }
-
-      playTone(freq, type, duration, gainVal = 0.1) {
-        if (this.muted) return;
-        this.init();
-        if (!this.ctx) return;
-        try {
-          const osc = this.ctx.createOscillator();
-          const gain = this.ctx.createGain();
-          osc.type = type;
-          osc.frequency.setValueAtTime(freq, this.ctx.currentTime);
-          gain.gain.setValueAtTime(gainVal, this.ctx.currentTime);
-          gain.gain.exponentialRampToValueAtTime(0.0001, this.ctx.currentTime + duration);
-          osc.connect(gain);
-          gain.connect(this.ctx.destination);
-          osc.start();
-          osc.stop(this.ctx.currentTime + duration);
-        } catch (e) { }
-      }
-
-      playCoherentBeam() {
-        if (this.muted) return;
-        this.playTone(523.25, 'sine', 0.6, 0.08); // C5
-        setTimeout(() => this.playTone(659.25, 'sine', 0.6, 0.08), 120); // E5
-        setTimeout(() => this.playTone(783.99, 'sine', 0.8, 0.08), 240); // G5
-      }
-
-      playEveClamp() {
-        if (this.muted) return;
-        this.init();
-        if (!this.ctx) return;
-        try {
-          const bufferSize = Math.floor(this.ctx.sampleRate * 0.18);
-          const buffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
-          const data = buffer.getChannelData(0);
-          for (let i = 0; i < bufferSize; i++) data[i] = Math.random() * 2 - 1;
-          const noise = this.ctx.createBufferSource();
-          noise.buffer = buffer;
-          const filter = this.ctx.createBiquadFilter();
-          filter.type = 'bandpass';
-          filter.frequency.setValueAtTime(1400, this.ctx.currentTime);
-          const gain = this.ctx.createGain();
-          gain.gain.setValueAtTime(0.14, this.ctx.currentTime);
-          gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 0.18);
-          noise.connect(filter);
-          filter.connect(gain);
-          gain.connect(this.ctx.destination);
-          noise.start();
-          this.playTone(290, 'sawtooth', 0.28, 0.15);
-        } catch (e) { }
-      }
-
-      playQuantumCollapse() {
-        if (this.muted) return;
-        this.init();
-        if (!this.ctx) return;
-        try {
-          const osc = this.ctx.createOscillator();
-          const gain = this.ctx.createGain();
-          osc.type = 'sawtooth';
-          osc.frequency.setValueAtTime(260, this.ctx.currentTime);
-          osc.frequency.exponentialRampToValueAtTime(40, this.ctx.currentTime + 0.85);
-          gain.gain.setValueAtTime(0.22, this.ctx.currentTime);
-          gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 0.85);
-          osc.connect(gain);
-          gain.connect(this.ctx.destination);
-          osc.start();
-          osc.stop(this.ctx.currentTime + 0.85);
-        } catch (e) { }
-      }
-
-      playLockoutAlarm() {
-        if (this.muted) return;
-        this.playTone(880, 'triangle', 0.22, 0.18);
-        setTimeout(() => this.playTone(587.33, 'triangle', 0.3, 0.2), 200);
-        setTimeout(() => this.playTone(880, 'triangle', 0.22, 0.18), 450);
-        setTimeout(() => this.playTone(587.33, 'triangle', 0.4, 0.2), 650);
-      }
-    }
-
-    const simSound = new SimulationSoundEngine();
-
-    function toggleSimAudio() {
-      simSound.muted = !simSound.muted;
-      document.getElementById('soundIcon').textContent = simSound.muted ? '🔇' : '🔊';
-      document.getElementById('soundText').textContent = simSound.muted ? 'SFX OFF' : 'SFX ON';
-    }
-
-    /* ========== BANK HEIST SIMULATION ENGINE ========== */
-    let isHeistRunning = false;
-    let heistStep = 1;
-    let heistAutoPlay = true;
-    let heistTimer = null;
-    const TOTAL_HEIST_STEPS = 5;
-
-    const heistNarratives = [
-      {
-        badge: "PHASE 1 / 5",
-        title: "Core Banking SWIFT Authorization (Alice)",
-        desc: "Alice initiates a ₹94,40,00,000 transfer to offshore SWIFT settlement. The transaction hash is encoded into quantum photon states |ψ⟩ across the teleportation channel.",
-        bannerTitle: "⚡ PHASE 1: ALICE DISPATCHES ₹94.4 CRORE AUTH",
-        bannerSub: "Coherent Entangled Photons Transmitting · QBER: 0.4% · Bell S: 2.82"
-      },
-      {
-        badge: "PHASE 2 / 5",
-        title: "Rogue ATM Switch Infiltration (Eve MITM Tap)",
-        desc: "Eve deploys a rogue switching proxy server directly between ATM gateway and Core Switch (Cosmos Bank 2018 heist blueprint). The proxy intercepts the optical fiber and attempts to rewrite payee details to an offshore hacker account.",
-        bannerTitle: "⚠️ PHASE 2: ROGUE ATM SWITCH CLAMPS ONTO FIBER",
-        bannerSub: "Man-in-the-Middle Injection · Intercepting Optical Authorization Stream"
-      },
-      {
-        badge: "PHASE 3 / 5",
-        title: "No-Cloning Violation — Wave-Function Collapses",
-        desc: "Fundamental physics strikes: Eve attempts to copy and forge the quantum signature state. Under the No-Cloning Theorem, any measurement or interception irreversibly collapses the quantum wave-function into chaotic decoherence.",
-        bannerTitle: "⚡ PHASE 3: WAVE-FUNCTION COLLAPSE DETECTED!",
-        bannerSub: "No-Cloning Violation · QBER Spikes to 28.4% · Superposition Destroyed"
-      },
-      {
-        badge: "PHASE 4 / 5",
-        title: "Sequential Detection (SPRT) Trajectory Spikes",
-        desc: "Wald Sequential Probability Ratio Test (SPRT) continuously calculates the log-likelihood ratio. In just 6 rounds, the SPRT trajectory skyrockets past the +4.60 threshold, proving mathematical certainty of an active forgery attack.",
-        bannerTitle: "🚨 PHASE 4: SPRT BOUNDARY BREACHED (ROUND 6)",
-        bannerSub: "Log-Likelihood Ratio +4.88 > +4.60 Boundary · Bell S Collapses to 1.412"
-      },
-      {
-        badge: "PHASE 5 / 5",
-        title: "Physical-Layer Lockout — ₹94,40,00,000 Preserved!",
-        desc: "Bob automatically activates the Quantum Lockout Shield, severs the teleportation channel, and drops the ATM cash dispense authorization signal. Cosmos Bank funds (₹94.4 Crore) remain 100% safe at the core switch.",
-        bannerTitle: "🛡️ PHASE 5: PHYSICAL LOCKOUT ENGAGED — ₹94.4 CR SAVED",
-        bannerSub: "Transaction Aborted at Physical Layer · Cash Dispense Signal Withheld"
-      }
-    ];
-
-    function startBankHeistSimulation() {
-      isHeistRunning = true;
-      heistAutoPlay = true;
-      document.getElementById('heistControlBar').style.display = 'flex';
-      document.getElementById('btnHeistPlayPause').textContent = '⏸ Pause';
-      document.getElementById('heistSvgBanner').style.opacity = '1';
-      applyHeistStep(1);
-    }
-
-    function stopBankHeistSimulation() {
-      if (heistTimer) clearTimeout(heistTimer);
-      isHeistRunning = false;
-      document.getElementById('heistControlBar').style.display = 'none';
-      document.getElementById('heistSvgBanner').style.opacity = '0';
-      document.getElementById('heistPacketGroup').style.opacity = '0';
-      document.getElementById('heistEveRig').style.opacity = '0';
-      document.getElementById('heistCollapseGroup').style.opacity = '0';
-      document.getElementById('heistBobShield').style.opacity = '0';
-
-      const beams = heroStage.querySelectorAll('.beam');
-      beams.forEach(b => {
-        b.classList.remove('heist-beam-corrupted');
-        b.setAttribute('stroke', 'var(--blue)');
-      });
-
-      // Restore masthead and SPRT to nominal
-      const mhLiveDot = document.getElementById('mhLiveDot');
-      const mhStatusText = document.getElementById('mhStatusText');
-      if (mhLiveDot) {
-        mhLiveDot.style.background = 'var(--green)';
-        mhLiveDot.style.boxShadow = '0 0 4px var(--green)';
-      }
-      if (mhStatusText) {
-        mhStatusText.style.color = 'var(--green)';
-        mhStatusText.textContent = 'NOMINAL';
-      }
-      const atkLabel = document.getElementById('attackLabel');
-      if (atkLabel) {
-        atkLabel.textContent = 'None';
-        atkLabel.style.color = 'var(--green)';
-      }
-
-      // Hide modal if open
-      const modal = document.getElementById('heistForensicModal');
-      if (modal) modal.style.display = 'none';
-
-      fetchState();
-    }
-
-    function toggleHeistPlayPause() {
-      heistAutoPlay = !heistAutoPlay;
-      document.getElementById('btnHeistPlayPause').textContent = heistAutoPlay ? '⏸ Pause' : '▶ Play';
-      if (heistAutoPlay) {
-        nextHeistStep();
-      } else {
-        if (heistTimer) clearTimeout(heistTimer);
-      }
-    }
-
-    function nextHeistStep() {
-      if (heistTimer) clearTimeout(heistTimer);
-      if (heistStep < TOTAL_HEIST_STEPS) {
-        applyHeistStep(heistStep + 1);
-      } else {
-        showForensicModal();
-      }
-    }
-
-    function prevHeistStep() {
-      if (heistTimer) clearTimeout(heistTimer);
-      if (heistStep > 1) {
-        applyHeistStep(heistStep - 1);
-      }
-    }
-
-    function applyHeistStep(step) {
-      heistStep = step;
-      if (heistTimer) clearTimeout(heistTimer);
-
-      const data = heistNarratives[step - 1];
-      document.getElementById('heistStepBadge').textContent = data.badge;
-      document.getElementById('heistStepTitle').textContent = data.title;
-      document.getElementById('heistStepDesc').textContent = data.desc;
-      document.getElementById('btnHeistPrev').disabled = (step === 1);
-      document.getElementById('btnHeistNext').disabled = (step === TOTAL_HEIST_STEPS);
-
-      document.getElementById('heistSvgBannerTitle').textContent = data.bannerTitle;
-      document.getElementById('heistSvgBannerSub').textContent = data.bannerSub;
-
-      const packet = document.getElementById('heistPacketGroup');
-      const eveRig = document.getElementById('heistEveRig');
-      const collapseGroup = document.getElementById('heistCollapseGroup');
-      const bobShield = document.getElementById('heistBobShield');
-      const beams = heroStage.querySelectorAll('.beam');
-
-      if (step === 1) {
-        packet.style.opacity = '1';
-        packet.style.transform = 'translate(300px, 230px)';
-        document.getElementById('heistPacketBg').setAttribute('stroke', 'var(--blue-soft)');
-        document.getElementById('heistPacketBg').setAttribute('fill', '#1b2a4a');
-        document.getElementById('heistPacketAmount').textContent = '₹94,40,00,000';
-        document.getElementById('heistPacketDot').setAttribute('fill', '#4ade80');
-        eveRig.style.opacity = '0';
-        collapseGroup.style.opacity = '0';
-        bobShield.style.opacity = '0';
-        beams.forEach(b => {
-          b.classList.remove('heist-beam-corrupted');
-          b.setAttribute('stroke', 'var(--blue)');
-        });
-
-        document.getElementById('bellSVal').innerHTML = '2.82';
-        document.getElementById('marginVal').innerHTML = '+0.82';
-        document.getElementById('fidNum').innerHTML = '0.996';
-        const statRows = document.querySelectorAll('.stat-row .num');
-        statRows[0].innerHTML = '0.4<span>%</span>';
-        statRows[0].style.color = 'var(--ink-0)';
-        statRows[1].innerHTML = '1.00<span>bits</span>';
-        statRows[2].innerHTML = 'COSMOS-01';
-        document.getElementById('attackLabel').textContent = 'None';
-        document.getElementById('attackLabel').style.color = 'var(--green)';
-
-        simSound.playCoherentBeam();
-        if (heistAutoPlay) heistTimer = setTimeout(() => nextHeistStep(), 3800);
-      } else if (step === 2) {
-        packet.style.opacity = '1';
-        packet.style.transform = 'translate(600px, 230px)';
-        eveRig.style.opacity = '1';
-        eveRig.style.transform = 'translate(600px, 110px)';
-        collapseGroup.style.opacity = '0';
-        bobShield.style.opacity = '0';
-        beams.forEach(b => {
-          b.classList.remove('heist-beam-corrupted');
-          b.setAttribute('stroke', 'var(--amber)');
-        });
-
-        simSound.playEveClamp();
-        if (heistAutoPlay) heistTimer = setTimeout(() => nextHeistStep(), 4200);
-      } else if (step === 3) {
-        packet.style.opacity = '1';
-        packet.style.transform = 'translate(600px, 230px)';
-        eveRig.style.opacity = '1';
-        collapseGroup.style.opacity = '1';
-        bobShield.style.opacity = '0';
-
-        beams.forEach(b => b.classList.add('heist-beam-corrupted'));
-
-        const sw1 = document.getElementById('heistShockwave1');
-        const sw2 = document.getElementById('heistShockwave2');
-        if (sw1 && sw2) {
-          sw1.style.animation = 'none';
-          sw2.style.animation = 'none';
-          void sw1.offsetWidth;
-          sw1.style.animation = 'ripple-expand 1.4s ease-out forwards';
-          setTimeout(() => { sw2.style.animation = 'ripple-expand 1.4s ease-out forwards'; }, 200);
-        }
-
-        document.getElementById('heistPacketBg').setAttribute('stroke', 'var(--red)');
-        document.getElementById('heistPacketBg').setAttribute('fill', '#3b1818');
-        document.getElementById('heistPacketAmount').textContent = 'FORGED / CORRUPT';
-        document.getElementById('heistPacketDot').setAttribute('fill', 'var(--red)');
-
-        document.getElementById('bellSVal').innerHTML = '1.92';
-        document.getElementById('bellSVal').style.color = 'var(--red)';
-        document.getElementById('marginVal').innerHTML = '-0.08';
-        document.getElementById('fidNum').innerHTML = '0.716';
-        document.getElementById('fidNum').style.color = 'var(--red)';
-        const statRows = document.querySelectorAll('.stat-row .num');
-        statRows[0].innerHTML = '28.4<span>%</span>';
-        statRows[0].style.color = 'var(--red)';
-
-        simSound.playQuantumCollapse();
-        if (heistAutoPlay) heistTimer = setTimeout(() => nextHeistStep(), 4200);
-      } else if (step === 4) {
-        packet.style.opacity = '0.6';
-        packet.style.transform = 'translate(780px, 230px)';
-        eveRig.style.opacity = '1';
-        collapseGroup.style.opacity = '1';
-        bobShield.style.opacity = '0';
-
-        // Animate SPRT curve dynamically blasting past +4.60
-        sprtPath.setAttribute("d", "M0,180 L30,165 L65,135 L100,90 L140,40 L160,20");
-        sprtDash.setAttribute("d", "M160,20 L160,40");
-        sprtCircle1.setAttribute("cx", 160); sprtCircle1.setAttribute("cy", 40);
-        sprtCircle2.setAttribute("cx", 160); sprtCircle2.setAttribute("cy", 40);
-        sprtCircle1.setAttribute("stroke", "var(--red)");
-        sprtCircle2.setAttribute("stroke", "var(--red)");
-        sprtText1.setAttribute("x", 176); sprtText1.setAttribute("y", 36);
-        sprtText1.textContent = "REJECT";
-        sprtText1.setAttribute("fill", "var(--red)");
-        sprtText2.setAttribute("x", 176); sprtText2.setAttribute("y", 50);
-        sprtText2.textContent = "round 6 of 512";
-        sprtTag.textContent = "reject — round 6";
-        sprtTag.style.color = "var(--red)";
-
-        document.getElementById('bellSVal').innerHTML = '1.41';
-        document.getElementById('bellSVal').style.color = 'var(--red)';
-        document.getElementById('marginVal').innerHTML = '-0.59';
-        document.getElementById('attackLabel').textContent = 'ROGUE_PROXY_MITM';
-        document.getElementById('attackLabel').style.color = 'var(--red)';
-
-        simSound.playTone(330, 'sawtooth', 0.28, 0.16);
-        if (heistAutoPlay) heistTimer = setTimeout(() => nextHeistStep(), 4000);
-      } else if (step === 5) {
-        packet.style.opacity = '0';
-        eveRig.style.opacity = '1';
-        collapseGroup.style.opacity = '1';
-        bobShield.style.opacity = '1';
-
-        document.getElementById('mhLiveDot').style.background = 'var(--red)';
-        document.getElementById('mhStatusText').style.color = 'var(--red)';
-        document.getElementById('mhStatusText').textContent = '🚨 HEIST INTERCEPTED';
-
-        simSound.playLockoutAlarm();
-
-        // Trigger real backend bank attack API call to log incident
-        fetch('/api/simulate_bank_attack', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            target: 'Cosmos Core Banking ATM Gateway',
-            amount: 94400000
-          })
-        }).then(res => res.json()).then(data => {
-          fetchEvents();
-          fetchAllEvents();
-        }).catch(err => console.error("Sim bank attack API error:", err));
-
-        setTimeout(() => {
-          showForensicModal();
-        }, 1600);
-      }
-    }
-
-    function showForensicModal() {
-      const modal = document.getElementById('heistForensicModal');
-      modal.style.display = 'flex';
-      setTimeout(() => {
-        document.getElementById('heistForensicBox').style.transform = 'scale(1)';
-      }, 20);
-    }
-
-    function closeForensicModal() {
-      const modal = document.getElementById('heistForensicModal');
-      const box = document.getElementById('heistForensicBox');
-      if (box) box.style.transform = 'scale(0.95)';
-      setTimeout(() => {
-        if (modal) modal.style.display = 'none';
-      }, 150);
-      if (isHeistRunning) {
-        stopBankHeistSimulation();
-      }
-    }
-
-    // Global keyboard Escape handler for closing all modals & dismissing simulations
+    // Global keyboard Escape handler for closing modal
     window.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') {
-        closeForensicModal();
+      if (e.key === 'Escape') {
         closePaymentModal();
-        stopBankHeistion();
       }
     });
 
-    function downloadForensicDossier() {
-      const dossier = {
-        incident_id: "INC-COSMOS-94CR",
-        title: "Cosmos Bank 2018 BlueprintITM Attack Interception",
-        timestamp: new Date().toISOString(),
-        target_entity: "Cosmos Corng Switch & ATM Gateway",
-        attempted_theft_amount_inr: 94400000,
-        funds_status: "100% PRESERVED - ZERO FUNDS DISBURSED",
-        adversary_vector: "Internal ATM Switching Proxy Injection (Man-in-the-Middle)",
-        quantum_defense_metrics: {
-          qber_measured: 0.284,
-          qber_abort_bound: 0.110,
-          bell_parameter_s: 1.412,
-          classical_bell_bound: 2.000,
-          bell_deficit: -0.588,
-          fidelity: 0.716,
-          sprt_decision: "REJECT",
-          sprt_decision_round: 6,
-          sprt_llr_log_likelihood: 4.88
-        },
-        enforcement_action: "Physical-Layer Hardware Lockout (Optical Circuit Severed, ATM Dispense Authorization Withheld)",
-        why_classical_failed: "In 2018, attackers compromised internal switching proxies to approve withdrawal requests without reaching the Core Banking switch. Classical PKI lacks physical layer observer-detection.",
-        why_qds_succeeded: "Under the No-Cloning Theorem, measuring or cloning unknown quantum states causes immediate wave-function collapse. The 28.4% QBER breached the 11% abort bound within 6 rounds."
-      };
-
-      const blob = new Blob([JSON.stringify(dossier, null, 2)], { type: 'application/json' });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = `QDS_FORENSIC_DOSSIER_COSMOS_HEIST_${Date.now()}.json`;
-      a.click();
-      URL.revokeObjectURL(url);
-    }
-
     function runAnimationSequence() {
-        if (isHeistRunning) return;
         resetAnimation();
         
         const qArr = [
@@ -2996,92 +2200,6 @@
     </div>
   </div>
 
-  <!-- Forensic Incident Dossier Modal for Bank Heist Simulation -->
-  <div id="heistForensicModal" onclick="if(event.target === this) closeForensicModal()"
-    style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(20,20,16,0.65); backdrop-filter:blur(4px); z-index:10000; align-items:center; justify-content:center;">
-    <div class="card"
-      style="padding:32px 36px; max-width:680px; width:92%; max-height:90vh; overflow-y:auto; box-shadow:0 16px 48px rgba(0,0,0,0.35); border:1.5px solid var(--red); transform:scale(0.95); transition:transform 0.2s ease-out;"
-      id="heistForensicBox">
-      <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:16px;">
-        <div style="display:flex; align-items:center; gap:12px;">
-          <div
-            style="width:40px; height:40px; border-radius:8px; background:#fee2e2; color:var(--red); display:flex; align-items:center; justify-content:center; font-size:22px;">
-            🛡️</div>
-          <div>
-            <div
-              style="font-family:var(--mono); font-size:10.5px; font-weight:700; color:var(--red); letter-spacing:0.1em; text-transform:uppercase;">
-              CRITICAL SECURITY INCIDENT REPORT</div>
-            <h3 style="font-size:19px; font-weight:700; color:var(--ink-0); margin-top:2px;">Cosmos Bank MITM Heist
-              Blocked</h3>
-          </div>
-        </div>
-        <button onclick="closeForensicModal()"
-          style="background:transparent; border:none; color:var(--ink-3); font-size:22px; cursor:pointer; line-height:1;">✕</button>
-      </div>
-
-      <div
-        style="background:#fee2e2; border-left:4px solid var(--red); padding:12px 16px; border-radius:4px; font-size:12.5px; color:#991b1b; line-height:1.5; margin-bottom:18px;">
-        <b>PHYSICAL LAYER ENFORCEMENT VERDICT:</b> Unauthorized rogue ATM switching proxy attempted to intercept and
-        forge high-value SWIFT payment token (₹94,40,00,000). The wave-function collapsed under unauthorized
-        measurement. <b>Funds 100% safe. Dispense signal withheld.</b>
-      </div>
-
-      <div class="forensic-grid">
-        <div class="forensic-item">
-          <div class="forensic-label">Incident Reference</div>
-          <div class="forensic-val" id="forensicIncidentId">INC-COSMOS-94CR</div>
-        </div>
-        <div class="forensic-item">
-          <div class="forensic-label">Target Protected</div>
-          <div class="forensic-val">₹94,40,00,000 INR</div>
-        </div>
-        <div class="forensic-item">
-          <div class="forensic-label">Quantum Bit Error Rate</div>
-          <div class="forensic-val" style="color:var(--red);">28.4% <span
-              style="font-size:10px; color:var(--ink-3);">(Bound: &lt;11.0%)</span></div>
-        </div>
-        <div class="forensic-item">
-          <div class="forensic-label">Bell CHSH Entanglement S</div>
-          <div class="forensic-val" style="color:var(--red);">1.412 <span
-              style="font-size:10px; color:var(--ink-3);">(Bound: &gt;2.000)</span></div>
-        </div>
-        <div class="forensic-item">
-          <div class="forensic-label">Sequential Detection</div>
-          <div class="forensic-val" style="color:var(--red);">REJECT @ Round 6 <span
-              style="font-size:10px; color:var(--ink-3);">(LLR +4.88)</span></div>
-        </div>
-        <div class="forensic-item">
-          <div class="forensic-label">Enforcement Mechanism</div>
-          <div class="forensic-val" style="font-size:11px;">No-Cloning Hardware Lockout</div>
-        </div>
-      </div>
-
-      <div style="border-top:1px solid var(--border); padding-top:16px; margin-top:8px;">
-        <h4
-          style="font-size:12.5px; font-weight:700; color:var(--ink-1); margin-bottom:8px; text-transform:uppercase; letter-spacing:0.04em;">
-          Real-World Impact Analysis: 2018 Cosmos Incident vs. QDS</h4>
-        <div style="font-size:12px; color:var(--ink-2); line-height:1.6; display:flex; flex-direction:column; gap:8px;">
-          <div><b style="color:var(--ink-0);">Why Classical Systems Failed (2018):</b> Attackers compromised the
-            internal switching proxy between Cosmos Bank ATM switch and Core Banking. The proxy approved fraudulent
-            withdrawal messages without contacting the actual core switch. Classical digital signatures cannot detect an
-            insider proxy that possesses stolen keys or replays approval messages.</div>
-          <div><b style="color:var(--ink-0);">Why QDS Cannot Be Forged:</b> Every transaction token is physically linked
-            to non-orthogonal quantum states. Under the <b>No-Cloning Theorem</b>, the rogue proxy cannot copy or forge
-            states. The act of measuring the carrier qubits causes wave-function collapse, producing an unmistakable
-            28.4% error rate. Bob's node cuts the optical circuit within 6 rounds.</div>
-        </div>
-      </div>
-
-      <div style="display:flex; justify-content:flex-end; gap:10px; margin-top:24px;">
-        <button onclick="downloadForensicDossier()"
-          style="background:var(--bg-inset); color:var(--ink-1); border:1px solid var(--border); padding:9px 18px; font-size:12px; font-weight:600; border-radius:var(--radius-sm); cursor:pointer;">📥
-          Export JSON Dossier</button>
-        <button onclick="closeForensicModal()"
-          style="background:var(--ink-0); color:white; border:none; padding:9px 20px; font-size:12px; font-weight:600; border-radius:var(--radius-sm); cursor:pointer;">Dismiss
-          Report</button>
-      </div>
-    </div>
-  </div>
   <!-- ================= GUIDED TOUR SYSTEM MARKUP ================= -->
   <div id="tourScrim" class="tour-scrim" onclick="stopTour()"></div>
   <div id="tourSpotlight" class="tour-spotlight"></div>
@@ -3092,7 +2210,7 @@
   <div id="tourCard" class="tour-card" onmouseenter="pauseTourHover(true)" onmouseleave="pauseTourHover(false)">
     <div class="tour-card-header">
       <div style="display:flex; align-items:center; gap:8px;">
-        <span class="tour-step-badge" id="tourStepBadge">STEP 1 OF 22</span>
+        <span class="tour-step-badge" id="tourStepBadge">STEP 1 OF 20</span>
         <span class="tour-category-tag" id="tourCategoryTag">SYSTEM OVERVIEW</span>
       </div>
       <button class="tour-btn-close" onclick="stopTour()" title="Close Tour (Esc)">✕</button>
@@ -3165,22 +2283,6 @@
           title: '✨ Guided Tour Button (Press T)',
           desc: 'You can launch this guided walkthrough anytime by clicking this button or simply pressing the "T" key on your keyboard! It will autonomously walk you through every button, section, and sub-view.',
           tip: '👉 Quick Shortcut: Press "T" anywhere on the dashboard to toggle this tour on and off.'
-        },
-        {
-          target: '#soundToggleBtn',
-          tab: 'view-command-center',
-          category: 'AUDIO CONTROL',
-          title: '🔊 Sound Effects (SFX) Button',
-          desc: 'Click this button to enable or mute interactive audio. Legitimate photon transmissions create gentle optical clicks, while eavesdropping attempts and blocked transactions trigger audible warning sirens.',
-          tip: '👉 Click to toggle sound on or off based on your presentation environment.'
-        },
-        {
-          target: '#btnSimBankHeist',
-          tab: 'view-command-center',
-          category: 'LIVE ATTACK SIMULATION',
-          title: '🚨 Bank Heist Simulator (Cosmos MITM)',
-          desc: 'Experience a live simulation of the infamous 2018 Cosmos Bank cyber attack (₹94.4 Crore). Hackers bypassed traditional banking servers with a rogue ATM proxy. Watch step-by-step how QDS physically blocks the heist cold!',
-          tip: '👉 Pro Tip: Try clicking this button after the tour to watch the full 5-phase attack play out.'
         },
         {
           target: '#aliceNode',
@@ -3316,7 +2418,7 @@
           category: 'TOUR COMPLETE',
           title: '🎉 You\'re All Set to Explore!',
           desc: 'We\'re back at the Command Center dashboard! You now understand all the sections, buttons, and metrics of the QDS system. Feel free to press "T" anytime to replay this tour.',
-          tip: '🚀 Next Steps: Click "SIMULATE BANK HEIST" or "Pay ₹500" to experience the defense live!'
+          tip: '🚀 Next Steps: Try paying ₹500 or test attack vectors to experience the quantum defense live!'
         }
       ];
 
@@ -3352,10 +2454,6 @@
       function startTour(fromStep = 0) {
         // Close other modals first
         if (typeof closePaymentModal === 'function') closePaymentModal();
-        if (typeof closeForensicModal === 'function') closeForensicModal();
-        if (typeof stopBankHeistSimulation === 'function' && typeof isHeistRunning !== 'undefined' && isHeistRunning) {
-          stopBankHeistSimulation();
-        }
 
         isTourActive = true;
         isAutoPlayPaused = false;

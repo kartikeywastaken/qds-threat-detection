@@ -17,10 +17,6 @@ from pydantic import BaseModel
 class TransactionVerifyRequest(BaseModel):
     tx_id: str
 
-class BankAttackRequest(BaseModel):
-    target: str = "Cosmos Core Banking ATM Gateway"
-    amount: int = 94400000
-
 from qds_protocol.key_distribution import distribute
 from qds_protocol.signing_engine import sign
 from qds_protocol.verification_engine import VerificationEngine
@@ -327,73 +323,6 @@ def verify_transaction(req: TransactionVerifyRequest):
             "attribution": attribution,
             "receipt": receipt
         }
-
-@app.api_route('/api/simulate_bank_attack', methods=['GET', 'POST'])
-def simulate_bank_attack(req: BankAttackRequest = BankAttackRequest()):
-    with state_lock:
-        if 'transactions' not in current_state:
-            current_state['transactions'] = []
-            
-        heist_id = f"COSMOS-MITM-{int(time.time())}"
-        amount = req.amount if hasattr(req, 'amount') else 94400000
-        target = req.target if hasattr(req, 'target') else "Cosmos Core Banking ATM Gateway"
-
-        tx = {
-            'id': heist_id,
-            'amount': amount,
-            'time': "Just now",
-            'decision': 'REJECT',
-            'attack_mode': 'ROGUE_PROXY_MITM',
-            'verified': True,
-            'qber': 0.284,
-            's_val': 1.412,
-            'error': "Rogue ATM Switch MITM Interception — No-Cloning Wave-Function Collapse"
-        }
-        current_state['transactions'].insert(0, tx)
-        
-        # Force state telemetry to reflect the physical quantum breakdown
-        current_state['latest_decision'] = 'REJECT'
-        current_state['attack_mode'] = 'IMPERSONATION'
-        current_state['attribution'] = 'ROGUE_PROXY_MITM'
-        current_state['s'] = 1.412
-        current_state['qber'] = 0.284
-        current_state['fidelity'] = 0.716
-        current_state['entropy'] = 0.0
-        current_state['sprt_decision'] = 'REJECT'
-        current_state['sprt_trace'] = [0.0, 0.42, 1.15, 2.08, 3.12, 4.25, 4.88]
-        current_state['chsh_history'].append(1.412)
-        if len(current_state['chsh_history']) > 20:
-            current_state['chsh_history'].pop(0)
-
-    # Record forensic incident in security event log
-    report = {
-        'session_id': 'COSMOS-HEIST',
-        'decision': 'REJECT',
-        'qber': 0.284,
-        'statistics': {
-            'decision': 'REJECT',
-            'qber': 0.284,
-            'chsh': {'s': 1.412},
-            'sprt': {'trace': [0.0, 0.42, 1.15, 2.08, 3.12, 4.25, 4.88], 'upper': 4.60, 'lower': -4.60},
-            'entropy': 0.0
-        },
-        'attribution': {'attack_class': 'ROGUE_PROXY_MITM', 'confidence': 0.99},
-        'message': f"🚨 CRITICAL INTERCEPTION: Rogue ATM Switch MITM Interception blocked. ₹{amount:,} preserved at physical layer."
-    }
-    log.append(report)
-    
-    return {
-        "status": "blocked",
-        "heist_id": heist_id,
-        "target": target,
-        "amount": amount,
-        "decision": "REJECT",
-        "attack_mode": "ROGUE_PROXY_MITM",
-        "qber": 0.284,
-        "s_val": 1.412,
-        "sprt_decision": "REJECT",
-        "message": "Wave-function collapsed by rogue proxy. Transaction rejected by QDS at physical layer."
-    }
 
 class FailedPayment(BaseModel):
     error_code: str
