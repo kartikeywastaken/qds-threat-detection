@@ -836,6 +836,287 @@
       font-weight: 600;
       color: var(--ink-0);
     }
+
+    /* ================= AUTONOMOUS GUIDED TOUR SYSTEM STYLES ================= */
+    .tour-scrim {
+      position: fixed;
+      inset: 0;
+      background: rgba(10, 14, 22, 0.72);
+      backdrop-filter: blur(2.5px);
+      z-index: 9998;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.35s ease;
+    }
+
+    .tour-scrim.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .tour-spotlight {
+      position: fixed;
+      z-index: 9999;
+      pointer-events: none;
+      border-radius: 8px;
+      border: 2px solid var(--blue);
+      box-shadow: 0 0 0 4px rgba(56, 189, 248, 0.35), 0 0 35px rgba(56, 189, 248, 0.45);
+      opacity: 0;
+      transition: top 0.35s cubic-bezier(0.2, 0.9, 0.3, 1),
+        left 0.35s cubic-bezier(0.2, 0.9, 0.3, 1),
+        width 0.35s cubic-bezier(0.2, 0.9, 0.3, 1),
+        height 0.35s cubic-bezier(0.2, 0.9, 0.3, 1),
+        opacity 0.25s ease;
+      animation: tour-spotlight-pulse 2s ease-in-out infinite;
+    }
+
+    .tour-spotlight.active {
+      opacity: 1;
+    }
+
+    @keyframes tour-spotlight-pulse {
+
+      0%,
+      100% {
+        box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.4), 0 0 25px rgba(56, 189, 248, 0.35);
+      }
+
+      50% {
+        box-shadow: 0 0 0 6px rgba(56, 189, 248, 0.65), 0 0 45px rgba(56, 189, 248, 0.6);
+      }
+    }
+
+    .tour-pointer {
+      position: fixed;
+      z-index: 10000;
+      pointer-events: none;
+      background: var(--blue);
+      color: #ffffff;
+      padding: 5px 12px;
+      border-radius: 20px;
+      font-family: var(--mono);
+      font-size: 10.5px;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.4);
+      opacity: 0;
+      transition: top 0.35s cubic-bezier(0.2, 0.9, 0.3, 1),
+        left 0.35s cubic-bezier(0.2, 0.9, 0.3, 1),
+        opacity 0.25s ease;
+    }
+
+    .tour-pointer.active {
+      opacity: 1;
+    }
+
+    .tour-card {
+      position: fixed;
+      z-index: 10001;
+      width: 440px;
+      max-width: calc(100vw - 32px);
+      background: var(--surface);
+      border: 1.5px solid var(--blue-soft);
+      border-radius: 12px;
+      box-shadow: 0 16px 48px rgba(0, 0, 0, 0.45);
+      opacity: 0;
+      transform: scale(0.95);
+      pointer-events: none;
+      transition: top 0.35s cubic-bezier(0.2, 0.9, 0.3, 1),
+        left 0.35s cubic-bezier(0.2, 0.9, 0.3, 1),
+        opacity 0.25s ease,
+        transform 0.25s ease;
+      overflow: hidden;
+    }
+
+    .tour-card.active {
+      opacity: 1;
+      transform: scale(1);
+      pointer-events: auto;
+    }
+
+    .tour-card-header {
+      padding: 14px 18px 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--border-soft);
+      background: var(--surface-raised);
+    }
+
+    .tour-step-badge {
+      background: var(--blue-tint);
+      color: var(--blue);
+      font-family: var(--mono);
+      font-size: 10px;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 4px;
+      letter-spacing: 0.05em;
+    }
+
+    .tour-category-tag {
+      font-family: var(--sans);
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--ink-2);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .tour-btn-close {
+      background: transparent;
+      border: none;
+      color: var(--ink-3);
+      font-size: 16px;
+      cursor: pointer;
+      line-height: 1;
+      padding: 4px 6px;
+      border-radius: 4px;
+      transition: color 0.15s ease, background 0.15s ease;
+    }
+
+    .tour-btn-close:hover {
+      color: var(--red);
+      background: rgba(239, 68, 68, 0.1);
+    }
+
+    .tour-progress-track {
+      height: 3px;
+      background: var(--border-soft);
+      width: 100%;
+      overflow: hidden;
+    }
+
+    .tour-progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--blue), var(--green));
+      width: 0%;
+      transition: width 0.08s linear;
+    }
+
+    .tour-card-body {
+      padding: 18px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .tour-card-title {
+      font-family: var(--sans);
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--ink-0);
+      line-height: 1.3;
+    }
+
+    .tour-card-desc {
+      font-family: var(--sans);
+      font-size: 13px;
+      color: var(--ink-1);
+      line-height: 1.55;
+    }
+
+    .tour-card-tip {
+      background: var(--bg-inset);
+      border-left: 3px solid var(--blue);
+      padding: 9px 12px;
+      border-radius: 4px;
+      font-family: var(--sans);
+      font-size: 12px;
+      color: var(--ink-1);
+      line-height: 1.45;
+    }
+
+    .tour-card-footer {
+      padding: 12px 18px;
+      background: var(--surface-raised);
+      border-top: 1px solid var(--border-soft);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .tour-controls-left,
+    .tour-controls-right {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .tour-btn {
+      border-radius: var(--radius-sm);
+      font-family: var(--sans);
+      font-size: 12px;
+      font-weight: 600;
+      padding: 7px 14px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      transition: all 0.15s ease;
+    }
+
+    .tour-btn:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+
+    .tour-btn-primary {
+      background: var(--blue);
+      color: #ffffff;
+      border: 1px solid var(--blue);
+      box-shadow: 0 2px 8px rgba(37, 99, 235, 0.25);
+    }
+
+    .tour-btn-primary:hover:not(:disabled) {
+      background: #1d4ed8;
+      border-color: #1d4ed8;
+    }
+
+    .tour-btn-secondary {
+      background: var(--surface);
+      color: var(--ink-1);
+      border: 1px solid var(--border);
+    }
+
+    .tour-btn-secondary:hover:not(:disabled) {
+      background: var(--bg-inset);
+      color: var(--ink-0);
+    }
+
+    .tour-btn-ghost {
+      background: transparent;
+      color: var(--ink-3);
+      border: none;
+      padding: 7px 10px;
+    }
+
+    .tour-btn-ghost:hover {
+      color: var(--red);
+    }
+
+    .tour-keyboard-hint {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--ink-3);
+    }
+
+    .tour-keyboard-hint kbd {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 3px;
+      padding: 1px 4px;
+      font-size: 9.5px;
+      color: var(--ink-1);
+    }
   </style>
 </head>
 
@@ -849,7 +1130,8 @@
       <div class="rail-section" id="railSectionGuide">
         <div class="rail-section-title">GUIDE</div>
         <div class="rail-nav">
-          <div class="rail-item" id="railTourItem" title="Start Interactive Tour (Press T)" onclick="startTour()" style="cursor:pointer;">
+          <div class="rail-item" id="railTourItem" title="Start Interactive Tour (Press T)" onclick="startTour()"
+            style="cursor:pointer;">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
               <path d="M12 2l2.4 7.2h7.6l-6.1 4.5 2.3 7.3-6.2-4.6-6.2 4.6 2.3-7.3-6.1-4.5h7.6z" />
             </svg>
@@ -861,7 +1143,8 @@
       <div class="rail-section" id="railSectionCore">
         <div class="rail-section-title">CORE</div>
         <div class="rail-nav">
-          <div class="rail-item active" id="railItemDashboard" title="Command Center" onclick="switchView('view-command-center', this)">
+          <div class="rail-item active" id="railItemDashboard" title="Command Center"
+            onclick="switchView('view-command-center', this)">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
               <rect x="3" y="3" width="18" height="18" rx="2" />
               <line x1="3" y1="9" x2="21" y2="9" />
@@ -874,7 +1157,8 @@
       <div class="rail-section" id="railSectionAnalysis">
         <div class="rail-section-title">ANALYSIS</div>
         <div class="rail-nav">
-          <div class="rail-item" id="railItemTelemetry" title="Statistical Tests" onclick="switchView('view-statistical-tests', this)">
+          <div class="rail-item" id="railItemTelemetry" title="Statistical Tests"
+            onclick="switchView('view-statistical-tests', this)">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
               <path d="M3 3v18h18M7 16l4-4 4 4 6-6" />
             </svg>
@@ -892,7 +1176,8 @@
       <div class="rail-section" id="railSectionSystem">
         <div class="rail-section-title">SYSTEM</div>
         <div class="rail-nav">
-          <div class="rail-item" id="railItemKeys" title="Key Management" onclick="switchView('view-key-management', this)">
+          <div class="rail-item" id="railItemKeys" title="Key Management"
+            onclick="switchView('view-key-management', this)">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
               <path
                 d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4" />
@@ -918,8 +1203,8 @@
 
     <div class="main">
 
-      <div class="masthead">
-        <div class="mh-identity">
+      <div class="masthead" id="mainMasthead">
+        <div class="mh-identity" id="mhIdentity">
           <div class="mh-logo"></div>
           <div class="mh-title">
             <span class="mh-sys">QDS-01 SYSTEM</span>
@@ -928,7 +1213,7 @@
           </div>
         </div>
 
-        <div class="mh-telemetry">
+        <div class="mh-telemetry" id="mhTelemetryBar">
           <div class="mh-tel-item">
             <span class="mh-tel-label">STATUS</span>
             <div style="display:flex; align-items:center; gap:6px;">
@@ -965,6 +1250,11 @@
               <div class="card-desc">live protocol trace & real-world attack simulation</div>
             </div>
             <div style="display:flex; align-items:center; gap:10px;">
+              <button id="btnTourToggle" onclick="startTour()"
+                style="background:linear-gradient(135deg, var(--blue) 0%, #1e40af 100%); color:#fff; border:none; padding:7px 14px; border-radius:var(--radius-sm); font-family:var(--sans); font-size:11.5px; font-weight:700; cursor:pointer; display:flex; align-items:center; gap:6px; box-shadow:0 2px 8px rgba(37,99,235,0.3); transition:all .15s ease;"
+                title="Start Autonomous Guided Tour (or Press 'T')">
+                <span>✨ Guided Tour [T]</span>
+              </button>
               <button id="soundToggleBtn" onclick="toggleSimAudio()"
                 style="background:var(--bg-inset); color:var(--ink-1); border:1px solid var(--border); padding:7px 12px; border-radius:var(--radius-sm); font-family:var(--mono); font-size:11px; font-weight:600; cursor:pointer; display:flex; align-items:center; gap:6px; transition:all .15s ease;">
                 <span id="soundIcon">🔊</span> <span id="soundText">SFX ON</span>
@@ -1014,225 +1304,266 @@
           </div>
 
           <div class="diagram-stage" style="padding: 20px; text-align:center;">
-            <svg class="diagram-svg" viewBox="0 0 1200 650" id="heroStage" style="background: var(--bg); border-radius: 8px;">
-    <!-- DEFINITIONS -->
-    <defs>
-        <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
-            <feGaussianBlur stdDeviation="3" result="blur" />
-            <feMerge>
-                <feMergeNode in="blur"/>
-                <feMergeNode in="SourceGraphic"/>
-            </feMerge>
-        </filter>
-        <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-            <path d="M 0 0 L 10 5 L 0 10 z" fill="var(--ink-2)" />
-        </marker>
-        <marker id="arrow-blue" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-            <path d="M 0 0 L 10 5 L 0 10 z" fill="var(--blue)" />
-        </marker>
-        <marker id="arrow-red" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-            <path d="M 0 0 L 10 5 L 0 10 z" fill="var(--red)" />
-        </marker>
-    </defs>
+            <svg class="diagram-svg" viewBox="0 0 1200 650" id="heroStage"
+              style="background: var(--bg); border-radius: 8px;">
+              <!-- DEFINITIONS -->
+              <defs>
+                <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+                  <feGaussianBlur stdDeviation="3" result="blur" />
+                  <feMerge>
+                    <feMergeNode in="blur" />
+                    <feMergeNode in="SourceGraphic" />
+                  </feMerge>
+                </filter>
+                <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6"
+                  orient="auto-start-reverse">
+                  <path d="M 0 0 L 10 5 L 0 10 z" fill="var(--ink-2)" />
+                </marker>
+                <marker id="arrow-blue" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6"
+                  orient="auto-start-reverse">
+                  <path d="M 0 0 L 10 5 L 0 10 z" fill="var(--blue)" />
+                </marker>
+                <marker id="arrow-red" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6"
+                  orient="auto-start-reverse">
+                  <path d="M 0 0 L 10 5 L 0 10 z" fill="var(--red)" />
+                </marker>
+              </defs>
 
-    <!-- TOP ROW (y = 80) -->
-    <!-- ALICE CARD (x = 50, y = 80) -->
-    <g id="aliceNode">
-      <rect x="50" y="80" width="180" height="120" rx="8" fill="var(--surface)" stroke="var(--ink-2)"/>
-      <text x="140" y="105" fill="var(--ink-1)" font-family="var(--sans)" font-size="14" font-weight="700" text-anchor="middle" letter-spacing="1">ALICE</text>
-      <rect x="70" y="125" width="140" height="50" rx="4" fill="var(--surface-raised)" stroke="var(--ink-2)"/>
-      <text x="140" y="145" fill="var(--ink-0)" font-family="var(--sans)" font-size="12" text-anchor="middle">Message</text>
-      <text x="140" y="165" fill="var(--ink-0)" font-family="var(--sans)" font-size="12" text-anchor="middle">+ Sign</text>
-    </g>
+              <!-- TOP ROW (y = 80) -->
+              <!-- ALICE CARD (x = 50, y = 80) -->
+              <g id="aliceNode">
+                <rect x="50" y="80" width="180" height="120" rx="8" fill="var(--surface)" stroke="var(--ink-2)" />
+                <text x="140" y="105" fill="var(--ink-1)" font-family="var(--sans)" font-size="14" font-weight="700"
+                  text-anchor="middle" letter-spacing="1">ALICE</text>
+                <rect x="70" y="125" width="140" height="50" rx="4" fill="var(--surface-raised)"
+                  stroke="var(--ink-2)" />
+                <text x="140" y="145" fill="var(--ink-0)" font-family="var(--sans)" font-size="12"
+                  text-anchor="middle">Message</text>
+                <text x="140" y="165" fill="var(--ink-0)" font-family="var(--sans)" font-size="12"
+                  text-anchor="middle">+ Sign</text>
+              </g>
 
-    <!-- Arrow Alice -> Channel -->
-    <path d="M230 140 L350 140" stroke="var(--blue)" stroke-width="2" marker-end="url(#arrow-blue)"/>
+              <!-- Arrow Alice -> Channel -->
+              <path d="M230 140 L350 140" stroke="var(--blue)" stroke-width="2" marker-end="url(#arrow-blue)" />
 
-    <!-- QUANTUM CHANNEL CARD (x = 350, y = 80) -->
-    <rect id="channelCard" x="350" y="80" width="500" height="120" rx="8" fill="var(--surface)" stroke="var(--blue)"/>
-    <text x="600" y="105" fill="var(--blue)" font-family="var(--sans)" font-size="14" font-weight="700" text-anchor="middle" letter-spacing="1">QUANTUM CHANNEL</text>
-    <rect x="400" y="125" width="400" height="50" rx="4" fill="var(--surface-raised)" stroke="var(--blue)"/>
-    <text x="600" y="155" fill="var(--ink-0)" font-family="var(--sans)" font-size="14" text-anchor="middle">Bell / GHZ Entanglement</text>
-    
-    <!-- Qubits track inside Quantum Channel -->
-    <line x1="420" y1="150" x2="780" y2="150" stroke="var(--blue)" stroke-dasharray="4 4" opacity="0.3"/>
+              <!-- QUANTUM CHANNEL CARD (x = 350, y = 80) -->
+              <rect id="channelCard" x="350" y="80" width="500" height="120" rx="8" fill="var(--surface)"
+                stroke="var(--blue)" />
+              <text x="600" y="105" fill="var(--blue)" font-family="var(--sans)" font-size="14" font-weight="700"
+                text-anchor="middle" letter-spacing="1">QUANTUM CHANNEL</text>
+              <rect x="400" y="125" width="400" height="50" rx="4" fill="var(--surface-raised)" stroke="var(--blue)" />
+              <text x="600" y="155" fill="var(--ink-0)" font-family="var(--sans)" font-size="14"
+                text-anchor="middle">Bell / GHZ Entanglement</text>
 
-    <!-- Arrow Channel -> Bob -->
-    <path d="M850 140 L970 140" stroke="var(--blue)" stroke-width="2" marker-end="url(#arrow-blue)"/>
+              <!-- Qubits track inside Quantum Channel -->
+              <line x1="420" y1="150" x2="780" y2="150" stroke="var(--blue)" stroke-dasharray="4 4" opacity="0.3" />
 
-    <!-- BOB CARD (x = 970, y = 80) -->
-    <rect x="970" y="80" width="180" height="120" rx="8" fill="var(--surface)" stroke="var(--ink-2)" id="bobCard"/>
-    <text x="1060" y="105" fill="var(--ink-1)" font-family="var(--sans)" font-size="14" font-weight="700" text-anchor="middle" letter-spacing="1">BOB</text>
-    <rect x="990" y="125" width="140" height="50" rx="4" fill="var(--surface-raised)" stroke="var(--ink-2)" id="bobInner"/>
-    <text x="1060" y="145" fill="var(--ink-0)" font-family="var(--sans)" font-size="12" text-anchor="middle">Measure</text>
-    <text x="1060" y="165" fill="var(--ink-2)" font-family="var(--mono)" font-size="12" text-anchor="middle">X  Y  Z</text>
+              <!-- Arrow Channel -> Bob -->
+              <path d="M850 140 L970 140" stroke="var(--blue)" stroke-width="2" marker-end="url(#arrow-blue)" />
 
-    <!-- MIDDLE ROW (y = 280) -->
-    
-    <!-- ATTACK INJECTION (Eve) (x = 450, y = 280) -->
-    <!-- Connection from Channel to Eve -->
-    <path id="attackArrow" d="M600 200 L600 265" stroke="var(--red)" stroke-width="2" marker-end="url(#arrow-red)" opacity="0" style="transition: opacity 0.3s"/>
-    <text id="attackLabel" x="600" y="240" fill="var(--red)" font-family="var(--sans)" font-size="12" text-anchor="middle" opacity="0" font-weight="bold" style="transition: opacity 0.3s">ATTACK INJECTION</text>
+              <!-- BOB CARD (x = 970, y = 80) -->
+              <rect x="970" y="80" width="180" height="120" rx="8" fill="var(--surface)" stroke="var(--ink-2)"
+                id="bobCard" />
+              <text x="1060" y="105" fill="var(--ink-1)" font-family="var(--sans)" font-size="14" font-weight="700"
+                text-anchor="middle" letter-spacing="1">BOB</text>
+              <rect x="990" y="125" width="140" height="50" rx="4" fill="var(--surface-raised)" stroke="var(--ink-2)"
+                id="bobInner" />
+              <text x="1060" y="145" fill="var(--ink-0)" font-family="var(--sans)" font-size="12"
+                text-anchor="middle">Measure</text>
+              <text x="1060" y="165" fill="var(--ink-2)" font-family="var(--mono)" font-size="12" text-anchor="middle">X
+                Y Z</text>
 
-    <rect id="eveCard" x="450" y="280" width="300" height="120" rx="8" fill="var(--surface)" stroke="var(--ink-2)" style="transition: stroke 0.3s"/>
-    <text x="600" y="305" fill="var(--ink-1)" font-family="var(--sans)" font-size="14" font-weight="700" text-anchor="middle" letter-spacing="1">EVE</text>
-    <rect id="eveInner" x="470" y="325" width="260" height="50" rx="4" fill="var(--surface-raised)" stroke="var(--ink-2)" style="transition: stroke 0.3s"/>
-    <text id="eveAction" x="600" y="355" fill="var(--ink-0)" font-family="var(--sans)" font-size="14" text-anchor="middle">Tampering</text>
+              <!-- MIDDLE ROW (y = 280) -->
 
-    <!-- Connection Eve to Stats -->
-    <path id="eveStatsArrow" d="M750 340 L880 340" stroke="var(--red)" stroke-width="2" marker-end="url(#arrow-red)" opacity="0" style="transition: opacity 0.3s"/>
-    <!-- Connection Bob to Stats -->
-    <path d="M1060 200 L1060 265" stroke="var(--blue)" stroke-width="2" marker-end="url(#arrow-blue)"/>
+              <!-- ATTACK INJECTION (Eve) (x = 450, y = 280) -->
+              <!-- Connection from Channel to Eve -->
+              <path id="attackArrow" d="M600 200 L600 265" stroke="var(--red)" stroke-width="2"
+                marker-end="url(#arrow-red)" opacity="0" style="transition: opacity 0.3s" />
+              <text id="attackLabel" x="600" y="240" fill="var(--red)" font-family="var(--sans)" font-size="12"
+                text-anchor="middle" opacity="0" font-weight="bold" style="transition: opacity 0.3s">ATTACK
+                INJECTION</text>
 
-    <!-- STATS CARD (x = 900, y = 280) -->
-    <rect id="statsCard" x="900" y="280" width="250" height="120" rx="8" fill="var(--surface)" stroke="var(--ink-2)"/>
-    <text x="1025" y="305" fill="var(--ink-1)" font-family="var(--sans)" font-size="14" font-weight="700" text-anchor="middle" letter-spacing="1">VERIFICATION</text>
-    <rect x="920" y="325" width="210" height="50" rx="4" fill="var(--surface-raised)" stroke="var(--ink-2)"/>
-    <text x="1025" y="355" fill="var(--ink-0)" font-family="var(--sans)" font-size="14" text-anchor="middle">Statistical Analysis</text>
+              <rect id="eveCard" x="450" y="280" width="300" height="120" rx="8" fill="var(--surface)"
+                stroke="var(--ink-2)" style="transition: stroke 0.3s" />
+              <text x="600" y="305" fill="var(--ink-1)" font-family="var(--sans)" font-size="14" font-weight="700"
+                text-anchor="middle" letter-spacing="1">EVE</text>
+              <rect id="eveInner" x="470" y="325" width="260" height="50" rx="4" fill="var(--surface-raised)"
+                stroke="var(--ink-2)" style="transition: stroke 0.3s" />
+              <text id="eveAction" x="600" y="355" fill="var(--ink-0)" font-family="var(--sans)" font-size="14"
+                text-anchor="middle">Tampering</text>
 
-    <!-- BOTTOM ROW (y = 480) -->
-    <!-- Connection Stats to Decision -->
-    <path d="M1025 400 L1025 435 L600 435 L600 465" stroke="var(--ink-3)" stroke-width="2" marker-end="url(#arrow)"/>
+              <!-- Connection Eve to Stats -->
+              <path id="eveStatsArrow" d="M750 340 L880 340" stroke="var(--red)" stroke-width="2"
+                marker-end="url(#arrow-red)" opacity="0" style="transition: opacity 0.3s" />
+              <!-- Connection Bob to Stats -->
+              <path d="M1060 200 L1060 265" stroke="var(--blue)" stroke-width="2" marker-end="url(#arrow-blue)" />
 
-    <!-- DECISION CARD (x = 400, y = 480) -->
-    <rect id="decisionCard" x="400" y="480" width="400" height="150" rx="8" fill="var(--surface)" stroke="var(--ink-2)" style="transition: stroke 0.3s"/>
-    <text x="600" y="505" fill="var(--ink-1)" font-family="var(--sans)" font-size="14" font-weight="700" text-anchor="middle" letter-spacing="1">THREAT DECISION</text>
-    <rect id="decisionInner" x="420" y="520" width="360" height="90" rx="4" fill="var(--surface-raised)" stroke="var(--ink-2)" style="transition: stroke 0.3s"/>
-    
-    <text x="440" y="545" fill="var(--ink-2)" font-family="var(--mono)" font-size="14">Bell S = <tspan id="sValDec" fill="var(--ink-0)">2.00</tspan></text>
-    <text x="440" y="570" fill="var(--ink-2)" font-family="var(--mono)" font-size="14">Bound = 2.00</text>
-    <text x="440" y="595" fill="var(--ink-2)" font-family="var(--mono)" font-size="14">Margin = <tspan id="sDeltaDec" fill="var(--ink-0)">+0.00</tspan></text>
-    <text id="verdictTextDec" x="650" y="570" fill="var(--ink-2)" font-family="var(--sans)" font-size="18" font-weight="800" text-anchor="middle" style="transition: fill 0.3s">[ PENDING ]</text>
+              <!-- STATS CARD (x = 900, y = 280) -->
+              <rect id="statsCard" x="900" y="280" width="250" height="120" rx="8" fill="var(--surface)"
+                stroke="var(--ink-2)" />
+              <text x="1025" y="305" fill="var(--ink-1)" font-family="var(--sans)" font-size="14" font-weight="700"
+                text-anchor="middle" letter-spacing="1">VERIFICATION</text>
+              <rect x="920" y="325" width="210" height="50" rx="4" fill="var(--surface-raised)" stroke="var(--ink-2)" />
+              <text x="1025" y="355" fill="var(--ink-0)" font-family="var(--sans)" font-size="14"
+                text-anchor="middle">Statistical Analysis</text>
 
-    <!-- ================= BANK HEIST SIMULATION DYNAMIC SVG LAYER ================= -->
-    <g id="heistSvgLayer">
-      <!-- Heist Top HUD Banner -->
-      <g id="heistSvgBanner" style="opacity:0; transition:opacity 0.4s ease;">
-        <rect x="300" y="12" width="600" height="42" rx="10" fill="var(--surface-raised)"
-          stroke="var(--red)" stroke-width="1.5" stroke-dasharray="6 3" />
-        <circle cx="324" cy="33" r="6" fill="var(--red)">
-          <animate attributeName="opacity" values="1;0.2;1" dur="1s" repeatCount="indefinite" />
-        </circle>
-        <text x="340" y="28" font-family="var(--sans)" font-size="12" font-weight="700" fill="var(--red)"
-          id="heistSvgBannerTitle">⚡ BANK HEIST SIMULATION ACTIVE</text>
-        <text x="340" y="44" font-family="var(--mono)" font-size="10" fill="var(--ink-2)"
-          id="heistSvgBannerSub">Cosmos Bank MITM Blueprint · Quantum Physical Layer Enforcement</text>
-      </g>
+              <!-- BOTTOM ROW (y = 480) -->
+              <!-- Connection Stats to Decision -->
+              <path d="M1025 400 L1025 435 L600 435 L600 465" stroke="var(--ink-3)" stroke-width="2"
+                marker-end="url(#arrow)" />
 
-      <!-- High-Value SWIFT Authorization Packet Capsule -->
-      <g id="heistPacketGroup" transform="translate(150, 140)"
-        style="opacity:0; transition:transform 0.8s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.3s ease;">
-        <rect x="-75" y="-18" width="150" height="36" rx="8" fill="#1b2a4a" stroke="var(--blue-soft)"
-          stroke-width="1.8" filter="drop-shadow(0 0 8px rgba(78,111,146,0.6))" id="heistPacketBg" />
-        <circle cx="-55" cy="0" r="5" fill="#4ade80" id="heistPacketDot" />
-        <text x="-42" y="-3" font-family="var(--mono)" font-size="9" fill="#9db0c6"
-          letter-spacing="0.05em">SWIFT TX-94CR</text>
-        <text x="-42" y="11" font-family="var(--sans)" font-size="12" font-weight="700" fill="#ffffff"
-          id="heistPacketAmount">₹94,40,00,000</text>
-      </g>
+              <!-- DECISION CARD (x = 400, y = 480) -->
+              <rect id="decisionCard" x="400" y="480" width="400" height="150" rx="8" fill="var(--surface)"
+                stroke="var(--ink-2)" style="transition: stroke 0.3s" />
+              <text x="600" y="505" fill="var(--ink-1)" font-family="var(--sans)" font-size="14" font-weight="700"
+                text-anchor="middle" letter-spacing="1">THREAT DECISION</text>
+              <rect id="decisionInner" x="420" y="520" width="360" height="90" rx="4" fill="var(--surface-raised)"
+                stroke="var(--ink-2)" style="transition: stroke 0.3s" />
 
-      <!-- Eve's Rogue Proxy Interception Rig -->
-      <g id="heistEveRig" transform="translate(600, 340)"
-        style="opacity:0; transition:opacity 0.5s ease, transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);">
-        <!-- Rig Body -->
-        <rect x="-105" y="-30" width="210" height="74" rx="10" fill="#201515" stroke="var(--red)"
-          stroke-width="1.8" />
-        <!-- Diagonal warning stripe on header -->
-        <rect x="-105" y="-30" width="210" height="12" rx="4" fill="var(--red)" opacity="0.85" />
-        <text x="0" y="-21" font-family="var(--mono)" font-size="8.5" font-weight="700" fill="#ffffff"
-          text-anchor="middle" letter-spacing="0.1em">ROGUE ATM SWITCH · MITM PROXY</text>
-        <!-- Cyber terminal readout -->
-        <text x="-90" y="2" font-family="var(--mono)" font-size="9" fill="#fca5a5" id="heistEveLine1">TAP
-          0x7F: INTERCEPTING AUTH...</text>
-        <text x="-90" y="16" font-family="var(--mono)" font-size="9" fill="#ef4444" font-weight="700"
-          id="heistEveLine2">FORGE: REROUTE TO HK9982</text>
-        <text x="-90" y="32" font-family="var(--mono)" font-size="8" fill="#9ca3af"
-          id="heistEveLine3">CLONING QUANTUM STATES [TRYING...]</text>
+              <text x="440" y="545" fill="var(--ink-2)" font-family="var(--mono)" font-size="14">Bell S = <tspan
+                  id="sValDec" fill="var(--ink-0)">2.00</tspan></text>
+              <text x="440" y="570" fill="var(--ink-2)" font-family="var(--mono)" font-size="14">Bound = 2.00</text>
+              <text x="440" y="595" fill="var(--ink-2)" font-family="var(--mono)" font-size="14">Margin = <tspan
+                  id="sDeltaDec" fill="var(--ink-0)">+0.00</tspan></text>
+              <text id="verdictTextDec" x="650" y="570" fill="var(--ink-2)" font-family="var(--sans)" font-size="18"
+                font-weight="800" text-anchor="middle" style="transition: fill 0.3s">[ PENDING ]</text>
 
-        <!-- Tapping Clamps pointing upward to optical fiber channel at y=150 -->
-        <line x1="-50" y1="-30" x2="-50" y2="-140" stroke="var(--red)" stroke-width="2.2"
-          stroke-dasharray="4 3" class="probe-line" />
-        <line x1="50" y1="-30" x2="50" y2="-140" stroke="var(--red)" stroke-width="2.2" stroke-dasharray="4 3"
-          class="probe-line" />
-        <!-- Clamp claws onto the fiber at y=150 (dy = -190 from 340) -->
-        <polygon points="-58,-140 -42,-140 -50,-150" fill="var(--red)" />
-        <polygon points="42,-140 58,-140 50,-150" fill="var(--red)" />
-        <circle cx="-50" cy="-140" r="4" fill="none" stroke="var(--red)" stroke-width="1.5">
-          <animate attributeName="r" values="4;9;4" dur="1.2s" repeatCount="indefinite" />
-          <animate attributeName="opacity" values="1;0.2;1" dur="1.2s" repeatCount="indefinite" />
-        </circle>
-        <circle cx="50" cy="-140" r="4" fill="none" stroke="var(--red)" stroke-width="1.5">
-          <animate attributeName="r" values="4;9;4" dur="1.2s" repeatCount="indefinite" />
-          <animate attributeName="opacity" values="1;0.2;1" dur="1.2s" repeatCount="indefinite" />
-        </circle>
-      </g>
+              <!-- ================= BANK HEIST SIMULATION DYNAMIC SVG LAYER ================= -->
+              <g id="heistSvgLayer">
+                <!-- Heist Top HUD Banner -->
+                <g id="heistSvgBanner" style="opacity:0; transition:opacity 0.4s ease;">
+                  <rect x="300" y="12" width="600" height="42" rx="10" fill="var(--surface-raised)" stroke="var(--red)"
+                    stroke-width="1.5" stroke-dasharray="6 3" />
+                  <circle cx="324" cy="33" r="6" fill="var(--red)">
+                    <animate attributeName="opacity" values="1;0.2;1" dur="1s" repeatCount="indefinite" />
+                  </circle>
+                  <text x="340" y="28" font-family="var(--sans)" font-size="12" font-weight="700" fill="var(--red)"
+                    id="heistSvgBannerTitle">⚡ BANK HEIST SIMULATION ACTIVE</text>
+                  <text x="340" y="44" font-family="var(--mono)" font-size="10" fill="var(--ink-2)"
+                    id="heistSvgBannerSub">Cosmos Bank MITM Blueprint · Quantum Physical Layer Enforcement</text>
+                </g>
 
-      <!-- Quantum Wave-Function Collapse & Shockwave Layer -->
-      <g id="heistCollapseGroup" transform="translate(600, 150)" style="opacity:0; pointer-events:none;">
-        <!-- Shockwave expanding concentric rings -->
-        <circle id="heistShockwave1" cx="0" cy="0" r="10" fill="none" stroke="var(--red)" stroke-width="3"
-          opacity="0" />
-        <circle id="heistShockwave2" cx="0" cy="0" r="10" fill="none" stroke="#f87171" stroke-width="2"
-          opacity="0" />
+                <!-- High-Value SWIFT Authorization Packet Capsule -->
+                <g id="heistPacketGroup" transform="translate(150, 140)"
+                  style="opacity:0; transition:transform 0.8s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.3s ease;">
+                  <rect x="-75" y="-18" width="150" height="36" rx="8" fill="#1b2a4a" stroke="var(--blue-soft)"
+                    stroke-width="1.8" filter="drop-shadow(0 0 8px rgba(78,111,146,0.6))" id="heistPacketBg" />
+                  <circle cx="-55" cy="0" r="5" fill="#4ade80" id="heistPacketDot" />
+                  <text x="-42" y="-3" font-family="var(--mono)" font-size="9" fill="#9db0c6"
+                    letter-spacing="0.05em">SWIFT TX-94CR</text>
+                  <text x="-42" y="11" font-family="var(--sans)" font-size="12" font-weight="700" fill="#ffffff"
+                    id="heistPacketAmount">₹94,40,00,000</text>
+                </g>
 
-        <!-- Particle Burst sparks -->
-        <g id="heistSparks">
-          <line x1="0" y1="0" x2="-45" y2="-45" stroke="#ef4444" stroke-width="2" stroke-linecap="round" />
-          <line x1="0" y1="0" x2="45" y2="-45" stroke="#ef4444" stroke-width="2" stroke-linecap="round" />
-          <line x1="0" y1="0" x2="-55" y2="25" stroke="#f87171" stroke-width="2" stroke-linecap="round" />
-          <line x1="0" y1="0" x2="55" y2="25" stroke="#f87171" stroke-width="2" stroke-linecap="round" />
-          <line x1="0" y1="0" x2="0" y2="-60" stroke="#dc2626" stroke-width="2.5" stroke-linecap="round" />
-          <line x1="0" y1="0" x2="-65" y2="-10" stroke="#fca5a5" stroke-width="2" stroke-linecap="round" />
-          <line x1="0" y1="0" x2="65" y2="-10" stroke="#fca5a5" stroke-width="2" stroke-linecap="round" />
-          <line x1="0" y1="0" x2="0" y2="55" stroke="#dc2626" stroke-width="2.5" stroke-linecap="round" />
-        </g>
+                <!-- Eve's Rogue Proxy Interception Rig -->
+                <g id="heistEveRig" transform="translate(600, 340)"
+                  style="opacity:0; transition:opacity 0.5s ease, transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);">
+                  <!-- Rig Body -->
+                  <rect x="-105" y="-30" width="210" height="74" rx="10" fill="#201515" stroke="var(--red)"
+                    stroke-width="1.8" />
+                  <!-- Diagonal warning stripe on header -->
+                  <rect x="-105" y="-30" width="210" height="12" rx="4" fill="var(--red)" opacity="0.85" />
+                  <text x="0" y="-21" font-family="var(--mono)" font-size="8.5" font-weight="700" fill="#ffffff"
+                    text-anchor="middle" letter-spacing="0.1em">ROGUE ATM SWITCH · MITM PROXY</text>
+                  <!-- Cyber terminal readout -->
+                  <text x="-90" y="2" font-family="var(--mono)" font-size="9" fill="#fca5a5" id="heistEveLine1">TAP
+                    0x7F: INTERCEPTING AUTH...</text>
+                  <text x="-90" y="16" font-family="var(--mono)" font-size="9" fill="#ef4444" font-weight="700"
+                    id="heistEveLine2">FORGE: REROUTE TO HK9982</text>
+                  <text x="-90" y="32" font-family="var(--mono)" font-size="8" fill="#9ca3af" id="heistEveLine3">CLONING
+                    QUANTUM STATES [TRYING...]</text>
 
-        <!-- Warning badge -->
-        <g id="heistNoCloningBadge" transform="translate(0, -45)">
-          <rect x="-130" y="-14" width="260" height="28" rx="6" fill="#fee2e2" stroke="#dc2626"
-            stroke-width="1.4" />
-          <text x="0" y="4" font-family="var(--sans)" font-size="11" font-weight="700" fill="#b91c1c"
-            text-anchor="middle">⚡ NO-CLONING THEOREM: STATE COLLAPSED</text>
-        </g>
-      </g>
+                  <!-- Tapping Clamps pointing upward to optical fiber channel at y=150 -->
+                  <line x1="-50" y1="-30" x2="-50" y2="-140" stroke="var(--red)" stroke-width="2.2"
+                    stroke-dasharray="4 3" class="probe-line" />
+                  <line x1="50" y1="-30" x2="50" y2="-140" stroke="var(--red)" stroke-width="2.2" stroke-dasharray="4 3"
+                    class="probe-line" />
+                  <!-- Clamp claws onto the fiber at y=150 (dy = -190 from 340) -->
+                  <polygon points="-58,-140 -42,-140 -50,-150" fill="var(--red)" />
+                  <polygon points="42,-140 58,-140 50,-150" fill="var(--red)" />
+                  <circle cx="-50" cy="-140" r="4" fill="none" stroke="var(--red)" stroke-width="1.5">
+                    <animate attributeName="r" values="4;9;4" dur="1.2s" repeatCount="indefinite" />
+                    <animate attributeName="opacity" values="1;0.2;1" dur="1.2s" repeatCount="indefinite" />
+                  </circle>
+                  <circle cx="50" cy="-140" r="4" fill="none" stroke="var(--red)" stroke-width="1.5">
+                    <animate attributeName="r" values="4;9;4" dur="1.2s" repeatCount="indefinite" />
+                    <animate attributeName="opacity" values="1;0.2;1" dur="1.2s" repeatCount="indefinite" />
+                  </circle>
+                </g>
 
-      <!-- Bob's Hexagonal Quantum Shield Forcefield -->
-      <g id="heistBobShield" transform="translate(1060, 140)"
-        style="opacity:0; transition:opacity 0.4s ease;">
-        <!-- Hexagonal Shield Perimeter wrapping Bob Card -->
-        <polygon points="0,-75 105,-40 105,40 0,75 -105,40 -105,-40" fill="rgba(253, 232, 228, 0.4)"
-          stroke="var(--red)" stroke-width="3" stroke-dasharray="12 4" id="heistShieldPoly"
-          style="animation: shield-pulsing 1.6s ease-in-out infinite;" />
-        <!-- Shield Deflection Sparks -->
-        <circle cx="-105" cy="0" r="8" fill="none" stroke="var(--red)" stroke-width="2" />
-        <line x1="-115" y1="-12" x2="-95" y2="12" stroke="var(--red)" stroke-width="2.5" />
-        <line x1="-95" y1="-12" x2="-115" y2="12" stroke="var(--red)" stroke-width="2.5" />
-        <!-- Beam sever indicator -->
-        <line x1="-140" y1="-25" x2="-130" y2="25" stroke="var(--red)" stroke-width="3.5"
-          stroke-linecap="round" />
-        <!-- Shield status label -->
-        <rect x="-80" y="80" width="160" height="24" rx="6" fill="#7f1d1d" />
-        <text x="0" y="96" font-family="var(--mono)" font-size="10" font-weight="700" fill="#ffffff"
-          text-anchor="middle" letter-spacing="0.05em">SHIELD ACTIVE · LOCKED</text>
-      </g>
-    </g>
+                <!-- Quantum Wave-Function Collapse & Shockwave Layer -->
+                <g id="heistCollapseGroup" transform="translate(600, 150)" style="opacity:0; pointer-events:none;">
+                  <!-- Shockwave expanding concentric rings -->
+                  <circle id="heistShockwave1" cx="0" cy="0" r="10" fill="none" stroke="var(--red)" stroke-width="3"
+                    opacity="0" />
+                  <circle id="heistShockwave2" cx="0" cy="0" r="10" fill="none" stroke="#f87171" stroke-width="2"
+                    opacity="0" />
 
-    <!-- Particles layer -->
-    <g id="qubitParticle1" opacity="0" style="transition: transform 1.5s linear, opacity 0.2s; transform: translate(430px, 150px);">
-        <circle cx="0" cy="0" r="10" fill="var(--blue)" filter="url(#glow)"/>
-        <text y="3" fill="white" font-family="var(--mono)" font-size="10" font-weight="bold" text-anchor="middle">|ψ⟩</text>
-    </g>
-    <g id="qubitParticle2" opacity="0" style="transition: transform 1.5s linear, opacity 0.2s; transform: translate(430px, 150px);">
-        <circle cx="0" cy="0" r="10" fill="var(--blue)" filter="url(#glow)"/>
-        <text y="3" fill="white" font-family="var(--mono)" font-size="10" font-weight="bold" text-anchor="middle">|ψ⟩</text>
-    </g>
-    <g id="qubitParticle3" opacity="0" style="transition: transform 1.5s linear, opacity 0.2s; transform: translate(430px, 150px);">
-        <circle cx="0" cy="0" r="10" fill="var(--blue)" filter="url(#glow)"/>
-        <text y="3" fill="white" font-family="var(--mono)" font-size="10" font-weight="bold" text-anchor="middle">|ψ⟩</text>
-    </g>
-</svg>
-            <div id="animationExplanation" style="margin-top: 20px; font-family: var(--sans); font-size: 15px; font-weight: 500; color: var(--ink-0); background: var(--bg-inset); padding: 16px; border-radius: 8px; border: 1px solid var(--border);">
-               Initializing Quantum Channel...
+                  <!-- Particle Burst sparks -->
+                  <g id="heistSparks">
+                    <line x1="0" y1="0" x2="-45" y2="-45" stroke="#ef4444" stroke-width="2" stroke-linecap="round" />
+                    <line x1="0" y1="0" x2="45" y2="-45" stroke="#ef4444" stroke-width="2" stroke-linecap="round" />
+                    <line x1="0" y1="0" x2="-55" y2="25" stroke="#f87171" stroke-width="2" stroke-linecap="round" />
+                    <line x1="0" y1="0" x2="55" y2="25" stroke="#f87171" stroke-width="2" stroke-linecap="round" />
+                    <line x1="0" y1="0" x2="0" y2="-60" stroke="#dc2626" stroke-width="2.5" stroke-linecap="round" />
+                    <line x1="0" y1="0" x2="-65" y2="-10" stroke="#fca5a5" stroke-width="2" stroke-linecap="round" />
+                    <line x1="0" y1="0" x2="65" y2="-10" stroke="#fca5a5" stroke-width="2" stroke-linecap="round" />
+                    <line x1="0" y1="0" x2="0" y2="55" stroke="#dc2626" stroke-width="2.5" stroke-linecap="round" />
+                  </g>
+
+                  <!-- Warning badge -->
+                  <g id="heistNoCloningBadge" transform="translate(0, -45)">
+                    <rect x="-130" y="-14" width="260" height="28" rx="6" fill="#fee2e2" stroke="#dc2626"
+                      stroke-width="1.4" />
+                    <text x="0" y="4" font-family="var(--sans)" font-size="11" font-weight="700" fill="#b91c1c"
+                      text-anchor="middle">⚡ NO-CLONING THEOREM: STATE COLLAPSED</text>
+                  </g>
+                </g>
+
+                <!-- Bob's Hexagonal Quantum Shield Forcefield -->
+                <g id="heistBobShield" transform="translate(1060, 140)"
+                  style="opacity:0; transition:opacity 0.4s ease;">
+                  <!-- Hexagonal Shield Perimeter wrapping Bob Card -->
+                  <polygon points="0,-75 105,-40 105,40 0,75 -105,40 -105,-40" fill="rgba(253, 232, 228, 0.4)"
+                    stroke="var(--red)" stroke-width="3" stroke-dasharray="12 4" id="heistShieldPoly"
+                    style="animation: shield-pulsing 1.6s ease-in-out infinite;" />
+                  <!-- Shield Deflection Sparks -->
+                  <circle cx="-105" cy="0" r="8" fill="none" stroke="var(--red)" stroke-width="2" />
+                  <line x1="-115" y1="-12" x2="-95" y2="12" stroke="var(--red)" stroke-width="2.5" />
+                  <line x1="-95" y1="-12" x2="-115" y2="12" stroke="var(--red)" stroke-width="2.5" />
+                  <!-- Beam sever indicator -->
+                  <line x1="-140" y1="-25" x2="-130" y2="25" stroke="var(--red)" stroke-width="3.5"
+                    stroke-linecap="round" />
+                  <!-- Shield status label -->
+                  <rect x="-80" y="80" width="160" height="24" rx="6" fill="#7f1d1d" />
+                  <text x="0" y="96" font-family="var(--mono)" font-size="10" font-weight="700" fill="#ffffff"
+                    text-anchor="middle" letter-spacing="0.05em">SHIELD ACTIVE · LOCKED</text>
+                </g>
+              </g>
+
+              <!-- Particles layer -->
+              <g id="qubitParticle1" opacity="0"
+                style="transition: transform 1.5s linear, opacity 0.2s; transform: translate(430px, 150px);">
+                <circle cx="0" cy="0" r="10" fill="var(--blue)" filter="url(#glow)" />
+                <text y="3" fill="white" font-family="var(--mono)" font-size="10" font-weight="bold"
+                  text-anchor="middle">|ψ⟩</text>
+              </g>
+              <g id="qubitParticle2" opacity="0"
+                style="transition: transform 1.5s linear, opacity 0.2s; transform: translate(430px, 150px);">
+                <circle cx="0" cy="0" r="10" fill="var(--blue)" filter="url(#glow)" />
+                <text y="3" fill="white" font-family="var(--mono)" font-size="10" font-weight="bold"
+                  text-anchor="middle">|ψ⟩</text>
+              </g>
+              <g id="qubitParticle3" opacity="0"
+                style="transition: transform 1.5s linear, opacity 0.2s; transform: translate(430px, 150px);">
+                <circle cx="0" cy="0" r="10" fill="var(--blue)" filter="url(#glow)" />
+                <text y="3" fill="white" font-family="var(--mono)" font-size="10" font-weight="bold"
+                  text-anchor="middle">|ψ⟩</text>
+              </g>
+            </svg>
+            <div id="animationExplanation"
+              style="margin-top: 20px; font-family: var(--sans); font-size: 15px; font-weight: 500; color: var(--ink-0); background: var(--bg-inset); padding: 16px; border-radius: 8px; border: 1px solid var(--border);">
+              Initializing Quantum Channel...
             </div>
           </div>
 
@@ -1419,7 +1750,8 @@
             style="font-size:12px; font-weight:500; color:var(--ink-2); background:var(--bg-inset); padding:4px 10px; border-radius:4px;">Firestore
             Backed</span>
         </h2>
-        <div class="card" id="cardGlobalEvents" style="flex:1; overflow:hidden; display:flex; flex-direction:column; padding:0;">
+        <div class="card" id="cardGlobalEvents"
+          style="flex:1; overflow:hidden; display:flex; flex-direction:column; padding:0;">
           <div
             style="display:flex; padding:16px 24px; border-bottom:1px solid var(--border); font-weight:600; font-size:12px; color:var(--ink-2); text-transform:uppercase; letter-spacing:0.05em;">
             <div style="flex:1;">Timestamp / Session</div>
@@ -2494,19 +2826,19 @@
 
     // Global keyboard Escape handler for closing all modals & dismissing simulations
     window.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape') {
+    if (e.key === 'Escape') {
         closeForensicModal();
         closePaymentModal();
-        stopBankHeistSimulation();
+        stopBankHeistion();
       }
     });
 
     function downloadForensicDossier() {
       const dossier = {
         incident_id: "INC-COSMOS-94CR",
-        title: "Cosmos Bank 2018 Blueprint MITM Attack Interception",
+        title: "Cosmos Bank 2018 BlueprintITM Attack Interception",
         timestamp: new Date().toISOString(),
-        target_entity: "Cosmos Core Banking Switch & ATM Gateway",
+        target_entity: "Cosmos Corng Switch & ATM Gateway",
         attempted_theft_amount_inr: 94400000,
         funds_status: "100% PRESERVED - ZERO FUNDS DISBURSED",
         adversary_vector: "Internal ATM Switching Proxy Injection (Man-in-the-Middle)",
@@ -2778,7 +3110,8 @@
 
     <div class="tour-card-footer">
       <div class="tour-controls-left">
-        <button class="tour-btn tour-btn-secondary" id="tourBtnAutoPlay" onclick="toggleTourAutoPlay()" title="Toggle auto-advance (Space)">
+        <button class="tour-btn tour-btn-secondary" id="tourBtnAutoPlay" onclick="toggleTourAutoPlay()"
+          title="Toggle auto-advance (Space)">
           <span id="tourAutoPlayIcon">⏸</span> <span id="tourAutoPlayText">Pause</span>
         </button>
         <button class="tour-btn tour-btn-ghost" onclick="stopTour()" title="Exit Tour (Esc)">Exit</button>
@@ -2789,7 +3122,8 @@
       </div>
     </div>
 
-    <div style="padding:6px 18px; background:var(--bg-inset); border-top:1px solid var(--border-soft); display:flex; justify-content:space-between; align-items:center;">
+    <div
+      style="padding:6px 18px; background:var(--bg-inset); border-top:1px solid var(--border-soft); display:flex; justify-content:space-between; align-items:center;">
       <div class="tour-keyboard-hint">
         <span><kbd>T</kbd> Tour</span>
         <span>·</span>
@@ -2799,7 +3133,8 @@
         <span>·</span>
         <span><kbd>Esc</kbd> Exit</span>
       </div>
-      <div style="font-family:var(--mono); font-size:10px; color:var(--ink-2); font-weight:600;" id="tourTimerReadout">6.5s</div>
+      <div style="font-family:var(--mono); font-size:10px; color:var(--ink-2); font-weight:600;" id="tourTimerReadout">
+        6.5s</div>
     </div>
   </div>
 
