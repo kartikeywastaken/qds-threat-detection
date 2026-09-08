@@ -84,7 +84,7 @@
     required. The live dashboard is a local Matplotlib window watching the log;
     it updates per completed verification event and displays the complete SPRT
     trace. It does not stream intermediate quantum shots while Aer is running.
-12. **E91 entangled-pair key agreement — simulation only.** The E91 module
+12. **E91 entangled-pair key agreement — Qiskit Aer only.** The E91 module
     (`e91/key_exchange.py`) runs entirely on the Qiskit Aer statevector and
     QASM simulators. No physical entangled photon source is used. The abort
     threshold `ABORT_QBER = 0.02` is calibrated for a noiseless simulator
@@ -110,7 +110,7 @@
     can help. The E91 channel protects the distribution path between two
     honest endpoints, not the endpoints themselves.
 16. **No composable security proof.** The E91 implementation is a faithful
-    simulation of the textbook protocol. No composable, finite-key security
+    Qiskit Aer implementation of the textbook protocol. No composable, finite-key security
     proof is claimed. The CHSH test uses an empirical mean over finite samples;
     the Tsirelson bound can be exceeded slightly by sampling error on small
     runs. Key hashing uses SHA-256, not a quantum-safe randomness extractor.

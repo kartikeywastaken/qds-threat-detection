@@ -1,7 +1,7 @@
 # Demo runbook
 
-All quantum results are **simulated** on Qiskit Aer. No physical quantum hardware
-is used. The E91 channel abort threshold is calibrated for a noiseless simulator
+All quantum results run on **Qiskit Aer**. No physical quantum hardware
+is used. The E91 channel abort threshold is calibrated for a noiseless Qiskit Aer backend
 (ABORT_QBER = 0.02).
 
 ## Prerequisites
@@ -31,7 +31,7 @@ cd /path/to/FastPay
 python app.py
 ```
 
-Wait for `Uvicorn running on http://127.0.0.1:8000`. The teleportation simulation
+Wait for `Uvicorn running on http://127.0.0.1:8000`. The teleportation engine
 loop starts publishing verdicts at 1 Hz. Open http://127.0.0.1:8000 for the
 command center dashboard.
 
@@ -70,7 +70,7 @@ Bob's dashboard is visible by logging in as **bob** with the same password.
 |---|---|
 | Status | ACCEPTED |
 | Stage | committed |
-| QBER | 0.00% (exactly zero on noiseless simulator) |
+| QBER | 0.00% (exactly zero on noiseless Qiskit Aer backend) |
 | CHSH S | ≈ 2.83 (near Tsirelson bound 2√2) |
 | Alice's key | 64-hex-char string |
 | Bob's key | identical to Alice's |

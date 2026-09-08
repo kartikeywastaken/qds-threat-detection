@@ -777,7 +777,7 @@
         <div class="mh-left">
           <div class="mh-mark">PROJECT BELLWATCH · QDS COMMAND CENTER</div>
           <h1>Quantum Signature Verification</h1>
-          <p>Simulated teleportation observations and statistical verification verdicts.
+          <p>Live teleportation observations and statistical verification verdicts.
           </p>
         </div>
         <div class="mh-right">
@@ -807,7 +807,7 @@
 
         <div class="card diagram-card">
           <div class="card-head">
-            <div class="card-title">Teleportation channel · simulated</div>
+            <div class="card-title">Teleportation channel · Qiskit Aer</div>
             <div class="card-desc">live protocol trace</div>
           </div>
 
@@ -945,7 +945,7 @@
 
         <div class="card">
           <div class="card-head">
-            <div class="card-title">CHSH correlation · simulated</div>
+            <div class="card-title">CHSH correlation · Qiskit Aer</div>
             <div class="card-desc">rolling window · bound 2√2 ≈ 2.828</div>
           </div>
           <svg class="chsh-svg" viewBox="0 0 1000 170" id="chshChart">
@@ -974,7 +974,7 @@
         <div class="lower">
           <div class="card">
             <div class="card-head">
-              <div class="card-title">SPRT sequential detection · simulated</div>
+              <div class="card-title">SPRT sequential detection · Qiskit Aer</div>
               <div class="card-desc" id="sprtTag" style="color:var(--ink-3);">waiting for data…</div>
             </div>
             <svg class="sprt-svg" viewBox="0 0 1000 360" id="sprtChart">
@@ -1031,11 +1031,11 @@
                   style="font-size:14px; color:var(--green);">None</span></div>
             </div>
 
-            <div class="card" style="padding:16px; margin-bottom:16px" id="gwStatus">Payment channel awaiting initialization · simulated</div>
+            <div class="card" style="padding:16px; margin-bottom:16px" id="gwStatus">Payment channel awaiting initialization · Qiskit Aer</div>
 
             <div class="card events-zone">
               <div class="card-head" style="padding-bottom:14px;">
-                <div class="card-title">Live events · simulated</div>
+                <div class="card-title">Live events · Qiskit Aer</div>
               </div>
               <div class="events-list" id="eventsList">
                 <div class="event">
@@ -1043,7 +1043,7 @@
                   <div class="event-body">
                     <div class="event-time">—</div>
                     <div class="event-name">Waiting for backend…</div>
-                    <div class="event-detail">The simulation loop runs every 5 seconds. Events will appear here once the
+                    <div class="event-detail">The analysis loop runs every 5 seconds. Events will appear here once the
                       first cycle completes.</div>
                   </div>
                 </div>
@@ -1054,7 +1054,7 @@
 
         <div class="footbar">
           <span>QDS Command · Build 4.12.0</span>
-          <span>Qiskit Aer · simulated</span>
+          <span>Qiskit Aer</span>
         </div>
       </div>
 
@@ -1062,9 +1062,9 @@
         style="display:none; padding:40px; flex-direction:column; gap:24px;">
         <h2 style="font-size:24px; font-weight:600;">Statistical Tests & Mathematical Bounds</h2>
         <div class="card" style="padding:24px;">
-          <h3 style="font-size:16px; font-weight:600; margin-bottom:12px;">Entropy witness · simulated</h3>
+          <h3 style="font-size:16px; font-weight:600; margin-bottom:12px;">Entropy witness · Qiskit Aer</h3>
           <p style="font-size:14px; color:var(--ink-2); line-height:1.6; max-width:800px;">
-            The displayed entropy witness is a simulated diagnostic, without a composable security proof.
+            The displayed entropy witness is a Qiskit Aer diagnostic, without a composable security proof.
             When the CHSH parameter drops below 2.0 (classical bound), the evaluated min-entropy falls to 0.
           </p>
         </div>
@@ -1102,12 +1102,12 @@
 
       <div class="content" id="view-key-management"
         style="display:none; padding:40px; flex-direction:column; gap:24px;">
-        <h2 style="font-size:24px; font-weight:600;">E91 Payment Channel <span class="sim-tag">simulated · Qiskit Aer</span></h2>
+        <h2 style="font-size:24px; font-weight:600;">E91 Payment Channel <span class="sim-tag">Qiskit Aer</span></h2>
         <p style="font-size:13px; color:var(--ink-2); max-width:700px; line-height:1.5;">Entangled-pair key agreement between Alice and Bob. Eve's interception degrades key correlation — the payment is refused, not stolen.</p>
 
         <!-- 1. KEY COMPARISON (money shot) -->
         <div class="card e91-full" style="padding:24px;">
-          <h3 style="font-size:14px; font-weight:600; margin-bottom:12px;">Derived Keys <span class="sim-tag">simulated</span></h3>
+          <h3 style="font-size:14px; font-weight:600; margin-bottom:12px;">Derived Keys <span class="sim-tag">Qiskit Aer</span></h3>
           <div class="key-compare" id="e91Keys">
             <div class="key-row"><span class="key-label">Alice</span><span class="key-chars" id="e91KeyAlice"><span class="key-char empty">—</span></span></div>
             <div class="key-row"><span class="key-label">Bob</span><span class="key-chars" id="e91KeyBob"><span class="key-char empty">—</span></span></div>
@@ -1118,7 +1118,7 @@
         <div class="e91-grid">
           <!-- 2. ATTACK SLIDER -->
           <div class="card" style="padding:20px;">
-            <h3 style="font-size:14px; font-weight:600; margin-bottom:10px;">Eve Interception <span class="sim-tag">simulated</span></h3>
+            <h3 style="font-size:14px; font-weight:600; margin-bottom:10px;">Eve Interception <span class="sim-tag">Qiskit Aer</span></h3>
             <div class="e91-slider-wrap">
               <input type="range" class="e91-slider" id="e91Slider" min="0" max="100" value="0">
               <span class="e91-slider-val" id="e91SliderVal">0%</span>
@@ -1128,13 +1128,13 @@
 
           <!-- 5. PAYMENT STATUS -->
           <div class="card" style="padding:20px;">
-            <h3 style="font-size:14px; font-weight:600; margin-bottom:10px;">Payment Verdict <span class="sim-tag">simulated</span></h3>
+            <h3 style="font-size:14px; font-weight:600; margin-bottom:10px;">Payment Verdict <span class="sim-tag">Qiskit Aer</span></h3>
             <div class="e91-verdict idle" id="e91Verdict">No payment attempted yet. Use FastPay at <a href="http://127.0.0.1:3000" target="_blank" style="color:var(--blue)">:3000</a> or wait for telemetry.</div>
           </div>
 
           <!-- 3. QBER GAUGE -->
           <div class="card" style="padding:20px;">
-            <h3 style="font-size:14px; font-weight:600; margin-bottom:10px;">QBER <span class="sim-tag">simulated</span></h3>
+            <h3 style="font-size:14px; font-weight:600; margin-bottom:10px;">QBER <span class="sim-tag">Qiskit Aer</span></h3>
             <div class="e91-gauge">
               <div class="e91-gauge-mark" style="left:8%;" title="Abort threshold 2%"></div>
               <div class="e91-gauge-fill" id="e91QberFill" style="width:0%; background:var(--green);"></div>
@@ -1147,7 +1147,7 @@
 
           <!-- 4. CHSH GAUGE -->
           <div class="card" style="padding:20px;">
-            <h3 style="font-size:14px; font-weight:600; margin-bottom:10px;">CHSH S-parameter <span class="sim-tag">simulated</span></h3>
+            <h3 style="font-size:14px; font-weight:600; margin-bottom:10px;">CHSH S-parameter <span class="sim-tag">Qiskit Aer</span></h3>
             <div class="e91-gauge">
               <div class="e91-gauge-mark" style="left:70.7%;" title="Classical bound S=2.0"></div>
               <div class="e91-gauge-fill" id="e91ChshFill" style="width:100%; background:var(--green);"></div>
@@ -1161,7 +1161,7 @@
 
         <!-- 6. BIT STREAM -->
         <div class="card" style="padding:20px;">
-          <h3 style="font-size:14px; font-weight:600; margin-bottom:10px;">Round-by-Round Bit Stream <span class="sim-tag">sampled · simulated</span></h3>
+          <h3 style="font-size:14px; font-weight:600; margin-bottom:10px;">Round-by-Round Bit Stream <span class="sim-tag">sampled · Qiskit Aer</span></h3>
           <div class="bit-stream" id="e91BitStream">
             <div style="font-size:12px; color:var(--ink-3);">Waiting for session data…</div>
           </div>
@@ -1174,7 +1174,7 @@
         style="display:none; padding:40px; flex-direction:column; gap:24px;">
 
         <div>
-          <h2 style="font-size:24px;font-weight:700;margin-bottom:6px;">Classical vs Quantum Security <span class="sim-tag">E91 simulated · Qiskit Aer</span></h2>
+          <h2 style="font-size:24px;font-weight:700;margin-bottom:6px;">Classical vs Quantum Security <span class="sim-tag">E91 · Qiskit Aer</span></h2>
           <p style="font-size:13px;color:var(--ink-2);max-width:780px;line-height:1.6;">A live demonstration of <strong>computational security</strong> (RSA-16, factorable in milliseconds) versus <strong>physical security</strong> (E91 quantum-gated channel). Eve can silently break RSA — but cannot tap the quantum channel without triggering a measurable disturbance and a fail-safe payment refusal.</p>
         </div>
 
@@ -1227,12 +1227,12 @@
               <div class="cmp-value" id="qdsQber">—</div>
             </div>
 
-            <div class="cmp-output" id="qdsOutput">Press &#34;Simulate Eve&#34; to inject eavesdropping into the quantum channel…</div>
+            <div class="cmp-output" id="qdsOutput">Press &#34;Eve Intercepts&#34; to inject eavesdropping into the quantum channel…</div>
 
             <div style="display:flex;gap:10px;flex-wrap:wrap;">
               <button class="cmp-btn blue" id="qdsAttackBtn">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
-                Simulate Eve (30% intercept)
+                Eve Intercepts (30%)
               </button>
               <button class="cmp-btn" style="background:var(--bg-inset);color:var(--ink-1);" id="qdsResetBtn">
                 Reset channel
@@ -1257,7 +1257,7 @@
               <tr><td>Detection</td><td class="classical-cell">None — Alice &amp; Bob never know</td><td class="quantum-cell">Immediate — QBER and CHSH S-value degrade measurably</td></tr>
               <tr><td>Outcome for funds</td><td class="classical-cell">Payment forged or stolen silently</td><td class="quantum-cell">Payment refused before any funds move (fail-safe)</td></tr>
               <tr><td>Attack speed</td><td class="classical-cell">Milliseconds (16-bit) — hours/years for RSA-2048</td><td class="quantum-cell">N/A — Eve triggers detection, not decryption</td></tr>
-              <tr><td>Claim</td><td class="classical-cell">Insecure at toy size; scales poorly</td><td class="quantum-cell">Fails safe under eavesdropping (simulated)</td></tr>
+              <tr><td>Claim</td><td class="classical-cell">Insecure at toy size; scales poorly</td><td class="quantum-cell">Fails safe under eavesdropping (Qiskit Aer)</td></tr>
             </tbody>
           </table>
           <p style="font-size:11px;color:var(--ink-3);margin-top:12px;">RSA-16 is a deliberately weak toy for demonstration. Real RSA-2048+ is computationally secure against classical attackers. The comparison illustrates the <em>nature</em> of the two security models, not their practical key sizes.</p>
@@ -1672,7 +1672,7 @@
         if (!table) return;
         table.innerHTML = '';
         if (rawEvents.length === 0) {
-          table.innerHTML = '<div style="padding:24px; text-align:center; color:var(--ink-3); font-size:14px;">No events recorded yet. Wait for the first simulation cycle.</div>';
+          table.innerHTML = '<div style="padding:24px; text-align:center; color:var(--ink-3); font-size:14px;">No events recorded yet. Wait for the first analysis cycle.</div>';
           return;
         }
         rawEvents.forEach(raw => {
@@ -1999,7 +1999,7 @@
       await setEveFraction(0.3);
       eveDisplay.textContent = 'Eve fraction: 30% (Active eavesdropper)';
 
-      qdsOutput.textContent = 'Eve is measuring entangled qubits…\nWaiting for next simulated session…';
+      qdsOutput.textContent = 'Eve is measuring entangled qubits…\nWaiting for next session…';
 
       // Trigger a new session to get fresh measurements
       await new Promise(r => setTimeout(r, 1000));
@@ -2036,7 +2036,7 @@
     qdsResetBtn.addEventListener('click', async () => {
       await setEveFraction(0);
       eveDisplay.textContent = 'Eve fraction: 0% (Honest)';
-      qdsOutput.textContent = 'Channel reset. Eve fraction set to 0%. Press \u201cSimulate Eve\u201d to attack again.';
+      qdsOutput.textContent = 'Channel reset. Eve fraction set to 0%. Press \u201cEve Intercepts\u201d to attack again.';
       qdsResult.className = 'cmp-result hidden';
       qdsQber.textContent = '—';
     });

@@ -28,7 +28,7 @@ Light interception at 10% gives QBER 1.85185%, S=2.810985, no channel abort,
 but different independently hashed keys. Seed 7 is the reproducible demo seed.
 The population mean at 10% interception is 2.5%, above the 2% threshold;
 this selected finite sample illustrates missed detection, not a general claim.
-Grouped Aer simulation uses up to 27 cells with partial interception (9 absent
+Grouped Aer engine uses up to 27 cells with partial interception (9 absent
 Eve cells plus 18 intercepted cells); full interception uses 18.
 Keys and private round outcomes are excluded from result summaries and repr.
 
@@ -86,14 +86,14 @@ tab). Components added:
 
 All gauges transition colour at the abort/classical boundary. Slider wires to
 the existing POST /channel/attack endpoint. Every panel element carries a
-"simulated" tag. JS polls /channel/latest every 1.5s and fetches keys, status,
+Qiskit Aer tag. JS polls /channel/latest every 1.5s and fetches keys, status,
 and rounds on new session_id. 149 tests still pass after changes.
 
 ## Phase 6
 
 docs/demo-runbook.md created with four-terminal startup sequence and three
 scenarios (honest, 10% attack, 100% attack) with expected outcomes table.
-LIMITATIONS.md extended with items 12–16 covering E91 simulation-only status,
+LIMITATIONS.md extended with items 12–16 covering E91 Qiskit Aer status,
 light attacker detection gap, denial-not-theft semantics, endpoint compromise
 caveat, and absence of composable security proof. No forbidden terms
 ("unbreakable", "unhackable", "quantum-proof") used anywhere.

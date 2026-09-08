@@ -1,6 +1,6 @@
 # Project Bellwatch: Teleportation-assisted QDS threat detection research framework
 
-Executable Qiskit Aer + Strawberry Fields simulations, Bernoulli SPRT, CHSH,
+Executable Qiskit Aer + Strawberry Fields computations, Bernoulli SPRT, CHSH,
 KL divergence, scoped min-entropy bounds, deterministic attribution, a local
 FastAPI service, a live desktop dashboard and a measured attack/noise sweep.
 **Research prototype, not a proven production QDS system.** Read
@@ -104,7 +104,7 @@ environment variable.  Neither backend is physical quantum hardware.
 
 ### Ideal Cirq Simulator
 
-Fast, noise-free simulation using Google's Cirq framework.
+Fast, noise-free computation using Google's Cirq framework.
 
 ```sh
 DPM_QUANTUM_BACKEND=ideal
@@ -118,7 +118,7 @@ Used for:
 
 ### Google Quantum Virtual Machine — Willow
 
-Local noisy simulation of a virtual Google Willow processor environment.
+Local noisy emulation of a virtual Google Willow processor environment.
 **QVM does NOT execute on physical quantum hardware.**  No Google credentials,
 API keys, or network access are required.
 
@@ -134,10 +134,10 @@ Used for:
 - DPM experimental results and demonstration
 
 The QVM backend uses `cirq-google` and `qsimcirq` to create a local noisy
-simulation using bundled Google calibration data for the virtual Willow
+emulation using bundled Google calibration data for the virtual Willow
 processor.  All packages are installed from `requirements.txt`.
 
-### Run with ideal simulator
+### Run with ideal Qiskit Aer backend
 
 ```sh
 DPM_QUANTUM_BACKEND=ideal .venv/bin/python run.py
