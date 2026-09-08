@@ -815,69 +815,115 @@
 
           <div class="diagram-stage" style="padding: 20px; text-align:center;">
             <svg class="diagram-svg" viewBox="0 0 1200 300" id="heroStage">
+               <!-- Definitions for filters -->
+               <defs>
+                 <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+                   <feGaussianBlur stdDeviation="3" result="blur" />
+                   <feMerge>
+                     <feMergeNode in="blur"/>
+                     <feMergeNode in="SourceGraphic"/>
+                   </feMerge>
+                 </filter>
+                 <filter id="glow-heavy" x="-50%" y="-50%" width="200%" height="200%">
+                   <feGaussianBlur stdDeviation="6" result="blur" />
+                   <feMerge>
+                     <feMergeNode in="blur"/>
+                     <feMergeNode in="blur"/>
+                     <feMergeNode in="SourceGraphic"/>
+                   </feMerge>
+                 </filter>
+               </defs>
+
                <!-- Grid (subtle) -->
                <rect width="1200" height="300" fill="transparent" stroke="var(--border-soft)" stroke-width="1" />
+               
+               <!-- Connections (Fiber optic lines) -->
+               <path d="M190 150 L1010 150" stroke="var(--blue)" stroke-width="6" opacity="0.1" />
+               <line x1="190" y1="150" x2="550" y2="150" stroke="var(--blue)" stroke-width="2" stroke-dasharray="4 4" />
+               <line x1="650" y1="150" x2="1010" y2="150" stroke="var(--blue)" stroke-width="2" stroke-dasharray="4 4" />
+
                <!-- Nodes -->
                <!-- Alice -->
                <g transform="translate(150, 150)">
-                  <circle r="40" fill="var(--surface)" stroke="var(--blue)" stroke-width="2" />
-                  <text y="5" font-family="var(--sans)" font-size="14" fill="var(--ink-0)" text-anchor="middle" font-weight="600">Alice</text>
+                  <circle r="46" fill="var(--surface)" stroke="var(--border)" stroke-width="1.5" />
+                  <circle r="40" fill="none" stroke="var(--blue)" stroke-width="2" stroke-dasharray="4 6">
+                      <animateTransform attributeName="transform" type="rotate" from="0" to="360" dur="10s" repeatCount="indefinite"/>
+                  </circle>
+                  <circle r="15" fill="var(--blue)" opacity="0.15" filter="url(#glow)"/>
+                  <text y="4" font-family="var(--sans)" font-size="14" fill="var(--ink-0)" text-anchor="middle" font-weight="600">Alice</text>
                </g>
                
                <!-- Eve -->
                <g transform="translate(600, 150)">
-                  <circle r="50" fill="var(--surface-raised)" stroke="var(--ink-2)" stroke-width="2" stroke-dasharray="4 4" id="eveNodeBorder" />
+                  <circle r="60" fill="var(--surface-raised)" stroke="var(--border)" stroke-width="1.5" />
+                  <circle r="52" fill="none" stroke="var(--ink-2)" stroke-width="2" stroke-dasharray="6 6" id="eveNodeBorder">
+                      <animateTransform attributeName="transform" type="rotate" from="360" to="0" dur="8s" repeatCount="indefinite"/>
+                  </circle>
+                  <circle r="22" fill="var(--ink-3)" opacity="0.15" filter="url(#glow)" id="eveCoreGlow"/>
                   <text y="-5" font-family="var(--sans)" font-size="14" fill="var(--ink-1)" text-anchor="middle" font-weight="600" id="eveNodeName">Eve</text>
                   <text y="15" font-family="var(--mono)" font-size="10" fill="var(--ink-3)" text-anchor="middle" id="eveNodeStatus">Inactive</text>
+                  
                   <!-- Measurement Icon (Hidden by default) -->
-                  <g id="measurementIcon" opacity="0" transform="translate(0, -60)" style="transition: opacity 0.2s;">
-                      <path d="M-15 10 Q 0 -10 15 10" fill="none" stroke="var(--red)" stroke-width="2" />
-                      <line x1="0" y1="10" x2="8" y2="-2" stroke="var(--red)" stroke-width="2" stroke-linecap="round" />
-                      <circle cx="0" cy="10" r="3" fill="var(--red)" />
-                      <text y="-12" font-family="var(--mono)" font-size="10" fill="var(--red)" text-anchor="middle" font-weight="700">Measure</text>
+                  <g id="measurementIcon" opacity="0" transform="translate(0, -75)" style="transition: opacity 0.2s;">
+                      <!-- Meter arc -->
+                      <path d="M-20 10 A 22 22 0 0 1 20 10" fill="none" stroke="var(--red)" stroke-width="2.5" />
+                      <!-- Moving Needle -->
+                      <line x1="0" y1="10" x2="15" y2="-5" stroke="var(--red)" stroke-width="2.5" stroke-linecap="round">
+                          <animateTransform attributeName="transform" type="rotate" values="-30 0 10; 40 0 10; -10 0 10; 20 0 10; -30 0 10" dur="2s" repeatCount="indefinite"/>
+                      </line>
+                      <!-- Base -->
+                      <circle cx="0" cy="10" r="4" fill="var(--red)" filter="url(#glow)"/>
+                      <!-- Background panel -->
+                      <rect x="-35" y="-18" width="70" height="35" rx="6" fill="var(--red)" opacity="0.1" />
+                      <text y="-22" font-family="var(--mono)" font-size="11" fill="var(--red)" text-anchor="middle" font-weight="700">MEASURE</text>
                   </g>
                </g>
 
                <!-- Bob -->
                <g transform="translate(1050, 150)">
-                  <circle r="40" fill="var(--surface)" stroke="var(--blue)" stroke-width="2" id="bobNodeBorder" />
-                  <text y="5" font-family="var(--sans)" font-size="14" fill="var(--ink-0)" text-anchor="middle" font-weight="600">Bob</text>
+                  <circle r="46" fill="var(--surface)" stroke="var(--border)" stroke-width="1.5" id="bobOuterBorder" />
+                  <circle r="40" fill="none" stroke="var(--blue)" stroke-width="2" stroke-dasharray="4 6" id="bobNodeBorder">
+                      <animateTransform attributeName="transform" type="rotate" from="0" to="-360" dur="10s" repeatCount="indefinite"/>
+                  </circle>
+                  <circle r="15" fill="var(--blue)" opacity="0.15" filter="url(#glow)"/>
+                  <text y="4" font-family="var(--sans)" font-size="14" fill="var(--ink-0)" text-anchor="middle" font-weight="600">Bob</text>
                </g>
 
-               <!-- Connections -->
-               <line x1="190" y1="150" x2="550" y2="150" stroke="var(--ink-3)" stroke-width="2" stroke-dasharray="2 4" />
-               <line x1="650" y1="150" x2="1010" y2="150" stroke="var(--ink-3)" stroke-width="2" stroke-dasharray="2 4" />
-
-               <!-- Moving Qubit Group -->
-               <g id="qubitParticle" opacity="0" style="transition: transform 1s linear, opacity 0.2s; transform: translate(190px, 150px);">
-                  <circle cx="0" cy="0" r="10" fill="var(--blue)" id="qubitCore" />
-                  <text id="qubitLabel" x="0" y="3" font-family="var(--mono)" font-size="10" fill="white" text-anchor="middle" font-weight="700">|ψ⟩</text>
-               </g>
-               
                <!-- Entanglement Visual Link -->
                <g id="entanglementLink" opacity="0" style="transition: opacity 0.2s;">
                    <!-- Wavy quantum link -->
-                   <path d="M 600 150 Q 580 120 600 90 Q 620 120 600 150" fill="none" stroke="var(--amber)" stroke-width="2" stroke-dasharray="4 2" />
-                   <!-- CNOT Control-Target representation -->
-                   <circle cx="600" cy="150" r="4" fill="var(--amber)" />
-                   <line x1="600" y1="150" x2="600" y2="90" stroke="var(--amber)" stroke-width="2" />
-                   <circle cx="600" cy="90" r="6" fill="none" stroke="var(--amber)" stroke-width="2" />
-                   <text x="635" y="125" font-family="var(--mono)" font-size="11" fill="var(--amber)" font-weight="700">CNOT / U_E</text>
+                   <path d="M 600 150 Q 570 120 600 90 Q 630 120 600 150" fill="none" stroke="var(--amber)" stroke-width="3" opacity="0.4" filter="url(#glow)">
+                       <animate attributeName="stroke-dasharray" values="0,10; 10,0; 0,10" dur="1s" repeatCount="indefinite"/>
+                   </path>
+                   <line x1="600" y1="150" x2="600" y2="90" stroke="var(--amber)" stroke-width="2" stroke-dasharray="2 4">
+                       <animate attributeName="stroke-dashoffset" from="20" to="0" dur="1s" repeatCount="indefinite"/>
+                   </line>
+                   <circle cx="600" cy="150" r="5" fill="var(--amber)" filter="url(#glow)"/>
+                   <circle cx="600" cy="90" r="7" fill="none" stroke="var(--amber)" stroke-width="2.5" />
+                   <text x="635" y="125" font-family="var(--mono)" font-size="12" fill="var(--amber)" font-weight="700" filter="url(#glow)">U_E / CNOT</text>
                </g>
 
+               <!-- Moving Qubit Group -->
+               <g id="qubitParticle" opacity="0" style="transition: transform 1s linear, opacity 0.2s; transform: translate(190px, 150px);">
+                  <circle cx="0" cy="0" r="18" fill="var(--blue)" opacity="0.3" filter="url(#glow-heavy)" id="qubitHalo" />
+                  <circle cx="0" cy="0" r="11" fill="var(--blue)" id="qubitCore" />
+                  <text id="qubitLabel" x="0" y="3.5" font-family="var(--mono)" font-size="11" fill="white" text-anchor="middle" font-weight="700">|ψ⟩</text>
+               </g>
+               
                <!-- Secondary Qubit (for Entanglement / specific attacks) -->
                <g id="qubitAncilla" opacity="0" style="transition: transform 1s linear, opacity 0.2s; transform: translate(600px, 90px);">
-                   <circle cx="0" cy="0" r="8" fill="var(--amber)" />
-                   <text x="0" y="3" font-family="var(--mono)" font-size="8" fill="white" text-anchor="middle" font-weight="700">|E⟩</text>
+                   <circle cx="0" cy="0" r="14" fill="var(--amber)" opacity="0.3" filter="url(#glow)" id="ancillaHalo" />
+                   <circle cx="0" cy="0" r="9" fill="var(--amber)" />
+                   <text x="0" y="3" font-family="var(--mono)" font-size="9" fill="white" text-anchor="middle" font-weight="700">|E⟩</text>
                </g>
 
                <!-- Outcome display above Bob -->
-               <text id="bobOutcome" x="1050" y="90" font-family="var(--mono)" font-size="12" fill="var(--ink-1)" text-anchor="middle" opacity="0" style="transition: opacity 0.2s;">Received</text>
+               <text id="bobOutcome" x="1050" y="80" font-family="var(--mono)" font-size="13" fill="var(--ink-1)" text-anchor="middle" opacity="0" style="transition: opacity 0.2s; font-weight:700;">Received</text>
 
-               <!-- Verdict Banner -->
-               <g id="verdictBanner" style="transition: opacity 0.4s ease; opacity: 1;" transform="translate(800, 14)">
-                 <rect width="380" height="36" rx="8" fill="var(--green-tint)" stroke="var(--green)" stroke-width="1" id="verdictRect"/>
-                 <text x="190" y="23" font-family="var(--sans)" font-size="12" fill="var(--green)" text-anchor="middle" font-weight="700" id="verdictText">✓ SIGNATURE VERIFIED</text>
+               <!-- Verdict Banner (Centered properly) -->
+               <g id="verdictBanner" style="transition: opacity 0.4s ease; opacity: 1;" transform="translate(410, 240)">
+                 <rect width="380" height="42" rx="21" fill="var(--green-tint)" stroke="var(--green)" stroke-width="2" id="verdictRect" filter="url(#glow)"/>
+                 <text x="190" y="26" font-family="var(--sans)" font-size="14" fill="var(--green)" text-anchor="middle" font-weight="800" id="verdictText" letter-spacing="0.5">✓ SIGNATURE VERIFIED</text>
                </g>
             </svg>
             <div id="animationExplanation" style="margin-top: 20px; font-family: var(--sans); font-size: 15px; font-weight: 500; color: var(--ink-0); background: var(--bg-inset); padding: 16px; border-radius: 8px; border: 1px solid var(--border);">
@@ -1611,6 +1657,7 @@
 
     /* ========== EDUCATIONAL QUBIT ANIMATION LOOP ========== */
     const qubitParticle = document.getElementById('qubitParticle');
+const qubitParticle = document.getElementById('qubitParticle');
     const qubitAncilla = document.getElementById('qubitAncilla');
     const eveNodeBorder = document.getElementById('eveNodeBorder');
     const eveNodeName = document.getElementById('eveNodeName');
@@ -1622,8 +1669,8 @@
     function resetAnimation() {
         qubitParticle.style.transition = 'none';
         qubitAncilla.style.transition = 'none';
-        qubitParticle.style.transform = 'translate(0, 0)';
-        qubitAncilla.style.transform = 'translate(0, 0)';
+        qubitParticle.style.transform = 'translate(190px, 150px)';
+        qubitAncilla.style.transform = 'translate(600px, 90px)';
         qubitParticle.style.opacity = '0';
         qubitAncilla.style.opacity = '0';
         
@@ -1640,9 +1687,15 @@
         bobNodeBorder.setAttribute('stroke', 'var(--blue)');
         bobOutcome.style.opacity = '0';
         eveNodeBorder.setAttribute('stroke', 'var(--ink-2)');
-        eveNodeBorder.setAttribute('stroke-dasharray', '4 4');
+        eveNodeBorder.setAttribute('stroke-dasharray', '6 6');
         eveNodeStatus.textContent = 'Inactive';
         eveNodeStatus.setAttribute('fill', 'var(--ink-3)');
+        
+        const eveCoreGlow = document.getElementById('eveCoreGlow');
+        if (eveCoreGlow) eveCoreGlow.setAttribute('fill', 'var(--ink-3)');
+        
+        const qubitHalo = document.getElementById('qubitHalo');
+        if (qubitHalo) qubitHalo.setAttribute('fill', 'var(--blue)');
     }
 
     function runAnimationSequence() {
@@ -1657,22 +1710,22 @@
         setTimeout(() => {
             qubitParticle.style.transition = 'transform 1s linear, opacity 0.2s';
             qubitParticle.style.opacity = '1';
-            const qubitLabel = document.getElementById('qubitLabel');
-            const qubitCore = document.getElementById('qubitCore');
             
             if (attack === 'HONEST') {
                 explanationText.innerHTML = "<b>Step 1:</b> Alice prepares a secure quantum state |ψ⟩ and sends it directly over the fiber channel.";
-                qubitParticle.style.transform = 'translate(410px, 0)'; // Move to Eve's zone but bypass
+                qubitParticle.style.transform = 'translate(1050px, 150px)'; 
             } else if (attack === 'INDIVIDUAL' || attack === 'IMPERSONATION' || attack === 'REPLAY') {
                 explanationText.innerHTML = "<b>Step 1:</b> Alice sends a qubit, but Eve intercepts it in the middle of the channel and stops it.";
-                qubitParticle.style.transform = 'translate(410px, 0)'; // Stop at Eve
+                qubitParticle.style.transform = 'translate(600px, 150px)';
                 eveNodeBorder.setAttribute('stroke', 'var(--red)');
                 eveNodeBorder.setAttribute('stroke-dasharray', 'none');
                 eveNodeStatus.textContent = 'Intercepting';
                 eveNodeStatus.setAttribute('fill', 'var(--red)');
+                const eveCoreGlow = document.getElementById('eveCoreGlow');
+                if (eveCoreGlow) eveCoreGlow.setAttribute('fill', 'var(--red)');
             } else if (attack === 'COLLECTIVE' || attack === 'COHERENT') {
                 explanationText.innerHTML = "<b>Step 1:</b> Alice sends a qubit. Eve prepares a secondary (ancilla) qubit to entangle with Alice's passing state.";
-                qubitParticle.style.transform = 'translate(410px, 0)';
+                qubitParticle.style.transform = 'translate(600px, 150px)';
                 qubitAncilla.style.opacity = '1';
                 eveNodeBorder.setAttribute('stroke', 'var(--amber)');
                 eveNodeBorder.setAttribute('stroke-dasharray', 'none');
@@ -1685,25 +1738,26 @@
         setTimeout(() => {
             const qubitLabel = document.getElementById('qubitLabel');
             const qubitCore = document.getElementById('qubitCore');
-            
+            const qubitHalo = document.getElementById('qubitHalo');
             const measurementIcon = document.getElementById('measurementIcon');
             const entanglementLink = document.getElementById('entanglementLink');
             
             if (attack === 'HONEST') {
                 explanationText.innerHTML = "<b>Step 2:</b> The quantum state passes through safely, maintaining its original superposition.";
-                qubitParticle.style.transform = 'translate(860px, 0)'; // Move to Bob
+                qubitParticle.style.transform = 'translate(1050px, 150px)'; // Move to Bob
             } else if (attack === 'INDIVIDUAL' || attack === 'IMPERSONATION' || attack === 'REPLAY') {
                 explanationText.innerHTML = "<b>Step 2:</b> Eve measures the intercepted qubit, collapsing it to |0⟩ or |1⟩. She prepares a fake classical copy and resends it.";
                 qubitCore.setAttribute('fill', 'var(--red)');
+                if (qubitHalo) qubitHalo.setAttribute('fill', 'var(--red)');
                 qubitLabel.textContent = Math.random() > 0.5 ? '|0⟩' : '|1⟩'; // Collapsed state notation
                 if (measurementIcon) measurementIcon.style.opacity = '1';
-                qubitParticle.style.transform = 'translate(860px, 0)'; // Resend to Bob
+                qubitParticle.style.transform = 'translate(1050px, 150px)'; // Resend to Bob
             } else if (attack === 'COLLECTIVE' || attack === 'COHERENT') {
                 explanationText.innerHTML = "<b>Step 2:</b> Eve applies a unitary U_E (like CNOT) to entangle her ancilla |E⟩ with Alice's qubit. The state continues, but they are now quantumly linked: α|0⟩|e₀⟩ + β|1⟩|e₁⟩!";
                 if (entanglementLink) entanglementLink.style.opacity = '1';
                 qubitAncilla.style.transition = 'transform 1s linear, opacity 0.2s';
-                qubitAncilla.style.transform = 'translate(0, 60px)'; // Entangle with main qubit
-                qubitParticle.style.transform = 'translate(860px, 0)';
+                qubitAncilla.style.transform = 'translate(600px, 150px)'; // Entangle with main qubit
+                qubitParticle.style.transform = 'translate(1050px, 150px)';
             }
         }, 1800);
 
