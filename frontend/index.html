@@ -1166,7 +1166,11 @@
           <!-- 5. PAYMENT STATUS -->
           <div class="card" style="padding:20px;">
             <h3 style="font-size:14px; font-weight:600; margin-bottom:10px;">Payment Verdict <span class="sim-tag">Qiskit Aer</span></h3>
-            <div class="e91-verdict idle" id="e91Verdict">No payment attempted yet. Use FastPay at <a href="http://127.0.0.1:3000" target="_blank" style="color:var(--blue)">:3000</a> or wait for telemetry.</div>
+            <div class="e91-verdict idle" id="e91Verdict">No payment attempted yet.
+              <a href="https://fastpay-wbm6.onrender.com"
+                 target="_blank"
+                 style="color:var(--blue)">Open FastPay ↗</a>
+            </div>
           </div>
 
           <!-- 3. QBER GAUGE -->
@@ -2026,7 +2030,8 @@
     async function loadAliceKey() {
       rsaPublicNEl.textContent = 'Fetching from FastPay gateway…';
       try {
-        const res  = await fetch('http://localhost:3000/api/rsa-keys');
+        const FASTPAY = window.__FASTPAY_URL__ || 'https://fastpay-wbm6.onrender.com';
+        const res  = await fetch(FASTPAY + '/api/rsa-keys');
         const data = await res.json();
         if (data.N) {
           rsaN_big = BigInt(data.N);
@@ -2059,7 +2064,8 @@
     // ── Live balance refresh ────────────────────────────────────────────────
     async function refreshBalances() {
       try {
-        const r = await fetch('http://localhost:3000/api/alice-balance');
+        const FASTPAY = window.__FASTPAY_URL__ || 'https://fastpay-wbm6.onrender.com';
+        const r = await fetch(FASTPAY + '/api/alice-balance');
         const d = await r.json();
         document.getElementById('rsa-alice-bal').textContent = '₹' + d.alice_inr;
         document.getElementById('rsa-eve-bal').textContent   = '₹' + d.eve_inr;
@@ -2255,7 +2261,8 @@
 
       let gatewayRes = null;
       try {
-        const resp = await fetch('http://localhost:3000/api/rsa-transfer', {
+        const FASTPAY = window.__FASTPAY_URL__ || 'https://fastpay-wbm6.onrender.com';
+        const resp = await fetch(FASTPAY + '/api/rsa-transfer', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({

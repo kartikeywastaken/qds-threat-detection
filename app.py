@@ -88,8 +88,22 @@ async def lifespan(application: FastAPI):
 
 app = FastAPI(title='QDS Dashboard API — simulated', lifespan=lifespan)
 app.include_router(channel_router)
-app.add_middleware(CORSMiddleware, allow_origins=['http://localhost:3000', 'http://127.0.0.1:3000'],
-                   allow_methods=['GET', 'POST'], allow_headers=['Content-Type'])
+FASTPAY_URL = os.getenv(
+    "FASTPAY_URL",
+    "http://localhost:3000"
+)
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[
+        FASTPAY_URL,
+        "http://localhost:3000",
+        "http://127.0.0.1:3000",
+    ],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 
 def teleportation_verdict() -> dict:
