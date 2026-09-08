@@ -1617,7 +1617,7 @@
     document.getElementById('rzp-button1').onclick = async function(e) {
       e.preventDefault();
 
-      if (currentDecision === 'REJECT') {
+      if (currentDecision === 'REJECT' || currentAttackMode !== 'HONEST') {
           const interferenceStr = currentAttackMode !== 'HONEST' ? attackLabels[currentAttackMode] : 'Unknown Interference';
           
           try {
