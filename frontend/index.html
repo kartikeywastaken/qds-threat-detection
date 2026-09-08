@@ -655,42 +655,79 @@
     @media (max-width:900px) { .cmp-grid { grid-template-columns: 1fr; } }
 
     .cmp-card { border-radius: var(--radius); padding: 24px; border: 1.5px solid var(--border); position: relative; overflow: hidden; }
-    .cmp-card.classical { background: #fff5f4; border-color: #f0c4be; }
-    .cmp-card.quantum { background: #f2f7ff; border-color: #c0d2ef; }
+    .cmp-card.classical { background: #0d0605; border-color: #5a1a10; }
+    .cmp-card.quantum   { background: #03090f; border-color: #1a3a5a; }
 
     .cmp-tag { display: inline-flex; align-items: center; gap: 5px; font-size: 10px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; padding: 3px 10px; border-radius: 999px; margin-bottom: 12px; }
-    .cmp-tag.red { background: var(--red-tint); color: var(--red); }
-    .cmp-tag.blue { background: var(--blue-tint); color: var(--blue); }
+    .cmp-tag.red  { background: rgba(180,50,30,.25); color: #ff6b55; }
+    .cmp-tag.blue { background: rgba(30,100,200,.25); color: #5ba3f5; }
 
     .cmp-title { font-size: 18px; font-weight: 700; margin-bottom: 6px; }
-    .cmp-sub { font-size: 12px; color: var(--ink-2); margin-bottom: 18px; line-height: 1.6; }
+    .cmp-card.classical .cmp-title { color: #ff9980; }
+    .cmp-card.quantum   .cmp-title { color: #7ec8ff; }
+    .cmp-sub { font-size: 12px; color: rgba(255,255,255,.45); margin-bottom: 18px; line-height: 1.6; }
 
     .cmp-field-group { display: flex; flex-direction: column; gap: 8px; margin-bottom: 16px; }
-    .cmp-label { font-size: 11px; font-weight: 600; color: var(--ink-2); text-transform: uppercase; letter-spacing: .06em; }
-    .cmp-select, .cmp-value { font-family: var(--mono); font-size: 14px; background: var(--surface); border: 1px solid var(--border); border-radius: 6px; padding: 8px 12px; color: var(--ink-0); cursor: pointer; }
-    .cmp-value { cursor: default; }
+    .cmp-label { font-size: 11px; font-weight: 600; color: rgba(255,255,255,.4); text-transform: uppercase; letter-spacing: .06em; }
+    .cmp-value { font-family: var(--mono); font-size: 13px; background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.08); border-radius: 6px; padding: 8px 12px; color: rgba(255,255,255,.8); word-break: break-all; }
 
-    .cmp-output { font-family: var(--mono); font-size: 12px; background: var(--surface); border: 1px solid var(--border); border-radius: 6px; padding: 12px; line-height: 1.8; min-height: 64px; margin-bottom: 14px; color: var(--ink-1); }
+    /* Odometer / terminal HUD */
+    .hud { font-family: var(--mono); font-size: 12px; background: #000; border: 1px solid rgba(255,255,255,.08); border-radius: 6px; padding: 12px 14px; line-height: 1.7; min-height: 180px; margin-bottom: 14px; overflow-y: auto; max-height: 260px; color: #b0b0b0; }
+    .hud .hud-line { white-space: pre; }
+    .hud .hud-candidate { color: #e0e0e0; }
+    .hud .hud-hit    { color: #ff6b55; font-weight: 700; animation: hitpulse .4s ease; }
+    .hud .hud-derive { color: #ffd27a; }
+    .hud .hud-forge  { color: #ff9955; }
+    .hud .hud-accept { color: #4dff91; font-weight: 700; }
+    .hud .hud-speed  { color: #888; }
+    @keyframes hitpulse { 0%,100%{opacity:1} 40%{opacity:.3} }
+
+    /* QDS terminal */
+    .qhud { font-family: var(--mono); font-size: 12px; background: #000; border: 1px solid rgba(255,255,255,.08); border-radius: 6px; padding: 12px 14px; line-height: 1.7; min-height: 180px; margin-bottom: 14px; overflow-y: auto; max-height: 260px; color: #b0b0b0; }
+    .qhud .qhud-ok   { color: #5ba3f5; }
+    .qhud .qhud-warn { color: #ffd27a; font-weight: 700; }
+    .qhud .qhud-abort{ color: #4dff91; font-weight: 700; }
+    .qhud .qhud-safe { color: #4dff91; }
+
+    /* Balance strip */
+    .balance-strip { display: flex; gap: 12px; margin-bottom: 16px; }
+    .bal-box { flex: 1; border-radius: 8px; padding: 10px 14px; border: 1px solid rgba(255,255,255,.08); }
+    .bal-box.alice { background: rgba(180,50,30,.12); }
+    .bal-box.eve   { background: rgba(77,255,145,.08); }
+    .bal-box.qalice { background: rgba(91,163,245,.08); }
+    .bal-label { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: .06em; color: rgba(255,255,255,.4); margin-bottom: 4px; }
+    .bal-amount { font-family: var(--mono); font-size: 18px; font-weight: 700; }
+    .bal-box.alice  .bal-amount { color: #ff9980; }
+    .bal-box.eve    .bal-amount { color: #4dff91; }
+    .bal-box.qalice .bal-amount { color: #7ec8ff; }
+    @keyframes balflash { 0%,100%{opacity:1} 50%{opacity:.2} }
+    .bal-flash { animation: balflash .5s ease 2; }
 
     .cmp-btn { display: inline-flex; align-items: center; gap: 7px; padding: 10px 20px; border-radius: 8px; border: none; font-size: 13px; font-weight: 600; cursor: pointer; transition: background .15s, transform .1s; }
     .cmp-btn:active { transform: scale(.97); }
-    .cmp-btn.red { background: var(--red); color: #fff; }
-    .cmp-btn.red:hover { background: #8e3e33; }
-    .cmp-btn.blue { background: var(--blue); color: #fff; }
-    .cmp-btn.blue:hover { background: #3a5d92; }
-    .cmp-btn:disabled { opacity: .5; pointer-events: none; }
+    .cmp-btn.red  { background: #c0392b; color: #fff; }
+    .cmp-btn.red:hover  { background: #a93226; }
+    .cmp-btn.blue { background: #2471a3; color: #fff; }
+    .cmp-btn.blue:hover { background: #1f618d; }
+    .cmp-btn:disabled { opacity: .4; pointer-events: none; }
 
-    .cmp-result { padding: 12px 16px; border-radius: var(--radius-sm); font-size: 13px; font-weight: 500; line-height: 1.5; margin-top: 14px; }
-    .cmp-result.danger { background: var(--red-tint); color: var(--red); border: 1px solid #e5b8b0; }
-    .cmp-result.safe { background: var(--green-tint); color: var(--green); border: 1px solid #b9d4be; }
-    .cmp-result.hidden { display: none; }
+    /* Stage steps */
+    .steps { display: flex; flex-direction: column; gap: 6px; margin-bottom: 18px; }
+    .step { display: flex; align-items: center; gap: 10px; font-size: 12px; color: rgba(255,255,255,.35); transition: color .3s; }
+    .step.active { color: #e0e0e0; }
+    .step.done   { color: #4dff91; }
+    .step.error  { color: #ff6b55; }
+    .step-dot { width: 8px; height: 8px; border-radius: 50%; background: rgba(255,255,255,.15); flex-shrink: 0; transition: background .3s; }
+    .step.active .step-dot { background: #ffd27a; box-shadow: 0 0 6px #ffd27a; }
+    .step.done   .step-dot { background: #4dff91; box-shadow: 0 0 6px #4dff91; }
+    .step.error  .step-dot { background: #ff6b55; box-shadow: 0 0 6px #ff6b55; }
 
     .cmp-table { width: 100%; border-collapse: collapse; font-size: 13px; }
     .cmp-table th { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .06em; color: var(--ink-2); padding: 6px 12px; text-align: left; border-bottom: 1px solid var(--border); }
     .cmp-table td { padding: 10px 12px; border-bottom: 1px solid var(--border-soft); line-height: 1.5; }
     .cmp-table td:first-child { font-weight: 600; color: var(--ink-1); }
     .cmp-table .classical-cell { color: var(--red); font-weight: 600; }
-    .cmp-table .quantum-cell { color: var(--green); font-weight: 600; }
+    .cmp-table .quantum-cell   { color: var(--green); font-weight: 600; }
 
     .bit-stream { display: flex; flex-direction: column; gap: 2px; overflow-x: auto; padding: 6px 0; }
     .bit-stream-row { display: flex; gap: 1px; align-items: center; }
@@ -1165,81 +1202,100 @@
           <div class="bit-stream" id="e91BitStream">
             <div style="font-size:12px; color:var(--ink-3);">Waiting for session data…</div>
           </div>
-          <div class="e91-metric">Shown bits are published samples only, never surviving key material.</div>
+<div class="e91-metric">Shown bits are published samples only, never surviving key material.</div>
         </div>
       </div>
 
       <!-- ====== RSA vs QDS COMPARISON PANEL ====== -->
       <div class="content" id="view-rsa-comparison"
-        style="display:none; padding:40px; flex-direction:column; gap:24px;">
+        style="display:none; padding:32px 40px; flex-direction:column; gap:24px; background:#080808;">
 
         <div>
-          <h2 style="font-size:24px;font-weight:700;margin-bottom:6px;">Classical vs Quantum Security <span class="sim-tag">E91 · Qiskit Aer</span></h2>
-          <p style="font-size:13px;color:var(--ink-2);max-width:780px;line-height:1.6;">A live demonstration of <strong>computational security</strong> (RSA-16, factorable in milliseconds) versus <strong>physical security</strong> (E91 quantum-gated channel). Eve can silently break RSA — but cannot tap the quantum channel without triggering a measurable disturbance and a fail-safe payment refusal.</p>
+          <h2 style="font-size:24px;font-weight:700;margin-bottom:6px;color:#f0f0f0;">The Phantom Heist vs The Quantum Tripwire <span class="sim-tag">E91 · Qiskit Aer</span></h2>
+          <p style="font-size:13px;color:rgba(255,255,255,.45);max-width:820px;line-height:1.6;">
+            Watch Eve steal ₹10,000 from Alice's FastPay wallet using a cracked 64-bit RSA key — the bank never detects it.
+            Then watch the exact same attack fail instantly on the E91 quantum channel because physics cannot be fooled.
+          </p>
+        </div>
+
+        <!-- Step indicator -->
+        <div class="steps" id="attackSteps">
+          <div class="step" id="step0"><div class="step-dot"></div>Step 1 — Alice's RSA public key exposed on network</div>
+          <div class="step" id="step1"><div class="step-dot"></div>Step 2 — Eve runs live 64-bit prime factorization</div>
+          <div class="step" id="step2"><div class="step-dot"></div>Step 3 — Private key d derived · Eve now IS Alice</div>
+          <div class="step" id="step3"><div class="step-dot"></div>Step 4 — Eve forges transaction · gateway verifies · funds stolen</div>
+          <div class="step" id="step4"><div class="step-dot"></div>Step 5 — Same attack on QDS/E91 · tripwire triggered · payment refused</div>
         </div>
 
         <div class="cmp-grid">
 
-          <!-- ====== LEFT: Classical RSA-16 ====== -->
+          <!-- ====== LEFT: Classical RSA 64-bit ====== -->
           <div class="cmp-card classical">
-            <div class="cmp-tag red">⚠ Classical Channel</div>
-            <div class="cmp-title">16-bit RSA (Toy)</div>
-            <p class="cmp-sub">Alice encrypts her payment token with Bob's RSA public key. Eve intercepts the ciphertext and <em>factors N</em> in real-time using trial division — breaking the key in milliseconds with no detection.</p>
+            <div class="cmp-tag red">⚠ Classical Channel — RSA-64</div>
+            <div class="cmp-title">Eve's Attack HUD</div>
+            <p class="cmp-sub">Alice's 64-bit RSA public key (N, e) is visible to any network observer. Eve runs genuine prime factorization to derive the private key d, then forges Alice's digital signature on a modified payment.</p>
 
             <div class="cmp-field-group">
-              <div class="cmp-label">Select public modulus N (pre-factored pairs)</div>
-              <select class="cmp-select" id="rsaN">
-                <option value="62651">N = 62651 (p=239, q=262 …let it factor)</option>
-                <option value="58081">N = 58081</option>
-                <option value="49607">N = 49607</option>
-                <option value="65521">N = 65521</option>
-              </select>
+              <div class="cmp-label">Alice's Public Key (intercepted from network)</div>
+              <div class="cmp-value" id="rsaPublicN" style="font-size:11px;">Loading from FastPay…</div>
             </div>
-
             <div class="cmp-field-group">
-              <div class="cmp-label">Public exponent e</div>
-              <div class="cmp-value" id="rsaE">65537</div>
+              <div class="cmp-label">Public Exponent e</div>
+              <div class="cmp-value" id="rsaPublicE">65537</div>
             </div>
 
-            <div class="cmp-output" id="rsaOutput">Press &#34;Intercept&#34; to factor N and derive private key d…</div>
+            <!-- Balance strip -->
+            <div class="balance-strip">
+              <div class="bal-box alice">
+                <div class="bal-label">Alice's Wallet</div>
+                <div class="bal-amount" id="rsa-alice-bal">₹10,000.00</div>
+              </div>
+              <div class="bal-box eve">
+                <div class="bal-label">Eve's Wallet (attacker)</div>
+                <div class="bal-amount" id="rsa-eve-bal">₹0.00</div>
+              </div>
+            </div>
 
-            <button class="cmp-btn red" id="rsaAttackBtn">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
-              Eve Intercepts &amp; Factors N
-            </button>
+            <!-- Odometer HUD -->
+            <div class="hud" id="rsaHud"><span style="color:#555;">[ Waiting for attack signal… ]</span></div>
 
-            <div class="cmp-result hidden" id="rsaResult"></div>
+            <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;">
+              <button class="cmp-btn red" id="rsaAttackBtn">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                Launch Eve's Attack
+              </button>
+              <button class="cmp-btn" id="rsaResetBtn" style="background:rgba(255,255,255,.07);color:rgba(255,255,255,.7);">
+                Reset Demo
+              </button>
+            </div>
           </div>
 
           <!-- ====== RIGHT: Quantum E91 ====== -->
           <div class="cmp-card quantum">
-            <div class="cmp-tag blue">⚛ Quantum Channel (Bellwatch)</div>
-            <div class="cmp-title">E91 — Entanglement-Based</div>
-            <p class="cmp-sub">Alice and Bob share entangled qubit pairs. Eve cannot measure or clone them without disturbing the quantum state. Any interception raises QBER and collapses the CHSH S-parameter — triggering a fail-safe refusal.</p>
+            <div class="cmp-tag blue">⚛ Quantum Channel — E91 (Bellwatch)</div>
+            <div class="cmp-title">The Quantum Tripwire</div>
+            <p class="cmp-sub">When Eve tries to intercept entangled qubits, wavefunction collapse is immediate and unavoidable. The payment gateway detects the disturbance before authorising any fund movement.</p>
 
             <div class="cmp-field-group">
-              <div class="cmp-label">Channel Eve fraction</div>
-              <div class="cmp-value" id="eveDisplay">Eve fraction: 0% (Honest)</div>
+              <div class="cmp-label">Channel Status</div>
+              <div class="cmp-value" id="eveDisplay" style="color:#5ba3f5;">Waiting — launch RSA attack first</div>
             </div>
 
-            <div class="cmp-field-group">
-              <div class="cmp-label">Latest QBER measurement</div>
-              <div class="cmp-value" id="qdsQber">—</div>
+            <!-- Balance strip -->
+            <div class="balance-strip">
+              <div class="bal-box qalice">
+                <div class="bal-label">Alice's Wallet (QDS)</div>
+                <div class="bal-amount" id="qds-alice-bal">₹10,000.00</div>
+              </div>
             </div>
 
-            <div class="cmp-output" id="qdsOutput">Press &#34;Eve Intercepts&#34; to inject eavesdropping into the quantum channel…</div>
+            <!-- QDS HUD -->
+            <div class="qhud" id="qdsHud"><span style="color:#555;">[ Waiting for attack signal… ]</span></div>
 
             <div style="display:flex;gap:10px;flex-wrap:wrap;">
-              <button class="cmp-btn blue" id="qdsAttackBtn">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
-                Eve Intercepts (30%)
-              </button>
-              <button class="cmp-btn" style="background:var(--bg-inset);color:var(--ink-1);" id="qdsResetBtn">
-                Reset channel
-              </button>
+              <div class="cmp-label" style="align-self:center;">QBER: <span id="qdsQber" style="color:#ffd27a;font-family:var(--mono);">—</span></div>
+              <div class="cmp-label" style="align-self:center;">Bell S: <span id="qdsBellS" style="color:#5ba3f5;font-family:var(--mono);">—</span></div>
             </div>
-
-            <div class="cmp-result hidden" id="qdsResult"></div>
           </div>
 
         </div>
@@ -1249,18 +1305,16 @@
           <h3 style="font-size:14px;font-weight:600;margin-bottom:16px;">Side-by-Side Comparison</h3>
           <table class="cmp-table">
             <thead>
-              <tr><th>Property</th><th>Classical (RSA-16 Toy)</th><th>Project Bellwatch (E91 QDS)</th></tr>
+              <tr><th>Property</th><th>Classical (RSA-64)</th><th>Project Bellwatch (E91 QDS)</th></tr>
             </thead>
             <tbody>
               <tr><td>Security basis</td><td class="classical-cell">Computational hardness (integer factoring)</td><td class="quantum-cell">Laws of quantum mechanics (no-cloning theorem)</td></tr>
-              <tr><td>Eve's attack method</td><td class="classical-cell">Factor N → derive private key d → decrypt silently</td><td class="quantum-cell">Must measure entangled qubit → collapses wavefunction</td></tr>
-              <tr><td>Detection</td><td class="classical-cell">None — Alice &amp; Bob never know</td><td class="quantum-cell">Immediate — QBER and CHSH S-value degrade measurably</td></tr>
-              <tr><td>Outcome for funds</td><td class="classical-cell">Payment forged or stolen silently</td><td class="quantum-cell">Payment refused before any funds move (fail-safe)</td></tr>
-              <tr><td>Attack speed</td><td class="classical-cell">Milliseconds (16-bit) — hours/years for RSA-2048</td><td class="quantum-cell">N/A — Eve triggers detection, not decryption</td></tr>
-              <tr><td>Claim</td><td class="classical-cell">Insecure at toy size; scales poorly</td><td class="quantum-cell">Fails safe under eavesdropping (Qiskit Aer)</td></tr>
+              <tr><td>Eve's attack method</td><td class="classical-cell">Factor N → derive private key d → forge signature</td><td class="quantum-cell">Must measure entangled qubit → collapses wavefunction</td></tr>
+              <tr><td>Detection</td><td class="classical-cell">None — Alice &amp; Bob never know</td><td class="quantum-cell">Immediate — QBER &amp; CHSH S-value degrade measurably</td></tr>
+              <tr><td>Outcome</td><td class="classical-cell" id="tbl-rsa-outcome">Attack not run yet</td><td class="quantum-cell" id="tbl-qds-outcome">Attack not run yet</td></tr>
+              <tr><td>Attack time</td><td class="classical-cell" id="tbl-rsa-time">~1–3 sec (64-bit trial division)</td><td class="quantum-cell">N/A — detected before any decryption</td></tr>
             </tbody>
           </table>
-          <p style="font-size:11px;color:var(--ink-3);margin-top:12px;">RSA-16 is a deliberately weak toy for demonstration. Real RSA-2048+ is computationally secure against classical attackers. The comparison illustrates the <em>nature</em> of the two security models, not their practical key sizes.</p>
         </div>
 
       </div>
@@ -1901,144 +1955,372 @@
     }, 3200);
 
 
-    /* ============= RSA vs QDS PANEL LOGIC ============= */
+    /* ============= RSA vs QDS PANEL — 64-bit Live Attack ============= */
 
-    // RSA helpers
-    function gcd(a, b) { while(b) { [a,b] = [b, a%b]; } return a; }
-    function modInverse(e, phi) {
-      // Extended Euclidean algorithm
-      let [old_r, r] = [e, phi], [old_s, s] = [1, 0];
-      while (r !== 0) {
-        const q = Math.floor(old_r / r);
+    // ── BigInt helpers ──────────────────────────────────────────────────────
+    function bigModPow(base, exp, mod) {
+      if (mod === 1n) return 0n;
+      let result = 1n;
+      base = base % mod;
+      while (exp > 0n) {
+        if (exp % 2n === 1n) result = (result * base) % mod;
+        exp = exp / 2n;
+        base = (base * base) % mod;
+      }
+      return result;
+    }
+
+    function bigModInverse(e, phi) {
+      let [old_r, r] = [e, phi];
+      let [old_s, s] = [1n, 0n];
+      while (r !== 0n) {
+        const q = old_r / r;
         [old_r, r] = [r, old_r - q * r];
         [old_s, s] = [s, old_s - q * s];
       }
       return ((old_s % phi) + phi) % phi;
     }
 
-    function factorN(N) {
-      if (N % 2 === 0) return [2, N/2];
-      for (let i = 3; i <= Math.sqrt(N) + 1; i += 2) {
-        if (N % i === 0) return [i, N/i];
-      }
-      return [null, null];
+    // Minimal SHA-256 using SubtleCrypto → hex string
+    async function sha256Hex(msg) {
+      const enc = new TextEncoder().encode(msg);
+      const buf = await crypto.subtle.digest('SHA-256', enc);
+      return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2,'0')).join('');
     }
 
-    const rsaAttackBtn = document.getElementById('rsaAttackBtn');
-    const rsaOutput = document.getElementById('rsaOutput');
-    const rsaResult = document.getElementById('rsaResult');
-
-    rsaAttackBtn.addEventListener('click', () => {
-      rsaAttackBtn.disabled = true;
-      const N = parseInt(document.getElementById('rsaN').value);
-      const e = 65537;
-      rsaOutput.textContent = 'Factoring N = ' + N + ' …';
-
-      setTimeout(() => {
-        const t0 = performance.now();
-        const [p, q] = factorN(N);
-        const elapsed = (performance.now() - t0).toFixed(3);
-
-        if (!p) {
-          rsaOutput.textContent = 'Could not factor N (prime?). Try another.';
-          rsaAttackBtn.disabled = false;
-          return;
-        }
-        const phi = (p - 1) * (q - 1);
-        const d = modInverse(e, phi);
-        rsaOutput.innerHTML =
-          'N = ' + N + '\n' +
-          'p = ' + p + ',  q = ' + q + '\n' +
-          'φ(N) = ' + phi + '\n' +
-          'e = ' + e + '\n' +
-          'd (private key) = ' + d + '\n' +
-          '─────────────────────\n' +
-          'Factored in ' + elapsed + ' ms';
-
-        rsaResult.className = 'cmp-result danger';
-        rsaResult.innerHTML = '⚠ Attack succeeded in ' + elapsed + ' ms. Private key d = ' + d + ' derived. Alice &amp; Bob have no idea. Funds at risk.';
-        rsaAttackBtn.disabled = false;
-      }, 120);
-    });
-
-    // QDS Eve attack
-    const qdsAttackBtn = document.getElementById('qdsAttackBtn');
-    const qdsResetBtn = document.getElementById('qdsResetBtn');
-    const qdsOutput = document.getElementById('qdsOutput');
-    const qdsResult = document.getElementById('qdsResult');
-    const qdsQber = document.getElementById('qdsQber');
-    const eveDisplay = document.getElementById('eveDisplay');
-
-    async function setEveFraction(fraction) {
-      try {
-        await fetch('/channel/attack', {
-          method: 'POST',
-          headers: {'Content-Type':'application/json'},
-          body: JSON.stringify({fraction})
-        });
-      } catch(_) {}
+    async function messageToInt(msg, N) {
+      const hex = await sha256Hex(msg);
+      return BigInt('0x' + hex) % N;
     }
 
-    async function pollQdsState() {
+    // ── Odometer state ──────────────────────────────────────────────────────
+    let rsaAttackRunning = false;
+    let rsaN_big = null, rsaE_big = null;
+
+    const rsaHud        = document.getElementById('rsaHud');
+    const qdsHud        = document.getElementById('qdsHud');
+    const rsaAttackBtn  = document.getElementById('rsaAttackBtn');
+    const rsaResetBtn   = document.getElementById('rsaResetBtn');
+    const rsaPublicNEl  = document.getElementById('rsaPublicN');
+    const rsaPublicEEl  = document.getElementById('rsaPublicE');
+    const qdsQberEl     = document.getElementById('qdsQber');
+    const qdsBellSEl    = document.getElementById('qdsBellS');
+    const eveDisplay    = document.getElementById('eveDisplay');
+
+    function hudLine(container, text, cls) {
+      const el = document.createElement('div');
+      el.className = 'hud-line' + (cls ? ' ' + cls : '');
+      el.textContent = text;
+      container.appendChild(el);
+      container.scrollTop = container.scrollHeight;
+      return el;
+    }
+
+    function setStep(idx, state) {
+      const el = document.getElementById('step' + idx);
+      if (!el) return;
+      el.className = 'step ' + state;
+    }
+
+    // ── Load Alice's public key from FastPay on panel open ──────────────────
+    async function loadAliceKey() {
+      rsaPublicNEl.textContent = 'Fetching from FastPay gateway…';
       try {
-        const res = await fetch('/channel/latest');
+        const res  = await fetch('http://localhost:3000/api/rsa-keys');
         const data = await res.json();
-        const sid = data.session_id;
-        if (!sid) return null;
-        const statusRes = await fetch('/channel/' + sid + '/status');
-        return await statusRes.json();
-      } catch(_) { return null; }
+        if (data.N) {
+          rsaN_big = BigInt(data.N);
+          rsaE_big = BigInt(data.e);
+          rsaPublicNEl.textContent = 'N = ' + data.N;
+          rsaPublicEEl.textContent = 'e = ' + data.e;
+          rsaHud.innerHTML = '';
+          hudLine(rsaHud, '[+] Alice public key captured from FastPay network traffic', 'hud-ok');
+          hudLine(rsaHud, '    N = ' + data.N);
+          hudLine(rsaHud, '    e = ' + data.e);
+          hudLine(rsaHud, '[!] Key size: 64-bit — target acquired. Ready to factor.', 'hud-candidate');
+          setStep(0, 'done');
+        } else {
+          rsaPublicNEl.textContent = data.error || 'FastPay not running on :3000';
+        }
+      } catch(err) {
+        rsaPublicNEl.textContent = 'FastPay offline — start it on :3000 first';
+      }
     }
 
-    qdsAttackBtn.addEventListener('click', async () => {
-      qdsAttackBtn.disabled = true;
-      qdsResetBtn.disabled = true;
-      qdsOutput.textContent = 'Setting Eve interception to 30% …';
-      qdsResult.className = 'cmp-result hidden';
+    // Lazy-load when user switches to this tab
+    const origSwitchView = switchView;
+    // Monkey-patch switchView to trigger key load
+    window.__rsaKeyLoaded = false;
+    document.querySelector('[onclick="switchView(\'view-rsa-comparison\', this)"]')
+      .addEventListener('click', () => {
+        if (!window.__rsaKeyLoaded) { window.__rsaKeyLoaded = true; loadAliceKey(); }
+      });
 
-      await setEveFraction(0.3);
-      eveDisplay.textContent = 'Eve fraction: 30% (Active eavesdropper)';
-
-      qdsOutput.textContent = 'Eve is measuring entangled qubits…\nWaiting for next session…';
-
-      // Trigger a new session to get fresh measurements
-      await new Promise(r => setTimeout(r, 1000));
+    // ── Live balance refresh ────────────────────────────────────────────────
+    async function refreshBalances() {
       try {
-        await fetch('/channel/session', {method:'POST',headers:{'Content-Type':'application/json'},body:'{}'});
-      } catch(_) {}
+        const r = await fetch('http://localhost:3000/api/alice-balance');
+        const d = await r.json();
+        document.getElementById('rsa-alice-bal').textContent = '₹' + d.alice_inr;
+        document.getElementById('rsa-eve-bal').textContent   = '₹' + d.eve_inr;
+        document.getElementById('qds-alice-bal').textContent = '₹' + d.alice_inr;
+      } catch(_){}
+    }
 
-      await new Promise(r => setTimeout(r, 2500));
-      const st = await pollQdsState();
+    // ── Chunked trial-division odometer ────────────────────────────────────
+    // Returns Promise<{p, q, elapsed, attempts}>
+    function runFactorization(N) {
+      return new Promise(resolve => {
+        const BATCH = 3000;   // candidates per tick
+        let candidate = 3n;
+        let attempts  = 0;
+        const t0 = performance.now();
+        let lastUIUpdate = t0;
+        let speedLine = null;
+        let candidateLine = null;
 
-      if (st) {
-        const qber = (st.qber * 100).toFixed(2);
-        const chsh = (st.chsh_s || 0).toFixed(3);
-        qdsQber.textContent = qber + '%';
-        const aborted = st.aborted || st.qber > 0.02;
-        qdsOutput.innerHTML =
-          'QBER = ' + qber + '% (threshold: 2.0%)\n' +
-          'CHSH S = ' + chsh + ' (classical bound: 2.0)\n' +
-          'Session aborted: ' + (aborted ? 'YES' : 'NO') + '\n' +
-          '─────────────────────\n' +
-          (aborted ? 'Key derivation aborted · Payment refused (Fail-Safe)' : 'Disturbance detected but below abort threshold');
-        qdsResult.className = 'cmp-result safe';
-        qdsResult.innerHTML = aborted
-          ? '⚛ Disturbance detected. QBER = ' + qber + '%. Key derivation aborted. Payment refused. <strong>No funds moved.</strong>'
-          : '⚛ Disturbance detected (QBER ' + qber + '%). S-parameter degraded. Elevated monitoring.';
+        // Create live lines
+        rsaHud.innerHTML = '';
+        hudLine(rsaHud, '[ EVE FACTORIZATION ENGINE — 64-bit RSA ]', 'hud-candidate');
+        hudLine(rsaHud, 'Target N = ' + N.toString());
+        hudLine(rsaHud, '─'.repeat(52));
+        candidateLine = hudLine(rsaHud, 'Testing: p = …');
+        speedLine     = hudLine(rsaHud, 'Speed: 0 keys/sec  |  Progress: 0%', 'hud-speed');
+
+        function tick() {
+          const batchEnd = candidate + BigInt(BATCH) * 2n;
+          while (candidate < batchEnd) {
+            if (N % candidate === 0n) {
+              const elapsed = ((performance.now() - t0) / 1000).toFixed(3);
+              resolve({ p: candidate, q: N / candidate, elapsed, attempts });
+              return;
+            }
+            candidate += 2n;
+            attempts++;
+          }
+
+          // Update UI every ~50ms
+          const now = performance.now();
+          if (now - lastUIUpdate > 50) {
+            const elapsed = (now - t0) / 1000;
+            const speed   = Math.round(attempts / elapsed);
+            const sqrtN   = Number(N) ** 0.5;
+            const pct     = (Number(candidate) / sqrtN * 100).toFixed(2);
+            candidateLine.textContent = 'Testing: p = ' + candidate.toString() + '  |  N mod p = ' + (N % candidate).toString();
+            speedLine.textContent     = 'Speed: ' + speed.toLocaleString() + ' keys/sec  |  Search: ' + pct + '%';
+            lastUIUpdate = now;
+          }
+
+          setTimeout(tick, 0);
+        }
+
+        tick();
+      });
+    }
+
+    // ── QDS attack (runs after RSA breach shown) ────────────────────────────
+    async function runQdsAttack() {
+      qdsHud.innerHTML = '';
+      hudLine(qdsHud, '[ EVE ATTEMPTS QDS INTERCEPT — E91 CHANNEL ]', 'qhud-ok');
+      hudLine(qdsHud, 'Target: Alice-Bob E91 entangled photon stream');
+      hudLine(qdsHud, '─'.repeat(52));
+      hudLine(qdsHud, '[1] Setting Eve fraction to 100% on quantum channel…', 'qhud-ok');
+      eveDisplay.textContent = 'Eve fraction: 100% (full intercept attempt)';
+      setStep(4, 'active');
+
+      try {
+        await fetch('/channel/attack', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({fraction:1.0}) });
+      } catch(_){}
+
+      hudLine(qdsHud, '[2] Eve measuring entangled qubits…', 'qhud-ok');
+      await new Promise(r => setTimeout(r, 600));
+
+      // Create new session to get fresh QBER measurement
+      try {
+        await fetch('/channel/session', { method:'POST', headers:{'Content-Type':'application/json'}, body:'{}' });
+      } catch(_){}
+
+      hudLine(qdsHud, '[3] Waiting for Bell measurement…', 'qhud-ok');
+      await new Promise(r => setTimeout(r, 2000));
+
+      // Poll for state
+      let state = null;
+      try {
+        const r1 = await fetch('/channel/latest');
+        const d1 = await r1.json();
+        if (d1.session_id) {
+          const r2 = await fetch('/channel/' + d1.session_id + '/status');
+          state = await r2.json();
+        }
+      } catch(_){}
+
+      if (state) {
+        const qber = (state.qber * 100).toFixed(2);
+        const chsh = (state.chsh_s || 0).toFixed(3);
+        qdsQberEl.textContent  = qber + '%';
+        qdsBellSEl.textContent = chsh;
+
+        hudLine(qdsHud, '[4] Channel telemetry received:', 'qhud-warn');
+        hudLine(qdsHud, '    QBER = ' + qber + '% (threshold: 11.0%)', qber > 11 ? 'qhud-warn' : 'qhud-ok');
+        hudLine(qdsHud, '    CHSH S = ' + chsh + ' (classical bound: 2.0)', chsh < 2 ? 'qhud-warn' : 'qhud-ok');
+
+        if (parseFloat(qber) > 1) {
+          hudLine(qdsHud, '');
+          hudLine(qdsHud, '██ TRIPWIRE TRIGGERED ██', 'qhud-warn');
+          hudLine(qdsHud, 'Wavefunction collapse detected on quantum link.', 'qhud-warn');
+          hudLine(qdsHud, 'Eavesdropper signature confirmed.');
+          hudLine(qdsHud, '');
+          hudLine(qdsHud, '[ GATEWAY ] → TRANSACTION ABORTED', 'qhud-abort');
+          hudLine(qdsHud, '[ GATEWAY ] → ZERO FUNDS MOVED', 'qhud-safe');
+          hudLine(qdsHud, '[ GATEWAY ] → Alice wallet SECURE · Eve gets ₹0', 'qhud-safe');
+          eveDisplay.textContent = '⚛ Eve detected — channel LOCKED DOWN';
+          document.getElementById('tbl-qds-outcome').textContent = '✓ Attack detected · ₹0 moved · Alice SAFE';
+          setStep(4, 'done');
+        } else {
+          hudLine(qdsHud, 'QBER below threshold — increase Eve fraction.', 'qhud-ok');
+          setStep(4, 'done');
+        }
       } else {
-        qdsOutput.textContent = 'Could not fetch channel state. Make sure the QDS engine is running on :8000.';
+        hudLine(qdsHud, 'QDS engine offline — start :8000 to see quantum defence.', 'qhud-warn');
+        setStep(4, 'error');
       }
 
-      qdsAttackBtn.disabled = false;
-      qdsResetBtn.disabled = false;
+      // Reset Eve fraction
+      try {
+        await fetch('/channel/attack', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({fraction:0.0}) });
+      } catch(_){}
+    }
+
+    // ── Main attack button ──────────────────────────────────────────────────
+    rsaAttackBtn.addEventListener('click', async () => {
+      if (rsaAttackRunning) return;
+      if (!rsaN_big) { alert('Alice\'s public key not loaded yet. Wait a moment or restart FastPay.'); return; }
+
+      rsaAttackRunning = true;
+      rsaAttackBtn.disabled = true;
+      rsaResetBtn.disabled  = true;
+      await refreshBalances();
+
+      // ── STEP 1: show intercept ──
+      setStep(0, 'done');
+      setStep(1, 'active');
+
+      // ── STEP 2: factorize ──
+      const N = rsaN_big;
+      const e = rsaE_big;
+      const { p, q, elapsed, attempts } = await runFactorization(N);
+
+      hudLine(rsaHud, '═'.repeat(52), 'hud-hit');
+      hudLine(rsaHud, '🔴 FACTOR HIT! N mod ' + p.toString() + ' == 0', 'hud-hit');
+      hudLine(rsaHud, '═'.repeat(52), 'hud-hit');
+      setStep(1, 'done');
+
+      await new Promise(r => setTimeout(r, 400));
+
+      // ── STEP 3: derive private key ──
+      setStep(2, 'active');
+      hudLine(rsaHud, '');
+      hudLine(rsaHud, '[ KEY DERIVATION ]', 'hud-derive');
+      hudLine(rsaHud, '  p = ' + p.toString(), 'hud-derive');
+      hudLine(rsaHud, '  q = ' + q.toString(), 'hud-derive');
+
+      const phi = (p - 1n) * (q - 1n);
+      hudLine(rsaHud, '  φ(N) = (p-1)(q-1) = ' + phi.toString(), 'hud-derive');
+
+      const d = bigModInverse(e, phi);
+      hudLine(rsaHud, '  d = e⁻¹ mod φ(N) = ' + d.toString(), 'hud-derive');
+      hudLine(rsaHud, '');
+      hudLine(rsaHud, '★ Alice\'s private key RECOVERED.', 'hud-hit');
+      hudLine(rsaHud, '  Eve now has full signing authority as Alice.', 'hud-hit');
+      setStep(2, 'done');
+
+      await new Promise(r => setTimeout(r, 600));
+
+      // ── STEP 4: forge + submit ──
+      setStep(3, 'active');
+      hudLine(rsaHud, '');
+      hudLine(rsaHud, '[ FORGING TRANSACTION ]', 'hud-forge');
+      const forgedMsg = 'Alice pays Eve 10000';
+      hudLine(rsaHud, '  Original: "Alice pays Bob 100"', 'hud-forge');
+      hudLine(rsaHud, '  Forged:   "' + forgedMsg + '"', 'hud-forge');
+
+      // Sign forged message: sig = hash(msg)^d mod N
+      const hashInt = await messageToInt(forgedMsg, N);
+      const sig     = bigModPow(hashInt, d, N);
+      const sigHex  = sig.toString(16);
+
+      hudLine(rsaHud, '  Sig = hash(msg)^d mod N = 0x' + sigHex.slice(0,16) + '…', 'hud-forge');
+      hudLine(rsaHud, '');
+      hudLine(rsaHud, '[ SUBMITTING TO FASTPAY GATEWAY ]', 'hud-forge');
+
+      let gatewayRes = null;
+      try {
+        const resp = await fetch('http://localhost:3000/api/rsa-transfer', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            from: 'alice', to: 'eve', amount_paise: 1000000,
+            message: forgedMsg, signature: sigHex
+          })
+        });
+        gatewayRes = await resp.json();
+      } catch(err) {
+        hudLine(rsaHud, '  ERROR: ' + err.message, 'hud-hit');
+      }
+
+      if (gatewayRes && gatewayRes.verified) {
+        hudLine(rsaHud, '');
+        hudLine(rsaHud, '█ GATEWAY RESPONSE: ' + gatewayRes.status + ' █', 'hud-accept');
+        hudLine(rsaHud, '  Signature verification: VALID ✓', 'hud-accept');
+        hudLine(rsaHud, '  ₹10,000 DEBITED from Alice', 'hud-accept');
+        hudLine(rsaHud, '  ₹10,000 CREDITED to Eve', 'hud-accept');
+        hudLine(rsaHud, '  Alice\'s new balance: ₹' + gatewayRes.alice_balance_inr, 'hud-accept');
+        hudLine(rsaHud, '  Eve\'s   new balance: ₹' + gatewayRes.eve_balance_inr, 'hud-accept');
+        hudLine(rsaHud, '');
+        hudLine(rsaHud, '  [ No alert. No log. Alice has no idea. ]', 'hud-accept');
+
+        // Flash balance boxes
+        const aliceBal = document.getElementById('rsa-alice-bal');
+        const eveBal   = document.getElementById('rsa-eve-bal');
+        aliceBal.textContent = '₹' + gatewayRes.alice_balance_inr;
+        eveBal.textContent   = '₹' + gatewayRes.eve_balance_inr;
+        aliceBal.classList.add('bal-flash');
+        eveBal.classList.add('bal-flash');
+        setTimeout(() => { aliceBal.classList.remove('bal-flash'); eveBal.classList.remove('bal-flash'); }, 1200);
+
+        document.getElementById('tbl-rsa-outcome').textContent = '✗ ₹10,000 stolen silently in ' + elapsed + 's';
+        document.getElementById('tbl-rsa-time').textContent    = elapsed + 's (' + attempts.toLocaleString() + ' candidates)';
+        setStep(3, 'error'); // red = breach
+      } else if (gatewayRes) {
+        hudLine(rsaHud, '  GATEWAY: ' + (gatewayRes.reason || JSON.stringify(gatewayRes)), 'hud-hit');
+        setStep(3, 'error');
+      } else {
+        hudLine(rsaHud, '  FastPay offline — /api/rsa-transfer not reachable.', 'hud-hit');
+        setStep(3, 'error');
+      }
+
+      await new Promise(r => setTimeout(r, 800));
+
+      // ── STEP 5: QDS defence ──
+      await runQdsAttack();
+
+      rsaAttackRunning = false;
+      rsaAttackBtn.disabled = false;
+      rsaResetBtn.disabled  = false;
     });
 
-    qdsResetBtn.addEventListener('click', async () => {
-      await setEveFraction(0);
-      eveDisplay.textContent = 'Eve fraction: 0% (Honest)';
-      qdsOutput.textContent = 'Channel reset. Eve fraction set to 0%. Press \u201cEve Intercepts\u201d to attack again.';
-      qdsResult.className = 'cmp-result hidden';
-      qdsQber.textContent = '—';
+    rsaResetBtn.addEventListener('click', async () => {
+      rsaHud.innerHTML  = '<span style="color:#555;">[ Reset — ready to attack again ]</span>';
+      qdsHud.innerHTML  = '<span style="color:#555;">[ Waiting for attack signal… ]</span>';
+      qdsQberEl.textContent  = '—';
+      qdsBellSEl.textContent = '—';
+      eveDisplay.textContent = 'Waiting — launch RSA attack first';
+      ['step0','step1','step2','step3','step4'].forEach(id => document.getElementById(id).className = 'step');
+      document.getElementById('tbl-rsa-outcome').textContent = 'Attack not run yet';
+      document.getElementById('tbl-qds-outcome').textContent = 'Attack not run yet';
+      document.getElementById('tbl-rsa-time').textContent    = '~1–3 sec (64-bit trial division)';
+      try { await fetch('/channel/attack', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({fraction:0.0}) }); } catch(_){}
+      await refreshBalances();
     });
 
   </script>
