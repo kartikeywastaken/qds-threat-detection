@@ -1333,7 +1333,7 @@
         verdictRect.setAttribute('fill', '#fde8e4');
         verdictRect.setAttribute('stroke', 'var(--red)');
         verdictTextEl.setAttribute('fill', 'var(--red)');
-        verdictTextEl.textContent = '✗ SIGNATURE FORGED — ' + (attackLabels[currentAttackMode] || 'Attack');
+        verdictTextEl.textContent = '✗ SIGNATURE FORGED' + (currentAttackMode === 'HONEST' ? ' (Clearing anomaly)' : ' — ' + (attackLabels[currentAttackMode] || 'Attack'));
       } else {
         verdictRect.setAttribute('fill', 'var(--green-tint)');
         verdictRect.setAttribute('stroke', 'var(--green)');
