@@ -87,6 +87,7 @@
       margin: 24px auto 32px;
       position: relative;
     }
+
     .rail-mark::after {
       content: "";
       position: absolute;
@@ -204,9 +205,17 @@
       gap: 8px;
     }
 
-    .mh-sys { font-weight: 600; }
-    .mh-sep { color: var(--ink-3); }
-    .mh-section { color: var(--ink-2); }
+    .mh-sys {
+      font-weight: 600;
+    }
+
+    .mh-sep {
+      color: var(--ink-3);
+    }
+
+    .mh-section {
+      color: var(--ink-2);
+    }
 
     .mh-telemetry {
       display: flex;
@@ -229,7 +238,8 @@
       text-transform: uppercase;
     }
 
-    .mh-tel-val, .mh-status-text {
+    .mh-tel-val,
+    .mh-status-text {
       font-family: var(--mono);
       font-size: 11px;
       color: var(--ink-0);
@@ -693,12 +703,285 @@
         padding-right: 20px;
       }
     }
+    /* ================= AUTONOMOUS GUIDED TOUR SYSTEM STYLES ================= */
+    .tour-scrim {
+      position: fixed;
+      inset: 0;
+      background: rgba(10, 14, 22, 0.72);
+      backdrop-filter: blur(2.5px);
+      z-index: 9998;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.35s ease;
+    }
 
-    @media (prefers-reduced-motion: reduce) {
-      * {
-        animation: none !important;
-        transition: none !important;
+    .tour-scrim.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .tour-spotlight {
+      position: fixed;
+      z-index: 9999;
+      pointer-events: none;
+      border-radius: 8px;
+      border: 2px solid var(--blue);
+      box-shadow: 0 0 0 4px rgba(56, 189, 248, 0.35), 0 0 35px rgba(56, 189, 248, 0.45);
+      opacity: 0;
+      transition: top 0.35s cubic-bezier(0.2, 0.9, 0.3, 1),
+        left 0.35s cubic-bezier(0.2, 0.9, 0.3, 1),
+        width 0.35s cubic-bezier(0.2, 0.9, 0.3, 1),
+        height 0.35s cubic-bezier(0.2, 0.9, 0.3, 1),
+        opacity 0.25s ease;
+      animation: tour-spotlight-pulse 2s ease-in-out infinite;
+    }
+
+    .tour-spotlight.active {
+      opacity: 1;
+    }
+
+    @keyframes tour-spotlight-pulse {
+
+      0%,
+      100% {
+        box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.4), 0 0 25px rgba(56, 189, 248, 0.35);
       }
+
+      50% {
+        box-shadow: 0 0 0 6px rgba(56, 189, 248, 0.65), 0 0 45px rgba(56, 189, 248, 0.6);
+      }
+    }
+
+    .tour-pointer {
+      position: fixed;
+      z-index: 10000;
+      pointer-events: none;
+      background: var(--blue);
+      color: #ffffff;
+      padding: 5px 12px;
+      border-radius: 20px;
+      font-family: var(--mono);
+      font-size: 10.5px;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.4);
+      opacity: 0;
+      transition: top 0.35s cubic-bezier(0.2, 0.9, 0.3, 1),
+        left 0.35s cubic-bezier(0.2, 0.9, 0.3, 1),
+        opacity 0.25s ease;
+    }
+
+    .tour-pointer.active {
+      opacity: 1;
+    }
+
+    .tour-card {
+      position: fixed;
+      z-index: 10001;
+      width: 440px;
+      max-width: calc(100vw - 32px);
+      background: var(--surface);
+      border: 1.5px solid var(--blue-soft);
+      border-radius: 12px;
+      box-shadow: 0 16px 48px rgba(0, 0, 0, 0.45);
+      opacity: 0;
+      transform: scale(0.95);
+      pointer-events: none;
+      transition: top 0.35s cubic-bezier(0.2, 0.9, 0.3, 1),
+        left 0.35s cubic-bezier(0.2, 0.9, 0.3, 1),
+        opacity 0.25s ease,
+        transform 0.25s ease;
+      overflow: hidden;
+    }
+
+    .tour-card.active {
+      opacity: 1;
+      transform: scale(1);
+      pointer-events: auto;
+    }
+
+    .tour-card-header {
+      padding: 14px 18px 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--border-soft);
+      background: var(--surface-raised);
+    }
+
+    .tour-step-badge {
+      background: var(--blue-tint);
+      color: var(--blue);
+      font-family: var(--mono);
+      font-size: 10px;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 4px;
+      letter-spacing: 0.05em;
+    }
+
+    .tour-category-tag {
+      font-family: var(--sans);
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--ink-2);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .tour-btn-close {
+      background: transparent;
+      border: none;
+      color: var(--ink-3);
+      font-size: 16px;
+      cursor: pointer;
+      line-height: 1;
+      padding: 4px 6px;
+      border-radius: 4px;
+      transition: color 0.15s ease, background 0.15s ease;
+    }
+
+    .tour-btn-close:hover {
+      color: var(--red);
+      background: rgba(239, 68, 68, 0.1);
+    }
+
+    .tour-progress-track {
+      height: 3px;
+      background: var(--border-soft);
+      width: 100%;
+      overflow: hidden;
+    }
+
+    .tour-progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--blue), var(--green));
+      width: 0%;
+      transition: width 0.08s linear;
+    }
+
+    .tour-card-body {
+      padding: 18px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .tour-card-title {
+      font-family: var(--sans);
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--ink-0);
+      line-height: 1.3;
+    }
+
+    .tour-card-desc {
+      font-family: var(--sans);
+      font-size: 13px;
+      color: var(--ink-1);
+      line-height: 1.55;
+    }
+
+    .tour-card-tip {
+      background: var(--bg-inset);
+      border-left: 3px solid var(--blue);
+      padding: 9px 12px;
+      border-radius: 4px;
+      font-family: var(--sans);
+      font-size: 12px;
+      color: var(--ink-1);
+      line-height: 1.45;
+    }
+
+    .tour-card-footer {
+      padding: 12px 18px;
+      background: var(--surface-raised);
+      border-top: 1px solid var(--border-soft);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .tour-controls-left,
+    .tour-controls-right {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .tour-btn {
+      border-radius: var(--radius-sm);
+      font-family: var(--sans);
+      font-size: 12px;
+      font-weight: 600;
+      padding: 7px 14px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      transition: all 0.15s ease;
+    }
+
+    .tour-btn:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+
+    .tour-btn-primary {
+      background: var(--blue);
+      color: #ffffff;
+      border: 1px solid var(--blue);
+      box-shadow: 0 2px 8px rgba(37, 99, 235, 0.25);
+    }
+
+    .tour-btn-primary:hover:not(:disabled) {
+      background: #1d4ed8;
+      border-color: #1d4ed8;
+    }
+
+    .tour-btn-secondary {
+      background: var(--surface);
+      color: var(--ink-1);
+      border: 1px solid var(--border);
+    }
+
+    .tour-btn-secondary:hover:not(:disabled) {
+      background: var(--bg-inset);
+      color: var(--ink-0);
+    }
+
+    .tour-btn-ghost {
+      background: transparent;
+      color: var(--ink-3);
+      border: none;
+      padding: 7px 10px;
+    }
+
+    .tour-btn-ghost:hover {
+      color: var(--red);
+    }
+
+    .tour-keyboard-hint {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--ink-3);
+    }
+
+    .tour-keyboard-hint kbd {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 3px;
+      padding: 1px 4px;
+      font-size: 9.5px;
+      color: var(--ink-1);
     }
   </style>
 </head>
@@ -707,13 +990,27 @@
 
   <div class="app">
 
-    <div class="rail">
+    <div class="rail" id="railSidebar">
       <div class="rail-mark"></div>
-      
-      <div class="rail-section">
+
+      <div class="rail-section" id="railSectionGuide">
+        <div class="rail-section-title">GUIDE</div>
+        <div class="rail-nav">
+          <div class="rail-item" id="railTourItem" title="Start Interactive Tour (Press T)" onclick="startTour()"
+            style="cursor:pointer;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <path d="M12 2l2.4 7.2h7.6l-6.1 4.5 2.3 7.3-6.2-4.6-6.2 4.6 2.3-7.3-6.1-4.5h7.6z" />
+            </svg>
+            <span class="rail-label" style="font-weight:700;">Tour [T]</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="rail-section" id="railSectionCore">
         <div class="rail-section-title">CORE</div>
         <div class="rail-nav">
-          <div class="rail-item active" title="Command Center" onclick="switchView('view-command-center', this)">
+          <div class="rail-item active" id="railItemDashboard" title="Command Center"
+            onclick="switchView('view-command-center', this)">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
               <rect x="3" y="3" width="18" height="18" rx="2" />
               <line x1="3" y1="9" x2="21" y2="9" />
@@ -723,16 +1020,17 @@
         </div>
       </div>
 
-      <div class="rail-section">
+      <div class="rail-section" id="railSectionAnalysis">
         <div class="rail-section-title">ANALYSIS</div>
         <div class="rail-nav">
-          <div class="rail-item" title="Statistical Tests" onclick="switchView('view-statistical-tests', this)">
+          <div class="rail-item" id="railItemTelemetry" title="Statistical Tests"
+            onclick="switchView('view-statistical-tests', this)">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
               <path d="M3 3v18h18M7 16l4-4 4 4 6-6" />
             </svg>
             <span class="rail-label">Telemetry</span>
           </div>
-          <div class="rail-item" title="Event Log" onclick="switchView('view-event-log', this)">
+          <div class="rail-item" id="railItemEvents" title="Event Log" onclick="switchView('view-event-log', this)">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
               <path d="M4 4h16v16H4z M4 9h16 M9 4v16" />
             </svg>
@@ -741,12 +1039,14 @@
         </div>
       </div>
 
-      <div class="rail-section">
+      <div class="rail-section" id="railSectionSystem">
         <div class="rail-section-title">SYSTEM</div>
         <div class="rail-nav">
-          <div class="rail-item" title="Key Management" onclick="switchView('view-key-management', this)">
+          <div class="rail-item" id="railItemKeys" title="Key Management"
+            onclick="switchView('view-key-management', this)">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
-              <path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4" />
+              <path
+                d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4" />
             </svg>
             <span class="rail-label">Keys</span>
           </div>
@@ -754,12 +1054,13 @@
       </div>
 
       <div class="rail-spacer"></div>
-      
+
       <div class="rail-foot">
-        <div class="rail-item" title="Configuration">
+        <div class="rail-item" id="railItemConfig" title="Configuration">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
             <circle cx="12" cy="12" r="3" />
-            <path d="M12 2v3M12 19v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M2 12h3M19 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1" />
+            <path
+              d="M12 2v3M12 19v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M2 12h3M19 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1" />
           </svg>
           <span class="rail-label">Config</span>
         </div>
@@ -768,8 +1069,8 @@
 
     <div class="main">
 
-      <div class="masthead">
-        <div class="mh-identity">
+      <div class="masthead" id="mainMasthead">
+        <div class="mh-identity" id="mhIdentity">
           <div class="mh-logo"></div>
           <div class="mh-title">
             <span class="mh-sys">QDS-01 SYSTEM</span>
@@ -777,8 +1078,8 @@
             <span class="mh-section">VERIFICATION</span>
           </div>
         </div>
-        
-        <div class="mh-telemetry">
+
+        <div class="mh-telemetry" id="mhTelemetryBar">
           <div class="mh-tel-item">
             <span class="mh-tel-label">STATUS</span>
             <div style="display:flex; align-items:center; gap:6px;">
@@ -808,67 +1109,174 @@
       <div class="content" id="view-command-center">
 
         <div class="card diagram-card">
-          <div class="card-head">
-            <div class="card-title">Teleportation channel</div>
-            <div class="card-desc">live protocol trace</div>
+          <div class="card-head"
+            style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;">
+            <div>
+              <div class="card-title">Teleportation channel</div>
+              <div class="card-desc">live protocol trace & real-world attack simulation</div>
+            </div>
+            <div style="display:flex; align-items:center; gap:10px;">
+              <button id="btnTourToggle" onclick="startTour()"
+                style="background:linear-gradient(135deg, var(--blue) 0%, #1e40af 100%); color:#fff; border:none; padding:7px 14px; border-radius:var(--radius-sm); font-family:var(--sans); font-size:11.5px; font-weight:700; cursor:pointer; display:flex; align-items:center; gap:6px; box-shadow:0 2px 8px rgba(37,99,235,0.3); transition:all .15s ease;"
+                title="Start Autonomous Guided Tour (or Press 'T')">
+                <span>✨ Guided Tour [T]</span>
+              </button>
+            </div>
           </div>
 
           <div class="diagram-stage" style="padding: 20px; text-align:center;">
-            <svg class="diagram-svg" viewBox="0 0 1200 300" id="heroStage">
-               <!-- Grid (subtle) -->
-               <rect width="1200" height="300" fill="transparent" stroke="var(--border-soft)" stroke-width="1" />
-               <!-- Nodes -->
-               <!-- Alice -->
-               <g transform="translate(150, 150)">
-                  <circle r="40" fill="var(--surface)" stroke="var(--blue)" stroke-width="2" />
-                  <text y="5" font-family="var(--sans)" font-size="14" fill="var(--ink-0)" text-anchor="middle" font-weight="600">Alice</text>
-               </g>
-               
-               <!-- Eve -->
-               <g transform="translate(600, 150)">
-                  <circle r="50" fill="var(--surface-raised)" stroke="var(--ink-2)" stroke-width="2" stroke-dasharray="4 4" id="eveNodeBorder" />
-                  <text y="-5" font-family="var(--sans)" font-size="14" fill="var(--ink-1)" text-anchor="middle" font-weight="600" id="eveNodeName">Eve</text>
-                  <text y="15" font-family="var(--mono)" font-size="10" fill="var(--ink-3)" text-anchor="middle" id="eveNodeStatus">Inactive</text>
-               </g>
+            <svg class="diagram-svg" viewBox="0 0 1200 650" id="heroStage"
+              style="background: var(--bg); border-radius: 8px;">
+              <!-- DEFINITIONS -->
+              <defs>
+                <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+                  <feGaussianBlur stdDeviation="3" result="blur" />
+                  <feMerge>
+                    <feMergeNode in="blur" />
+                    <feMergeNode in="SourceGraphic" />
+                  </feMerge>
+                </filter>
+                <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6"
+                  orient="auto-start-reverse">
+                  <path d="M 0 0 L 10 5 L 0 10 z" fill="var(--ink-2)" />
+                </marker>
+                <marker id="arrow-blue" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6"
+                  orient="auto-start-reverse">
+                  <path d="M 0 0 L 10 5 L 0 10 z" fill="var(--blue)" />
+                </marker>
+                <marker id="arrow-red" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6"
+                  orient="auto-start-reverse">
+                  <path d="M 0 0 L 10 5 L 0 10 z" fill="var(--red)" />
+                </marker>
+              </defs>
 
-               <!-- Bob -->
-               <g transform="translate(1050, 150)">
-                  <circle r="40" fill="var(--surface)" stroke="var(--blue)" stroke-width="2" id="bobNodeBorder" />
-                  <text y="5" font-family="var(--sans)" font-size="14" fill="var(--ink-0)" text-anchor="middle" font-weight="600">Bob</text>
-               </g>
+              <!-- TOP ROW (y = 80) -->
+              <!-- ALICE CARD (x = 50, y = 80) -->
+              <g id="aliceNode">
+                <rect x="50" y="80" width="180" height="120" rx="8" fill="var(--surface)" stroke="var(--ink-2)" />
+                <text x="140" y="105" fill="var(--ink-1)" font-family="var(--sans)" font-size="14" font-weight="700"
+                  text-anchor="middle" letter-spacing="1">ALICE</text>
+                <rect x="70" y="125" width="140" height="50" rx="4" fill="var(--surface-raised)"
+                  stroke="var(--ink-2)" />
+                <text x="140" y="145" fill="var(--ink-0)" font-family="var(--sans)" font-size="12"
+                  text-anchor="middle">Message</text>
+                <text x="140" y="165" fill="var(--ink-0)" font-family="var(--sans)" font-size="12"
+                  text-anchor="middle">+ Sign</text>
+              </g>
 
-               <!-- Connections -->
-               <line x1="190" y1="150" x2="550" y2="150" stroke="var(--ink-3)" stroke-width="2" stroke-dasharray="2 4" />
-               <line x1="650" y1="150" x2="1010" y2="150" stroke="var(--ink-3)" stroke-width="2" stroke-dasharray="2 4" />
+              <!-- Arrow Alice -> Channel -->
+              <path d="M230 140 L350 140" stroke="var(--blue)" stroke-width="2" marker-end="url(#arrow-blue)" />
 
-               <!-- Moving Qubit Group -->
-               <g id="qubitParticle" opacity="0" style="transition: transform 1s linear, opacity 0.2s; transform: translate(190px, 150px);">
-                  <circle cx="0" cy="0" r="10" fill="var(--blue)" id="qubitCore" />
-                  <text id="qubitLabel" x="0" y="3" font-family="var(--mono)" font-size="10" fill="white" text-anchor="middle" font-weight="700">|ψ⟩</text>
-               </g>
-               
-               <!-- Secondary Qubit (for Entanglement / specific attacks) -->
-               <g id="qubitAncilla" opacity="0" style="transition: transform 1s linear, opacity 0.2s; transform: translate(600px, 90px);">
-                   <circle cx="0" cy="0" r="8" fill="var(--amber)" />
-                   <text x="0" y="3" font-family="var(--mono)" font-size="8" fill="white" text-anchor="middle" font-weight="700">|E⟩</text>
-               </g>
+              <!-- QUANTUM CHANNEL CARD (x = 350, y = 80) -->
+              <rect id="channelCard" x="350" y="80" width="500" height="120" rx="8" fill="var(--surface)"
+                stroke="var(--blue)" />
+              <text x="600" y="105" fill="var(--blue)" font-family="var(--sans)" font-size="14" font-weight="700"
+                text-anchor="middle" letter-spacing="1">QUANTUM CHANNEL</text>
+              <rect x="400" y="125" width="400" height="50" rx="4" fill="var(--surface-raised)" stroke="var(--blue)" />
+              <text x="600" y="155" fill="var(--ink-0)" font-family="var(--sans)" font-size="14"
+                text-anchor="middle">Bell / GHZ Entanglement</text>
 
-               <!-- Outcome display above Bob -->
-               <text id="bobOutcome" x="1050" y="90" font-family="var(--mono)" font-size="12" fill="var(--ink-1)" text-anchor="middle" opacity="0" style="transition: opacity 0.2s;">Received</text>
+              <!-- Qubits track inside Quantum Channel -->
+              <line x1="420" y1="150" x2="780" y2="150" stroke="var(--blue)" stroke-dasharray="4 4" opacity="0.3" />
 
-               <!-- Verdict Banner -->
-               <g id="verdictBanner" style="transition: opacity 0.4s ease; opacity: 1;" transform="translate(800, 14)">
-                 <rect width="380" height="36" rx="8" fill="var(--green-tint)" stroke="var(--green)" stroke-width="1" id="verdictRect"/>
-                 <text x="190" y="23" font-family="var(--sans)" font-size="12" fill="var(--green)" text-anchor="middle" font-weight="700" id="verdictText">✓ SIGNATURE VERIFIED</text>
-               </g>
+              <!-- Arrow Channel -> Bob -->
+              <path d="M850 140 L970 140" stroke="var(--blue)" stroke-width="2" marker-end="url(#arrow-blue)" />
+
+              <!-- BOB CARD (x = 970, y = 80) -->
+              <rect x="970" y="80" width="180" height="120" rx="8" fill="var(--surface)" stroke="var(--ink-2)"
+                id="bobCard" />
+              <text x="1060" y="105" fill="var(--ink-1)" font-family="var(--sans)" font-size="14" font-weight="700"
+                text-anchor="middle" letter-spacing="1">BOB</text>
+              <rect x="990" y="125" width="140" height="50" rx="4" fill="var(--surface-raised)" stroke="var(--ink-2)"
+                id="bobInner" />
+              <text x="1060" y="145" fill="var(--ink-0)" font-family="var(--sans)" font-size="12"
+                text-anchor="middle">Measure</text>
+              <text x="1060" y="165" fill="var(--ink-2)" font-family="var(--mono)" font-size="12" text-anchor="middle">X
+                Y Z</text>
+
+              <!-- MIDDLE ROW (y = 280) -->
+
+              <!-- ATTACK INJECTION (Eve) (x = 450, y = 280) -->
+              <!-- Connection from Channel to Eve -->
+              <path id="attackArrow" d="M600 200 L600 265" stroke="var(--red)" stroke-width="2"
+                marker-end="url(#arrow-red)" opacity="0" style="transition: opacity 0.3s" />
+              <text id="attackLabel" x="600" y="240" fill="var(--red)" font-family="var(--sans)" font-size="12"
+                text-anchor="middle" opacity="0" font-weight="bold" style="transition: opacity 0.3s">ATTACK
+                INJECTION</text>
+
+              <rect id="eveCard" x="450" y="280" width="300" height="120" rx="8" fill="var(--surface)"
+                stroke="var(--ink-2)" style="transition: stroke 0.3s" />
+              <text x="600" y="305" fill="var(--ink-1)" font-family="var(--sans)" font-size="14" font-weight="700"
+                text-anchor="middle" letter-spacing="1">EVE</text>
+              <rect id="eveInner" x="470" y="325" width="260" height="50" rx="4" fill="var(--surface-raised)"
+                stroke="var(--ink-2)" style="transition: stroke 0.3s" />
+              <text id="eveAction" x="600" y="355" fill="var(--ink-0)" font-family="var(--sans)" font-size="14"
+                text-anchor="middle">Tampering</text>
+
+              <!-- Connection Eve to Stats -->
+              <path id="eveStatsArrow" d="M750 340 L880 340" stroke="var(--red)" stroke-width="2"
+                marker-end="url(#arrow-red)" opacity="0" style="transition: opacity 0.3s" />
+              <!-- Connection Bob to Stats -->
+              <path d="M1060 200 L1060 265" stroke="var(--blue)" stroke-width="2" marker-end="url(#arrow-blue)" />
+
+              <!-- STATS CARD (x = 900, y = 280) -->
+              <rect id="statsCard" x="900" y="280" width="250" height="120" rx="8" fill="var(--surface)"
+                stroke="var(--ink-2)" />
+              <text x="1025" y="305" fill="var(--ink-1)" font-family="var(--sans)" font-size="14" font-weight="700"
+                text-anchor="middle" letter-spacing="1">VERIFICATION</text>
+              <rect x="920" y="325" width="210" height="50" rx="4" fill="var(--surface-raised)" stroke="var(--ink-2)" />
+              <text x="1025" y="355" fill="var(--ink-0)" font-family="var(--sans)" font-size="14"
+                text-anchor="middle">Statistical Analysis</text>
+
+              <!-- BOTTOM ROW (y = 480) -->
+              <!-- Connection Stats to Decision -->
+              <path d="M1025 400 L1025 435 L600 435 L600 465" stroke="var(--ink-3)" stroke-width="2"
+                marker-end="url(#arrow)" />
+
+              <!-- DECISION CARD (x = 400, y = 480) -->
+              <rect id="decisionCard" x="400" y="480" width="400" height="150" rx="8" fill="var(--surface)"
+                stroke="var(--ink-2)" style="transition: stroke 0.3s" />
+              <text x="600" y="505" fill="var(--ink-1)" font-family="var(--sans)" font-size="14" font-weight="700"
+                text-anchor="middle" letter-spacing="1">THREAT DECISION</text>
+              <rect id="decisionInner" x="420" y="520" width="360" height="90" rx="4" fill="var(--surface-raised)"
+                stroke="var(--ink-2)" style="transition: stroke 0.3s" />
+
+              <text x="440" y="545" fill="var(--ink-2)" font-family="var(--mono)" font-size="14">Bell S = <tspan
+                  id="sValDec" fill="var(--ink-0)">2.00</tspan></text>
+              <text x="440" y="570" fill="var(--ink-2)" font-family="var(--mono)" font-size="14">Bound = 2.00</text>
+              <text x="440" y="595" fill="var(--ink-2)" font-family="var(--mono)" font-size="14">Margin = <tspan
+                  id="sDeltaDec" fill="var(--ink-0)">+0.00</tspan></text>
+              <text id="verdictTextDec" x="650" y="570" fill="var(--ink-2)" font-family="var(--sans)" font-size="18"
+                font-weight="800" text-anchor="middle" style="transition: fill 0.3s">[ PENDING ]</text>
+
+              <!-- Particles layer -->
+              <g id="qubitParticle1" opacity="0"
+                style="transition: transform 1.5s linear, opacity 0.2s; transform: translate(430px, 150px);">
+                <circle cx="0" cy="0" r="10" fill="var(--blue)" filter="url(#glow)" />
+                <text y="3" fill="white" font-family="var(--mono)" font-size="10" font-weight="bold"
+                  text-anchor="middle">|ψ⟩</text>
+              </g>
+              <g id="qubitParticle2" opacity="0"
+                style="transition: transform 1.5s linear, opacity 0.2s; transform: translate(430px, 150px);">
+                <circle cx="0" cy="0" r="10" fill="var(--blue)" filter="url(#glow)" />
+                <text y="3" fill="white" font-family="var(--mono)" font-size="10" font-weight="bold"
+                  text-anchor="middle">|ψ⟩</text>
+              </g>
+              <g id="qubitParticle3" opacity="0"
+                style="transition: transform 1.5s linear, opacity 0.2s; transform: translate(430px, 150px);">
+                <circle cx="0" cy="0" r="10" fill="var(--blue)" filter="url(#glow)" />
+                <text y="3" fill="white" font-family="var(--mono)" font-size="10" font-weight="bold"
+                  text-anchor="middle">|ψ⟩</text>
+              </g>
             </svg>
-            <div id="animationExplanation" style="margin-top: 20px; font-family: var(--sans); font-size: 15px; font-weight: 500; color: var(--ink-0); background: var(--bg-inset); padding: 16px; border-radius: 8px; border: 1px solid var(--border);">
-               Initializing Quantum Channel...
+            <div id="animationExplanation"
+              style="margin-top: 20px; font-family: var(--sans); font-size: 15px; font-weight: 500; color: var(--ink-0); background: var(--bg-inset); padding: 16px; border-radius: 8px; border: 1px solid var(--border);">
+              Initializing Quantum Channel...
             </div>
           </div>
 
           <!-- Restored Stats panel -->
-          <div class="diagram-stats">
+          <div class="diagram-stats" id="diagramStatsRow">
             <div class="dstat accent">
               <div class="lbl">Bell parameter S</div>
               <div class="val" id="bellSVal">—</div>
@@ -892,50 +1300,59 @@
           </div>
         </div>
 
-        <div class="card events-zone" style="margin-bottom:24px;">
+        <div class="card events-zone" id="paymentLogsCard" style="margin-bottom:24px;">
           <div class="card-head" style="padding-bottom:14px;">
             <div class="card-title">Gateway Payment Logs</div>
           </div>
           <div class="events-list" id="paymentLogsList" style="max-height: 280px; overflow-y: auto;">
-            <div class="event" style="padding: 16px; text-align:center; color:var(--ink-3); font-size:13px; display:block;">
+            <div class="event"
+              style="padding: 16px; text-align:center; color:var(--ink-3); font-size:13px; display:block;">
               No transactions processed yet.
             </div>
           </div>
         </div>
 
-        <div class="upper-grid" style="display:grid; grid-template-columns: 1fr 320px; gap:22px; margin-bottom:22px; align-items:start;">
-            <div class="card stat-rows">
-              <div class="stat-row"><span class="lbl">QBER</span><span class="num">—<span>%</span></span></div>
-              <div class="stat-row"><span class="lbl">Min-entropy</span><span class="num">—<span>bits</span></span>
-              </div>
-              <div class="stat-row"><span class="lbl">Run ID</span><span class="num" style="font-size:16px;">—</span>
-              </div>
-              <div class="stat-row"><span class="lbl">Attack</span><span class="num" id="attackLabel"
-                  style="font-size:14px; color:var(--green);">None</span></div>
+        <div class="upper-grid"
+          style="display:grid; grid-template-columns: 1fr 320px; gap:22px; margin-bottom:22px; align-items:start;">
+          <div class="card stat-rows" id="channelStatRows">
+            <div class="stat-row"><span class="lbl">QBER</span><span class="num">—<span>%</span></span></div>
+            <div class="stat-row"><span class="lbl">Min-entropy</span><span class="num">—<span>bits</span></span>
             </div>
+            <div class="stat-row"><span class="lbl">Run ID</span><span class="num" style="font-size:16px;">—</span>
+            </div>
+            <div class="stat-row"><span class="lbl">Attack</span><span class="num" id="attackLabel"
+                style="font-size:14px; color:var(--green);">None</span></div>
+          </div>
 
-            <div class="card" id="gatewayWidget" style="padding:16px; border:2px solid var(--border);">
-              <div style="font-size:11px; font-weight:700; color:var(--ink-2); text-transform:uppercase; letter-spacing:0.05em; margin-bottom:12px; display:flex; align-items:center; gap:6px;">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="16" rx="2"></rect><line x1="3" y1="10" x2="21" y2="10"></line></svg>
-                Real-Time P2P Transfer
+          <div class="card" id="gatewayWidget" style="padding:16px; border:2px solid var(--border);">
+            <div
+              style="font-size:11px; font-weight:700; color:var(--ink-2); text-transform:uppercase; letter-spacing:0.05em; margin-bottom:12px; display:flex; align-items:center; gap:6px;">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="3" y="4" width="18" height="16" rx="2"></rect>
+                <line x1="3" y1="10" x2="21" y2="10"></line>
+              </svg>
+              Real-Time P2P Transfer
+            </div>
+            <div
+              style="display:flex; flex-direction:column; gap:16px; align-items:center; background:var(--surface-raised); padding:30px; border-radius:8px;">
+              <div style="display:flex; gap:8px;">
+                <button id="rzp-button1"
+                  style="background:var(--blue); color:white; border:none; padding:16px 32px; font-size:16px; font-weight:700; border-radius:8px; cursor:pointer; text-transform:uppercase; letter-spacing:0.05em; box-shadow:0 4px 12px rgba(59,89,152,0.3); transition:transform 0.1s;">
+                  Pay ₹500
+                </button>
               </div>
-              <div style="display:flex; flex-direction:column; gap:16px; align-items:center; background:var(--surface-raised); padding:30px; border-radius:8px;">
-                  <div style="display:flex; gap:8px;">
-                    <button id="rzp-button1" style="background:var(--blue); color:white; border:none; padding:16px 32px; font-size:16px; font-weight:700; border-radius:8px; cursor:pointer; text-transform:uppercase; letter-spacing:0.05em; box-shadow:0 4px 12px rgba(59,89,152,0.3); transition:transform 0.1s;">
-                        Pay ₹500
-                    </button>
-                  </div>
-                  <div style="font-family:var(--mono); font-size:11.5px; font-weight:600; color:var(--ink-1); text-align:center; line-height:1.5;">
-                     1. Click to initiate secure transfer<br>
-                     2. Razorpay popup opens<br>
-                     3. QDS intercepts if forged
-                  </div>
+              <div
+                style="font-family:var(--mono); font-size:11.5px; font-weight:600; color:var(--ink-1); text-align:center; line-height:1.5;">
+                1. Click to initiate secure transfer<br>
+                2. Razorpay popup opens<br>
+                3. QDS intercepts if forged
               </div>
             </div>
+          </div>
         </div>
 
         <div class="lower">
-          <div class="card" style="display:flex; flex-direction:column; min-height:400px;">
+          <div class="card" id="sprtCard" style="display:flex; flex-direction:column; min-height:400px;">
             <div class="card-head">
               <div class="card-title">SPRT sequential detection</div>
               <div class="card-desc" id="sprtTag" style="color:var(--ink-3);">waiting for data…</div>
@@ -985,7 +1402,7 @@
 
           <div class="side-zone">
 
-            <div class="card events-zone">
+            <div class="card events-zone" id="liveEventsCard">
               <div class="card-head" style="padding-bottom:14px;">
                 <div class="card-title">Live events</div>
               </div>
@@ -1003,7 +1420,7 @@
             </div>
 
 
-            
+
           </div>
         </div>
 
@@ -1016,7 +1433,7 @@
       <div class="content" id="view-statistical-tests"
         style="display:none; padding:40px; flex-direction:column; gap:24px;">
         <h2 style="font-size:24px; font-weight:600;">Statistical Tests & Mathematical Bounds</h2>
-        <div class="card" style="padding:24px;">
+        <div class="card" id="cardMinEntropy" style="padding:24px;">
           <h3 style="font-size:16px; font-weight:600; margin-bottom:12px;">Minimum Entropy Bound (Quantum-Secured)</h3>
           <p style="font-size:14px; color:var(--ink-2); line-height:1.6; max-width:800px;">
             The system evaluates the real-time min-entropy bound to ensure that an eavesdropper cannot guess the
@@ -1024,7 +1441,7 @@
             When the CHSH parameter drops below 2.0 (classical bound), the evaluated min-entropy falls to 0.
           </p>
         </div>
-        <div class="card" style="padding:24px;">
+        <div class="card" id="cardSprtBoundary" style="padding:24px;">
           <h3 style="font-size:16px; font-weight:600; margin-bottom:12px;">SPRT Decision Boundary</h3>
           <p style="font-size:14px; color:var(--ink-2); line-height:1.6; max-width:800px;">
             The Sequential Probability Ratio Test monitors the log-likelihood ratio of an honest channel vs. an
@@ -1041,7 +1458,8 @@
             style="font-size:12px; font-weight:500; color:var(--ink-2); background:var(--bg-inset); padding:4px 10px; border-radius:4px;">Firestore
             Backed</span>
         </h2>
-        <div class="card" style="flex:1; overflow:hidden; display:flex; flex-direction:column; padding:0;">
+        <div class="card" id="cardGlobalEvents"
+          style="flex:1; overflow:hidden; display:flex; flex-direction:column; padding:0;">
           <div
             style="display:flex; padding:16px 24px; border-bottom:1px solid var(--border); font-weight:600; font-size:12px; color:var(--ink-2); text-transform:uppercase; letter-spacing:0.05em;">
             <div style="flex:1;">Timestamp / Session</div>
@@ -1061,12 +1479,12 @@
         style="display:none; padding:40px; flex-direction:column; gap:24px;">
         <h2 style="font-size:24px; font-weight:600;">Quantum Key Management</h2>
         <div style="display:flex; gap:24px;">
-          <div class="card" style="flex:1; padding:24px;">
+          <div class="card" id="cardActiveKeys" style="flex:1; padding:24px;">
             <h3 style="font-size:16px; font-weight:600; margin-bottom:8px;">Active Key Pool</h3>
             <div style="font-size:32px; font-weight:300; font-family:var(--mono);">1,048,576 bits</div>
             <div style="font-size:12px; color:var(--green); margin-top:8px;">+ 12.4 kbps generation rate</div>
           </div>
-          <div class="card" style="flex:1; padding:24px;">
+          <div class="card" id="cardEntropyHealth" style="flex:1; padding:24px;">
             <h3 style="font-size:16px; font-weight:600; margin-bottom:8px;">Entropy Source Health</h3>
             <div style="display:flex; align-items:center; gap:8px;">
               <span class="event-dot green"></span>
@@ -1106,17 +1524,17 @@
       const box = document.getElementById('paymentModalBox');
 
       if (type === 'error') {
-          icon.innerHTML = '🛑';
-          titleEl.style.color = 'var(--red)';
-          box.style.border = '2px solid var(--red)';
+        icon.innerHTML = '🛑';
+        titleEl.style.color = 'var(--red)';
+        box.style.border = '2px solid var(--red)';
       } else if (type === 'success') {
-          icon.innerHTML = '✅';
-          titleEl.style.color = 'var(--green)';
-          box.style.border = '2px solid var(--green)';
+        icon.innerHTML = '✅';
+        titleEl.style.color = 'var(--green)';
+        box.style.border = '2px solid var(--green)';
       } else {
-          icon.innerHTML = '⚠️';
-          titleEl.style.color = 'var(--amber)';
-          box.style.border = '2px solid var(--amber)';
+        icon.innerHTML = '⚠️';
+        titleEl.style.color = 'var(--amber)';
+        box.style.border = '2px solid var(--amber)';
       }
 
       titleEl.innerText = title;
@@ -1246,26 +1664,7 @@
           }
       }
 
-      eveGroup.style.opacity = isUnderAttack ? '1' : '0';
-      const eveLabel = document.getElementById('eveLabel');
-      if (eveLabel && eveActions[currentAttackMode]) {
-        eveLabel.textContent = eveActions[currentAttackMode];
-      }
 
-      const beams = heroStage.querySelectorAll('.beam');
-      beams.forEach(b => {
-        b.setAttribute('stroke', isForged ? 'var(--red)' : 'var(--blue)');
-      });
-
-      const bobOuter = heroStage.querySelector('circle[cx="1050"][cy="250"][r="54"]');
-      if (bobOuter) {
-        bobOuter.setAttribute('stroke', isForged ? 'var(--red)' : 'var(--border)');
-      }
-
-      const aliceOuter = heroStage.querySelector('circle[cx="150"][cy="250"][r="54"]');
-      if (aliceOuter) {
-        aliceOuter.setAttribute('stroke', isUnderAttack ? 'var(--amber)' : 'var(--border)');
-      }
 
       const mhStatusBox = document.getElementById('mhStatusBox');
       const mhLiveDot = document.getElementById('mhLiveDot');
@@ -1356,21 +1755,21 @@
           if (state.transactions && state.transactions.length > 0) {
             paymentLogsList.innerHTML = state.transactions.map(tx => {
               const color = tx.decision === 'REJECT' ? 'var(--red)' : (tx.decision === 'FAILED' ? 'var(--amber)' : 'var(--green)');
-              
+
               let qStats = '';
               if (tx.qber !== undefined && tx.s_val !== undefined) {
-                  const qberStr = (tx.qber * 100).toFixed(1) + '%';
-                  const sStr = tx.s_val.toFixed(3);
-                  let whyHtml = '';
-                  if (tx.decision === 'REJECT') {
-                      whyHtml = `<div style="color:var(--red); font-weight:600; font-size:11px; margin-top:6px;">Signature state collapsed (QBER ${qberStr} > 11% threshold). Bell state CHSH violated (S=${sStr} < 2.0). Interception detected.</div>`;
-                  } else if (tx.decision === 'ACCEPT') {
-                      whyHtml = `<div style="color:var(--green); font-weight:600; font-size:11px; margin-top:6px;">Signature intact (QBER ${qberStr} < 11%). Entanglement preserved (S=${sStr} > 2.0).</div>`;
-                  } else if (tx.decision === 'FAILED') {
-                      whyHtml = `<div style="color:var(--amber); font-weight:600; font-size:11px; margin-top:6px;">Classical Network Error: ${tx.error || 'Payment gateway failed natively.'}</div>`;
-                  }
-                  
-                  qStats = `
+                const qberStr = (tx.qber * 100).toFixed(1) + '%';
+                const sStr = tx.s_val.toFixed(3);
+                let whyHtml = '';
+                if (tx.decision === 'REJECT') {
+                  whyHtml = `<div style="color:var(--red); font-weight:600; font-size:11px; margin-top:6px;">Signature state collapsed (QBER ${qberStr} > 11% threshold). Bell state CHSH violated (S=${sStr} < 2.0). Interception detected.</div>`;
+                } else if (tx.decision === 'ACCEPT') {
+                  whyHtml = `<div style="color:var(--green); font-weight:600; font-size:11px; margin-top:6px;">Signature intact (QBER ${qberStr} < 11%). Entanglement preserved (S=${sStr} > 2.0).</div>`;
+                } else if (tx.decision === 'FAILED') {
+                  whyHtml = `<div style="color:var(--amber); font-weight:600; font-size:11px; margin-top:6px;">Classical Network Error: ${tx.error || 'Payment gateway failed natively.'}</div>`;
+                }
+
+                qStats = `
                   <div style="font-family:var(--mono); font-size:11px; color:var(--ink-2); display:flex; gap:12px; margin-top:6px; background:var(--bg-inset); padding:6px; border-radius:4px;">
                     <span>QBER: <b style="color:var(--ink-1);">${qberStr}</b></span>
                     <span>CHSH S: <b style="color:var(--ink-1);">${sStr}</b></span>
@@ -1382,7 +1781,7 @@
               return `<div class="event" style="border-bottom: 1px solid var(--border); padding-bottom: 16px; margin-bottom: 12px; display:flex;">
                 <span class="event-dot" style="background: ${color}; width:8px; height:8px; margin-top:6px;"></span>
                 <div class="event-body" style="width:100%;">
-                  <div class="event-time">${tx.time} | ID: ${tx.id.substring(0,12)}</div>
+                  <div class="event-time">${tx.time} | ID: ${tx.id.substring(0, 12)}</div>
                   <div class="event-name" style="color: ${color}; font-size:14px;">${tx.decision === 'REJECT' ? 'BLOCKED' : (tx.decision === 'FAILED' ? 'FAILED' : 'APPROVED')}</div>
                   <div class="event-detail" style="display:flex; justify-content:space-between; width:100%; margin-top:4px;">
                     <span style="font-weight:600; color:var(--ink-0);">₹${tx.amount}</span>
@@ -1417,12 +1816,12 @@
         }
         rawEvents.forEach((raw, idx) => {
           const ev = raw.report || raw;
-          
+
           if (ev.message) {
-              const div = document.createElement('div');
-              div.className = 'event';
-              const isError = ev.message.includes("BLOCKED") || ev.message.includes("failed");
-              div.innerHTML = `
+            const div = document.createElement('div');
+            div.className = 'event';
+            const isError = ev.message.includes("BLOCKED") || ev.message.includes("failed");
+            div.innerHTML = `
                   <span class="event-dot ${isError ? 'red' : 'blue'}"></span>
                   <div class="event-body">
                     <div class="event-time">System Event</div>
@@ -1430,8 +1829,8 @@
                     <div class="event-detail">${ev.message}</div>
                   </div>
               `;
-              eventsList.appendChild(div);
-              return;
+            eventsList.appendChild(div);
+            return;
           }
 
           const isReject = ev.decision === 'REJECT';
@@ -1486,7 +1885,7 @@
         rawEvents.forEach(raw => {
           const ev = raw.report || raw;
           if (ev.message) return; // Skip text logs in the stats table
-          
+
           const decisionColor = ev.decision === 'REJECT' ? 'var(--amber)' : 'var(--green)';
           const att = ev.attribution || {};
           let attackClass = (typeof att === 'object' ? (att.attack_class || 'NONE') : String(att)).toUpperCase();
@@ -1524,7 +1923,7 @@
     fetchEvents();
 
     /* --- Razorpay Checkout Logic --- */
-    document.getElementById('rzp-button1').onclick = async function(e) {
+    document.getElementById('rzp-button1').onclick = async function (e) {
       e.preventDefault();
 
       if (currentDecision === 'REJECT') {
@@ -1548,70 +1947,68 @@
       }
 
       try {
-          const res = await fetch('/api/create_order', { method: 'POST' });
-          const orderData = await res.json();
-          if (orderData.error) {
-              showPaymentModal('error', 'ORDER CREATION FAILED', orderData.error);
-              return;
-          }
+        const res = await fetch('/api/create_order', { method: 'POST' });
+        const orderData = await res.json();
+        if (orderData.error) {
+          showPaymentModal('error', 'ORDER CREATION FAILED', orderData.error);
+          return;
+        }
 
-          var options = {
-              "key": orderData.key,
-              // amount and currency are inferred from order_id
-              "name": "QDS Secure",
-              "description": "Quantum Secured Transaction",
-              "order_id": orderData.order_id,
-              "handler": function (response) {
-                  fetch('/api/verify_payment', {
-                      method: 'POST',
-                      headers: { 'Content-Type': 'application/json' },
-                      body: JSON.stringify({
-                          razorpay_order_id: response.razorpay_order_id,
-                          razorpay_payment_id: response.razorpay_payment_id,
-                          razorpay_signature: response.razorpay_signature
-                      })
-                  }).then(res => res.json().then(verifyData => {
-                      if (verifyData.status === 'blocked') {
-                          showPaymentModal('error', 'TRANSACTION BLOCKED BY GATEWAY', 'Quantum Forgery Detected! The signature was tampered with.<br><br>The funds have NOT been transferred.');
-                      } else if (res.ok) {
-                          showPaymentModal('success', 'PAYMENT SUCCESSFUL', 'Quantum Signature Verified securely.');
-                      } else {
-                          showPaymentModal('error', 'VERIFICATION ERROR', 'Payment verification failed.');
-                      }
-                  })).catch(err => {
-                      showPaymentModal('error', 'NETWORK ERROR', 'Network error during verification.');
-                  });
-              },
-              // removed prefill to prevent test mode validation errors
-              "theme": {
-                  "color": "#3b5998"
+        var options = {
+          "key": orderData.key,
+          // amount and currency are inferred from order_id
+          "name": "QDS Secure",
+          "description": "Quantum Secured Transaction",
+          "order_id": orderData.order_id,
+          "handler": function (response) {
+            fetch('/api/verify_payment', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                razorpay_order_id: response.razorpay_order_id,
+                razorpay_payment_id: response.razorpay_payment_id,
+                razorpay_signature: response.razorpay_signature
+              })
+            }).then(res => res.json().then(verifyData => {
+              if (verifyData.status === 'blocked') {
+                showPaymentModal('error', 'TRANSACTION BLOCKED BY GATEWAY', 'Quantum Forgery Detected! The signature was tampered with.<br><br>The funds have NOT been transferred.');
+              } else if (res.ok) {
+                showPaymentModal('success', 'PAYMENT SUCCESSFUL', 'Quantum Signature Verified securely.');
+              } else {
+                showPaymentModal('error', 'VERIFICATION ERROR', 'Payment verification failed.');
               }
-          };
-          const rzp1 = new Razorpay(options);
-          
-          rzp1.on('payment.failed', async function (response){
-              try {
-                  await fetch('/api/log_failed_payment', {
-                      method: 'POST',
-                      headers: { 'Content-Type': 'application/json' },
-                      body: JSON.stringify({
-                          error_code: response.error.code || "unknown",
-                          error_description: response.error.description || "Unknown error"
-                      })
-                  });
-              } catch(e) {}
-              showPaymentModal('error', 'PAYMENT FAILED', response.error.description);
-          });
+            })).catch(err => {
+              showPaymentModal('error', 'NETWORK ERROR', 'Network error during verification.');
+            });
+          },
+          // removed prefill to prevent test mode validation errors
+          "theme": {
+            "color": "#3b5998"
+          }
+        };
+        const rzp1 = new Razorpay(options);
 
-          rzp1.open();
+        rzp1.on('payment.failed', async function (response) {
+          try {
+            await fetch('/api/log_failed_payment', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                error_code: response.error.code || "unknown",
+                error_description: response.error.description || "Unknown error"
+              })
+            });
+          } catch (e) { }
+          showPaymentModal('error', 'PAYMENT FAILED', response.error.description);
+        });
+
+        rzp1.open();
       } catch (err) {
-          console.error("Razorpay Error:", err);
+        console.error("Razorpay Error:", err);
       }
     };
 
-
     /* ========== EDUCATIONAL QUBIT ANIMATION LOOP ========== */
-    const qubitParticle = document.getElementById('qubitParticle');
     const qubitAncilla = document.getElementById('qubitAncilla');
     const eveNodeBorder = document.getElementById('eveNodeBorder');
     const eveNodeName = document.getElementById('eveNodeName');
@@ -1621,120 +2018,706 @@
     const explanationText = document.getElementById('animationExplanation');
 
     function resetAnimation() {
-        qubitParticle.style.transition = 'none';
-        qubitAncilla.style.transition = 'none';
-        qubitParticle.style.transform = 'translate(0, 0)';
-        qubitAncilla.style.transform = 'translate(0, 0)';
-        qubitParticle.style.opacity = '0';
-        qubitAncilla.style.opacity = '0';
-        
-        const qubitLabel = document.getElementById('qubitLabel');
-        const qubitCore = document.getElementById('qubitCore');
-        if (qubitLabel) qubitLabel.textContent = '|ψ⟩';
-        if (qubitCore) qubitCore.setAttribute('fill', 'var(--blue)');
-        
-        bobNodeBorder.setAttribute('stroke', 'var(--blue)');
-        bobOutcome.style.opacity = '0';
-        eveNodeBorder.setAttribute('stroke', 'var(--ink-2)');
-        eveNodeBorder.setAttribute('stroke-dasharray', '4 4');
-        eveNodeStatus.textContent = 'Inactive';
-        eveNodeStatus.setAttribute('fill', 'var(--ink-3)');
+      const qArr = [
+        document.getElementById('qubitParticle1'),
+        document.getElementById('qubitParticle2'),
+        document.getElementById('qubitParticle3')
+      ].filter(Boolean);
+
+      qArr.forEach(q => {
+        q.style.transition = 'none';
+        q.style.transform = 'translate(430px, 150px)';
+        q.style.opacity = '0';
+        const c = q.querySelector('circle');
+        if (c) c.setAttribute('fill', 'var(--blue)');
+      });
+
+      const attackArrow = document.getElementById('attackArrow');
+      const attackLabel = document.getElementById('attackLabel');
+      const eveStatsArrow = document.getElementById('eveStatsArrow');
+      if (attackArrow) attackArrow.style.opacity = '0';
+      if (attackLabel) attackLabel.style.opacity = '0';
+      if (eveStatsArrow) eveStatsArrow.style.opacity = '0';
+
+      const eveCard = document.getElementById('eveCard');
+      const eveInner = document.getElementById('eveInner');
+      if (eveCard) eveCard.setAttribute('stroke', 'var(--ink-2)');
+      if (eveInner) eveInner.setAttribute('stroke', 'var(--ink-2)');
+
+      const bobCard = document.getElementById('bobCard');
+      const bobInner = document.getElementById('bobInner');
+      if (bobCard) bobCard.setAttribute('stroke', 'var(--ink-2)');
+      if (bobInner) bobInner.setAttribute('stroke', 'var(--ink-2)');
+
+      const decisionCard = document.getElementById('decisionCard');
+      const decisionInner = document.getElementById('decisionInner');
+      const verdictTextDec = document.getElementById('verdictTextDec');
+      const sValDec = document.getElementById('sValDec');
+      const sDeltaDec = document.getElementById('sDeltaDec');
+
+      if (decisionCard) decisionCard.setAttribute('stroke', 'var(--ink-2)');
+      if (decisionInner) decisionInner.setAttribute('stroke', 'var(--ink-2)');
+      if (verdictTextDec) {
+        verdictTextDec.textContent = '[ PENDING ]';
+        verdictTextDec.setAttribute('fill', 'var(--ink-2)');
+      }
+      if (sValDec) { sValDec.textContent = '2.00'; sValDec.setAttribute('fill', 'var(--ink-0)'); }
+      if (sDeltaDec) { sDeltaDec.textContent = '+0.00'; sDeltaDec.setAttribute('fill', 'var(--ink-0)'); }
     }
+
+    // Global keyboard Escape handler for closing modal
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        closePaymentModal();
+      }
+    });
 
     function runAnimationSequence() {
         resetAnimation();
         
+        const qArr = [
+            document.getElementById('qubitParticle1'),
+            document.getElementById('qubitParticle2'),
+            document.getElementById('qubitParticle3')
+        ].filter(Boolean);
+        
         // Force reflow
-        void qubitParticle.offsetWidth;
+        qArr.forEach(q => void q.offsetWidth);
 
         const attack = currentAttackMode;
         
-        // Phase 1: Alice sends qubit
+        // Phase 1: Alice sends qubit stream
         setTimeout(() => {
-            qubitParticle.style.transition = 'transform 1s linear, opacity 0.2s';
-            qubitParticle.style.opacity = '1';
-            const qubitLabel = document.getElementById('qubitLabel');
-            const qubitCore = document.getElementById('qubitCore');
+            qArr.forEach((q, idx) => {
+                setTimeout(() => {
+                    q.style.transition = 'transform 1.5s linear, opacity 0.2s';
+                    q.style.opacity = '1';
+                    
+                    if (attack === 'HONEST') {
+                        q.style.transform = 'translate(780px, 150px)'; 
+                    } else {
+                        q.style.transform = 'translate(600px, 150px)'; // Stop middle of channel
+                    }
+                }, idx * 500);
+            });
             
             if (attack === 'HONEST') {
-                explanationText.innerHTML = "<b>Step 1:</b> Alice prepares a secure quantum state |ψ⟩ and sends it directly over the fiber channel.";
-                qubitParticle.style.transform = 'translate(410px, 0)'; // Move to Eve's zone but bypass
-            } else if (attack === 'INDIVIDUAL' || attack === 'IMPERSONATION' || attack === 'REPLAY') {
-                explanationText.innerHTML = "<b>Step 1:</b> Alice sends a qubit, but Eve intercepts it in the middle of the channel and stops it.";
-                qubitParticle.style.transform = 'translate(410px, 0)'; // Stop at Eve
-                eveNodeBorder.setAttribute('stroke', 'var(--red)');
-                eveNodeBorder.setAttribute('stroke-dasharray', 'none');
-                eveNodeStatus.textContent = 'Intercepting';
-                eveNodeStatus.setAttribute('fill', 'var(--red)');
-            } else if (attack === 'COLLECTIVE' || attack === 'COHERENT') {
-                explanationText.innerHTML = "<b>Step 1:</b> Alice sends a qubit. Eve prepares a secondary (ancilla) qubit to entangle with Alice's passing state.";
-                qubitParticle.style.transform = 'translate(410px, 0)';
-                qubitAncilla.style.opacity = '1';
-                eveNodeBorder.setAttribute('stroke', 'var(--amber)');
-                eveNodeBorder.setAttribute('stroke-dasharray', 'none');
-                eveNodeStatus.textContent = 'Entangling';
-                eveNodeStatus.setAttribute('fill', 'var(--amber)');
+                explanationText.innerHTML = "<b>Step 1:</b> Entanglement verified. Stream propagates safely through the Quantum Channel.";
+            } else {
+                explanationText.innerHTML = "<b>Step 1:</b> Stream propagates, but Eve initiates an Attack Injection on the channel.";
+                const attackArrow = document.getElementById('attackArrow');
+                const attackLabel = document.getElementById('attackLabel');
+                const eveCard = document.getElementById('eveCard');
+                const eveInner = document.getElementById('eveInner');
+                if(attackArrow) attackArrow.style.opacity = '1';
+                if(attackLabel) attackLabel.style.opacity = '1';
+                if(eveCard) eveCard.setAttribute('stroke', 'var(--red)');
+                if(eveInner) eveInner.setAttribute('stroke', 'var(--red)');
             }
         }, 100);
 
-        // Phase 2: Action at Eve
+        // Phase 2: Action at Eve / Bob
         setTimeout(() => {
-            const qubitLabel = document.getElementById('qubitLabel');
-            const qubitCore = document.getElementById('qubitCore');
+            const attackArrow = document.getElementById('attackArrow');
+            const eveStatsArrow = document.getElementById('eveStatsArrow');
             
             if (attack === 'HONEST') {
-                explanationText.innerHTML = "<b>Step 2:</b> The quantum state passes through safely, maintaining its original superposition.";
-                qubitParticle.style.transform = 'translate(860px, 0)'; // Move to Bob
-            } else if (attack === 'INDIVIDUAL' || attack === 'IMPERSONATION' || attack === 'REPLAY') {
-                explanationText.innerHTML = "<b>Step 2:</b> Eve measures the intercepted qubit, collapsing it to |0⟩ or |1⟩. She prepares a fake classical copy and resends it.";
-                qubitCore.setAttribute('fill', 'var(--red)');
-                qubitLabel.textContent = Math.random() > 0.5 ? '|0⟩' : '|1⟩'; // Collapsed state notation
-                qubitParticle.style.transform = 'translate(860px, 0)'; // Resend to Bob
-            } else if (attack === 'COLLECTIVE' || attack === 'COHERENT') {
-                explanationText.innerHTML = "<b>Step 2:</b> Eve entangles her ancilla |E⟩ with Alice's qubit. The state continues, but they are now quantumly linked: α|0⟩|e₀⟩ + β|1⟩|e₁⟩!";
-                qubitAncilla.style.transition = 'transform 1s linear, opacity 0.2s';
-                qubitAncilla.style.transform = 'translate(0, 60px)'; // Entangle with main qubit
-                qubitParticle.style.transform = 'translate(860px, 0)';
+                explanationText.innerHTML = "<b>Step 2:</b> Bob receives the uncorrupted states and prepares for measurement.";
+                qArr.forEach((q, idx) => {
+                    setTimeout(() => {
+                        q.style.transform = 'translate(970px, 150px)';
+                    }, idx * 500);
+                });
+            } else {
+                explanationText.innerHTML = "<b>Step 2:</b> Eve tampers with the state. The corrupted states are forwarded to Bob.";
+                if(attackArrow) attackArrow.style.opacity = '0';
+                if(eveStatsArrow) eveStatsArrow.style.opacity = '1';
+                
+                qArr.forEach((q, idx) => {
+                    setTimeout(() => {
+                        const c = q.querySelector('circle');
+                        if(c) c.setAttribute('fill', 'var(--red)');
+                        q.style.transition = 'transform 1.5s linear, opacity 0.2s';
+                        q.style.transform = 'translate(970px, 150px)'; // Resend to Bob
+                    }, idx * 500);
+                });
             }
-        }, 1800);
+        }, 2600); // Trigger after the first particle reaches Eve
 
-        // Phase 3: Arrives at Bob
+        // Phase 3: Final Decision
         setTimeout(() => {
-            qubitParticle.style.opacity = '0';
-            if (attack === 'COLLECTIVE' || attack === 'COHERENT') {
-                qubitAncilla.style.opacity = '0';
-            }
+            qArr.forEach(q => q.style.opacity = '0');
+            
+            const bobCard = document.getElementById('bobCard');
+            const bobInner = document.getElementById('bobInner');
+            const decisionCard = document.getElementById('decisionCard');
+            const decisionInner = document.getElementById('decisionInner');
+            const verdictTextDec = document.getElementById('verdictTextDec');
+            const sValDec = document.getElementById('sValDec');
+            const sDeltaDec = document.getElementById('sDeltaDec');
 
             if (attack === 'HONEST') {
-                explanationText.innerHTML = "<b>Step 3:</b> Bob successfully measures the pristine state. QDS Signature is Verified ✅.";
-                bobNodeBorder.setAttribute('stroke', 'var(--green)');
-                bobOutcome.textContent = 'Verified ✓';
-                bobOutcome.setAttribute('fill', 'var(--green)');
-                bobOutcome.style.opacity = '1';
+                explanationText.innerHTML = "<b>Step 3:</b> Statistical Verification passes. S-value is within bounds. Signature Verified ✅.";
+                if(bobCard) bobCard.setAttribute('stroke', 'var(--green)');
+                if(bobInner) bobInner.setAttribute('stroke', 'var(--green)');
+                if(decisionCard) decisionCard.setAttribute('stroke', 'var(--green)');
+                if(decisionInner) decisionInner.setAttribute('stroke', 'var(--green)');
+                
+                if(sValDec) { sValDec.textContent = '1.98'; sValDec.setAttribute('fill', 'var(--green)'); }
+                if(sDeltaDec) { sDeltaDec.textContent = '-0.02'; sDeltaDec.setAttribute('fill', 'var(--green)'); }
+                if(verdictTextDec) { verdictTextDec.textContent = '[ SIGNATURE VERIFIED ]'; verdictTextDec.setAttribute('fill', 'var(--green)'); }
             } else {
-                explanationText.innerHTML = `<b>Step 3:</b> Bob measures the state. Anomaly detected (QBER Spike)! Transaction BLOCKED 🛑.`;
-                bobNodeBorder.setAttribute('stroke', 'var(--red)');
-                bobOutcome.textContent = 'Corrupted ✗';
-                bobOutcome.setAttribute('fill', 'var(--red)');
-                bobOutcome.style.opacity = '1';
+                explanationText.innerHTML = `<b>Step 3:</b> Bob measures corrupted state. Bell S bound breached! Transaction BLOCKED 🛑.`;
+                if(bobCard) bobCard.setAttribute('stroke', 'var(--red)');
+                if(bobInner) bobInner.setAttribute('stroke', 'var(--red)');
+                if(decisionCard) decisionCard.setAttribute('stroke', 'var(--red)');
+                if(decisionInner) decisionInner.setAttribute('stroke', 'var(--red)');
+                
+                if(sValDec) { sValDec.textContent = '2.79'; sValDec.setAttribute('fill', 'var(--red)'); }
+                if(sDeltaDec) { sDeltaDec.textContent = '+0.79'; sDeltaDec.setAttribute('fill', 'var(--red)'); }
+                if(verdictTextDec) { verdictTextDec.textContent = '[ FORGERY DETECTED ]'; verdictTextDec.setAttribute('fill', 'var(--red)'); }
             }
-        }, 3000);
+        }, 5200);
     }
 
     // Run animation continuously
     runAnimationSequence();
-    setInterval(runAnimationSequence, 4500);
+    setInterval(runAnimationSequence, 7000);
   </script>
 
   <!-- Custom Modal for Payment Status -->
-  <div id="paymentModalOverlay" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:9999; align-items:center; justify-content:center;">
-    <div id="paymentModalBox" class="card" style="padding:40px; max-width:420px; text-align:center; box-shadow:0 8px 32px rgba(0,0,0,0.3); transform:scale(0.9); transition:transform 0.2s ease-out;">
+  <div id="paymentModalOverlay" onclick="if(event.target === this) closePaymentModal()"
+    style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:9999; align-items:center; justify-content:center;">
+    <div id="paymentModalBox" class="card"
+      style="padding:40px; max-width:420px; text-align:center; box-shadow:0 8px 32px rgba(0,0,0,0.3); transform:scale(0.9); transition:transform 0.2s ease-out;">
       <div id="paymentModalIcon" style="font-size:56px; margin-bottom:20px;">🛑</div>
-      <h3 id="paymentModalTitle" style="font-size:22px; font-weight:700; margin-bottom:16px; color:var(--red);">TRANSACTION BLOCKED</h3>
-      <p id="paymentModalText" style="font-size:14px; color:var(--ink-2); line-height:1.6; margin-bottom:32px;">Quantum Forgery Detected! The signature was tampered with.<br><br>The funds have NOT been transferred.</p>
-      <button onclick="closePaymentModal()" style="background:var(--surface); color:var(--ink-1); border:1px solid var(--border); padding:10px 24px; font-size:13px; border-radius:var(--radius); cursor:pointer; font-weight:600; text-transform:uppercase; letter-spacing:0.05em; transition:background 0.15s ease;">Dismiss</button>
+      <h3 id="paymentModalTitle" style="font-size:22px; font-weight:700; margin-bottom:16px; color:var(--red);">
+        TRANSACTION BLOCKED</h3>
+      <p id="paymentModalText" style="font-size:14px; color:var(--ink-2); line-height:1.6; margin-bottom:32px;">Quantum
+        Forgery Detected! The signature was tampered with.<br><br>The funds have NOT been transferred.</p>
+      <button onclick="closePaymentModal()"
+        style="background:var(--surface); color:var(--ink-1); border:1px solid var(--border); padding:10px 24px; font-size:13px; border-radius:var(--radius); cursor:pointer; font-weight:600; text-transform:uppercase; letter-spacing:0.05em; transition:background 0.15s ease;">Dismiss</button>
     </div>
   </div>
+
+  <!-- ================= GUIDED TOUR SYSTEM MARKUP ================= -->
+  <div id="tourScrim" class="tour-scrim" onclick="stopTour()"></div>
+  <div id="tourSpotlight" class="tour-spotlight"></div>
+  <div id="tourPointer" class="tour-pointer">
+    <span id="tourPointerIcon">🔍</span> <span id="tourPointerText">EXAMINING</span>
+  </div>
+
+  <div id="tourCard" class="tour-card" onmouseenter="pauseTourHover(true)" onmouseleave="pauseTourHover(false)">
+    <div class="tour-card-header">
+      <div style="display:flex; align-items:center; gap:8px;">
+        <span class="tour-step-badge" id="tourStepBadge">STEP 1 OF 20</span>
+        <span class="tour-category-tag" id="tourCategoryTag">SYSTEM OVERVIEW</span>
+      </div>
+      <button class="tour-btn-close" onclick="stopTour()" title="Close Tour (Esc)">✕</button>
+    </div>
+
+    <div class="tour-progress-track">
+      <div class="tour-progress-fill" id="tourProgressFill"></div>
+    </div>
+
+    <div class="tour-card-body">
+      <div class="tour-card-title" id="tourCardTitle">Title</div>
+      <div class="tour-card-desc" id="tourCardDesc">Description</div>
+      <div class="tour-card-tip" id="tourCardTip">Tip</div>
+    </div>
+
+    <div class="tour-card-footer">
+      <div class="tour-controls-left">
+        <button class="tour-btn tour-btn-secondary" id="tourBtnAutoPlay" onclick="toggleTourAutoPlay()"
+          title="Toggle auto-advance (Space)">
+          <span id="tourAutoPlayIcon">⏸</span> <span id="tourAutoPlayText">Pause</span>
+        </button>
+        <button class="tour-btn tour-btn-ghost" onclick="stopTour()" title="Exit Tour (Esc)">Exit</button>
+      </div>
+      <div class="tour-controls-right">
+        <button class="tour-btn tour-btn-secondary" id="tourBtnPrev" onclick="prevTourStep()" disabled>◀ Prev</button>
+        <button class="tour-btn tour-btn-primary" id="tourBtnNext" onclick="nextTourStep()">Next ▶</button>
+      </div>
+    </div>
+
+    <div
+      style="padding:6px 18px; background:var(--bg-inset); border-top:1px solid var(--border-soft); display:flex; justify-content:space-between; align-items:center;">
+      <div class="tour-keyboard-hint">
+        <span><kbd>T</kbd> Tour</span>
+        <span>·</span>
+        <span><kbd>Space</kbd> Pause</span>
+        <span>·</span>
+        <span><kbd>←</kbd> <kbd>→</kbd> Step</span>
+        <span>·</span>
+        <span><kbd>Esc</kbd> Exit</span>
+      </div>
+      <div style="font-family:var(--mono); font-size:10px; color:var(--ink-2); font-weight:600;" id="tourTimerReadout">
+        6.5s</div>
+    </div>
+  </div>
+
+  <script>
+    /* ================= AUTONOMOUS GUIDED TOUR ENGINE ================= */
+    (function() {
+      const tourSteps = [
+        {
+          target: '#mhIdentity',
+          tab: 'view-command-center',
+          category: 'OVERVIEW',
+          title: '🛡️ QDS Command Center',
+          desc: 'Welcome to the Quantum Digital Signature (QDS) platform! Here, high-value bank payments and digital documents are secured by the fundamental laws of quantum mechanics instead of vulnerable mathematical algorithms.',
+          tip: '💡 Plain English: In quantum physics, a secret cannot be read or copied by a spy without permanently and visibly altering it!'
+        },
+        {
+          target: '#mhTelemetryBar',
+          tab: 'view-command-center',
+          category: 'SYSTEM HEALTH',
+          title: '📊 Real-Time Status & Telemetry Bar',
+          desc: 'This top telemetry bar monitors live system vital signs. "NOMINAL" means the quantum channel is healthy and safe. It also tracks total verification rounds and connection status to the quantum simulation core.',
+          tip: '💡 Live Health: If an attacker taps the link, this indicator immediately alerts the security operations center.'
+        },
+        {
+          target: '#btnTourToggle',
+          tab: 'view-command-center',
+          category: 'FEATURE BUTTON',
+          title: '✨ Guided Tour Button (Press T)',
+          desc: 'You can launch this guided walkthrough anytime by clicking this button or simply pressing the "T" key on your keyboard! It will autonomously walk you through every button, section, and sub-view.',
+          tip: '👉 Quick Shortcut: Press "T" anywhere on the dashboard to toggle this tour on and off.'
+        },
+        {
+          target: '#aliceNode',
+          tab: 'view-command-center',
+          category: 'QUANTUM PROTOCOL',
+          title: '👩 Alice (The Transaction Sender)',
+          desc: 'Alice represents the sender—such as a bank authorizing a large wire transfer. Rather than signing with a standard digital signature that quantum computers can crack, Alice encodes her signature onto delicate quantum photon states (|ψ⟩).',
+          tip: '💡 Analogy: Think of Alice placing an un-photocopyable wax seal on each photon packet.'
+        },
+        {
+          target: '#channelCard',
+          tab: 'view-command-center',
+          category: 'QUANTUM CORE',
+          title: '🔗 The Quantum Channel (Entanglement)',
+          desc: 'The physical medium connecting Alice and Bob. It carries shared Bell/GHZ entangled photon pairs. Measuring one entangled photon instantly correlates its twin, creating an un-wiretappable quantum pipeline across fiber optics.',
+          tip: '💡 Magical Dice: Like two dice rolled in different cities that always match numbers perfectly!'
+        },
+        {
+          target: '#bobCard',
+          tab: 'view-command-center',
+          category: 'QUANTUM VERIFIER',
+          title: '👨 Bob (The Receiver & Verifier)',
+          desc: 'Bob represents the receiving bank or merchant terminal. He measures the incoming quantum states against his private schedule to verify Alice\'s signature. If anyone intercepted the line, Bob\'s measurement will immediately fail.',
+          tip: '💡 The green indicator confirms authentic signatures; red marks an immediate physical block.'
+        },
+        {
+          target: '#eveCard',
+          tab: 'view-command-center',
+          category: 'THREAT MODEL',
+          title: '🕵️ Eve (The Adversary / Eavesdropper)',
+          desc: 'Eve represents the attacker attempting to intercept, clone, or forge the payment signature. Under the Quantum No-Cloning Theorem, any measurement Eve attempts irrevocably collapses the quantum wave-function, giving her away!',
+          tip: '💡 Nature\'s Law: You cannot secretly read quantum data without leaving unmistakable fingerprints.'
+        },
+        {
+          target: '#statsCard',
+          tab: 'view-command-center',
+          category: 'PHYSICAL VERIFICATION',
+          title: '🔬 Real-Time Statistical Verification',
+          desc: 'This module analyzes photon statistics from Bob\'s measurements. It computes the Quantum Bit Error Rate (QBER) and correlations to mathematically verify that the quantum states were not disturbed during transit.',
+          tip: '💡 Instant Math: Detects disturbances at the speed of light before money can change hands.'
+        },
+        {
+          target: '#decisionCard',
+          tab: 'view-command-center',
+          category: 'THREAT DECISION',
+          title: '⚖️ Threat Decision & Entanglement Margin',
+          desc: 'The verdict engine compares the measured Bell parameter S against the classical threshold (2.000). If S > 2.0, non-locality is proven and the signature is ACCEPTED. If S drops below 2.0, the transaction is REJECTED.',
+          tip: '💡 Zero Trust: The physics itself guarantees security without relying on trust.'
+        },
+        {
+          target: '#diagramStatsRow',
+          tab: 'view-command-center',
+          category: 'SECURITY METRICS',
+          title: '📐 Bell Parameter S & Teleportation Fidelity',
+          desc: 'These meters provide physical proof of security: "Bell parameter S" measures quantum entanglement strength (ideal 2√2 ≈ 2.828). "Fidelity" tracks the precision of the reconstructed quantum state (near 1.00 is perfect).',
+          tip: '💡 S must stay above 2.000. If S drops below 2.000, tampering is mathematically proven!'
+        },
+        {
+          target: '#channelStatRows',
+          tab: 'view-command-center',
+          category: 'AI DIAGNOSTICS',
+          title: '⚡ Error Rate (QBER) & AI Attack Diagnosis',
+          desc: 'QBER is like static on a telephone line. A clean quantum channel has < 2% noise. If an adversary taps the line, error rates spike above 11%! The "Attack" field instantly names the exact attack vector being used.',
+          tip: '💡 Automated Forensics: Instantly identifies Intercept-Resend, Coherent Probes, or Replay attacks.'
+        },
+        {
+          target: '#gatewayWidget',
+          tab: 'view-command-center',
+          category: 'INTERACTIVE DEMO',
+          title: '💳 Real-Time Payment Terminal (Pay ₹500)',
+          desc: 'Test an authentic payment workflow! Clicking "Pay ₹500" launches an authentic Razorpay/UPI checkout. Try paying in Honest mode, or trigger an attack to watch our quantum shield freeze the transfer before money is lost.',
+          tip: '👉 Click "Pay ₹500" anytime to test live quantum payment verification.'
+        },
+        {
+          target: '#sprtCard',
+          tab: 'view-command-center',
+          category: 'SEQUENTIAL DETECTION',
+          title: '📈 Wald\'s SPRT (Ultra-Fast Threat Catcher)',
+          desc: 'Conventional checks require analyzing thousands of pulses before making a decision. Wald\'s Sequential Probability Ratio Test (SPRT) reaches a definitive ACCEPT (ln B = -4.60) or REJECT (ln A = +4.60) in under 15 rounds!',
+          tip: '💡 High Speed: Rejects forged transactions in milliseconds instead of seconds.'
+        },
+        {
+          target: '#paymentLogsCard',
+          tab: 'view-command-center',
+          category: 'AUDIT TRAIL',
+          title: '📜 Gateway Payment Logs',
+          desc: 'Every payment attempt is recorded here in real time with its payment ID, amount, timestamp, and quantum verification status. Both approved transactions and blocked cyber attacks are preserved for compliance.',
+          tip: '💡 Immutable Record: Provides bank-grade audit logs for regulatory oversight.'
+        },
+        {
+          target: '#liveEventsCard',
+          tab: 'view-command-center',
+          category: 'LIVE EVENTS',
+          title: '📡 Live Security Events Feed',
+          desc: 'A continuous stream of operational events generated by the verification engine. Every simulation round, entropy check, and security warning is streamed directly into this console.',
+          tip: '💡 Full Visibility: Watch events update every 5 seconds as quantum cycles run.'
+        },
+        {
+          target: '#railSidebar',
+          tab: 'view-command-center',
+          category: 'NAVIGATION',
+          title: '🧭 Left Sidebar Navigation Rail',
+          desc: 'The left sidebar lets you switch between different views of the platform: the Command Center, Telemetry tests, Event logs, and Key management. Let\'s take a quick look at each view!',
+          tip: '👉 Clicking any icon switches the active screen instantly.'
+        },
+        {
+          target: '#cardMinEntropy',
+          tab: 'view-statistical-tests',
+          category: 'MATHEMATICAL BOUNDS',
+          title: '📐 Deep Dive: Statistical Tests & Bounds',
+          desc: 'We\'ve switched to the "Telemetry" tab! Here you can inspect the rigorous mathematical physics: Min-Entropy Helstrom bounds and SPRT log-likelihood decision thresholds.',
+          tip: '💡 Scientific Rigor: Proves that an eavesdropper has zero mutual information about the signature.'
+        },
+        {
+          target: '#cardGlobalEvents',
+          tab: 'view-event-log',
+          category: 'SECURITY AUDIT',
+          title: '🗄️ Deep Dive: Global Event Log',
+          desc: 'We\'ve switched to the "Events" tab! This Firestore-backed central log tracks historical sessions, QBER metrics, Bell S scores, and attribution diagnoses across all banking nodes.',
+          tip: '💡 Forensic History: Security teams can inspect past threats and generate forensic reports.'
+        },
+        {
+          target: '#cardActiveKeys',
+          tab: 'view-key-management',
+          category: 'QUANTUM KEYS',
+          title: '🔑 Deep Dive: Quantum Key Pool & QRNG',
+          desc: 'We\'ve switched to the "Keys" tab! Monitors the active pool of over 1,000,000 quantum key bits and verifies continuous FIPS 140-3 health for the hardware Quantum Random Number Generator (QRNG).',
+          tip: '💡 Fresh Entropy: Replenishes high-entropy quantum keys at over 12.4 kbps.'
+        },
+        {
+          target: '#mainMasthead',
+          tab: 'view-command-center',
+          category: 'TOUR COMPLETE',
+          title: '🎉 You\'re All Set to Explore!',
+          desc: 'We\'re back at the Command Center dashboard! You now understand all the sections, buttons, and metrics of the QDS system. Feel free to press "T" anytime to replay this tour.',
+          tip: '🚀 Next Steps: Try paying ₹500 or test attack vectors to experience the quantum defense live!'
+        }
+      ];
+
+      let currentStepIndex = 0;
+      let isTourActive = false;
+      let isAutoPlayPaused = false;
+      let isHoverPaused = false;
+      let stepTimer = null;
+      let stepStartTime = 0;
+      let stepDuration = 6500; // 6.5s per step
+      let remainingDuration = 6500;
+      let progressAnimFrame = null;
+
+      // DOM Elements
+      const scrim = document.getElementById('tourScrim');
+      const spotlight = document.getElementById('tourSpotlight');
+      const pointer = document.getElementById('tourPointer');
+      const pointerText = document.getElementById('tourPointerText');
+      const card = document.getElementById('tourCard');
+      const stepBadge = document.getElementById('tourStepBadge');
+      const categoryTag = document.getElementById('tourCategoryTag');
+      const cardTitle = document.getElementById('tourCardTitle');
+      const cardDesc = document.getElementById('tourCardDesc');
+      const cardTip = document.getElementById('tourCardTip');
+      const progressFill = document.getElementById('tourProgressFill');
+      const btnAutoPlay = document.getElementById('tourBtnAutoPlay');
+      const autoPlayIcon = document.getElementById('tourAutoPlayIcon');
+      const autoPlayText = document.getElementById('tourAutoPlayText');
+      const btnPrev = document.getElementById('tourBtnPrev');
+      const btnNext = document.getElementById('tourBtnNext');
+      const timerReadout = document.getElementById('tourTimerReadout');
+
+      function startTour(fromStep = 0) {
+        // Close other modals first
+        if (typeof closePaymentModal === 'function') closePaymentModal();
+
+        isTourActive = true;
+        isAutoPlayPaused = false;
+        isHoverPaused = false;
+        currentStepIndex = Math.max(0, Math.min(fromStep, tourSteps.length - 1));
+
+        scrim.classList.add('active');
+        spotlight.classList.add('active');
+        pointer.classList.add('active');
+        card.classList.add('active');
+
+        updateAutoPlayControls();
+        renderStep(currentStepIndex);
+      }
+
+      function stopTour() {
+        isTourActive = false;
+        clearStepTimer();
+
+        scrim.classList.remove('active');
+        spotlight.classList.remove('active');
+        pointer.classList.remove('active');
+        card.classList.remove('active');
+
+        // Always return to Command Center when tour ends
+        if (typeof switchView === 'function') {
+          const dashRail = document.getElementById('railItemDashboard');
+          switchView('view-command-center', dashRail);
+        }
+      }
+
+      function renderStep(index) {
+        if (!isTourActive) return;
+        clearStepTimer();
+
+        const step = tourSteps[index];
+        if (!step) return;
+
+        // Switch to the step's tab if needed
+        if (step.tab && typeof switchView === 'function') {
+          const currentTabVisible = document.getElementById(step.tab);
+          if (currentTabVisible && currentTabVisible.style.display !== 'flex') {
+            let railEl = document.getElementById('railItemDashboard');
+            if (step.tab === 'view-statistical-tests') railEl = document.getElementById('railItemTelemetry');
+            else if (step.tab === 'view-event-log') railEl = document.getElementById('railItemEvents');
+            else if (step.tab === 'view-key-management') railEl = document.getElementById('railItemKeys');
+            switchView(step.tab, railEl);
+          }
+        }
+
+        stepBadge.textContent = `STEP ${index + 1} OF ${tourSteps.length}`;
+        categoryTag.textContent = step.category || 'SECTION';
+        cardTitle.textContent = step.title;
+        cardDesc.textContent = step.desc;
+        cardTip.textContent = step.tip;
+        pointerText.textContent = step.category || 'EXAMINING';
+
+        btnPrev.disabled = (index === 0);
+        btnNext.textContent = (index === tourSteps.length - 1) ? 'Finish 🎉' : 'Next ▶';
+
+        // Wait brief tick for tab switch/layout, then highlight target
+        setTimeout(() => {
+          positionTourElements(step.target);
+          startStepTimer(stepDuration);
+        }, 80);
+      }
+
+      function positionTourElements(targetSelector) {
+        let el = document.querySelector(targetSelector);
+        if (!el) {
+          el = document.getElementById('view-command-center') || document.body;
+        }
+
+        // Smooth scroll target into view
+        try {
+          el.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' });
+        } catch (e) {}
+
+        setTimeout(() => {
+          const rect = el.getBoundingClientRect();
+          const pad = 8;
+          const top = Math.max(0, rect.top - pad);
+          const left = Math.max(0, rect.left - pad);
+          const width = rect.width + (pad * 2);
+          const height = rect.height + (pad * 2);
+
+          // Update spotlight position
+          spotlight.style.top = `${top}px`;
+          spotlight.style.left = `${left}px`;
+          spotlight.style.width = `${width}px`;
+          spotlight.style.height = `${height}px`;
+
+          // Position Pointer
+          const pointerX = Math.max(16, Math.min(window.innerWidth - 120, rect.left + (rect.width / 2) - 40));
+          const pointerY = Math.max(12, rect.top - 34);
+          pointer.style.top = `${pointerY}px`;
+          pointer.style.left = `${pointerX}px`;
+
+          // Position Card
+          const cardWidth = 450;
+          const cardHeight = card.offsetHeight || 280;
+          let cardTop, cardLeft;
+
+          const spaceBelow = window.innerHeight - (top + height);
+          const spaceAbove = top;
+
+          if (spaceBelow >= cardHeight + 20) {
+            // Place below target
+            cardTop = top + height + 14;
+            cardLeft = Math.max(16, Math.min(window.innerWidth - cardWidth - 16, left + (width / 2) - (cardWidth / 2)));
+          } else if (spaceAbove >= cardHeight + 20) {
+            // Place above target
+            cardTop = top - cardHeight - 14;
+            cardLeft = Math.max(16, Math.min(window.innerWidth - cardWidth - 16, left + (width / 2) - (cardWidth / 2)));
+          } else {
+            // Center in viewport
+            cardTop = Math.max(20, (window.innerHeight - cardHeight) / 2);
+            cardLeft = Math.max(16, (window.innerWidth - cardWidth) / 2);
+          }
+
+          card.style.top = `${cardTop}px`;
+          card.style.left = `${cardLeft}px`;
+        }, 120);
+      }
+
+      function startStepTimer(duration) {
+        clearStepTimer();
+        remainingDuration = duration;
+        stepStartTime = performance.now();
+
+        if (isAutoPlayPaused || isHoverPaused) {
+          progressFill.style.width = '0%';
+          timerReadout.textContent = 'Paused';
+          return;
+        }
+
+        function updateProgress(now) {
+          if (!isTourActive || isAutoPlayPaused || isHoverPaused) return;
+          const elapsed = now - stepStartTime;
+          const progress = Math.min(1, elapsed / duration);
+          progressFill.style.width = `${progress * 100}%`;
+          const remainingSecs = Math.max(0, ((duration - elapsed) / 1000)).toFixed(1);
+          timerReadout.textContent = `${remainingSecs}s`;
+
+          if (elapsed >= duration) {
+            nextTourStep();
+          } else {
+            progressAnimFrame = requestAnimationFrame(updateProgress);
+          }
+        }
+
+        progressAnimFrame = requestAnimationFrame(updateProgress);
+      }
+
+      function clearStepTimer() {
+        if (progressAnimFrame) {
+          cancelAnimationFrame(progressAnimFrame);
+          progressAnimFrame = null;
+        }
+        if (stepTimer) {
+          clearTimeout(stepTimer);
+          stepTimer = null;
+        }
+      }
+
+      function nextTourStep() {
+        if (currentStepIndex < tourSteps.length - 1) {
+          currentStepIndex++;
+          renderStep(currentStepIndex);
+        } else {
+          stopTour();
+        }
+      }
+
+      function prevTourStep() {
+        if (currentStepIndex > 0) {
+          currentStepIndex--;
+          renderStep(currentStepIndex);
+        }
+      }
+
+      function toggleTourAutoPlay() {
+        isAutoPlayPaused = !isAutoPlayPaused;
+        updateAutoPlayControls();
+        if (!isAutoPlayPaused && !isHoverPaused) {
+          startStepTimer(stepDuration);
+        } else {
+          clearStepTimer();
+          timerReadout.textContent = 'Paused';
+        }
+      }
+
+      function updateAutoPlayControls() {
+        if (isAutoPlayPaused) {
+          autoPlayIcon.textContent = '▶';
+          autoPlayText.textContent = 'Resume';
+          btnAutoPlay.style.background = 'var(--blue-tint)';
+          btnAutoPlay.style.color = 'var(--blue)';
+        } else {
+          autoPlayIcon.textContent = '⏸';
+          autoPlayText.textContent = 'Pause';
+          btnAutoPlay.style.background = 'var(--surface)';
+          btnAutoPlay.style.color = 'var(--ink-1)';
+        }
+      }
+
+      function pauseTourHover(isPaused) {
+        if (!isTourActive || isAutoPlayPaused) return;
+        isHoverPaused = isPaused;
+        if (isPaused) {
+          clearStepTimer();
+          timerReadout.textContent = 'Hovering';
+        } else {
+          startStepTimer(stepDuration);
+        }
+      }
+
+      // Re-position elements on window resize
+      window.addEventListener('resize', () => {
+        if (isTourActive) {
+          const step = tourSteps[currentStepIndex];
+          if (step) positionTourElements(step.target);
+        }
+      });
+
+      // Global keyboard navigation
+      window.addEventListener('keydown', (e) => {
+        // Suppress if typing in inputs/textareas
+        const activeTag = document.activeElement ? document.activeElement.tagName.toLowerCase() : '';
+        if (activeTag === 'input' || activeTag === 'textarea') return;
+
+        if (e.key === 't' || e.key === 'T') {
+          e.preventDefault();
+          if (!isTourActive) {
+            startTour(0);
+          } else {
+            toggleTourAutoPlay();
+          }
+        } else if (isTourActive) {
+          if (e.key === 'Escape') {
+            e.preventDefault();
+            stopTour();
+          } else if (e.key === ' ') {
+            e.preventDefault();
+            toggleTourAutoPlay();
+          } else if (e.key === 'ArrowRight') {
+            e.preventDefault();
+            nextTourStep();
+          } else if (e.key === 'ArrowLeft') {
+            e.preventDefault();
+            prevTourStep();
+          }
+        }
+      });
+
+      // Expose to window
+      window.startTour = startTour;
+      window.stopTour = stopTour;
+      window.nextTourStep = nextTourStep;
+      window.prevTourStep = prevTourStep;
+      window.toggleTourAutoPlay = toggleTourAutoPlay;
+      window.pauseTourHover = pauseTourHover;
+    })();
+  </script>
 </body>
 
 </html>
