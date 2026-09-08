@@ -814,7 +814,7 @@
           </div>
 
           <div class="diagram-stage" style="padding: 20px; text-align:center;">
-            <svg class="diagram-svg" viewBox="0 0 1200 650" id="heroStage" style="background: var(--bg); border: 1px solid var(--border); border-radius: 8px;">
+            <svg class="diagram-svg" viewBox="0 0 1200 650" id="heroStage" style="background: var(--bg); border-radius: 8px;">
     <!-- DEFINITIONS -->
     <defs>
         <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
@@ -830,125 +830,91 @@
         <marker id="arrow-blue" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
             <path d="M 0 0 L 10 5 L 0 10 z" fill="var(--blue)" />
         </marker>
+        <marker id="arrow-red" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M 0 0 L 10 5 L 0 10 z" fill="var(--red)" />
+        </marker>
     </defs>
 
-    <!-- UI BORDERS & LABELS -->
-    <rect x="0" y="0" width="1200" height="650" fill="transparent" stroke="var(--border-soft)" stroke-width="1" />
-    
-    <!-- Top Header -->
-    <text x="20" y="30" fill="var(--blue)" font-family="var(--mono)" font-size="14" font-weight="700" letter-spacing="1">TELEPORTATION CHANNEL</text>
-    <text x="1180" y="30" fill="var(--red)" font-family="var(--mono)" font-size="14" font-weight="700" letter-spacing="1" text-anchor="end" filter="url(#glow)">LIVE TRACE ●</text>
+    <!-- TOP ROW (y = 80) -->
+    <!-- ALICE CARD (x = 50, y = 80) -->
+    <rect x="50" y="80" width="180" height="120" rx="8" fill="var(--surface)" stroke="var(--ink-2)"/>
+    <text x="140" y="105" fill="var(--ink-1)" font-family="var(--sans)" font-size="14" font-weight="700" text-anchor="middle" letter-spacing="1">ALICE</text>
+    <rect x="70" y="125" width="140" height="50" rx="4" fill="var(--surface-raised)" stroke="var(--ink-2)"/>
+    <text x="140" y="145" fill="var(--ink-0)" font-family="var(--sans)" font-size="12" text-anchor="middle">Message</text>
+    <text x="140" y="165" fill="var(--ink-0)" font-family="var(--sans)" font-size="12" text-anchor="middle">+ Sign</text>
 
-    <!-- LAYER 1: TOPOLOGY (y=100) -->
-    <!-- Grid line -->
-    <line x1="0" y1="180" x2="1200" y2="180" stroke="var(--border-soft)" stroke-dasharray="4 4"/>
-    
-    <g transform="translate(0, 100)">
-        <!-- Labels -->
-        <text x="150" y="-30" fill="var(--ink-1)" font-family="var(--sans)" font-size="12" text-anchor="middle" font-weight="600">ALICE</text>
-        <text x="450" y="-30" fill="var(--ink-1)" font-family="var(--sans)" font-size="12" text-anchor="middle" font-weight="600">BELL PAIR</text>
-        <text x="750" y="-30" fill="var(--ink-1)" font-family="var(--sans)" font-size="12" text-anchor="middle" font-weight="600">ATTACK (Eve)</text>
-        <text x="1050" y="-30" fill="var(--ink-1)" font-family="var(--sans)" font-size="12" text-anchor="middle" font-weight="600">BOB</text>
+    <!-- Arrow Alice -> Channel -->
+    <path d="M230 140 L350 140" stroke="var(--blue)" stroke-width="2" marker-end="url(#arrow-blue)"/>
 
-        <!-- Lines -->
-        <path d="M150 0 L1050 0" stroke="var(--ink-3)" stroke-width="2" opacity="0.3" stroke-dasharray="4 4" />
-        <path d="M450 0 L450 40 L750 40 L750 0" stroke="var(--ink-2)" stroke-width="2" fill="none" opacity="0.3" id="entanglementLink" style="opacity:0; transition: opacity 0.2s"/>
-        
-        <!-- Nodes -->
-        <!-- Alice -->
-        <circle cx="150" cy="0" r="12" fill="none" stroke="var(--blue)" stroke-width="2"/>
-        <circle cx="150" cy="0" r="4" fill="var(--blue)" filter="url(#glow)"/>
-        
-        <!-- Bell Pair Source -->
-        <circle cx="450" cy="0" r="16" fill="var(--surface-raised)" stroke="var(--amber)" stroke-width="1.5"/>
-        <circle cx="450" cy="0" r="6" fill="var(--amber)" filter="url(#glow)"/>
-        
-        <!-- Eve -->
-        <g id="eveNode" transform="translate(750, 40)">
-            <circle cx="0" cy="0" r="16" fill="var(--surface-raised)" stroke="var(--red)" stroke-width="1.5" id="eveNodeBorder"/>
-            <circle cx="0" cy="0" r="6" fill="var(--red)" filter="url(#glow)" id="eveCoreGlow" opacity="0.2"/>
-            <line x1="-8" y1="-8" x2="8" y2="8" stroke="var(--red)" stroke-width="2" id="eveCross1" opacity="0"/>
-            <line x1="-8" y1="8" x2="8" y2="-8" stroke="var(--red)" stroke-width="2" id="eveCross2" opacity="0"/>
-            <!-- Beam Splitter -->
-            <g id="beamSplitterIcon" opacity="0" style="transition: opacity 0.2s;">
-                <rect x="-12" y="-12" width="24" height="24" fill="none" stroke="var(--cyan)" stroke-width="2" transform="rotate(45)" filter="url(#glow)"/>
-                <line x1="-12" y1="12" x2="12" y2="-12" stroke="var(--cyan)" stroke-width="2" />
-            </g>
-            <circle id="qubitAncilla" cx="0" cy="-20" r="8" fill="var(--amber)" opacity="0" style="transition: transform 1.5s linear, opacity 0.2s;"/>
-        </g>
-        
-        <!-- Bob -->
-        <circle cx="1050" cy="0" r="12" fill="none" stroke="var(--blue)" stroke-width="2" id="bobNodeBorder"/>
-        <circle cx="1050" cy="0" r="4" fill="var(--blue)" filter="url(#glow)"/>
-        
-        <!-- Qubit stream elements (Will be moved by JS) -->
-        <g id="qubitParticle1" class="qubit-stream" opacity="0" style="transition: transform 1.5s linear, opacity 0.2s; transform: translate(150px, 0px);">
-            <circle cx="0" cy="0" r="8" fill="var(--blue)" filter="url(#glow)" class="qubit-core"/>
-        </g>
-        <g id="qubitParticle2" class="qubit-stream" opacity="0" style="transition: transform 1.5s linear, opacity 0.2s; transform: translate(150px, 0px);">
-            <circle cx="0" cy="0" r="8" fill="var(--blue)" filter="url(#glow)" class="qubit-core"/>
-        </g>
-        <g id="qubitParticle3" class="qubit-stream" opacity="0" style="transition: transform 1.5s linear, opacity 0.2s; transform: translate(150px, 0px);">
-            <circle cx="0" cy="0" r="8" fill="var(--blue)" filter="url(#glow)" class="qubit-core"/>
-        </g>
+    <!-- QUANTUM CHANNEL CARD (x = 350, y = 80) -->
+    <rect id="channelCard" x="350" y="80" width="500" height="120" rx="8" fill="var(--surface)" stroke="var(--blue)"/>
+    <text x="600" y="105" fill="var(--blue)" font-family="var(--sans)" font-size="14" font-weight="700" text-anchor="middle" letter-spacing="1">QUANTUM CHANNEL</text>
+    <rect x="400" y="125" width="400" height="50" rx="4" fill="var(--surface-raised)" stroke="var(--blue)"/>
+    <text x="600" y="155" fill="var(--ink-0)" font-family="var(--sans)" font-size="14" text-anchor="middle">Bell / GHZ Entanglement</text>
+    
+    <!-- Qubits track inside Quantum Channel -->
+    <line x1="420" y1="150" x2="780" y2="150" stroke="var(--blue)" stroke-dasharray="4 4" opacity="0.3"/>
+
+    <!-- Arrow Channel -> Bob -->
+    <path d="M850 140 L970 140" stroke="var(--blue)" stroke-width="2" marker-end="url(#arrow-blue)"/>
+
+    <!-- BOB CARD (x = 970, y = 80) -->
+    <rect x="970" y="80" width="180" height="120" rx="8" fill="var(--surface)" stroke="var(--ink-2)" id="bobCard"/>
+    <text x="1060" y="105" fill="var(--ink-1)" font-family="var(--sans)" font-size="14" font-weight="700" text-anchor="middle" letter-spacing="1">BOB</text>
+    <rect x="990" y="125" width="140" height="50" rx="4" fill="var(--surface-raised)" stroke="var(--ink-2)" id="bobInner"/>
+    <text x="1060" y="145" fill="var(--ink-0)" font-family="var(--sans)" font-size="12" text-anchor="middle">Measure</text>
+    <text x="1060" y="165" fill="var(--ink-2)" font-family="var(--mono)" font-size="12" text-anchor="middle">X  Y  Z</text>
+
+    <!-- MIDDLE ROW (y = 280) -->
+    
+    <!-- ATTACK INJECTION (Eve) (x = 450, y = 280) -->
+    <!-- Connection from Channel to Eve -->
+    <path id="attackArrow" d="M600 200 L600 265" stroke="var(--red)" stroke-width="2" marker-end="url(#arrow-red)" opacity="0" style="transition: opacity 0.3s"/>
+    <text id="attackLabel" x="600" y="240" fill="var(--red)" font-family="var(--sans)" font-size="12" text-anchor="middle" opacity="0" font-weight="bold" style="transition: opacity 0.3s">ATTACK INJECTION</text>
+
+    <rect id="eveCard" x="450" y="280" width="300" height="120" rx="8" fill="var(--surface)" stroke="var(--ink-2)" style="transition: stroke 0.3s"/>
+    <text x="600" y="305" fill="var(--ink-1)" font-family="var(--sans)" font-size="14" font-weight="700" text-anchor="middle" letter-spacing="1">EVE</text>
+    <rect id="eveInner" x="470" y="325" width="260" height="50" rx="4" fill="var(--surface-raised)" stroke="var(--ink-2)" style="transition: stroke 0.3s"/>
+    <text id="eveAction" x="600" y="355" fill="var(--ink-0)" font-family="var(--sans)" font-size="14" text-anchor="middle">Tampering</text>
+
+    <!-- Connection Eve to Stats -->
+    <path id="eveStatsArrow" d="M750 340 L880 340" stroke="var(--red)" stroke-width="2" marker-end="url(#arrow-red)" opacity="0" style="transition: opacity 0.3s"/>
+    <!-- Connection Bob to Stats -->
+    <path d="M1060 200 L1060 265" stroke="var(--blue)" stroke-width="2" marker-end="url(#arrow-blue)"/>
+
+    <!-- STATS CARD (x = 900, y = 280) -->
+    <rect id="statsCard" x="900" y="280" width="250" height="120" rx="8" fill="var(--surface)" stroke="var(--ink-2)"/>
+    <text x="1025" y="305" fill="var(--ink-1)" font-family="var(--sans)" font-size="14" font-weight="700" text-anchor="middle" letter-spacing="1">VERIFICATION</text>
+    <rect x="920" y="325" width="210" height="50" rx="4" fill="var(--surface-raised)" stroke="var(--ink-2)"/>
+    <text x="1025" y="355" fill="var(--ink-0)" font-family="var(--sans)" font-size="14" text-anchor="middle">Statistical Analysis</text>
+
+    <!-- BOTTOM ROW (y = 480) -->
+    <!-- Connection Stats to Decision -->
+    <path d="M1025 400 L1025 435 L600 435 L600 465" stroke="var(--ink-3)" stroke-width="2" marker-end="url(#arrow)"/>
+
+    <!-- DECISION CARD (x = 400, y = 480) -->
+    <rect id="decisionCard" x="400" y="480" width="400" height="150" rx="8" fill="var(--surface)" stroke="var(--ink-2)" style="transition: stroke 0.3s"/>
+    <text x="600" y="505" fill="var(--ink-1)" font-family="var(--sans)" font-size="14" font-weight="700" text-anchor="middle" letter-spacing="1">THREAT DECISION</text>
+    <rect id="decisionInner" x="420" y="520" width="360" height="90" rx="4" fill="var(--surface-raised)" stroke="var(--ink-2)" style="transition: stroke 0.3s"/>
+    
+    <text x="440" y="545" fill="var(--ink-2)" font-family="var(--mono)" font-size="14">Bell S = <tspan id="sValDec" fill="var(--ink-0)">2.00</tspan></text>
+    <text x="440" y="570" fill="var(--ink-2)" font-family="var(--mono)" font-size="14">Bound = 2.00</text>
+    <text x="440" y="595" fill="var(--ink-2)" font-family="var(--mono)" font-size="14">Margin = <tspan id="sDeltaDec" fill="var(--ink-0)">+0.00</tspan></text>
+
+    <text id="verdictTextDec" x="650" y="570" fill="var(--ink-2)" font-family="var(--sans)" font-size="18" font-weight="800" text-anchor="middle" style="transition: fill 0.3s">[ PENDING ]</text>
+
+    <!-- Particles layer -->
+    <g id="qubitParticle1" opacity="0" style="transition: transform 1.5s linear, opacity 0.2s; transform: translate(430px, 150px);">
+        <circle cx="0" cy="0" r="10" fill="var(--blue)" filter="url(#glow)"/>
+        <text y="3" fill="white" font-family="var(--mono)" font-size="10" font-weight="bold" text-anchor="middle">|ψ⟩</text>
     </g>
-
-    <!-- LAYER 2: PROTOCOL TIMELINE (y=260) -->
-    <line x1="0" y1="330" x2="1200" y2="330" stroke="var(--border-soft)" stroke-dasharray="4 4"/>
-    
-    <text x="600" y="210" fill="var(--ink-2)" font-family="var(--mono)" font-size="12" text-anchor="middle">─────────── QUANTUM STATE TRANSFER ─────────────</text>
-    
-    <g transform="translate(0, 260)" font-family="var(--sans)" font-size="15" font-weight="600">
-        <text x="250" y="0" fill="var(--blue)" text-anchor="middle">|ψ⟩</text>
-        <line x1="280" y1="-5" x2="380" y2="-5" stroke="var(--blue)" stroke-width="2" marker-end="url(#arrow-blue)"/>
-        
-        <rect id="protBell" x="400" y="-20" width="160" height="30" rx="4" fill="var(--surface-raised)" stroke="var(--ink-2)" style="transition: stroke 0.3s"/>
-        <text x="480" y="0" fill="var(--ink-1)" text-anchor="middle" font-size="13">Bell measurement</text>
-        
-        <line x1="580" y1="-5" x2="680" y2="-5" stroke="var(--ink-2)" stroke-width="2" marker-end="url(#arrow)"/>
-        
-        <rect id="protPauli" x="700" y="-20" width="160" height="30" rx="4" fill="var(--surface-raised)" stroke="var(--ink-2)" style="transition: stroke 0.3s"/>
-        <text x="780" y="0" fill="var(--ink-1)" text-anchor="middle" font-size="13">Pauli correction</text>
-        
-        <line x1="880" y1="-5" x2="980" y2="-5" stroke="var(--blue)" stroke-width="2" marker-end="url(#arrow-blue)"/>
-        <text x="1010" y="0" fill="var(--green)" text-anchor="middle">|ψ'⟩</text>
+    <g id="qubitParticle2" opacity="0" style="transition: transform 1.5s linear, opacity 0.2s; transform: translate(430px, 150px);">
+        <circle cx="0" cy="0" r="10" fill="var(--blue)" filter="url(#glow)"/>
+        <text y="3" fill="white" font-family="var(--mono)" font-size="10" font-weight="bold" text-anchor="middle">|ψ⟩</text>
     </g>
-    
-    <!-- Vertical connector to measurement -->
-    <path d="M 480 280 L 480 350" stroke="var(--ink-2)" stroke-width="2" marker-end="url(#arrow)"/>
-
-    <!-- LAYER 3 & 4: MEASUREMENTS & STATS (y=380) -->
-    <!-- Projective Measurement Block -->
-    <g transform="translate(150, 420)">
-        <rect x="0" y="0" width="280" height="150" fill="transparent" stroke="var(--ink-2)" stroke-width="1.5"/>
-        <text x="140" y="30" fill="var(--ink-1)" font-family="var(--mono)" text-anchor="middle" font-weight="700" letter-spacing="1">PROJECTIVE MEASUREMENT</text>
-        
-        <!-- Bases -->
-        <text x="60" y="65" fill="var(--ink-2)" font-family="var(--mono)" text-anchor="middle">X</text>
-        <text x="140" y="65" fill="var(--ink-2)" font-family="var(--mono)" text-anchor="middle">Y</text>
-        <text x="220" y="65" fill="var(--ink-2)" font-family="var(--mono)" text-anchor="middle">Z</text>
-        
-        <!-- Bars (origin is bottom of rect, scaling upwards) -->
-        <g transform="translate(0, 130) scale(1, -1)">
-            <rect id="barX" x="45" y="0" width="30" height="10" fill="var(--ink-3)" style="transition: height 0.3s, fill 0.3s"/>
-            <rect id="barY" x="125" y="0" width="30" height="10" fill="var(--ink-3)" style="transition: height 0.3s, fill 0.3s"/>
-            <rect id="barZ" x="205" y="0" width="30" height="10" fill="var(--ink-3)" style="transition: height 0.3s, fill 0.3s"/>
-        </g>
-    </g>
-
-    <!-- Verification Block -->
-    <text x="800" y="440" fill="var(--ink-1)" font-family="var(--mono)" text-anchor="middle" font-weight="700" letter-spacing="1">STATISTICAL VERIFICATION</text>
-    
-    <g transform="translate(800, 490)" font-family="var(--mono)" font-size="16" fill="var(--ink-2)" text-anchor="middle">
-        <text x="-150" y="0">S = <tspan id="sVal" fill="var(--ink-0)" font-weight="700">2.79</tspan></text>
-        <text x="0" y="0">LIMIT = 2.00</text>
-        <text x="150" y="0">Δ = <tspan id="sDelta" fill="var(--ink-0)" font-weight="700">+0.79</tspan></text>
-    </g>
-
-    <!-- Dynamic Verdict Banner -->
-    <g id="verdictBanner" style="transition: opacity 0.4s ease; opacity: 1;" transform="translate(620, 560)">
-        <rect x="-180" y="0" width="360" height="42" rx="4" fill="var(--red-tint)" stroke="var(--red)" stroke-width="2" id="verdictRect"/>
-        <text x="0" y="26" font-family="var(--mono)" font-size="14" fill="var(--red)" text-anchor="middle" font-weight="800" id="verdictText" letter-spacing="1">[ FORGERY DETECTED ]</text>
+    <g id="qubitParticle3" opacity="0" style="transition: transform 1.5s linear, opacity 0.2s; transform: translate(430px, 150px);">
+        <circle cx="0" cy="0" r="10" fill="var(--blue)" filter="url(#glow)"/>
+        <text y="3" fill="white" font-family="var(--mono)" font-size="10" font-weight="bold" text-anchor="middle">|ψ⟩</text>
     </g>
 </svg>
             <div id="animationExplanation" style="margin-top: 20px; font-family: var(--sans); font-size: 15px; font-weight: 500; color: var(--ink-0); background: var(--bg-inset); padding: 16px; border-radius: 8px; border: 1px solid var(--border);">
@@ -1688,7 +1654,7 @@
     const bobOutcome = document.getElementById('bobOutcome');
     const explanationText = document.getElementById('animationExplanation');
 
-        function resetAnimation() {
+            function resetAnimation() {
         const qArr = [
             document.getElementById('qubitParticle1'),
             document.getElementById('qubitParticle2'),
@@ -1697,55 +1663,43 @@
         
         qArr.forEach(q => {
             q.style.transition = 'none';
-            q.style.transform = 'translate(150px, 0px)';
+            q.style.transform = 'translate(430px, 150px)';
             q.style.opacity = '0';
-            const core = q.querySelector('.qubit-core');
-            if(core) core.setAttribute('fill', 'var(--blue)');
+            const c = q.querySelector('circle');
+            if(c) c.setAttribute('fill', 'var(--blue)');
         });
         
-        const qubitAncilla = document.getElementById('qubitAncilla');
-        if (qubitAncilla) {
-            qubitAncilla.style.transition = 'none';
-            qubitAncilla.style.transform = 'translate(0px, -20px)';
-            qubitAncilla.style.opacity = '0';
+        const attackArrow = document.getElementById('attackArrow');
+        const attackLabel = document.getElementById('attackLabel');
+        const eveStatsArrow = document.getElementById('eveStatsArrow');
+        if(attackArrow) attackArrow.style.opacity = '0';
+        if(attackLabel) attackLabel.style.opacity = '0';
+        if(eveStatsArrow) eveStatsArrow.style.opacity = '0';
+        
+        const eveCard = document.getElementById('eveCard');
+        const eveInner = document.getElementById('eveInner');
+        if(eveCard) eveCard.setAttribute('stroke', 'var(--ink-2)');
+        if(eveInner) eveInner.setAttribute('stroke', 'var(--ink-2)');
+        
+        const bobCard = document.getElementById('bobCard');
+        const bobInner = document.getElementById('bobInner');
+        if(bobCard) bobCard.setAttribute('stroke', 'var(--ink-2)');
+        if(bobInner) bobInner.setAttribute('stroke', 'var(--ink-2)');
+        
+        const decisionCard = document.getElementById('decisionCard');
+        const decisionInner = document.getElementById('decisionInner');
+        const verdictTextDec = document.getElementById('verdictTextDec');
+        const sValDec = document.getElementById('sValDec');
+        const sDeltaDec = document.getElementById('sDeltaDec');
+        
+        if(decisionCard) decisionCard.setAttribute('stroke', 'var(--ink-2)');
+        if(decisionInner) decisionInner.setAttribute('stroke', 'var(--ink-2)');
+        if(verdictTextDec) {
+            verdictTextDec.textContent = '[ PENDING ]';
+            verdictTextDec.setAttribute('fill', 'var(--ink-2)');
         }
-        
-        const entanglementLink = document.getElementById('entanglementLink');
-        const beamSplitter = document.getElementById('beamSplitterIcon');
-        if (entanglementLink) entanglementLink.style.opacity = '0';
-        if (beamSplitter) beamSplitter.style.opacity = '0';
-        
-        const bobNodeBorder = document.getElementById('bobNodeBorder');
-        if(bobNodeBorder) bobNodeBorder.setAttribute('stroke', 'var(--blue)');
-        
-        const eveNodeBorder = document.getElementById('eveNodeBorder');
-        const eveCoreGlow = document.getElementById('eveCoreGlow');
-        const eveCross1 = document.getElementById('eveCross1');
-        const eveCross2 = document.getElementById('eveCross2');
-        if(eveNodeBorder) eveNodeBorder.setAttribute('stroke', 'var(--ink-2)');
-        if(eveCoreGlow) eveCoreGlow.setAttribute('fill', 'var(--ink-3)');
-        if(eveCross1) eveCross1.style.opacity = '0';
-        if(eveCross2) eveCross2.style.opacity = '0';
-        
-        const protBell = document.getElementById('protBell');
-        const protPauli = document.getElementById('protPauli');
-        if(protBell) protBell.setAttribute('stroke', 'var(--ink-2)');
-        if(protPauli) protPauli.setAttribute('stroke', 'var(--ink-2)');
-
-        const barX = document.getElementById('barX');
-        const barY = document.getElementById('barY');
-        const barZ = document.getElementById('barZ');
-        if(barX) { barX.setAttribute('height', '10'); barX.setAttribute('fill', 'var(--ink-3)'); }
-        if(barY) { barY.setAttribute('height', '10'); barY.setAttribute('fill', 'var(--ink-3)'); }
-        if(barZ) { barZ.setAttribute('height', '10'); barZ.setAttribute('fill', 'var(--ink-3)'); }
-
-        const sVal = document.getElementById('sVal');
-        const sDelta = document.getElementById('sDelta');
-        if(sVal) { sVal.textContent = '2.00'; sVal.setAttribute('fill', 'var(--ink-0)'); }
-        if(sDelta) { sDelta.textContent = '0.00'; sDelta.setAttribute('fill', 'var(--ink-0)'); }
-        
-        const verdictBanner = document.getElementById('verdictBanner');
-        if(verdictBanner) verdictBanner.style.opacity = '0';
+        if(sValDec) { sValDec.textContent = '2.00'; sValDec.setAttribute('fill', 'var(--ink-0)'); }
+        if(sDeltaDec) { sDeltaDec.textContent = '+0.00'; sDeltaDec.setAttribute('fill', 'var(--ink-0)'); }
     }
 
     function runAnimationSequence() {
@@ -1770,134 +1724,88 @@
                     q.style.opacity = '1';
                     
                     if (attack === 'HONEST') {
-                        q.style.transform = 'translate(1050px, 0px)'; 
-                    } else if (attack === 'INDIVIDUAL' || attack === 'IMPERSONATION' || attack === 'REPLAY') {
-                        q.style.transform = 'translate(750px, 40px)'; // Stop at Eve's splitter
-                    } else if (attack === 'COLLECTIVE' || attack === 'COHERENT') {
-                        q.style.transform = 'translate(750px, 40px)'; // Stop to entangle
+                        q.style.transform = 'translate(780px, 150px)'; 
+                    } else {
+                        q.style.transform = 'translate(600px, 150px)'; // Stop middle of channel
                     }
-                }, idx * 500); // Stagger departure by 500ms
+                }, idx * 500);
             });
             
-            const protBell = document.getElementById('protBell');
-            if(protBell) protBell.setAttribute('stroke', 'var(--blue)');
-
             if (attack === 'HONEST') {
-                explanationText.innerHTML = "<b>Step 1:</b> Alice prepares a stream of secure quantum states |ψ⟩ and sends them directly over the fiber channel.";
-            } else if (attack === 'INDIVIDUAL' || attack === 'IMPERSONATION' || attack === 'REPLAY') {
-                explanationText.innerHTML = "<b>Step 1:</b> Alice sends a qubit stream, but Eve intercepts using a beam splitter.";
-                const eveNodeBorder = document.getElementById('eveNodeBorder');
-                const eveCoreGlow = document.getElementById('eveCoreGlow');
-                const beamSplitter = document.getElementById('beamSplitterIcon');
-                if(eveNodeBorder) eveNodeBorder.setAttribute('stroke', 'var(--red)');
-                if(eveCoreGlow) eveCoreGlow.setAttribute('fill', 'var(--red)');
-                if(beamSplitter) beamSplitter.style.opacity = '1';
-            } else if (attack === 'COLLECTIVE' || attack === 'COHERENT') {
-                explanationText.innerHTML = "<b>Step 1:</b> Alice sends a qubit stream. Eve prepares an ancilla to perform a collective unitary entangling operation.";
-                const qubitAncilla = document.getElementById('qubitAncilla');
-                if (qubitAncilla) qubitAncilla.style.opacity = '1';
-                const eveNodeBorder = document.getElementById('eveNodeBorder');
-                const eveCoreGlow = document.getElementById('eveCoreGlow');
-                if(eveNodeBorder) eveNodeBorder.setAttribute('stroke', 'var(--amber)');
-                if(eveCoreGlow) eveCoreGlow.setAttribute('fill', 'var(--amber)');
+                explanationText.innerHTML = "<b>Step 1:</b> Entanglement verified. Stream propagates safely through the Quantum Channel.";
+            } else {
+                explanationText.innerHTML = "<b>Step 1:</b> Stream propagates, but Eve initiates an Attack Injection on the channel.";
+                const attackArrow = document.getElementById('attackArrow');
+                const attackLabel = document.getElementById('attackLabel');
+                const eveCard = document.getElementById('eveCard');
+                const eveInner = document.getElementById('eveInner');
+                if(attackArrow) attackArrow.style.opacity = '1';
+                if(attackLabel) attackLabel.style.opacity = '1';
+                if(eveCard) eveCard.setAttribute('stroke', 'var(--red)');
+                if(eveInner) eveInner.setAttribute('stroke', 'var(--red)');
             }
         }, 100);
 
-        // Phase 2: Action at Eve
+        // Phase 2: Action at Eve / Bob
         setTimeout(() => {
-            const entanglementLink = document.getElementById('entanglementLink');
-            const beamSplitter = document.getElementById('beamSplitterIcon');
-            const protPauli = document.getElementById('protPauli');
-            const barX = document.getElementById('barX');
-            const barY = document.getElementById('barY');
-            const barZ = document.getElementById('barZ');
-            const sVal = document.getElementById('sVal');
-            const sDelta = document.getElementById('sDelta');
+            const attackArrow = document.getElementById('attackArrow');
+            const eveStatsArrow = document.getElementById('eveStatsArrow');
             
             if (attack === 'HONEST') {
-                explanationText.innerHTML = "<b>Step 2:</b> The quantum stream passes through safely, maintaining its original superposition.";
-                if(protPauli) protPauli.setAttribute('stroke', 'var(--blue)');
-            } else if (attack === 'INDIVIDUAL' || attack === 'IMPERSONATION' || attack === 'REPLAY') {
-                explanationText.innerHTML = "<b>Step 2:</b> Eve splits the quantum signal. She measures half (collapsing it) and forwards a classical copy.";
-                if(protPauli) protPauli.setAttribute('stroke', 'var(--red)');
-                if(barX) { barX.setAttribute('height', '60'); barX.setAttribute('fill', 'var(--red)'); }
-                if(barY) { barY.setAttribute('height', '40'); barY.setAttribute('fill', 'var(--red)'); }
-                if(barZ) { barZ.setAttribute('height', '55'); barZ.setAttribute('fill', 'var(--red)'); }
-                if(sVal) { sVal.textContent = '2.79'; sVal.setAttribute('fill', 'var(--red)'); }
-                if(sDelta) { sDelta.textContent = '+0.79'; sDelta.setAttribute('fill', 'var(--red)'); }
-                
+                explanationText.innerHTML = "<b>Step 2:</b> Bob receives the uncorrupted states and prepares for measurement.";
                 qArr.forEach((q, idx) => {
                     setTimeout(() => {
-                        const core = q.querySelector('.qubit-core');
-                        if(core) core.setAttribute('fill', 'var(--red)');
-                        q.style.transform = 'translate(1050px, 0px)'; // Resend to Bob
+                        q.style.transform = 'translate(970px, 150px)';
                     }, idx * 500);
                 });
-            } else if (attack === 'COLLECTIVE' || attack === 'COHERENT') {
-                explanationText.innerHTML = "<b>Step 2:</b> Eve applies U_E to entangle her ancilla with the passing stream. The particles are now quantumly linked!";
-                if(protPauli) protPauli.setAttribute('stroke', 'var(--amber)');
-                if (entanglementLink) entanglementLink.style.opacity = '1';
-                
-                const qubitAncilla = document.getElementById('qubitAncilla');
-                if (qubitAncilla) {
-                    qubitAncilla.style.transition = 'transform 1.5s linear, opacity 0.2s';
-                    qubitAncilla.style.transform = 'translate(0px, 0px)'; // Entangle with main qubit at 0,0 relative to Eve node
-                }
-                if(barX) { barX.setAttribute('height', '45'); barX.setAttribute('fill', 'var(--amber)'); }
-                if(barY) { barY.setAttribute('height', '65'); barY.setAttribute('fill', 'var(--amber)'); }
-                if(barZ) { barZ.setAttribute('height', '30'); barZ.setAttribute('fill', 'var(--amber)'); }
-                if(sVal) { sVal.textContent = '2.44'; sVal.setAttribute('fill', 'var(--amber)'); }
-                if(sDelta) { sDelta.textContent = '+0.44'; sDelta.setAttribute('fill', 'var(--amber)'); }
+            } else {
+                explanationText.innerHTML = "<b>Step 2:</b> Eve tampers with the state. The corrupted states are forwarded to Bob.";
+                if(attackArrow) attackArrow.style.opacity = '0';
+                if(eveStatsArrow) eveStatsArrow.style.opacity = '1';
                 
                 qArr.forEach((q, idx) => {
                     setTimeout(() => {
-                        q.style.transform = 'translate(1050px, 0px)';
+                        const c = q.querySelector('circle');
+                        if(c) c.setAttribute('fill', 'var(--red)');
+                        q.style.transition = 'transform 1.5s linear, opacity 0.2s';
+                        q.style.transform = 'translate(970px, 150px)'; // Resend to Bob
                     }, idx * 500);
                 });
             }
         }, 2600); // Trigger after the first particle reaches Eve
 
-        // Phase 3: Arrives at Bob
+        // Phase 3: Final Decision
         setTimeout(() => {
             qArr.forEach(q => q.style.opacity = '0');
-            const entanglementLink = document.getElementById('entanglementLink');
-            const beamSplitter = document.getElementById('beamSplitterIcon');
-            const sVal = document.getElementById('sVal');
-            const sDelta = document.getElementById('sDelta');
-            const verdictBanner = document.getElementById('verdictBanner');
-            const verdictRect = document.getElementById('verdictRect');
-            const verdictText = document.getElementById('verdictText');
             
-            if (entanglementLink) entanglementLink.style.opacity = '0';
-            if (beamSplitter) beamSplitter.style.opacity = '0';
-            
-            const qubitAncilla = document.getElementById('qubitAncilla');
-            if (attack === 'COLLECTIVE' || attack === 'COHERENT') {
-                if (qubitAncilla) qubitAncilla.style.opacity = '0';
-            }    
+            const bobCard = document.getElementById('bobCard');
+            const bobInner = document.getElementById('bobInner');
+            const decisionCard = document.getElementById('decisionCard');
+            const decisionInner = document.getElementById('decisionInner');
+            const verdictTextDec = document.getElementById('verdictTextDec');
+            const sValDec = document.getElementById('sValDec');
+            const sDeltaDec = document.getElementById('sDeltaDec');
 
             if (attack === 'HONEST') {
-                explanationText.innerHTML = "<b>Step 3:</b> Bob successfully measures the pristine state. QDS Signature is Verified ✅.";
-                const bobNodeBorder = document.getElementById('bobNodeBorder');
-                if(bobNodeBorder) bobNodeBorder.setAttribute('stroke', 'var(--green)');
-                if(sVal) { sVal.textContent = '1.98'; sVal.setAttribute('fill', 'var(--green)'); }
-                if(sDelta) { sDelta.textContent = '-0.02'; sDelta.setAttribute('fill', 'var(--green)'); }
+                explanationText.innerHTML = "<b>Step 3:</b> Statistical Verification passes. S-value is within bounds. Signature Verified ✅.";
+                if(bobCard) bobCard.setAttribute('stroke', 'var(--green)');
+                if(bobInner) bobInner.setAttribute('stroke', 'var(--green)');
+                if(decisionCard) decisionCard.setAttribute('stroke', 'var(--green)');
+                if(decisionInner) decisionInner.setAttribute('stroke', 'var(--green)');
                 
-                if(verdictRect) { verdictRect.setAttribute('fill', 'var(--green-tint)'); verdictRect.setAttribute('stroke', 'var(--green)'); }
-                if(verdictText) { verdictText.textContent = '[ SIGNATURE VERIFIED ]'; verdictText.setAttribute('fill', 'var(--green)'); }
-                if(verdictBanner) verdictBanner.style.opacity = '1';
-                
+                if(sValDec) { sValDec.textContent = '1.98'; sValDec.setAttribute('fill', 'var(--green)'); }
+                if(sDeltaDec) { sDeltaDec.textContent = '-0.02'; sDeltaDec.setAttribute('fill', 'var(--green)'); }
+                if(verdictTextDec) { verdictTextDec.textContent = '[ SIGNATURE VERIFIED ]'; verdictTextDec.setAttribute('fill', 'var(--green)'); }
             } else {
-                explanationText.innerHTML = `<b>Step 3:</b> Bob measures the state. Anomaly detected (QBER Spike)! Transaction BLOCKED 🛑.`;
-                const bobNodeBorder = document.getElementById('bobNodeBorder');
-                if(bobNodeBorder) bobNodeBorder.setAttribute('stroke', 'var(--red)');
-                if(verdictRect) { verdictRect.setAttribute('fill', 'var(--red-tint)'); verdictRect.setAttribute('stroke', 'var(--red)'); }
-                if(verdictText) { verdictText.textContent = '[ FORGERY DETECTED ]'; verdictText.setAttribute('fill', 'var(--red)'); }
-                if(verdictBanner) verdictBanner.style.opacity = '1';
-                const eveCross1 = document.getElementById('eveCross1');
-                const eveCross2 = document.getElementById('eveCross2');
-                if(eveCross1) eveCross1.style.opacity = '1';
-                if(eveCross2) eveCross2.style.opacity = '1';
+                explanationText.innerHTML = `<b>Step 3:</b> Bob measures corrupted state. Bell S bound breached! Transaction BLOCKED 🛑.`;
+                if(bobCard) bobCard.setAttribute('stroke', 'var(--red)');
+                if(bobInner) bobInner.setAttribute('stroke', 'var(--red)');
+                if(decisionCard) decisionCard.setAttribute('stroke', 'var(--red)');
+                if(decisionInner) decisionInner.setAttribute('stroke', 'var(--red)');
+                
+                if(sValDec) { sValDec.textContent = '2.79'; sValDec.setAttribute('fill', 'var(--red)'); }
+                if(sDeltaDec) { sDeltaDec.textContent = '+0.79'; sDeltaDec.setAttribute('fill', 'var(--red)'); }
+                if(verdictTextDec) { verdictTextDec.textContent = '[ FORGERY DETECTED ]'; verdictTextDec.setAttribute('fill', 'var(--red)'); }
             }
         }, 5200);
     }
