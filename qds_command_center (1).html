@@ -626,7 +626,7 @@
     }
 
     .bit-travel {
-      animation: travel 3.4s ease-in-out infinite;
+      animation: travel 6.4s ease-in-out infinite;
     }
 
     @keyframes travel {
@@ -891,6 +891,12 @@
                 <circle r="4" fill="var(--amber)" />
               </g>
 
+              <foreignObject x="0" y="445" width="1200" height="40">
+                <div id="diagramSteps" xmlns="http://www.w3.org/1999/xhtml" style="width: 100%; text-align: center; font-family: var(--mono); font-size: 13px; color: var(--ink-1); line-height: 1.6;">
+                  Initializing quantum channel...
+                </div>
+              </foreignObject>
+
               <g id="pauliApparatus">
                 <rect class="apparatus-box" x="785" y="205" width="90" height="90" rx="16" fill="var(--surface)"
                   stroke="var(--ink-2)" stroke-width="1.3" />
@@ -943,9 +949,7 @@
               <div class="foot">rounds this session</div>
             </div>
           </div>
-          <div class="diagram-steps" id="diagramSteps" style="margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--border); font-family: var(--mono); font-size: 12.5px; color: var(--ink-1); line-height: 1.6; min-height: 60px;">
-            Initializing quantum channel...
-          </div>
+
         </div>
 
         <div class="card events-zone" style="margin-bottom:24px;">
@@ -1726,7 +1730,7 @@
               stepBox.innerHTML = `<span style="color:var(--red); font-weight:600;">Step 2:</span> ${attackDesc} State collapses/alters.`;
           }
         }
-      }, 420);
+      }, 840);
 
       setTimeout(() => {
         pauliText.textContent = 'applying σx·σz';
@@ -1738,7 +1742,7 @@
               stepBox.innerHTML = `<span style="color:var(--red); font-weight:600;">Step 3:</span> Bob applies Pauli correction to the compromised state.`;
           }
         }
-      }, 1500);
+      }, 3000);
 
       setTimeout(() => {
         if (isForged) {
@@ -1761,7 +1765,7 @@
           bobCheck.style.opacity = '1';
           if (stepBox) stepBox.innerHTML = `<span style="color:var(--green); font-weight:600;">Step 4:</span> State perfectly reconstructed. Signature verified.`;
         }
-      }, 2100);
+      }, 4200);
 
       setTimeout(() => {
         pauliApp.classList.remove('flash-green');
@@ -1769,8 +1773,8 @@
         bobFail.style.opacity = '0';
         pauliText.textContent = 'idle';
         bobCore.setAttribute('fill', 'var(--blue)');
-      }, 3000);
-    }, 3200);
+      }, 6000);
+    }, 6400);
   </script>
 
   <!-- Custom Modal for Payment Status -->
