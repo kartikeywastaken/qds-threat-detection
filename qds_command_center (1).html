@@ -943,6 +943,9 @@
               <div class="foot">rounds this session</div>
             </div>
           </div>
+          <div class="diagram-steps" id="diagramSteps" style="margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--border); font-family: var(--mono); font-size: 12.5px; color: var(--ink-1); line-height: 1.6; min-height: 60px;">
+            Initializing quantum channel...
+          </div>
         </div>
 
         <div class="card events-zone" style="margin-bottom:24px;">
@@ -1696,17 +1699,45 @@
     setInterval(() => {
       const isForged = currentDecision === 'REJECT';
       const outcome = outcomes[Math.floor(Math.random() * outcomes.length)];
+      const stepBox = document.getElementById('diagramSteps');
 
+      let attackDesc = "";
+      if (currentAttackMode === 'INDIVIDUAL') attackDesc = "Eve performs intercept-resend measurement.";
+      else if (currentAttackMode === 'COLLECTIVE') attackDesc = "Eve entangles an ancillary ancilla qubit.";
+      else if (currentAttackMode === 'COHERENT') attackDesc = "Eve applies a joint coherent probe on multiple states.";
+      else if (currentAttackMode === 'IMPERSONATION') attackDesc = "Eve attempts to forge Bob's identity.";
+      else if (currentAttackMode === 'CHANNEL_MANIPULATION') attackDesc = "Eve manipulates the classical side-channel.";
+      else if (currentAttackMode === 'REPLAY') attackDesc = "Eve replays old intercepted states.";
+
+      if (stepBox) {
+        stepBox.innerHTML = `<span style="color:var(--blue); font-weight:600;">Step 1:</span> Alice prepares and transmits the quantum state.`;
+      }
+      
       bellText.textContent = 'measuring…';
       bellApp.classList.add('flash');
       setTimeout(() => {
         bellText.textContent = 'outcome ' + outcome;
         bellApp.classList.remove('flash');
+        
+        if (stepBox) {
+          if (currentAttackMode === 'HONEST') {
+              stepBox.innerHTML = `<span style="color:var(--blue); font-weight:600;">Step 2:</span> Bell-state measurement generates classical bits.`;
+          } else {
+              stepBox.innerHTML = `<span style="color:var(--red); font-weight:600;">Step 2:</span> ${attackDesc} State collapses/alters.`;
+          }
+        }
       }, 420);
 
       setTimeout(() => {
         pauliText.textContent = 'applying σx·σz';
         pauliApp.classList.add('flash');
+        if (stepBox) {
+          if (currentAttackMode === 'HONEST') {
+              stepBox.innerHTML = `<span style="color:var(--blue); font-weight:600;">Step 3:</span> Bob receives bits and applies Pauli correction.`;
+          } else {
+              stepBox.innerHTML = `<span style="color:var(--red); font-weight:600;">Step 3:</span> Bob applies Pauli correction to the compromised state.`;
+          }
+        }
       }, 1500);
 
       setTimeout(() => {
@@ -1718,6 +1749,7 @@
           bobCheck.style.opacity = '0';
           bobFail.style.opacity = '1';
           bobCore.setAttribute('fill', 'var(--red)');
+          if (stepBox) stepBox.innerHTML = `<span style="color:var(--red); font-weight:600;">Step 4:</span> Verification fails! QBER threshold exceeded. Transaction blocked.`;
         } else {
           /* Honest — green flash, verified */
           pauliText.textContent = 'applied';
@@ -1727,6 +1759,7 @@
           bobCore.setAttribute('fill', 'var(--blue)');
           bobCheck.style.transition = 'opacity .25s ease';
           bobCheck.style.opacity = '1';
+          if (stepBox) stepBox.innerHTML = `<span style="color:var(--green); font-weight:600;">Step 4:</span> State perfectly reconstructed. Signature verified.`;
         }
       }, 2100);
 
