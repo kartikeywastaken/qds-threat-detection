@@ -903,11 +903,28 @@
                    <text x="635" y="125" font-family="var(--mono)" font-size="12" fill="var(--amber)" font-weight="700" filter="url(#glow)">U_E / CNOT</text>
                </g>
 
-               <!-- Moving Qubit Group -->
-               <g id="qubitParticle" opacity="0" style="transition: transform 1s linear, opacity 0.2s; transform: translate(190px, 150px);">
-                  <circle cx="0" cy="0" r="18" fill="var(--blue)" opacity="0.3" filter="url(#glow-heavy)" id="qubitHalo" />
-                  <circle cx="0" cy="0" r="11" fill="var(--blue)" id="qubitCore" />
-                  <text id="qubitLabel" x="0" y="3.5" font-family="var(--mono)" font-size="11" fill="white" text-anchor="middle" font-weight="700">|ψ⟩</text>
+               <!-- Moving Qubit Group Stream -->
+               <g id="qubitParticle1" class="qubit-stream" opacity="0" style="transition: transform 1s linear, opacity 0.2s; transform: translate(190px, 150px);">
+                  <circle cx="0" cy="0" r="18" fill="var(--blue)" opacity="0.3" filter="url(#glow-heavy)" class="qubit-halo" />
+                  <circle cx="0" cy="0" r="11" fill="var(--blue)" class="qubit-core" />
+                  <text class="qubit-label" x="0" y="3.5" font-family="var(--mono)" font-size="11" fill="white" text-anchor="middle" font-weight="700">|ψ⟩</text>
+               </g>
+               <g id="qubitParticle2" class="qubit-stream" opacity="0" style="transition: transform 1s linear, opacity 0.2s; transform: translate(190px, 150px);">
+                  <circle cx="0" cy="0" r="18" fill="var(--blue)" opacity="0.3" filter="url(#glow-heavy)" class="qubit-halo" />
+                  <circle cx="0" cy="0" r="11" fill="var(--blue)" class="qubit-core" />
+                  <text class="qubit-label" x="0" y="3.5" font-family="var(--mono)" font-size="11" fill="white" text-anchor="middle" font-weight="700">|ψ⟩</text>
+               </g>
+               <g id="qubitParticle3" class="qubit-stream" opacity="0" style="transition: transform 1s linear, opacity 0.2s; transform: translate(190px, 150px);">
+                  <circle cx="0" cy="0" r="18" fill="var(--blue)" opacity="0.3" filter="url(#glow-heavy)" class="qubit-halo" />
+                  <circle cx="0" cy="0" r="11" fill="var(--blue)" class="qubit-core" />
+                  <text class="qubit-label" x="0" y="3.5" font-family="var(--mono)" font-size="11" fill="white" text-anchor="middle" font-weight="700">|ψ⟩</text>
+               </g>
+               
+               <!-- Beam Splitter (Hidden by default) -->
+               <g id="beamSplitterIcon" opacity="0" transform="translate(600, 150)" style="transition: opacity 0.2s;">
+                   <rect x="-15" y="-15" width="30" height="30" fill="none" stroke="var(--cyan)" stroke-width="2" transform="rotate(45)" filter="url(#glow)"/>
+                   <line x1="-15" y1="15" x2="15" y2="-15" stroke="var(--cyan)" stroke-width="2" />
+                   <text y="-25" font-family="var(--mono)" font-size="10" fill="var(--cyan)" text-anchor="middle" font-weight="700">SPLITTER</text>
                </g>
                
                <!-- Secondary Qubit (for Entanglement / specific attacks) -->
@@ -1648,15 +1665,7 @@
               showPaymentModal('error', 'PAYMENT FAILED', response.error.description);
           });
 
-          rzp1.open();
-      } catch (err) {
-          console.error("Razorpay Error:", err);
-      }
-    };
-
-
-    /* ========== EDUCATIONAL QUBIT ANIMATION LOOP ========== */
-    const qubitParticle = document.getElementById('qubitParticle');
+         /* ========== EDUCATIONAL QUBIT ANIMATION LOOP ========== */
     const qubitAncilla = document.getElementById('qubitAncilla');
     const eveNodeBorder = document.getElementById('eveNodeBorder');
     const eveNodeName = document.getElementById('eveNodeName');
@@ -1666,22 +1675,37 @@
     const explanationText = document.getElementById('animationExplanation');
 
     function resetAnimation() {
-        qubitParticle.style.transition = 'none';
-        qubitAncilla.style.transition = 'none';
-        qubitParticle.style.transform = 'translate(190px, 150px)';
-        qubitAncilla.style.transform = 'translate(600px, 90px)';
-        qubitParticle.style.opacity = '0';
-        qubitAncilla.style.opacity = '0';
+        const qArr = [
+            document.getElementById('qubitParticle1'),
+            document.getElementById('qubitParticle2'),
+            document.getElementById('qubitParticle3')
+        ].filter(Boolean);
         
-        const qubitLabel = document.getElementById('qubitLabel');
-        const qubitCore = document.getElementById('qubitCore');
+        qArr.forEach(q => {
+            q.style.transition = 'none';
+            q.style.transform = 'translate(190px, 150px)';
+            q.style.opacity = '0';
+            const core = q.querySelector('.qubit-core');
+            const halo = q.querySelector('.qubit-halo');
+            const label = q.querySelector('.qubit-label');
+            if(core) core.setAttribute('fill', 'var(--blue)');
+            if(halo) halo.setAttribute('fill', 'var(--blue)');
+            if(label) label.textContent = '|ψ⟩';
+        });
+        
+        if (qubitAncilla) {
+            qubitAncilla.style.transition = 'none';
+            qubitAncilla.style.transform = 'translate(600px, 90px)';
+            qubitAncilla.style.opacity = '0';
+        }
+        
         const measurementIcon = document.getElementById('measurementIcon');
         const entanglementLink = document.getElementById('entanglementLink');
+        const beamSplitter = document.getElementById('beamSplitterIcon');
         
-        if (qubitLabel) qubitLabel.textContent = '|ψ⟩';
-        if (qubitCore) qubitCore.setAttribute('fill', 'var(--blue)');
         if (measurementIcon) measurementIcon.style.opacity = '0';
         if (entanglementLink) entanglementLink.style.opacity = '0';
+        if (beamSplitter) beamSplitter.style.opacity = '0';
         
         bobNodeBorder.setAttribute('stroke', 'var(--blue)');
         bobOutcome.style.opacity = '0';
@@ -1692,85 +1716,113 @@
         
         const eveCoreGlow = document.getElementById('eveCoreGlow');
         if (eveCoreGlow) eveCoreGlow.setAttribute('fill', 'var(--ink-3)');
-        
-        const qubitHalo = document.getElementById('qubitHalo');
-        if (qubitHalo) qubitHalo.setAttribute('fill', 'var(--blue)');
     }
 
     function runAnimationSequence() {
         resetAnimation();
         
+        const qArr = [
+            document.getElementById('qubitParticle1'),
+            document.getElementById('qubitParticle2'),
+            document.getElementById('qubitParticle3')
+        ].filter(Boolean);
+        
         // Force reflow
-        void qubitParticle.offsetWidth;
+        qArr.forEach(q => void q.offsetWidth);
 
         const attack = currentAttackMode;
         
-        // Phase 1: Alice sends qubit
+        // Phase 1: Alice sends qubit stream
         setTimeout(() => {
-            qubitParticle.style.transition = 'transform 1s linear, opacity 0.2s';
-            qubitParticle.style.opacity = '1';
-            
+            qArr.forEach((q, idx) => {
+                setTimeout(() => {
+                    q.style.transition = 'transform 1s linear, opacity 0.2s';
+                    q.style.opacity = '1';
+                    
+                    if (attack === 'HONEST') {
+                        q.style.transform = 'translate(1050px, 150px)'; 
+                    } else if (attack === 'INDIVIDUAL' || attack === 'IMPERSONATION' || attack === 'REPLAY') {
+                        q.style.transform = 'translate(600px, 150px)'; // Stop at Eve's splitter
+                    } else if (attack === 'COLLECTIVE' || attack === 'COHERENT') {
+                        q.style.transform = 'translate(600px, 150px)'; // Stop to entangle
+                    }
+                }, idx * 250); // Stagger departure by 250ms
+            });
+
             if (attack === 'HONEST') {
-                explanationText.innerHTML = "<b>Step 1:</b> Alice prepares a secure quantum state |ψ⟩ and sends it directly over the fiber channel.";
-                qubitParticle.style.transform = 'translate(1050px, 150px)'; 
+                explanationText.innerHTML = "<b>Step 1:</b> Alice prepares a stream of secure quantum states |ψ⟩ and sends them directly over the fiber channel.";
             } else if (attack === 'INDIVIDUAL' || attack === 'IMPERSONATION' || attack === 'REPLAY') {
-                explanationText.innerHTML = "<b>Step 1:</b> Alice sends a qubit, but Eve intercepts it in the middle of the channel and stops it.";
-                qubitParticle.style.transform = 'translate(600px, 150px)';
+                explanationText.innerHTML = "<b>Step 1:</b> Alice sends a qubit stream, but Eve intercepts using a beam splitter.";
                 eveNodeBorder.setAttribute('stroke', 'var(--red)');
                 eveNodeBorder.setAttribute('stroke-dasharray', 'none');
                 eveNodeStatus.textContent = 'Intercepting';
                 eveNodeStatus.setAttribute('fill', 'var(--red)');
                 const eveCoreGlow = document.getElementById('eveCoreGlow');
                 if (eveCoreGlow) eveCoreGlow.setAttribute('fill', 'var(--red)');
+                const beamSplitter = document.getElementById('beamSplitterIcon');
+                if (beamSplitter) beamSplitter.style.opacity = '1';
             } else if (attack === 'COLLECTIVE' || attack === 'COHERENT') {
-                explanationText.innerHTML = "<b>Step 1:</b> Alice sends a qubit. Eve prepares a secondary (ancilla) qubit to entangle with Alice's passing state.";
-                qubitParticle.style.transform = 'translate(600px, 150px)';
-                qubitAncilla.style.opacity = '1';
+                explanationText.innerHTML = "<b>Step 1:</b> Alice sends a qubit stream. Eve prepares an ancilla to perform a collective unitary entangling operation.";
+                if (qubitAncilla) qubitAncilla.style.opacity = '1';
                 eveNodeBorder.setAttribute('stroke', 'var(--amber)');
                 eveNodeBorder.setAttribute('stroke-dasharray', 'none');
                 eveNodeStatus.textContent = 'Entangling';
                 eveNodeStatus.setAttribute('fill', 'var(--amber)');
+                const eveCoreGlow = document.getElementById('eveCoreGlow');
+                if (eveCoreGlow) eveCoreGlow.setAttribute('fill', 'var(--amber)');
             }
         }, 100);
 
         // Phase 2: Action at Eve
         setTimeout(() => {
-            const qubitLabel = document.getElementById('qubitLabel');
-            const qubitCore = document.getElementById('qubitCore');
-            const qubitHalo = document.getElementById('qubitHalo');
             const measurementIcon = document.getElementById('measurementIcon');
             const entanglementLink = document.getElementById('entanglementLink');
+            const beamSplitter = document.getElementById('beamSplitterIcon');
             
             if (attack === 'HONEST') {
-                explanationText.innerHTML = "<b>Step 2:</b> The quantum state passes through safely, maintaining its original superposition.";
-                qubitParticle.style.transform = 'translate(1050px, 150px)'; // Move to Bob
+                explanationText.innerHTML = "<b>Step 2:</b> The quantum stream passes through safely, maintaining its original superposition.";
             } else if (attack === 'INDIVIDUAL' || attack === 'IMPERSONATION' || attack === 'REPLAY') {
-                explanationText.innerHTML = "<b>Step 2:</b> Eve measures the intercepted qubit, collapsing it to |0⟩ or |1⟩. She prepares a fake classical copy and resends it.";
-                qubitCore.setAttribute('fill', 'var(--red)');
-                if (qubitHalo) qubitHalo.setAttribute('fill', 'var(--red)');
-                qubitLabel.textContent = Math.random() > 0.5 ? '|0⟩' : '|1⟩'; // Collapsed state notation
+                explanationText.innerHTML = "<b>Step 2:</b> Eve splits the quantum signal. She measures half (collapsing it) and forwards a classical copy.";
                 if (measurementIcon) measurementIcon.style.opacity = '1';
-                qubitParticle.style.transform = 'translate(1050px, 150px)'; // Resend to Bob
+                qArr.forEach((q, idx) => {
+                    setTimeout(() => {
+                        const core = q.querySelector('.qubit-core');
+                        const halo = q.querySelector('.qubit-halo');
+                        const label = q.querySelector('.qubit-label');
+                        if(core) core.setAttribute('fill', 'var(--red)');
+                        if(halo) halo.setAttribute('fill', 'var(--red)');
+                        if(label) label.textContent = Math.random() > 0.5 ? '|0⟩' : '|1⟩';
+                        q.style.transform = 'translate(1050px, 150px)'; // Resend to Bob
+                    }, idx * 250);
+                });
             } else if (attack === 'COLLECTIVE' || attack === 'COHERENT') {
-                explanationText.innerHTML = "<b>Step 2:</b> Eve applies a unitary U_E (like CNOT) to entangle her ancilla |E⟩ with Alice's qubit. The state continues, but they are now quantumly linked: α|0⟩|e₀⟩ + β|1⟩|e₁⟩!";
+                explanationText.innerHTML = "<b>Step 2:</b> Eve applies U_E to entangle her ancilla with the passing stream. The particles are now quantumly linked!";
                 if (entanglementLink) entanglementLink.style.opacity = '1';
-                qubitAncilla.style.transition = 'transform 1s linear, opacity 0.2s';
-                qubitAncilla.style.transform = 'translate(600px, 150px)'; // Entangle with main qubit
-                qubitParticle.style.transform = 'translate(1050px, 150px)';
+                if (qubitAncilla) {
+                    qubitAncilla.style.transition = 'transform 1s linear, opacity 0.2s';
+                    qubitAncilla.style.transform = 'translate(600px, 150px)'; // Entangle with main qubit
+                }
+                qArr.forEach((q, idx) => {
+                    setTimeout(() => {
+                        q.style.transform = 'translate(1050px, 150px)';
+                    }, idx * 250);
+                });
             }
-        }, 1800);
+        }, 1800); // Trigger after the first particle reaches Eve
 
         // Phase 3: Arrives at Bob
         setTimeout(() => {
-            qubitParticle.style.opacity = '0';
+            qArr.forEach(q => q.style.opacity = '0');
             const measurementIcon = document.getElementById('measurementIcon');
             const entanglementLink = document.getElementById('entanglementLink');
+            const beamSplitter = document.getElementById('beamSplitterIcon');
             if (measurementIcon) measurementIcon.style.opacity = '0';
             if (entanglementLink) entanglementLink.style.opacity = '0';
+            if (beamSplitter) beamSplitter.style.opacity = '0';
             
             if (attack === 'COLLECTIVE' || attack === 'COHERENT') {
-                qubitAncilla.style.opacity = '0';
-            }
+                if (qubitAncilla) qubitAncilla.style.opacity = '0';
+            }    
 
             if (attack === 'HONEST') {
                 explanationText.innerHTML = "<b>Step 3:</b> Bob successfully measures the pristine state. QDS Signature is Verified ✅.";
