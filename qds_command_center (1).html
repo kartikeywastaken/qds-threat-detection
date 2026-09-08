@@ -1665,7 +1665,13 @@
               showPaymentModal('error', 'PAYMENT FAILED', response.error.description);
           });
 
-         /* ========== EDUCATIONAL QUBIT ANIMATION LOOP ========== */
+          rzp1.open();
+      } catch (err) {
+          console.error("Razorpay Error:", err);
+      }
+    };
+
+    /* ========== EDUCATIONAL QUBIT ANIMATION LOOP ========== */
     const qubitAncilla = document.getElementById('qubitAncilla');
     const eveNodeBorder = document.getElementById('eveNodeBorder');
     const eveNodeName = document.getElementById('eveNodeName');
