@@ -592,10 +592,13 @@
 
     .bit-travel {
       animation: travel 3.4s ease-in-out infinite;
+      -webkit-offset-rotate: 0deg;  /* Safari: don't rotate with path tangent */
+      offset-rotate: 0deg;
     }
 
     @keyframes travel {
       0% {
+        -webkit-offset-distance: 0%;
         offset-distance: 0%;
         opacity: 0;
       }
@@ -605,6 +608,7 @@
       }
 
       46% {
+        -webkit-offset-distance: 100%;
         offset-distance: 100%;
         opacity: 1;
       }
@@ -614,6 +618,7 @@
       }
 
       100% {
+        -webkit-offset-distance: 100%;
         offset-distance: 100%;
         opacity: 0;
       }
@@ -1009,7 +1014,7 @@
                 font-weight="600">Classical channel</text>
               <text x="600" y="420" font-family="var(--mono)" font-size="10" fill="var(--ink-3)" text-anchor="middle">2
                 bits</text>
-              <g class="bit-travel" style="offset-path:path('M370,296 C 430,380 770,380 830,296');">
+              <g class="bit-travel" style="offset-path:path('M370,296 C 430,380 770,380 830,296');-webkit-offset-path:path('M370,296 C 430,380 770,380 830,296');">
                 <circle r="4" fill="var(--amber)" />
               </g>
 
